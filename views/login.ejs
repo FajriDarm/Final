@@ -253,8 +253,14 @@
           // set cookie (not HttpOnly) so subsequent full-page requests include token
           document.cookie = 'token=' + encodeURIComponent(data.token) + '; path=/';
 
-          // Redirect ke dashboard
-          window.location.href = '/dashboard';
+          // Redirect berdasarkan role
+          if (data.user && data.user.role === 'affiliate') {
+            window.location.href = '/affiliate/dashboard';
+          } else if (data.user && (data.user.role === 'admin' || data.user.role === 'superadmin')) {
+            window.location.href = '/dashboard_admin' ;
+          } else {
+            window.location.href = '/dashboard';
+          }
         } else {
           // Reset button state
           loginBtn.disabled = false;

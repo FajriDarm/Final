@@ -21,7 +21,7 @@ const authMiddleware = async (req, res, next) => {
 
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET || 'your-secret-key'
+      process.env.JWT_SECRET || "your-secret-key",
     );
 
     // Support several possible token id fields for robustness
@@ -71,17 +71,17 @@ const authMiddleware = async (req, res, next) => {
     if (!users || users.length === 0) {
       return res
         .status(401)
-        .json({ success: false, message: 'User not found' });
+        .json({ success: false, message: "User not found" });
     }
 
     req.user = users[0];
     next();
   } catch (error) {
-    console.error('Auth middleware error:', error.message);
+    console.error("Auth middleware error:", error.message);
     return res.status(401).json({
       success: false,
-      message: 'Invalid token',
-      error: error.message
+      message: "Invalid token",
+      error: error.message,
     });
   }
 };
@@ -90,7 +90,8 @@ const authMiddleware = async (req, res, next) => {
 // Jika sudah login, redirect ke dashboard
 const checkAlreadyLoggedIn = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.replace('Bearer ', '') || req.cookies?.token;
+    const token =
+      req.headers.authorization?.replace("Bearer ", "") || req.cookies?.token;
 
     if (!token) {
       // Tidak ada token, lanjut ke halaman login/register
@@ -98,8 +99,11 @@ const checkAlreadyLoggedIn = async (req, res, next) => {
     }
 
     // Ada token, verifikasi
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
-    console.log('👤 User already logged in, user_id:', decoded.user_id);
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "your-secret-key",
+    );
+    console.log("👤 User already logged in, user_id:", decoded.user_id);
 
     // Ambil data user dari database
     const [users] = await db.query(
@@ -107,7 +111,7 @@ const checkAlreadyLoggedIn = async (req, res, next) => {
        FROM users u
        JOIN roles r ON u.role_id = r.id
        WHERE u.id = ?`,
-      [decoded.user_id]
+      [decoded.user_id],
     );
 
     if (users.length === 0) {
@@ -117,52 +121,58 @@ const checkAlreadyLoggedIn = async (req, res, next) => {
 
     // User sudah login dan valid, redirect ke dashboard sesuai role
     const role = users[0].role;
-    if (role === 'super_admin') {
-      return res.redirect('/dashboard_admin');
-    } else if (role === 'sales') {
-      return res.redirect('/dashboard_sales');
+    if (role === "super_admin") {
+      return res.redirect("/dashboard_admin");
+    } else if (role === "sales") {
+      return res.redirect("/dashboard_sales");
     } else {
-      return res.redirect('/profile');
+      return res.redirect("/profile");
     }
   } catch (error) {
     // Token tidak valid, lanjut ke halaman login/register
-    console.log('⚠️  Token tidak valid atau expired, mengizinkan akses ke login/register');
+    console.log(
+      "⚠️  Token tidak valid atau expired, mengizinkan akses ke login/register",
+    );
     next();
   }
 };
 
 const authMiddlewarePage = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.replace('Bearer ', '') || req.cookies?.token;
+    const token =
+      req.headers.authorization?.replace("Bearer ", "") || req.cookies?.token;
 
     if (!token) {
-      console.log('⚠️  No token found in request');
-      return res.redirect('/login');
+      console.log("⚠️  No token found in request");
+      return res.redirect("/login");
     }
 
-    console.log('🔍 Token found, verifying...');
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
-    console.log('✅ Token verified, user_id:', decoded.user_id);
+    console.log("🔍 Token found, verifying...");
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "your-secret-key",
+    );
+    console.log("✅ Token verified, user_id:", decoded.user_id);
 
     const [users] = await db.query(
       `SELECT u.id, u.name, u.email, u.role_id, u.affiliate_status, u.status, u.created_at, r.name as role
        FROM users u
        JOIN roles r ON u.role_id = r.id
        WHERE u.id = ?`,
-      [decoded.user_id]
+      [decoded.user_id],
     );
 
     if (users.length === 0) {
-      console.log('⚠️  User not found in database');
-      return res.redirect('/login');
+      console.log("⚠️  User not found in database");
+      return res.redirect("/login");
     }
 
-    console.log('✅ User found:', users[0].name);
+    console.log("✅ User found:", users[0].name);
     req.user = users[0];
     next();
   } catch (error) {
-    console.error('❌ Auth middleware page error:', error.message);
-    return res.redirect('/login');
+    console.error("❌ Auth middleware page error:", error.message);
+    return res.redirect("/login");
   }
 };
 
