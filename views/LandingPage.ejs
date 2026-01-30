@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Affillink - Affiliate Marketing Platform</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Font -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#059669',
+                            dark: '#047857',
+                            light: '#10b981'
+                        },
+                        secondary: {
+                            DEFAULT: '#3b82f6',
+                            dark: '#2563eb'
+                        },
+                        dark: '#1e293b',
+                        gray: {
+                            dark: '#475569',
+                            DEFAULT: '#64748b',
+                            light: '#e2e8f0'
+                        },
+                        light: '#f8fafc'
+                    },
+                    fontFamily: {
+                        sans: ['Instrument Sans', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'primary': '0 10px 30px rgba(5, 150, 105, 0.2)',
+                        'card': '0 10px 25px rgba(0, 0, 0, 0.05)',
+                        'card-lg': '0 20px 40px rgba(0, 0, 0, 0.1)'
+                    },
+                    borderRadius: {
+                        'lg': '12px',
+                        'xl': '16px',
+                        '2xl': '20px'
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            'from': {
+                                opacity: '0',
+                                transform: 'translateY(30px)'
+                            },
+                            'to': {
+                                opacity: '1',
+                                transform: 'translateY(0)'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom CSS untuk efek tambahan */
+        .gradient-text {
+            background: linear-gradient(135deg, #1e293b 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .navbar-scrolled {
+            padding: 12px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        /* Custom scroll padding untuk fixed navbar */
+        html {
+            scroll-padding-top: 80px;
+        }
+
+        /* Dashboard chart */
+        .chart-line {
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 0 120 Q 50 100 100 80 T 200 60 T 300 40 T 400 20' stroke='%2310b981' stroke-width='4' fill='none'/%3E%3Ccircle cx='0' cy='120' r='4' fill='%2310b981'/%3E%3Ccircle cx='100' cy='80' r='4' fill='%2310b981'/%3E%3Ccircle cx='200' cy='60' r='4' fill='%2310b981'/%3E%3Ccircle cx='300' cy='40' r='4' fill='%2310b981'/%3E%3Ccircle cx='400' cy='20' r='4' fill='%2310b981'/%3E%3C/svg%3E") no-repeat center;
+            background-size: cover;
+        }
+
+        /* Hero background effect */
+        .hero-bg {
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0) 70%);
+        }
+
+        /* CTA background effects */
+        .cta-bg-1 {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-bg-2 {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Logo placeholder styling */
+        .logo-placeholder {
+            width: 180px;
+            height: 40px;
+            background: linear-gradient(90deg, #059669 0%, #10b981 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+        </style>
+</head>
+
+<body class="font-sans bg-light text-dark overflow-x-hidden">
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+
+    <!-- Navigation -->
+    <nav id="mainNav"
+        class="fixed top-0 left-0 right-0 bg-white bg-opacity-98 backdrop-blur-sm shadow-md z-50 py-4 transition-all duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <!-- Logo Affillink -->
+                <a href="#" class="flex items-center">
+                    <img src="/images/logoAffilllink2.png" alt="Affillink Logo" class="h-10 w-auto"
+                        style="max-width:180px;">
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center gap-8">
+                    <!-- Main Navigation Links -->
+                    <div class="flex gap-8">
+                        <a href="#home"
+                            class="text-gray-dark font-medium hover:text-primary transition-colors duration-300 relative after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">Home</a>
+                        <a href="#features"
+                            class="text-gray-dark font-medium hover:text-primary transition-colors duration-300 relative after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">Features</a>
+                        <a href="#pricing"
+                            class="text-gray-dark font-medium hover:text-primary transition-colors duration-300 relative after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">Pricing</a>
+                        <a href="#blog"
+                            class="text-gray-dark font-medium hover:text-primary transition-colors duration-300 relative after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">Blog</a>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex items-center gap-4">
+                        <a href="/login"
+                            class="px-6 py-2 border-2 border-gray-light rounded-lg font-medium text-dark hover:border-primary hover:text-primary transition-all duration-300">Login</a>
+                        <a href="/register"
+                            class="px-6 py-2 bg-gradient-to-br from-primary to-primary-light text-white font-medium rounded-lg shadow-primary hover:shadow-xl transition-all duration-300 hover:-translate-y-1">Register</a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="lg:hidden text-2xl text-dark focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenuContainer"
+        class="mobile-menu fixed top-0 right-0 w-72 h-full bg-white shadow-2xl z-50 flex flex-col pt-24 px-8 gap-6">
+        <a href="#home" class="text-xl text-dark font-medium hover:text-primary transition-colors">Home</a>
+        <a href="#features" class="text-xl text-dark font-medium hover:text-primary transition-colors">Features</a>
+        <a href="#pricing" class="text-xl text-dark font-medium hover:text-primary transition-colors">Pricing</a>
+        <a href="#blog" class="text-xl text-dark font-medium hover:text-primary transition-colors">Blog</a>
+
+        <div class="mt-8 flex flex-col gap-4">
+            <a href="/login"
+                class="px-6 py-3 border-2 border-gray-light rounded-lg font-medium text-dark hover:border-primary hover:text-primary transition-all duration-300 text-center">Login</a>
+            <a href="/register"
+                class="px-6 py-3 bg-gradient-to-br from-primary to-primary-light text-white font-medium rounded-lg shadow-primary hover:shadow-xl transition-all duration-300 text-center">Register</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-32 pb-16 md:pt-40 md:pb-20 relative overflow-hidden">
+        <!-- Background Effect -->
+        <div class="hero-bg absolute -top-40 -right-40 w-96 h-96 md:w-[800px] md:h-[800px] rounded-full -z-10"></div>
+
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <!-- Hero Content -->
+                <div data-aos="fade-right" data-aos-duration="800" data-aos-delay="100">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 gradient-text leading-tight">
+                        Grow Your Revenue with Smart Affiliate Marketing
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray mb-8 leading-relaxed">
+                        Join our powerful affiliate platform to boost your income by partnering with top brands and
+                        earning commissions easily. Access advanced analytics, intuitive tools, and dedicated support.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 mb-10">
+                        <a href="/login"
+                            class="px-8 py-4 bg-gradient-to-br from-primary to-primary-light text-white font-semibold rounded-xl shadow-primary hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center"
+                            data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                            Get Started
+                        </a>
+                        <a href="/register"
+                            class="px-8 py-4 bg-white text-primary font-semibold rounded-xl border-2 border-primary hover:bg-opacity-5 hover:bg-primary transition-all duration-300 text-center"
+                            data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                            Learn More
+                        </a>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-4" data-aos="fade-up" data-aos-duration="800"
+                        data-aos-delay="500">
+                        <span
+                            class="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-card text-sm text-gray">
+                            <i class="fab fa-paypal text-primary"></i> PayPal
+                        </span>
+                        <span
+                            class="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-card text-sm text-gray">
+                            <i class="fas fa-credit-card text-primary"></i> Stripe
+                        </span>
+                        <span
+                            class="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-card text-sm text-gray">
+                            <i class="fas fa-university text-primary"></i> Bank Transfer
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Dashboard Preview -->
+                <div class="relative" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
+                    <div class="bg-white rounded-2xl shadow-card-lg border border-gray-light p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold text-dark">Affiliate Dashboard</h3>
+                            <span class="text-sm text-gray bg-gray-light px-3 py-1 rounded-full">Last 30 Days</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <!-- Stat Card 1 -->
+                            <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-5 rounded-xl border border-emerald-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+                                data-aos="zoom-in" data-aos-delay="100">
+                                <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Total
+                                    Earnings</p>
+                                <p class="text-2xl md:text-3xl font-bold text-emerald-800">$5,472.50</p>
+                                <p class="text-xs text-primary mt-2">
+                                    <i class="fas fa-arrow-up mr-1"></i> 12.5% from last month
+                                </p>
+                            </div>
+
+                            <!-- Stat Card 2 -->
+                            <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-5 rounded-xl border border-emerald-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+                                data-aos="zoom-in" data-aos-delay="200">
+                                <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Clicks</p>
+                                <p class="text-2xl md:text-3xl font-bold text-emerald-800">12,980</p>
+                                <p class="text-xs text-primary mt-2">
+                                    <i class="fas fa-arrow-up mr-1"></i> 8.2% from last month
+                                </p>
+                            </div>
+
+                            <!-- Stat Card 3 -->
+                            <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-5 rounded-xl border border-emerald-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+                                data-aos="zoom-in" data-aos-delay="300">
+                                <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Conversion
+                                    Rate</p>
+                                <p class="text-2xl md:text-3xl font-bold text-emerald-800">3.8%</p>
+                                <p class="text-xs text-primary mt-2">
+                                    <i class="fas fa-arrow-up mr-1"></i> 1.2% from last month
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Chart Area -->
+                        <div class="bg-gradient-to-b from-emerald-50 to-green-50 h-48 rounded-xl p-5">
+                            <div class="chart-line absolute bottom-10 left-10 right-10 h-32"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-16 md:py-20 bg-gray-light">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4" data-aos="fade-up"
+                data-aos-duration="800">
+                Special Promo Events
+            </h2>
+            <p class="text-lg md:text-xl text-gray text-center max-w-3xl mx-auto mb-12" data-aos="fade-up"
+                data-aos-duration="800" data-aos-delay="100">
+                Limited time offers with exclusive discounts. Don't miss out!
+            </p>
+
+            <!-- Loading State -->
+            <div id="eventsLoading" class="text-center py-12">
+                <i class="fas fa-spinner fa-spin text-4xl text-primary mb-4"></i>
+                <p class="text-gray">Loading events...</p>
+            </div>
+
+            <!-- Events Container -->
+            <div id="eventsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto hidden">
+                <!-- Events will be loaded here dynamically -->
+            </div>
+
+            <!-- No Events State -->
+            <div id="noEvents" class="text-center py-12 hidden">
+                <i class="fas fa-calendar-times text-6xl text-gray-300 mb-4"></i>
+                <p class="text-xl text-gray-500">No active events at the moment</p>
+                <p class="text-gray-400 mt-2">Check back later for special promotions!</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Load active events on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadActiveEvents();
+        });
+
+        async function loadActiveEvents() {
+            const eventsLoading = document.getElementById('eventsLoading');
+            const eventsContainer = document.getElementById('eventsContainer');
+            const noEvents = document.getElementById('noEvents');
+
+            try {
+                const response = await fetch('/api/admin/events/active');
+                const data = await response.json();
+                console.debug('Loaded active events:', data);
+
+                eventsLoading.classList.add('hidden');
+
+                if (data.success && data.data.length > 0) {
+                    eventsContainer.classList.remove('hidden');
+                    displayEvents(data.data);
+                } else {
+                    noEvents.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error loading events:', error);
+                eventsLoading.classList.add('hidden');
+                noEvents.classList.remove('hidden');
+            }
+        }
+
+        function displayEvents(events) {
+            const container = document.getElementById('eventsContainer');
+            container.innerHTML = '';
+
+            events.forEach((event, index) => {
+                const priceOriginal = Number(event.price_original) || 0;
+                const priceDiscount = Number(event.price_discount) || 0;
+                const isGratis = priceOriginal === 0;
+                const discount = (priceOriginal > 0 && priceDiscount > 0 && priceDiscount < priceOriginal)
+                    ? Math.round(((priceOriginal - priceDiscount) / priceOriginal) * 100)
+                    : 0;
+                const delay = 200 + (index * 100);
+
+                const priceHtml = isGratis
+                    ? `<div class="text-4xl font-bold text-dark">Gratis</div>`
+                    : `
+                        ${priceOriginal > priceDiscount ? `<div class="text-sm text-gray-500 line-through">Rp ${parseInt(priceOriginal).toLocaleString('id-ID')}</div>` : ''}
+                        <div class="text-4xl font-bold text-dark">Rp ${parseInt((priceDiscount > 0 ? priceDiscount : priceOriginal)).toLocaleString('id-ID')}</div>
+                        ${priceOriginal > priceDiscount ? `<div class="text-sm text-red-500 font-semibold mt-1">Save Rp ${(Math.max(0, parseInt(priceOriginal) - parseInt(priceDiscount))).toLocaleString('id-ID')}</div>` : ''}
+                    `;
+
+                const eventCard = `
+                    <div class="bg-white rounded-2xl shadow-card p-8 border-2 ${event.status === 'active' ? 'border-primary' : 'border-gray-light'} relative transition-all duration-300 hover:-translate-y-2"
+                         data-aos="fade-up" data-aos-duration="800" data-aos-delay="${delay}">
+                        ${discount > 0 ? `
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-1 rounded-full text-sm font-semibold">
+                            ${discount}% OFF
+                        </div>
+                        ` : ''}
+
+                        <h3 class="text-xl font-bold text-primary-dark mb-3">${event.name}</h3>
+                        ${event.description ? `<p class="text-gray text-sm mb-4">${event.description}</p>` : ''}
+
+                        <div class="mb-6">
+                            ${priceHtml}
+                        </div>
+
+                        <div class="mb-6 pb-6 border-b border-gray-200">
+                            <div class="flex items-center text-sm text-gray-500 mb-2">
+                                <i class="fas fa-calendar-alt mr-2"></i>
+                                <span>${event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '—'}</span>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>Until ${event.end_date ? new Date(event.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '—'}</span>
+                            </div>
+                        </div>
+
+                        <a href="/register?event=${event.slug}"
+                           class="block w-full py-3 bg-gradient-to-br from-primary to-primary-light text-white font-semibold rounded-xl text-center shadow-primary hover:shadow-xl transition-all duration-300">
+                            Get This Deal
+                        </a>
+                    </div>
+                `;
+
+                container.innerHTML += eventCard;
+            });
+        }
+
+        // Refresh events when user returns to the tab (helps see new events created in admin)
+        window.addEventListener('focus', function () {
+            loadActiveEvents();
+        });
+    </script>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-16 md:py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4" data-aos="fade-up"
+                data-aos-duration="800">
+                Latest from Our Blog
+            </h2>
+            <p class="text-lg md:text-xl text-gray text-center max-w-3xl mx-auto mb-12" data-aos="fade-up"
+                data-aos-duration="800" data-aos-delay="100">
+                Tips, strategies, and news to help you succeed in affiliate marketing.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Blog Post 1 -->
+                <div class="bg-white rounded-2xl shadow-card p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-card-lg"
+                    data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                    <div class="text-sm font-semibold text-primary mb-3">Affiliate Tips</div>
+                    <h3 class="text-xl font-bold text-dark mb-4">5 Ways to Boost Your Affiliate Revenue in 2026</h3>
+                    <p class="text-gray mb-6">Discover actionable strategies to increase your affiliate earnings with
+                        proven techniques and expert advice.</p>
+                    <a href="#"
+                        class="text-primary font-semibold flex items-center gap-2 hover:text-primary-dark transition-colors">
+                        Read More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Blog Post 2 -->
+                <div class="bg-white rounded-2xl shadow-card p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-card-lg"
+                    data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                    <div class="text-sm font-semibold text-secondary-dark mb-3">Platform Update</div>
+                    <h3 class="text-xl font-bold text-dark mb-4">New Analytics Dashboard Launched</h3>
+                    <p class="text-gray mb-6">Explore the latest features in our analytics dashboard to help you track
+                        and optimize your campaigns more effectively.</p>
+                    <a href="#"
+                        class="text-primary font-semibold flex items-center gap-2 hover:text-primary-dark transition-colors">
+                        Read More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Blog Post 3 -->
+                <div class="bg-white rounded-2xl shadow-card p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-card-lg"
+                    data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                    <div class="text-sm font-semibold text-secondary mb-3">Success Story</div>
+                    <h3 class="text-xl font-bold text-dark mb-4">How Jane Grew Her Affiliate Business</h3>
+                    <p class="text-gray mb-6">Read how one marketer scaled her affiliate business using our platform and
+                        the lessons you can apply today.</p>
+                    <a href="#"
+                        class="text-primary font-semibold flex items-center gap-2 hover:text-primary-dark transition-colors">
+                        Read More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 md:py-20 bg-light">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4" data-aos="fade-up"
+                data-aos-duration="800">
+                Everything You Need to Succeed
+            </h2>
+            <p class="text-lg md:text-xl text-gray text-center max-w-3xl mx-auto mb-16" data-aos="fade-up"
+                data-aos-duration="800" data-aos-delay="100">
+                Maximize your earnings with powerful analytics and easy-to-use tools designed for affiliate marketers of
+                all levels.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                <!-- Feature 1 -->
+                <div class="bg-white rounded-2xl shadow-card p-8 border border-gray-light transition-all duration-300 hover:-translate-y-2 hover:shadow-primary hover:border-primary-light"
+                    data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-emerald-50 to-green-100 rounded-xl flex items-center justify-center text-2xl text-primary-dark mb-6 mx-auto">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark text-center mb-4">Real-Time Tracking</h3>
+                    <p class="text-gray text-center">Monitor clicks, conversions, and earnings in real time with our
+                        intuitive dashboard and detailed reports.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-white rounded-2xl shadow-card p-8 border border-gray-light transition-all duration-300 hover:-translate-y-2 hover:shadow-primary hover:border-primary-light"
+                    data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-emerald-50 to-green-100 rounded-xl flex items-center justify-center text-2xl text-primary-dark mb-6 mx-auto">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark text-center mb-4">Marketing Tools</h3>
+                    <p class="text-gray text-center">Access a suite of promotional tools, including banners, links,
+                        landing pages, and social media integrations.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-white rounded-2xl shadow-card p-8 border border-gray-light transition-all duration-300 hover:-translate-y-2 hover:shadow-primary hover:border-primary-light"
+                    data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-emerald-50 to-green-100 rounded-xl flex items-center justify-center text-2xl text-primary-dark mb-6 mx-auto">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark text-center mb-4">Easy Payouts</h3>
+                    <p class="text-gray text-center">Get paid fast with multiple payout options, including PayPal,
+                        Stripe, and direct bank transfers.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-white rounded-2xl shadow-card p-8 border border-gray-light transition-all duration-300 hover:-translate-y-2 hover:shadow-primary hover:border-primary-light"
+                    data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-emerald-50 to-green-100 rounded-xl flex items-center justify-center text-2xl text-primary-dark mb-6 mx-auto">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark text-center mb-4">Dedicated Support</h3>
+                    <p class="text-gray text-center">Our expert team is here to assist you 24/7 with any questions,
+                        strategy advice, or technical issues.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section class="py-16 md:py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <!-- Content -->
+                <div data-aos="fade-right" data-aos-duration="800">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Optimize Your Affiliate Performance</h2>
+                    <p class="text-lg text-gray mb-6">
+                        Maximize your earnings with powerful analytics and easy-to-use tools designed to help you track,
+                        analyze, and improve your campaigns.
+                    </p>
+                    <p class="text-lg text-gray mb-10">
+                        Track detailed metrics, analyze top-performing campaigns, monitor referral sources, and
+                        understand your audience better with our comprehensive dashboard.
+                    </p>
+                    <a href="#"
+                        class="px-8 py-4 bg-gradient-to-br from-primary to-primary-light text-white font-semibold rounded-xl shadow-primary hover:shadow-xl transition-all duration-300 hover:-translate-y-1 inline-block"
+                        data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                        Explore Analytics
+                    </a>
+                </div>
+
+                <!-- Analytics Preview -->
+                <div class="bg-gradient-to-br from-secondary-dark to-secondary rounded-2xl shadow-card-lg p-8 text-white"
+                    data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
+                    <h3 class="text-2xl font-bold mb-6">Detailed Earnings Analytics</h3>
+
+                    <div class="bg-white bg-opacity-10 rounded-xl p-6 mb-6">
+                        <div class="flex justify-between items-center py-3 border-b border-white border-opacity-10">
+                            <span>Total Earnings (All Time)</span>
+                            <span class="font-bold">$2,135,003.00</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-white border-opacity-10">
+                            <span>2025-2026 YTD</span>
+                            <span class="font-bold">$1,150,053.00</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3">
+                            <span>2024-2025</span>
+                            <span class="font-bold">$985,003.00</span>
+                        </div>
+                    </div>
+
+                    <p class="text-white text-opacity-90 text-sm">Data updated in real-time. Track your progress and set
+                        goals with our advanced analytics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 md:py-20 bg-light">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4" data-aos="fade-up"
+                data-aos-duration="800">
+                Trusted by Thousands of Affiliates
+            </h2>
+            <p class="text-lg md:text-xl text-gray text-center max-w-3xl mx-auto mb-16" data-aos="fade-up"
+                data-aos-duration="800" data-aos-delay="100">
+                Join thousands of successful marketers who have increased their earnings with Affilink.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Testimonial 1 -->
+                <div class="bg-white rounded-2xl shadow-card p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-card-lg"
+                    data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div
+                            class="w-14 h-14 bg-gradient-to-br from-secondary to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            JD
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-dark">John Doe</h4>
+                            <p class="text-sm text-gray">Freelance Marketer</p>
+                        </div>
+                    </div>
+
+                    <div class="text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+
+                    <p class="text-gray italic">
+                        "Affilink has been a game changer for me. The platform is intuitive and my earnings have
+                        increased by 65% in just three months. The support team is incredibly responsive."
+                    </p>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-white rounded-2xl shadow-card p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-card-lg"
+                    data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div
+                            class="w-14 h-14 bg-gradient-to-br from-secondary to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            JS
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-dark">Jane Smith</h4>
+                            <p class="text-sm text-gray">Digital Marketing Agency</p>
+                        </div>
+                    </div>
+
+                    <div class="text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+
+                    <p class="text-gray italic">
+                        "The detailed analytics and comprehensive reporting have transformed how we manage affiliate
+                        campaigns for our clients. Affilink makes tracking and optimization so much easier."
+                    </p>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-white rounded-2xl shadow-card p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-card-lg"
+                    data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div
+                            class="w-14 h-14 bg-gradient-to-br from-secondary to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            MW
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-dark">Mark Wilson</h4>
+                            <p class="text-sm text-gray">E-commerce Entrepreneur</p>
+                        </div>
+                    </div>
+
+                    <div class="text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+
+                    <p class="text-gray italic">
+                        "Great support and fantastic tools. Affilink is the best affiliate platform I've worked with.
+                        It's streamlined our affiliate program management and increased our revenue significantly."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 md:py-20 bg-gradient-to-br from-primary to-primary-dark text-white relative overflow-hidden">
+        <!-- Background Effects -->
+        <div class="cta-bg-1 absolute -top-20 -right-20 w-80 h-80 rounded-full"></div>
+        <div class="cta-bg-2 absolute -bottom-20 -left-20 w-60 h-60 rounded-full"></div>
+
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6" data-aos="fade-up"
+                data-aos-duration="800">
+                Ready to Maximize Your Affiliate Earnings?
+            </h2>
+            <p class="text-lg md:text-xl text-white text-opacity-90 text-center max-w-3xl mx-auto mb-10"
+                data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                Join thousands of successful marketers who trust Affilink to grow their revenue. Start your free trial
+                today—no credit card required.
+            </p>
+
+            <div class="text-center" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                <a href="#"
+                    class="px-10 py-5 bg-white text-primary font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 inline-block">
+                    Start Free Trial Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-gray-light py-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+                <!-- Column 1 -->
+                <div data-aos="fade-up" data-aos-duration="800">
+                    <a href="#" class="flex items-center mb-6">
+                        <img src="/images/logoAffilllink2.png" alt="Affillink Logo" class="h-10 w-auto"
+                            style="max-width:180px;">
+                    </a>
+                    <p class="text-gray-light max-w-xs">
+                        The leading affiliate marketing platform for individuals and businesses looking to maximize
+                        their revenue.
+                    </p>
+                </div>
+
+                <!-- Column 2 -->
+                <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <h3 class="text-white text-xl font-bold mb-6">Platform</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#features"
+                                class="text-gray-light hover:text-primary-light transition-colors hover:pl-2">Features</a>
+                        </li>
+                        <li><a href="#pricing"
+                                class="text-gray-light hover:text-primary-light transition-colors hover:pl-2">Pricing</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-light hover:text-primary-light transition-colors hover:pl-2">Affiliate
+                                Programs</a></li>
+                        <li><a href="#"
+                                class="text-gray-light hover:text-primary-light transition-colors hover:pl-2">API
+                                Documentation</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3 -->
+                <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                    <h3 class="text-white text-xl font-bold mb-6">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#blog"
+                                class="text-gray-light hover:text-primary-light transition-colors hover:pl-2">Blog</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-light hover:text-primary-light transition-colors hover:pl-2">Help
+                                Center</a></li>
+                        <li><a href="#"
+                                class="text-gray-light hover:text-primary-light transition-colors hover:pl-2">Community</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-light hover:text-primary-light transition-colors hover:pl-2">Webinars</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Column 4 -->
+                <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                    <h3 class="text-white text-xl font-bold mb-6">Company</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#"
+                                class="text-gray-light hover:text-primary-light transition-colors hover:pl-2">About
+                                Us</a></li>
+                        <li><a href="#"
+                                class="text-gray-light hover:text-primary-light transition-colors hover:pl-2">Careers</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-light hover:text-primary-light transition-colors hover:pl-2">Contact</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-light hover:text-primary-light transition-colors hover:pl-2">Privacy
+                                Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-white border-opacity-10 text-center">
+                <p class="text-gray text-sm">&copy; 2026 Affilink. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100,
+            delay: 0,
+            disable: 'mobile'
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenuContainer = document.getElementById('mobileMenuContainer');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+
+        mobileMenuBtn.addEventListener('click', function () {
+            mobileMenuContainer.classList.toggle('active');
+            mobileMenuOverlay.classList.toggle('hidden');
+
+            // Ubah ikon menu
+            const icon = this.querySelector('i');
+            if (mobileMenuContainer.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Tutup menu saat overlay diklik
+        mobileMenuOverlay.addEventListener('click', function () {
+            mobileMenuContainer.classList.remove('active');
+            this.classList.add('hidden');
+
+            // Reset ikon menu
+            const icon = mobileMenuBtn.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        });
+
+        // Tutup menu saat link di klik (untuk mobile)
+        document.querySelectorAll('.mobile-menu-container a').forEach(link => {
+            link.addEventListener('click', function () {
+                mobileMenuContainer.classList.remove('active');
+                mobileMenuOverlay.classList.add('hidden');
+
+                // Reset ikon menu
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // Smooth scroll untuk anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Hitung offset untuk navbar tetap
+                    const navHeight = document.querySelector('nav').offsetHeight;
+                    const targetPosition = targetElement.offsetTop - navHeight;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Efek navbar saat scroll
+        window.addEventListener('scroll', function () {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                nav.classList.add('navbar-scrolled');
+            } else {
+                nav.classList.remove('navbar-scrolled');
+            }
+        });
+
+        // Re-initialize AOS saat ukuran window berubah
+        window.addEventListener('resize', function () {
+            // Jika ukuran layar lebih besar dari 1024px, pastikan menu mobile tertutup
+            if (window.innerWidth > 1024) {
+                mobileMenuContainer.classList.remove('active');
+                mobileMenuOverlay.classList.add('hidden');
+
+                // Reset ikon menu
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+
+            }
+
+            // Refresh AOS
+            AOS.refresh();
+        });
+    </script>
+</body>
+
+</html>

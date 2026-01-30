@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events Management - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    }
+    .modal-overlay {
+      backdrop-filter: blur(4px);
+    }
+    .type-radio:checked + label {
+      border-color: #10b981;
+      background-color: #f0fdf4;
+    }
+    .stat-card {
+      transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: scale(1.02);
+    }
+    @media (max-width: 1024px) {
+      .main-content {
+        margin-left: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+  <%- include('../navbar/navbar.ejs', { name: 'Admin' }) %>
+  <%- include('../sidebar/admin.ejs') %>
+
+  <main class="main-content lg:ml-64 pt-20 lg:pt-16 min-h-screen pb-8">
+    <div class="p-4 lg:p-6 max-w-7xl mx-auto">
+      <!-- Header Section -->
+      <div class="mb-6 lg:mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 class="text-2xl lg:text-3xl font-bold text-gray-900 flex items-center gap-3">
+              <span class="gradient-bg text-white p-2 rounded-lg">
+                <i class="fas fa-calendar-alt"></i>
+              </span>
+              Events Management
+            </h1>
+            <p class="text-gray-600 mt-2 ml-11">Kelola event promo dan penawaran khusus</p>
+          </div>
+          <button onclick="showCreateModal()" class="self-start sm:self-auto px-6 py-3 gradient-bg text-white rounded-xl hover:opacity-90 transition-all shadow-lg hover:shadow-xl flex items-center gap-2">
+            <i class="fas fa-plus"></i>
+            <span>Create Event</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm">Total Events</p>
+              <p id="totalEvents" class="text-2xl font-bold text-gray-900">-</p>
+            </div>
+            <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center">
+              <i class="fas fa-calendar text-white"></i>
+            </div>
+          </div>
+        </div>
+        <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm">Active Events</p>
+              <p id="activeEvents" class="text-2xl font-bold text-green-600">-</p>
+            </div>
+            <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+              <i class="fas fa-check-circle text-white"></i>
+            </div>
+          </div>
+        </div>
+        <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm">Draft Events</p>
+              <p id="draftEvents" class="text-2xl font-bold text-yellow-600">-</p>
+            </div>
+            <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center">
+              <i class="fas fa-file-alt text-white"></i>
+            </div>
+          </div>
+        </div>
+        <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm">Free Events</p>
+              <p id="freeEvents" class="text-2xl font-bold text-blue-600">-</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+              <i class="fas fa-gift text-white"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search and Filter -->
+      <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-6">
+        <div class="flex flex-col sm:flex-row gap-4">
+          <div class="flex-1 relative">
+            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <input type="text" id="searchInput" placeholder="Search events..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <select id="statusFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            <option value="">All Status</option>
+            <option value="draft">Draft</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <select id="typeFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            <option value="">All Types</option>
+            <option value="gratis">Gratis</option>
+            <option value="berbayar">Berbayar</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Events Grid -->
+      <div id="eventsContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div class="col-span-full text-center py-12 text-gray-400">
+          <div class="flex flex-col items-center">
+            <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-4 animate-pulse">
+              <i class="fas fa-spinner fa-spin text-2xl text-white"></i>
+            </div>
+            <p class="text-lg font-medium">Loading events...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Create/Edit Modal -->
+  <div id="eventModal" class="fixed inset-0 bg-black/60 modal-overlay hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+      <!-- Modal Header -->
+      <div class="gradient-bg px-6 py-4 flex items-center justify-between">
+        <h3 class="text-xl font-bold text-white" id="modalTitle">
+          <i class="fas fa-calendar-plus mr-2"></i>
+          <span id="modalTitleText">Create Event</span>
+        </h3>
+        <button onclick="closeModal()" class="text-white hover:bg-white/20 rounded-lg p-2 transition-colors">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto flex-1">
+        <form id="eventForm" class="space-y-5">
+          <input type="hidden" id="eventId">
+          
+          <!-- Event Type Selection -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-3">
+              <i class="fas fa-tags mr-1 text-purple-600"></i>
+              Tipe Event
+            </label>
+            <div class="grid grid-cols-2 gap-4">
+              <label class="relative cursor-pointer">
+                <input type="radio" name="event_type" value="gratis" class="peer sr-only type-radio">
+                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all peer-checked:border-green-500 peer-checked:bg-green-50 hover:border-green-300">
+                  <div class="flex flex-col items-center text-center">
+                    <span class="text-3xl mb-2">🎁</span>
+                    <div class="font-bold text-gray-800">Gratis</div>
+                    <p class="text-xs text-gray-500 mt-1">Event tanpa biaya</p>
+                  </div>
+                </div>
+              </label>
+              <label class="relative cursor-pointer">
+                <input type="radio" name="event_type" value="berbayar" checked class="peer sr-only type-radio">
+                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all peer-checked:border-green-500 peer-checked:bg-green-50 hover:border-green-300">
+                  <div class="flex flex-col items-center text-center">
+                    <span class="text-3xl mb-2">💎</span>
+                    <div class="font-bold text-gray-800">Berbayar</div>
+                    <p class="text-xs text-gray-500 mt-1">Event berbayar lengkap</p>
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Gratis Fields -->
+          <div id="gratisFields" class="hidden space-y-4 bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200">
+            <p class="text-sm font-semibold text-blue-700 mb-2">
+              <i class="fas fa-gift mr-2"></i>Info Event Gratis
+            </p>
+            <div class="text-xs text-gray-600 space-y-1 ml-6">
+              <p>• Tidak perlu harga & pembayaran</p>
+              <p>• User langsung bisa daftar</p>
+              <p>• Bank info tidak diperlukan</p>
+            </div>
+            
+            <div class="mt-4 space-y-3">
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" id="title_gratis" required class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Slug</label>
+                <input type="text" id="slug_gratis" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="URL-friendly event name">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea id="description_gratis" rows="3" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Berbayar Fields -->
+          <div id="berbayarFields" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700">Title</label>
+                <input type="text" id="title" required class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="Event title">
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-700">Slug</label>
+                <input type="text" id="slug" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="url-friendly-event-name">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700">Description</label>
+              <textarea id="description" rows="3" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="Event description..."></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700">
+                  <i class="fas fa-tag mr-1 text-green-600"></i>
+                  Price Original (Rp)
+                </label>
+                <input type="number" id="price_original" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="0">
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-700">
+                  <i class="fas fa-tags mr-1 text-red-600"></i>
+                  Price Promo (Rp)
+                </label>
+                <input type="number" id="price_promo" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="0">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-credit-card mr-1 text-blue-600"></i>
+                Payment Methods
+              </label>
+              <div class="flex flex-wrap gap-3">
+                <label class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                  <input type="checkbox" value="cash" class="payment-method-checkbox mr-2">
+                  <span class="text-sm"><i class="fas fa-money-bill-wave mr-1 text-green-600"></i>Cash</span>
+                </label>
+                <label class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                  <input type="checkbox" value="transfer" class="payment-method-checkbox mr-2">
+                  <span class="text-sm"><i class="fas fa-university mr-1 text-blue-600"></i>Transfer</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-xl space-y-3">
+              <p class="text-sm font-semibold text-gray-700">
+                <i class="fas fa-university mr-1 text-indigo-600"></i>
+                Bank Information
+              </p>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-xs font-medium text-gray-600">Bank Name</label>
+                  <input type="text" id="bank_name" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-600">Account Name</label>
+                  <input type="text" id="bank_account_name" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-600">Account Number</label>
+                  <input type="text" id="bank_account_number" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700">
+                  <i class="fas fa-calendar mr-1 text-purple-600"></i>
+                  Start Date
+                </label>
+                <input type="date" id="start_date" required class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-700">
+                  <i class="fas fa-calendar-check mr-1 text-purple-600"></i>
+                  End Date
+                </label>
+                <input type="date" id="end_date" required class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+              </div>
+            </div>
+          </div>
+
+          <!-- Admin WhatsApp (For both types) -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700">
+              <i class="fab fa-whatsapp mr-1 text-green-600"></i>
+              Admin WhatsApp
+            </label>
+            <input type="text" id="admin_whatsapp" placeholder="62812xxxxxxxxx" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+            <p class="text-xs text-gray-500 mt-1">Untuk konfirmasi pembayaran dan komunikasi dengan peserta</p>
+          </div>
+
+          <!-- Status -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700">
+              <i class="fas fa-toggle-on mr-1 text-gray-600"></i>
+              Status
+            </label>
+            <select id="status" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+              <option value="draft">📝 Draft</option>
+              <option value="active">✅ Active</option>
+              <option value="inactive">❌ Inactive</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 flex gap-3">
+        <button type="submit" form="eventForm" class="flex-1 gradient-bg text-white py-2.5 rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg">
+          <i class="fas fa-save mr-2"></i>Save Event
+        </button>
+        <button type="button" onclick="closeModal()" class="flex-1 bg-gray-200 text-gray-700 py-2.5 rounded-xl hover:bg-gray-300 transition-all font-semibold">
+          <i class="fas fa-times mr-2"></i>Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allEvents = [];
+
+    async function loadEvents() {
+      try {
+        const response = await fetch('/api/admin/events');
+        const data = await response.json();
+
+        if (data.success) {
+          allEvents = data.data;
+          updateStats(data.data);
+          displayEvents(data.data);
+        }
+      } catch (error) {
+        console.error('Error loading events:', error);
+        showError('Failed to load events');
+      }
+    }
+
+    function updateStats(events) {
+      const total = events.length;
+      const active = events.filter(e => e.status === 'active').length;
+      const draft = events.filter(e => e.status === 'draft').length;
+      const free = events.filter(e => e.event_type === 'gratis').length;
+
+      document.getElementById('totalEvents').textContent = total;
+      document.getElementById('activeEvents').textContent = active;
+      document.getElementById('draftEvents').textContent = draft;
+      document.getElementById('freeEvents').textContent = free;
+    }
+
+    function displayEvents(events) {
+      const container = document.getElementById('eventsContainer');
+
+      if (!events || events.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-16 text-gray-400">
+            <div class="flex flex-col items-center">
+              <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-calendar-times text-4xl text-gray-300"></i>
+              </div>
+              <p class="text-lg font-medium text-gray-500">Tidak ada event</p>
+              <p class="text-sm text-gray-400 mt-1">Silakan buat event baru</p>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = events.map(event => {
+        const statusConfig = {
+          'draft': { bg: 'bg-gray-100', text: 'text-gray-700', icon: '📝' },
+          'active': { bg: 'bg-green-100', text: 'text-green-700', icon: '✅' },
+          'inactive': { bg: 'bg-red-100', text: 'text-red-700', icon: '❌' }
+        }[event.status] || { bg: 'bg-gray-100', text: 'text-gray-700', icon: '📋' };
+
+        const typeConfig = {
+          'gratis': { bg: 'bg-blue-500', text: 'Gratis', icon: '🎁' },
+          'berbayar': { bg: 'bg-purple-500', text: 'Berbayar', icon: '💎' }
+        }[event.event_type] || { bg: 'bg-gray-500', text: 'Unknown', icon: '📋' };
+
+        const startDate = event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+        const endDate = event.end_date ? new Date(event.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+
+        return `
+          <div class="card-hover bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
+            <!-- Header with status -->
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusConfig.bg} ${statusConfig.text} flex items-center gap-1">
+                  ${statusConfig.icon} ${event.status.charAt(0).toUpperCase() + event.status.slice(1)}
+                </span>
+                <span class="px-3 py-1 rounded-full text-xs font-semibold ${typeConfig.bg} text-white flex items-center gap-1">
+                  ${typeConfig.icon} ${typeConfig.text}
+                </span>
+              </div>
+              <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button onclick="editEvent(${event.id})" class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors flex items-center justify-center">
+                  <i class="fas fa-edit text-sm"></i>
+                </button>
+                <button onclick="deleteEvent(${event.id})" class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors flex items-center justify-center">
+                  <i class="fas fa-trash text-sm"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6">
+              <h3 class="font-bold text-lg mb-2 text-gray-900 line-clamp-2">${event.title}</h3>
+              <p class="text-sm text-gray-600 mb-4 line-clamp-2">${event.description || 'Tidak ada deskripsi'}</p>
+
+              <div class="space-y-3">
+                ${event.event_type === 'berbayar' ? `
+                  <div class="flex items-center justify-between text-sm">
+                    <span class="text-gray-500 flex items-center gap-1">
+                      <i class="fas fa-tag text-gray-400"></i>
+                      Original
+                    </span>
+                    <span class="font-semibold text-gray-900">Rp ${parseInt(event.price_original || 0).toLocaleString('id-ID')}</span>
+                  </div>
+                  <div class="flex items-center justify-between text-sm">
+                    <span class="text-gray-500 flex items-center gap-1">
+                      <i class="fas fa-tags text-green-500"></i>
+                      Promo
+                    </span>
+                    <span class="font-bold text-green-600">Rp ${parseInt(event.price_promo || 0).toLocaleString('id-ID')}</span>
+                  </div>
+                ` : `
+                  <div class="flex items-center justify-between text-sm bg-blue-50 px-3 py-2 rounded-lg">
+                    <span class="text-blue-700 font-semibold flex items-center gap-1">
+                      <i class="fas fa-gift"></i>
+                      Event Gratis
+                    </span>
+                  </div>
+                `}
+                <div class="flex items-center justify-between text-sm pt-2 border-t border-gray-100">
+                  <span class="text-gray-500 flex items-center gap-1">
+                    <i class="fas fa-calendar-alt text-purple-500"></i>
+                    Periode
+                  </span>
+                  <span class="text-gray-900">${startDate} - ${endDate}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer with quick actions -->
+            <div class="px-6 py-3 bg-gray-50 border-t border-gray-100 flex gap-2">
+              <button onclick="editEvent(${event.id})" class="flex-1 text-sm font-medium text-blue-600 hover:text-blue-800 py-1">
+                <i class="fas fa-edit mr-1"></i>Edit
+              </button>
+              <div class="w-px bg-gray-300"></div>
+              <button onclick="deleteEvent(${event.id})" class="flex-1 text-sm font-medium text-red-600 hover:text-red-800 py-1">
+                <i class="fas fa-trash mr-1"></i>Delete
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function showCreateModal() {
+      document.getElementById('modalTitleText').textContent = 'Create Event';
+      document.getElementById('eventForm').reset();
+      document.getElementById('eventId').value = '';
+      document.getElementById('eventModal').classList.remove('hidden');
+      document.getElementById('eventModal').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    async function editEvent(eventId) {
+      const event = allEvents.find(e => e.id === eventId);
+      if (!event) {
+        alert('Event not found');
+        return;
+      }
+
+      document.getElementById('modalTitleText').textContent = 'Edit Event';
+      document.getElementById('eventId').value = event.id;
+
+      // Set event type
+      const eventTypeRadio = document.querySelector(`input[name="event_type"][value="${event.event_type}"]`);
+      if (eventTypeRadio) {
+        eventTypeRadio.checked = true;
+        toggleEventFields();
+      }
+
+      // Fill form based on event type
+      if (event.event_type === 'gratis') {
+        document.getElementById('title_gratis').value = event.title || '';
+        document.getElementById('slug_gratis').value = event.slug || '';
+        document.getElementById('description_gratis').value = event.description || '';
+      } else {
+        document.getElementById('title').value = event.title || '';
+        document.getElementById('slug').value = event.slug || '';
+        document.getElementById('description').value = event.description || '';
+        document.getElementById('price_original').value = event.price_original || '';
+        document.getElementById('price_promo').value = event.price_promo || '';
+        document.getElementById('start_date').value = event.start_date || '';
+        document.getElementById('end_date').value = event.end_date || '';
+        document.getElementById('bank_name').value = event.bank_name || '';
+        document.getElementById('bank_account_name').value = event.bank_account_name || '';
+        document.getElementById('bank_account_number').value = event.bank_account_number || '';
+
+        // Set payment methods
+        document.querySelectorAll('.payment-method-checkbox').forEach(cb => {
+          cb.checked = event.payment_methods && event.payment_methods.includes(cb.value);
+        });
+      }
+
+      document.getElementById('admin_whatsapp').value = event.admin_whatsapp || '';
+      document.getElementById('status').value = event.status || 'draft';
+
+      document.getElementById('eventModal').classList.remove('hidden');
+      document.getElementById('eventModal').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    async function deleteEvent(eventId) {
+      const event = allEvents.find(e => e.id === eventId);
+      const eventName = event ? event.title : 'this event';
+      
+      if (!confirm(`Are you sure you want to delete "${eventName}"?`)) return;
+
+      try {
+        const response = await fetch(`/api/admin/events/${eventId}`, {
+          method: 'DELETE'
+        });
+        const data = await response.json();
+
+        if (data.success) {
+          showSuccess('Event deleted successfully');
+          loadEvents();
+        } else {
+          showError('Failed to delete event: ' + (data.message || 'Unknown error'));
+        }
+      } catch (error) {
+        console.error('Error deleting event:', error);
+        showError('Failed to delete event: ' + error.message);
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('eventModal').classList.add('hidden');
+      document.getElementById('eventModal').classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function toggleEventFields() {
+      const eventType = document.querySelector('input[name="event_type"]:checked').value;
+      const gratisFields = document.getElementById('gratisFields');
+      const berbayarFields = document.getElementById('berbayarFields');
+
+      if (eventType === 'gratis') {
+        gratisFields.classList.remove('hidden');
+        berbayarFields.classList.add('hidden');
+      } else {
+        gratisFields.classList.add('hidden');
+        berbayarFields.classList.remove('hidden');
+      }
+    }
+
+    function generateSlug(title) {
+      return title
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
+    function showSuccess(message) {
+      alert(message);
+    }
+
+    function showError(message) {
+      alert(message);
+    }
+
+    // Form submission
+    document.getElementById('eventForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const eventId = document.getElementById('eventId').value;
+      const eventType = document.querySelector('input[name="event_type"]:checked').value;
+
+      let formData = {
+        event_type: eventType,
+        admin_whatsapp: document.getElementById('admin_whatsapp').value,
+        status: document.getElementById('status').value
+      };
+
+      if (eventType === 'gratis') {
+        formData.title = document.getElementById('title_gratis').value;
+        formData.slug = document.getElementById('slug_gratis').value || generateSlug(document.getElementById('title_gratis').value);
+        formData.description = document.getElementById('description_gratis').value;
+        formData.price_original = 0;
+        formData.price_promo = 0;
+        formData.payment_methods = '';
+      } else {
+        // Get selected payment methods
+        const paymentMethods = [];
+        document.querySelectorAll('.payment-method-checkbox:checked').forEach(checkbox => {
+          paymentMethods.push(checkbox.value);
+        });
+
+        formData.title = document.getElementById('title').value;
+        formData.slug = document.getElementById('slug').value || generateSlug(document.getElementById('title').value);
+        formData.description = document.getElementById('description').value;
+        formData.price_original = document.getElementById('price_original').value || 0;
+        formData.price_promo = document.getElementById('price_promo').value || 0;
+        formData.payment_methods = paymentMethods.join(',');
+        formData.bank_name = document.getElementById('bank_name').value;
+        formData.bank_account_name = document.getElementById('bank_account_name').value;
+        formData.bank_account_number = document.getElementById('bank_account_number').value;
+        formData.start_date = document.getElementById('start_date').value;
+        formData.end_date = document.getElementById('end_date').value;
+      }
+
+      try {
+        const url = eventId ? `/api/admin/events/${eventId}` : '/api/admin/events';
+        const method = eventId ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showSuccess(eventId ? 'Event updated successfully' : 'Event created successfully');
+          closeModal();
+          loadEvents();
+        } else {
+          showError('Failed to save event: ' + (data.message || 'Unknown error'));
+        }
+      } catch (error) {
+        console.error('Error saving event:', error);
+        showError('Failed to save event: ' + error.message);
+      }
+    });
+
+    // Event type change handler
+    document.querySelectorAll('input[name="event_type"]').forEach(radio => {
+      radio.addEventListener('change', toggleEventFields);
+    });
+
+    // Search and filter handlers
+    let searchTimeout;
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        filterEvents();
+      }, 300);
+    });
+
+    document.getElementById('statusFilter').addEventListener('change', filterEvents);
+    document.getElementById('typeFilter').addEventListener('change', filterEvents);
+
+    function filterEvents() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const statusFilter = document.getElementById('statusFilter').value;
+      const typeFilter = document.getElementById('typeFilter').value;
+
+      const filtered = allEvents.filter(event => {
+        const matchesSearch = !searchTerm || 
+          event.title.toLowerCase().includes(searchTerm) ||
+          (event.description && event.description.toLowerCase().includes(searchTerm));
+        
+        const matchesStatus = !statusFilter || event.status === statusFilter;
+        const matchesType = !typeFilter || event.event_type === typeFilter;
+
+        return matchesSearch && matchesStatus && matchesType;
+      });
+
+      displayEvents(filtered);
+    }
+
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Close modal on backdrop click
+    document.getElementById('eventModal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('eventModal')) {
+        closeModal();
+      }
+    });
+
+    // Load events on page load
+    document.addEventListener('DOMContentLoaded', loadEvents);
+  </script>
+</body>
+</html>

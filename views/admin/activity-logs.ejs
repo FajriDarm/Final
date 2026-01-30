@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity Logs - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <%- include('../navbar/navbar.ejs', { name: 'Admin' }) %>
+  <%- include('../sidebar/admin.ejs') %>
+
+  <main class="ml-64 pt-16 min-h-screen">
+    <div class="p-6">
+      <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Activity Logs</h1>
+        <p class="text-gray-600 mt-1">Riwayat aktivitas sistem</p>
+      </div>
+
+      <!-- Activity Logs -->
+      <div class="bg-white rounded-lg shadow-sm">
+        <div class="p-4 border-b border-gray-200">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold">100 Aktivitas Terakhir</h2>
+          </div>
+        </div>
+        
+        <div id="logsContainer" class="divide-y divide-gray-200">
+          <div class="p-12 text-center text-gray-400">
+            <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
+            <p>Loading...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    async function loadActivityLogs() {
+      try {
+        const response = await fetch('/api/admin/activity-logs');
+        const data = await response.json();
+
+        if (data.success) {
+          displayLogs(data.data);
+        }
+      } catch (error) {
+        console.error('Error loading activity logs:', error);
+      }
+    }
+
+    function displayLogs(logs) {
+      const container = document.getElementById('logsContainer');
+
+      if (!logs || logs.length === 0) {
+        container.innerHTML = `
+          <div class="p-12 text-center text-gray-400">
+            <i class="fas fa-history text-4xl mb-2"></i>
+            <p>Tidak ada aktivitas</p>
+          </div>
+        `;
+        return;
+      }
+
+      const actionIcons = {
+        'affiliate_approved': 'fa-user-check text-green-500',
+        'affiliate_rejected': 'fa-user-times text-red-500',
+        'affiliate_registration': 'fa-user-plus text-blue-500',
+        'event_created': 'fa-calendar-plus text-purple-500',
+        'login': 'fa-sign-in-alt text-gray-500',
+        'logout': 'fa-sign-out-alt text-gray-500'
+      };
+
+      container.innerHTML = logs.map(log => `
+        <div class="p-4 hover:bg-gray-50 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+            <i class="fas ${actionIcons[log.action] || 'fa-bell text-gray-500'}"></i>
+          </div>
+          <div class="flex-1">
+            <p class="font-medium text-gray-900">${log.description}</p>
+            <div class="flex items-center gap-4 mt-1 text-sm text-gray-500">
+              <span><i class="fas fa-user mr-1"></i>${log.user_name || 'System'}</span>
+              <span><i class="fas fa-clock mr-1"></i>${new Date(log.created_at).toLocaleString('id-ID')}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', loadActivityLogs);
+  </script>
+</body>
+</html>
