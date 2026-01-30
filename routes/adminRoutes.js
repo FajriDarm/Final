@@ -18,6 +18,9 @@ router.post('/events', adminController.createEvent);
 router.put('/events/:eventId', adminController.updateEvent);
 router.delete('/events/:eventId', adminController.deleteEvent);
 
+// Admin: generate token for user (super_admin only)
+router.post('/tokens', authMiddleware, adminController.generateTokenForUser);
+
 // Affiliates - Remove auth temporarily for development
 router.get('/affiliates/pending', adminController.getPendingAffiliates);
 router.put('/affiliates/:userId/approve', adminController.approveAffiliate);

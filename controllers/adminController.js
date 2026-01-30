@@ -1,4 +1,5 @@
 const db = require('../config/database');
+const jwt = require('jsonwebtoken');
 
 function generateSlug(text) {
   if (!text) return '';
@@ -387,6 +388,56 @@ const rejectAffiliate = async (req, res) => {
   }
 };
 
+// Generate JWT token for a specific user (admin only)
+const generateTokenForUser = async (req, res) => {
+  try {
+    // Only super_admin allowed
+    if (!req.user || String(req.user.role) !== 'super_admin') {
+      return res.status(403).json({ success: false, message: 'Forbidden' });
+    }
+
+    const { userId, email, expiresIn = '24h' } = req.body;
+    if (!userId && !email) {
+      return res.status(400).json({ success: false, message: 'Specify userId or email' });
+    }
+
+    const where = userId ? 'u.id = ?' : 'u.email = ?';
+    const param = userId || email;
+
+    const [users] = await db.query(
+      `SELECT u.id, u.email, u.name, COALESCE(r.name, 'user') as role
+       FROM users u
+       LEFT JOIN roles r ON u.role_id = r.id
+       WHERE ${where}`,
+      [param]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    const user = users[0];
+
+    // Simple validation for expiresIn (allow formats like 24h, 7d, 1h)
+    if (!/^[0-9]+[smhd]$/.test(expiresIn) && expiresIn !== '24h') {
+      // We'll still allow common strings but warn
+      console.warn('Unusual expiresIn format:', expiresIn);
+    }
+
+    const token = jwt.sign(
+      { user_id: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn }
+    );
+
+    res.json({ success: true, token, expiresIn });
+  } catch (error) {
+    console.error('Generate token error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error', error: error.message });
+  }
+};
+
+
 const getActivityLogs = async (req, res) => {
   try {
     const [logs] = await db.query(
@@ -422,5 +473,6 @@ module.exports = {
   getPendingAffiliates,
   approveAffiliate,
   rejectAffiliate,
+  generateTokenForUser,
   getActivityLogs
 };
