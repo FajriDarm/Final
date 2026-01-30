@@ -6,7 +6,7 @@ USE affiliate_system;
 
 -- =========================================
 -- ROLES
--- =========================================
+-- =========================================    
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name ENUM('super_admin','sales','finance','affiliate') NOT NULL

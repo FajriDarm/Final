@@ -246,10 +246,12 @@
 
         const data = await response.json();
 
-        if (response.ok) {
-          // Store token
+          if (response.ok) {
+          // Store token in localStorage and cookie (so server-side auth middleware can read it)
           localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
+          // set cookie (not HttpOnly) so subsequent full-page requests include token
+          document.cookie = 'token=' + encodeURIComponent(data.token) + '; path=/';
 
           // Redirect to dashboard based on role
           const role = data.user.role;
