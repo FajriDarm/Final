@@ -62,9 +62,23 @@ app.use('/sales', verifyStage3Routes);
 const monitoringAffiliateRoutes = require('./routes/monitoringAffiliateRoutes');
 app.use('/sales', monitoringAffiliateRoutes);
 
+const financeRoutes = require('./routes/financeRoutes');
+app.use('/finance', financeRoutes);
+
+const paymentVerificationFinanceRoutes = require('./routes/paymentVerificationFinanceRoutes');
+app.use('/finance', paymentVerificationFinanceRoutes);
+
+const payoutProcessingFinanceRoutes = require('./routes/payoutProcessingFinanceRoutes');
+app.use('/finance', payoutProcessingFinanceRoutes);
+
 // Dashboard Sales langsung di sini
 const salesController = require('./controllers/salesController');
 app.get('/dashboard_sales', salesController.getSalesDashboard);
+
+// Dashboard Finance langsung di sini
+const financeController = require('./controllers/financeController');
+app.get('/dashboard_finance', financeController.getFinanceDashboard);
+
 // Admin Pages (Protected)
 app.get("/dashboard_admin", (req, res) => {
   res.render("admin/dashboard_admin");
