@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoring Affiliate - Sales</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <!-- Navbar -->
+  <%- include('../navbar/navbar.ejs', { name: 'Sales' }) %>
+  <!-- Sidebar -->
+  <%- include('../sidebar/sales.ejs') %>
+  <!-- Main Content -->
+  <main class="ml-64 pt-16 min-h-screen">
+    <div class="p-6">
+      <h2 class="text-2xl font-bold mb-4">Monitoring Affiliate</h2>
+      <div class="overflow-x-auto">
+        <table class="table-auto w-full border">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-4 py-2">Nama</th>
+              <th class="px-4 py-2">Email</th>
+              <th class="px-4 py-2">Total Transaksi</th>
+              <th class="px-4 py-2">Transaksi Selesai</th>
+              <th class="px-4 py-2">Total Penjualan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% affiliates.forEach(function(a) { %>
+              <tr class="border-b">
+                <td class="px-4 py-2"><%= a.name %></td>
+                <td class="px-4 py-2"><%= a.email %></td>
+                <td class="px-4 py-2"><%= a.total_transaksi %></td>
+                <td class="px-4 py-2"><%= a.transaksi_selesai %></td>
+                <td class="px-4 py-2">Rp <%= parseInt(a.total_penjualan || 0).toLocaleString('id-ID') %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

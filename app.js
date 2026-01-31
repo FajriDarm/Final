@@ -37,6 +37,24 @@ app.use('/api/auth', authRoutes);
 const adminRoutes = require('./routes/adminRoutes');
 app.use('/api/admin', adminRoutes);
 
+const salesRoutes = require('./routes/salesRoutes');
+app.use('/sales', salesRoutes);
+
+const transactionReviewRoutes = require('./routes/transactionReviewRoutes');
+app.use('/sales', transactionReviewRoutes);
+
+const verifyStage1Routes = require('./routes/verifyStage1Routes');
+app.use('/sales', verifyStage1Routes);
+
+const verifyStage3Routes = require('./routes/verifyStage3Routes');
+app.use('/sales', verifyStage3Routes);
+
+const monitoringAffiliateRoutes = require('./routes/monitoringAffiliateRoutes');
+app.use('/sales', monitoringAffiliateRoutes);
+
+// Dashboard Sales langsung di sini
+const salesController = require('./controllers/salesController');
+app.get('/dashboard_sales', salesController.getSalesDashboard);
 // Admin Pages (Protected)
 app.get('/dashboard_admin', (req, res) => {
   res.render('admin/dashboard_admin');

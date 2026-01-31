@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transaction Review - Sales</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <!-- Navbar -->
+  <%- include('../navbar/navbar.ejs', { name: 'Sales' }) %>
+
+  <!-- Sidebar -->
+  <%- include('../sidebar/sales.ejs') %>
+
+  <!-- Main Content -->
+  <main class="ml-64 pt-16 min-h-screen">
+    <div class="p-6">
+      <h2 class="text-2xl font-bold mb-4">Transaction Review</h2>
+      <div class="overflow-x-auto">
+        <table class="table-auto w-full border">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-4 py-2">ID</th>
+              <th class="px-4 py-2">Customer</th>
+              <th class="px-4 py-2">Affiliate</th>
+              <th class="px-4 py-2">Amount</th>
+              <th class="px-4 py-2">Payment</th>
+              <th class="px-4 py-2">Status</th>
+              <th class="px-4 py-2">Created At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% transactions.forEach(function(trx) { %>
+              <tr class="border-b">
+                <td class="px-4 py-2"><%= trx.id %></td>
+                <td class="px-4 py-2"><%= trx.customer_name || '-' %></td>
+                <td class="px-4 py-2"><%= trx.affiliate_name || '-' %></td>
+                <td class="px-4 py-2">Rp <%= parseInt(trx.total_amount || 0).toLocaleString('id-ID') %></td>
+                <td class="px-4 py-2"><%= trx.payment_method %> (<%= trx.payment_status %>)</td>
+                <td class="px-4 py-2"><%= trx.status %></td>
+                <td class="px-4 py-2"><%= trx.created_at.toLocaleString('id-ID') %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
