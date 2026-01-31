@@ -336,18 +336,18 @@
               <option value="inactive">❌ Inactive</option>
             </select>
           </div>
-        </form>
       </div>
 
       <!-- Modal Footer -->
       <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 flex gap-3">
-        <button type="submit" form="eventForm" class="flex-1 gradient-bg text-white py-2.5 rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg">
+        <button type="submit" class="flex-1 gradient-bg text-white py-2.5 rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg">
           <i class="fas fa-save mr-2"></i>Save Event
         </button>
         <button type="button" onclick="closeModal()" class="flex-1 bg-gray-200 text-gray-700 py-2.5 rounded-xl hover:bg-gray-300 transition-all font-semibold">
           <i class="fas fa-times mr-2"></i>Cancel
         </button>
       </div>
+      </form>
     </div>
   </div>
 
@@ -495,6 +495,8 @@
       document.getElementById('modalTitleText').textContent = 'Create Event';
       document.getElementById('eventForm').reset();
       document.getElementById('eventId').value = '';
+      // Ensure fields match selected type after reset
+      toggleEventFields();
       document.getElementById('eventModal').classList.remove('hidden');
       document.getElementById('eventModal').classList.add('flex');
       document.body.style.overflow = 'hidden';
@@ -584,11 +586,37 @@
       const berbayarFields = document.getElementById('berbayarFields');
 
       if (eventType === 'gratis') {
+        // Show gratis fields and set required attributes
         gratisFields.classList.remove('hidden');
         berbayarFields.classList.add('hidden');
+
+        document.getElementById('title_gratis').required = true;
+        document.getElementById('slug_gratis').required = false;
+        document.getElementById('description_gratis').required = false;
+
+        document.getElementById('title').required = false;
+        document.getElementById('slug').required = false;
+        document.getElementById('description').required = false;
+        document.getElementById('price_original').required = false;
+        document.getElementById('price_promo').required = false;
+        document.getElementById('start_date').required = false;
+        document.getElementById('end_date').required = false;
       } else {
+        // Show berbayar fields and set required attributes
         gratisFields.classList.add('hidden');
         berbayarFields.classList.remove('hidden');
+
+        document.getElementById('title_gratis').required = false;
+        document.getElementById('slug_gratis').required = false;
+        document.getElementById('description_gratis').required = false;
+
+        document.getElementById('title').required = true;
+        document.getElementById('slug').required = false;
+        document.getElementById('description').required = false;
+        document.getElementById('price_original').required = false;
+        document.getElementById('price_promo').required = false;
+        document.getElementById('start_date').required = true;
+        document.getElementById('end_date').required = true;
       }
     }
 
