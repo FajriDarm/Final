@@ -60,6 +60,7 @@ const register = async (req, res) => {
 
     // Check if roles table exists
     let roleId = 4; // Default to affiliate/user role
+    let isAffiliate = false;
     try {
       const [roles] = await db.query(
         "SELECT id FROM roles WHERE name = ? LIMIT 1",
@@ -67,24 +68,28 @@ const register = async (req, res) => {
       );
       if (roles.length > 0) {
         roleId = roles[0].id;
+        isAffiliate = true;
       }
     } catch (err) {
       // If roles table doesn't exist, we'll insert without role_id
     }
 
+    // Determine initial affiliate status
+    const affiliateStatus = isAffiliate ? 'pending' : 'inactive';
+
     // Insert user - try with role_id first, fall back to simple insert
     let result;
     try {
       [result] = await db.query(
-        'INSERT INTO users (name, email, password, role_id, affiliate_status, status) VALUES (?, ?, ?, ?, "inactive", "active")',
-        [name, email, hashedPassword, roleId],
+        'INSERT INTO users (name, email, password, role_id, affiliate_status, status) VALUES (?, ?, ?, ?, ?, "active")',
+        [name, email, hashedPassword, roleId, affiliateStatus],
       );
     } catch (error) {
-      // If that fails, try without role_id
+      // If that fails (e.g., roles table missing), try inserting with affiliate_status but without role_id
       try {
         [result] = await db.query(
-          "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-          [name, email, hashedPassword],
+          "INSERT INTO users (name, email, password, affiliate_status, status) VALUES (?, ?, ?, ?, 'active')",
+          [name, email, hashedPassword, affiliateStatus],
         );
       } catch (error2) {
         throw error;
@@ -132,7 +137,7 @@ const register = async (req, res) => {
         name: newUser.name,
         email: newUser.email,
         role: newUser.role,
-        affiliate_status: newUser.affiliate_status || "inactive",
+        affiliate_status: newUser.affiliate_status || affiliateStatus || "inactive",
       },
     });
   } catch (error) {
