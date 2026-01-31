@@ -19,7 +19,6 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
-<<<<<<< HEAD
     const decoded = jwt.verify(
       token,
       process.env.JWT_SECRET || 'your-secret-key'
