@@ -1,13 +1,18 @@
 const express = require('express');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Import middleware
+const { authMiddlewarePage, checkAlreadyLoggedIn } = require('./middleware/auth');
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // View engine
 app.set('view engine', 'ejs');
@@ -22,12 +27,36 @@ app.get('/', (req, res) => {
 });
 
 // Auth Routes (Pages)
-app.get('/login', (req, res) => {
+app.get('/login', checkAlreadyLoggedIn, (req, res) => {
   res.render('login');
 });
 
-app.get('/register', (req, res) => {
+app.get('/register', checkAlreadyLoggedIn, (req, res) => {
   res.render('register');
+});
+
+app.get('/profile', authMiddlewarePage, (req, res) => {
+  res.render('profile', { user: req.user, title: 'Profil' });
+});
+
+app.get('/settings', authMiddlewarePage, (req, res) => {
+  res.render('settings', { user: req.user, title: 'Pengaturan' });
+});
+
+app.post('/logout', authMiddlewarePage, (req, res) => {
+  res.clearCookie('token');
+  res.redirect('/login');
+});
+
+app.get('/dashboard', authMiddlewarePage, (req, res) => {
+  const role = req.user.role;
+  if (role === 'super_admin') {
+    res.redirect('/dashboard_admin');
+  } else if (role === 'sales') {
+    res.redirect('/dashboard_sales');
+  } else {
+    res.redirect('/profile');
+  }
 });
 
 // API Routes

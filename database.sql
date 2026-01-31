@@ -1,8 +1,8 @@
 -- =========================================
 -- DATABASE
 -- =========================================
-CREATE DATABASE IF NOT EXISTS affiliate_system;
-USE affiliate_system;
+CREATE DATABASE IF NOT EXISTS my_database;
+USE my_database;
 
 -- =========================================
 -- ROLES

@@ -251,21 +251,8 @@
           localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
 
-          // Redirect to dashboard based on role
-          const role = data.user.role;
-          let redirectUrl = '/dashboard';
-
-          if (role === 'super_admin' || role === 'admin') {
-            redirectUrl = '/dashboard_admin';
-          } else if (role === 'sales') {
-            redirectUrl = '/dashboard_sales';
-          } else if (role === 'affiliate') {
-            redirectUrl = '/dashboard_affiliate';
-          } else if (role === 'finance') {
-            redirectUrl = '/dashboard_finance';
-          }
-
-          window.location.href = redirectUrl;
+          // Redirect ke dashboard
+          window.location.href = '/dashboard';
         } else {
           // Reset button state
           loginBtn.disabled = false;

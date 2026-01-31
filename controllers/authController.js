@@ -223,6 +223,18 @@ const login = async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    console.log('✅ Login successful for user:', user.email);
+    console.log('🔐 Token created, expires in 7 days');
+    console.log('📦 Setting httpOnly cookie...');
+
+    // Set token in cookie for page authentication
+    res.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      secure: false,
+      sameSite: 'lax'
+    });
+
     res.json({
       success: true,
       message: 'Login successful',
@@ -283,9 +295,132 @@ const logout = async (req, res) => {
   });
 };
 
+const updateProfile = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    if (!name || !email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Name and email are required'
+      });
+    }
+
+    // Check if email exists for another user
+    const [existingUsers] = await db.query(
+      'SELECT id FROM users WHERE email = ? AND id != ?',
+      [email, req.user.id]
+    );
+
+    if (existingUsers.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email already in use'
+      });
+    }
+
+    await db.query(
+      'UPDATE users SET name = ?, email = ? WHERE id = ?',
+      [name, email, req.user.id]
+    );
+
+    res.json({
+      success: true,
+      message: 'Profile updated successfully'
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+      error: error.message
+    });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'All password fields are required'
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'New passwords do not match'
+      });
+    }
+
+    // Get user from database to verify current password
+    const [users] = await db.query('SELECT password FROM users WHERE id = ?', [req.user.id]);
+    
+    if (users.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    const isValidPassword = await bcrypt.compare(currentPassword, users[0].password);
+    
+    if (!isValidPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Current password is incorrect'
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    
+    await db.query(
+      'UPDATE users SET password = ? WHERE id = ?',
+      [hashedPassword, req.user.id]
+    );
+
+    res.json({
+      success: true,
+      message: 'Password changed successfully'
+    });
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+      error: error.message
+    });
+  }
+};
+
+const updateSettings = async (req, res) => {
+  try {
+    // Settings functionality - can be extended later with settings table
+    const { emailNotifications, referralNotifications, commissionNotifications, language } = req.body;
+    
+    res.json({
+      success: true,
+      message: 'Settings updated successfully'
+    });
+  } catch (error) {
+    console.error('Update settings error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
   getProfile,
-  logout
+  logout,
+  updateProfile,
+  changePassword,
+  updateSettings
 };

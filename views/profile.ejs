@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title || 'Profil' %> - Affillink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- Navbar -->
+  <%- include('navbar/navbar.ejs', { name: user ? user.name : 'User' }) %>
+
+  <!-- Main Content -->
+  <main class="pt-16 min-h-screen">
+    <div class="max-w-4xl mx-auto p-6">
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-8 py-6">
+          <h1 class="text-3xl font-bold text-white flex items-center gap-3">
+            <i class="fas fa-user-circle"></i>
+            Profil Saya
+          </h1>
+          <p class="text-green-100 mt-2">Kelola informasi akun Anda</p>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="p-8">
+          <div class="grid md:grid-cols-2 gap-8">
+            <!-- Profile Info -->
+            <div class="space-y-6">
+              <div class="text-center">
+                <div class="w-32 h-32 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full mx-auto flex items-center justify-center shadow-lg">
+                  <i class="fas fa-user text-white text-4xl"></i>
+                </div>
+                <button class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
+                  <i class="fas fa-camera mr-2"></i>Ubah Foto
+                </button>
+              </div>
+
+              <div class="bg-gray-50 rounded-xl p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Informasi Dasar</h3>
+                <div class="space-y-3">
+                  <div>
+                    <label class="text-sm font-medium text-gray-600">Nama Lengkap</label>
+                    <p class="text-gray-800 font-medium"><%= user ? user.name : 'User' %></p>
+                  </div>
+                  <div>
+                    <label class="text-sm font-medium text-gray-600">Email</label>
+                    <p class="text-gray-800"><%= user ? user.email : 'user@example.com' %></p>
+                  </div>
+                  <div>
+                    <label class="text-sm font-medium text-gray-600">Role</label>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                      <%= user ? user.role : 'User' %>
+                    </span>
+                  </div>
+                  <div>
+                    <label class="text-sm font-medium text-gray-600">Status Affiliate</label>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <%= user && user.affiliate_status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>">
+                      <%= user ? user.affiliate_status : 'inactive' %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Edit Form -->
+            <div class="bg-gray-50 rounded-xl p-6">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-edit text-green-600"></i>
+                Edit Profil
+              </h3>
+              <form id="profileForm" class="space-y-4">
+                <div>
+                  <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                  <input type="text" id="name" name="name" value="<%= user ? user.name : '' %>"
+                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all" required>
+                </div>
+                <div>
+                  <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <input type="email" id="email" name="email" value="<%= user ? user.email : '' %>"
+                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all" required>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all font-medium">
+                  <i class="fas fa-save mr-2"></i>Simpan Perubahan
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('profileForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      
+      try {
+        const response = await fetch('/api/auth/profile', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          alert('Profil berhasil diperbarui!');
+          location.reload();
+        } else {
+          alert('Gagal memperbarui profil: ' + (result.message || 'Unknown error'));
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat memperbarui profil');
+      }
+    });
+  </script>
+</body>
+</html>
