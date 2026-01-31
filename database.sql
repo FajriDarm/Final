@@ -50,7 +50,7 @@ CREATE TABLE events (
     price_promo DECIMAL(15,2) DEFAULT 0,
 
     -- PEMBAYARAN (ONLY JIKA BERBAYAR)
-    payment_method ENUM('cash','transfer') NULL,
+    payment_methods ENUM('cash','transfer') NULL,
 
     bank_name VARCHAR(100) NULL,
     bank_account_name VARCHAR(100) NULL,
@@ -222,3 +222,9 @@ CREATE TABLE activity_logs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+ALTER TABLE users
+ADD bank_name VARCHAR(100) NULL AFTER affiliate_status,
+ADD bank_account_name VARCHAR(100) NULL AFTER bank_name,
+ADD bank_account_number VARCHAR(50) NULL AFTER bank_account_name;
+-- End of database.sql
