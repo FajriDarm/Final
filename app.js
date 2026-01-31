@@ -23,16 +23,47 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.get('/', (req, res) => {
-  res.render('LandingPage', { title: 'Home' });
+  // Capture affiliate tracking parameters from URL
+  const { ref, event } = req.query;
+
+  // Store in cookies for tracking (30 days expiry)
+  if (ref) {
+    res.cookie('affiliate_ref', ref, {
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      httpOnly: true
+    });
+  }
+
+  if (event) {
+    res.cookie('event_slug', event, {
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      httpOnly: true
+    });
+  }
+
+  res.render('LandingPage', {
+    title: 'Home',
+    affiliateRef: ref || null,
+    eventSlug: event || null
+  });
 });
 
 // Auth Routes (Pages)
 app.get('/login', checkAlreadyLoggedIn, (req, res) => {
-  res.render('login');
+  // Preserve tracking params if redirecting
+  const { ref, event } = req.query;
+  res.render('login', { trackingRef: ref, trackingEvent: event });
 });
 
 app.get('/register', checkAlreadyLoggedIn, (req, res) => {
-  res.render('register');
+  // Get tracking info from cookies or URL params
+  const ref = req.query.ref || req.cookies.affiliate_ref;
+  const event = req.query.event || req.cookies.event_slug;
+
+  res.render('register', {
+    trackingRef: ref || null,
+    trackingEvent: event || null
+  });
 });
 
 app.get('/profile', authMiddlewarePage, (req, res) => {

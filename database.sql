@@ -93,6 +93,24 @@ CREATE TABLE affiliate_links (
 );
 
 -- =========================================
+-- AFFILIATE REFERRALS (TRACKING)
+-- =========================================
+CREATE TABLE affiliate_referrals (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    affiliate_id BIGINT,
+    event_id BIGINT,
+    referred_user_id BIGINT,
+    referral_code VARCHAR(50),
+
+    converted_at TIMESTAMP NULL, -- When the referred user made a purchase
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (affiliate_id) REFERENCES users(id),
+    FOREIGN KEY (event_id) REFERENCES events(id),
+    FOREIGN KEY (referred_user_id) REFERENCES users(id)
+);
+
+-- =========================================
 -- CUSTOMERS
 -- =========================================
 CREATE TABLE customers (
@@ -227,4 +245,20 @@ ALTER TABLE users
 ADD bank_name VARCHAR(100) NULL AFTER affiliate_status,
 ADD bank_account_name VARCHAR(100) NULL AFTER bank_name,
 ADD bank_account_number VARCHAR(50) NULL AFTER bank_account_name;
+
+ALTER TABLE users
+ADD no_wa VARCHAR(20) NULL AFTER email;
+
+CREATE TABLE IF NOT EXISTS affiliate_referrals (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    affiliate_id BIGINT,
+    event_id BIGINT,
+    referred_user_id BIGINT,
+    referral_code VARCHAR(50),
+    converted_at TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (affiliate_id) REFERENCES users(id),
+    FOREIGN KEY (event_id) REFERENCES events(id),
+    FOREIGN KEY (referred_user_id) REFERENCES users(id)
+);
 -- End of database.sql

@@ -6,6 +6,10 @@ const register = async (req, res) => {
   try {
     const { name, email, password, confirmPassword, agree_terms } = req.body;
 
+    // Get affiliate tracking info from cookies
+    const affiliateRef = req.cookies.affiliate_ref;
+    const eventSlug = req.cookies.event_slug;
+
     // Validation
     if (!name || !email || !password) {
       return res.status(400).json({
@@ -127,6 +131,32 @@ const register = async (req, res) => {
       process.env.JWT_SECRET || "your-secret-key",
       { expiresIn: "7d" },
     );
+
+    // Affiliate tracking: log the referral if tracking cookie exists
+    if (affiliateRef) {
+      try {
+        // Parse affiliate code to get affiliate_id and event_id
+        // Format: AFF{affiliate_id}-E{event_id}-{RANDOM}
+        const refMatch = affiliateRef.match(/^AFF(\d+)-E(\d+)-/);
+
+        if (refMatch) {
+          const affiliateId = refMatch[1];
+          const eventId = refMatch[2];
+
+          // Log affiliate referral (you can create a separate table for this)
+          await db.query(
+            `INSERT INTO affiliate_referrals (affiliate_id, event_id, referred_user_id, referral_code, created_at)
+             VALUES (?, ?, ?, ?, NOW())`,
+            [affiliateId, eventId, newUser.id, affiliateRef]
+          );
+
+          console.log(`[Affiliate Tracking] User ${newUser.id} referred by affiliate ${affiliateId} for event ${eventId} with code ${affiliateRef}`);
+        }
+      } catch (trackingError) {
+        // Don't fail registration if tracking fails
+        console.error('[Affiliate Tracking] Failed to log referral:', trackingError);
+      }
+    }
 
     res.status(201).json({
       success: true,

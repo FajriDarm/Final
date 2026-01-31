@@ -10,12 +10,15 @@ const dashboard = async (req, res) => {
         .send("Unauthorized - user id required (for testing use ?user_id=)");
     }
 
-    // Basic user info
+    // Basic user info with role
     const [users] = await db.query(
-      "SELECT id, name, email, status, affiliate_status FROM users WHERE id = ?",
+      `SELECT u.id, u.name, u.email, u.status, u.affiliate_status, r.name as role
+       FROM users u
+       LEFT JOIN roles r ON u.role_id = r.id
+       WHERE u.id = ?`,
       [userId],
     );
-    const user = users[0] || { name: "Affiliate", status: "inactive" };
+    const user = users[0] || { name: "Affiliate", status: "inactive", affiliate_status: "inactive" };
 
     // Referral link - try to get existing affiliate_links, otherwise build a sample code
     let referralLink = "";
@@ -113,7 +116,9 @@ const dashboard = async (req, res) => {
 
     res.render("affiliate/dashboard_affiliate", {
       name: user.name,
-      userStatus: user.status || user.affiliate_status || "inactive",
+      userStatus: user.affiliate_status || user.status || "inactive",
+      userId: user.id,
+      userRole: user.role || "user",
       referralLink,
       siteUrl,
       sampleRefCode,
@@ -130,6 +135,238 @@ const dashboard = async (req, res) => {
   }
 };
 
+const getActiveEvents = async (req, res) => {
+  try {
+    const userId = req.user?.id || req.query.user_id || null;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - user id required"
+      });
+    }
+
+    // Get active events that can be promoted
+    const [events] = await db.query(
+      `SELECT id, title, slug, description, price_original, price_promo,
+              start_date, end_date, status, event_type
+       FROM events
+       WHERE status = 'active'
+       AND (end_date >= CURDATE() OR end_date IS NULL)
+       ORDER BY created_at DESC`
+    );
+
+    // Get existing affiliate links for this user with event info
+    const [existingLinks] = await db.query(
+      `SELECT al.event_id, al.code, al.clicks, al.created_at, e.slug
+       FROM affiliate_links al
+       LEFT JOIN events e ON al.event_id = e.id
+       WHERE al.affiliate_id = ?`,
+      [userId]
+    );
+
+    // Create a map of existing links by event_id with full URL
+    const linksMap = {};
+    const siteUrl = process.env.SITE_URL || (req.protocol + "://" + req.get("host"));
+
+    existingLinks.forEach(link => {
+      // Generate full URL for existing links
+      const fullUrl = link.slug
+        ? `${siteUrl}/?event=${link.slug}&ref=${link.code}`
+        : `${siteUrl}/?ref=${link.code}`;
+
+      linksMap[link.event_id] = {
+        ...link,
+        url: fullUrl
+      };
+    });
+
+    // Combine events with their existing links (if any)
+    const eventsWithLinks = events.map(event => ({
+      ...event,
+      affiliate_link: linksMap[event.id] || null,
+      has_link: !!linksMap[event.id]
+    }));
+
+    res.json({
+      success: true,
+      data: eventsWithLinks
+    });
+  } catch (error) {
+    console.error("Get active events error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message
+    });
+  }
+};
+
+const generateLink = async (req, res) => {
+  try {
+    const userId = req.user?.id || null;
+    const { eventId } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - user id required"
+      });
+    }
+
+    if (!eventId) {
+      return res.status(400).json({
+        success: false,
+        message: "Event ID is required"
+      });
+    }
+
+    // Check if user is approved affiliate
+    const [users] = await db.query(
+      "SELECT id, name, affiliate_status FROM users WHERE id = ?",
+      [userId]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    const user = users[0];
+
+    // VALIDASI: Affiliate harus approved
+    if (user.affiliate_status !== 'approved') {
+      return res.status(403).json({
+        success: false,
+        message: "Anda belum di-approve sebagai affiliate. Silakan tunggu approval admin.",
+        status: user.affiliate_status
+      });
+    }
+
+    // Check if event exists and is active
+    const [events] = await db.query(
+      "SELECT id, title, slug, status FROM events WHERE id = ?",
+      [eventId]
+    );
+
+    if (events.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Event not found"
+      });
+    }
+
+    const event = events[0];
+
+    if (event.status !== 'active') {
+      return res.status(400).json({
+        success: false,
+        message: "Event is not active"
+      });
+    }
+
+    // Check if link already exists
+    const [existingLinks] = await db.query(
+      "SELECT id, code FROM affiliate_links WHERE affiliate_id = ? AND event_id = ?",
+      [userId, eventId]
+    );
+
+    let code;
+
+    if (existingLinks.length > 0) {
+      // Link already exists, return existing
+      code = existingLinks[0].code;
+    } else {
+      // Generate unique affiliate code
+      code = `AFF${userId}-E${eventId}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
+      // Insert new affiliate link
+      await db.query(
+        `INSERT INTO affiliate_links (affiliate_id, event_id, code, is_active)
+         VALUES (?, ?, ?, 1)`,
+        [userId, eventId, code]
+      );
+    }
+
+    // Generate full URL - mengarah ke landing page dengan parameter event dan ref
+    const siteUrl = process.env.SITE_URL || req.protocol + "://" + req.get("host");
+    const fullUrl = `${siteUrl}/?event=${event.slug}&ref=${code}`;
+
+    res.json({
+      success: true,
+      message: "Affiliate link generated successfully",
+      data: {
+        code,
+        url: fullUrl,
+        event_id: event.id,
+        event_title: event.title,
+        event_slug: event.slug
+      }
+    });
+  } catch (error) {
+    console.error("Generate link error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message
+    });
+  }
+};
+
+const getUserStatus = async (req, res) => {
+  try {
+    const userId = req.user?.id || req.query.user_id || null;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - user id required"
+      });
+    }
+
+    const [users] = await db.query(
+      `SELECT id, name, email, affiliate_status, status, r.name as role
+       FROM users u
+       LEFT JOIN roles r ON u.role_id = r.id
+       WHERE u.id = ?`,
+      [userId]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    const user = users[0];
+
+    res.json({
+      success: true,
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        affiliate_status: user.affiliate_status || "inactive",
+        status: user.status || "inactive",
+        role: user.role || "user"
+      }
+    });
+  } catch (error) {
+    console.error("Get user status error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   dashboard,
+  getActiveEvents,
+  generateLink,
+  getUserStatus,
 };
