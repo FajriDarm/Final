@@ -300,7 +300,7 @@ const getProfile = async (req, res) => {
   try {
     const [users] = await db.query(
       `SELECT u.id, u.name, u.email, u.affiliate_status, u.status, u.created_at,
-         u.bank_name, u.bank_account_name, u.bank_account_number,
+         u.no_wa, u.bank_name, u.bank_account_name, u.bank_account_number,
          r.name as role
        FROM users u
        LEFT JOIN roles r ON u.role_id = r.id
@@ -317,7 +317,10 @@ const getProfile = async (req, res) => {
 
     res.json({
       success: true,
-      user: users[0],
+      user: {
+        ...users[0],
+        phone: users[0].no_wa || ''
+      },
     });
   } catch (error) {
     console.error("Get profile error:", error);
@@ -338,8 +341,8 @@ const logout = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const { name, email, bank_name, bank_account_name, bank_account_number } =
-      req.body;
+    // Gabungkan field dari kedua versi
+    const { name, email, phone, bank_name, bank_account_name, bank_account_number, bank_account } = req.body;
 
     if (!name || !email) {
       return res.status(400).json({
@@ -348,7 +351,7 @@ const updateProfile = async (req, res) => {
       });
     }
 
-    // Check if email exists for another user
+    // Cek email sudah dipakai user lain
     const [existingUsers] = await db.query(
       "SELECT id FROM users WHERE email = ? AND id != ?",
       [email, req.user.id],
@@ -361,21 +364,23 @@ const updateProfile = async (req, res) => {
       });
     }
 
+    // Update semua field yang mungkin ada
     await db.query(
-      "UPDATE users SET name = ?, email = ?, bank_name = ?, bank_account_name = ?, bank_account_number = ? WHERE id = ?",
+      'UPDATE users SET name = ?, email = ?, no_wa = ?, bank_name = ?, bank_account_name = ?, bank_account_number = ? WHERE id = ?',
       [
         name,
         email,
+        phone || null,
         bank_name || null,
         bank_account_name || null,
-        bank_account_number || null,
+        (bank_account_number || bank_account || null),
         req.user.id,
-      ],
+      ]
     );
 
     const [updatedUsers] = await db.query(
       `SELECT u.id, u.name, u.email, u.affiliate_status, u.status, u.created_at,
-              u.bank_name, u.bank_account_name, u.bank_account_number,
+              u.no_wa, u.bank_name, u.bank_account_name, u.bank_account_number,
               r.name as role
        FROM users u
        LEFT JOIN roles r ON u.role_id = r.id
@@ -388,7 +393,10 @@ const updateProfile = async (req, res) => {
     res.json({
       success: true,
       message: "Profile updated successfully",
-      user: updatedUser,
+      user: {
+        ...updatedUser,
+        phone: updatedUser ? updatedUser.no_wa : ''
+      },
     });
   } catch (error) {
     console.error("Update profile error:", error);
@@ -402,7 +410,10 @@ const updateProfile = async (req, res) => {
 
 const changePassword = async (req, res) => {
   try {
-    const { currentPassword, newPassword, confirmPassword } = req.body;
+    // Ambil field sesuai frontend (settings.ejs)
+    const currentPassword = req.body.current_password || req.body.currentPassword;
+    const newPassword = req.body.new_password || req.body.newPassword;
+    const confirmPassword = req.body.confirm_password || req.body.confirmPassword;
 
     if (!currentPassword || !newPassword || !confirmPassword) {
       return res.status(400).json({

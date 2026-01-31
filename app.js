@@ -67,12 +67,17 @@ app.get('/register', checkAlreadyLoggedIn, (req, res) => {
 });
 
 app.get('/profile', authMiddlewarePage, (req, res) => {
-  res.render('profile', { user: req.user, title: 'Profil' });
+  res.render('profile', { user: req.user, title: 'Profil', activePage: 'profile' });
 });
 
+
 app.get('/settings', authMiddlewarePage, (req, res) => {
-  res.render('settings', { user: req.user, title: 'Pengaturan' });
+  res.render('settings', { user: req.user, title: 'Pengaturan', activePage: 'settings' });
 });
+
+// Endpoint untuk ganti password dari halaman settings
+const authController = require('./controllers/authController');
+app.post('/settings/change-password', authMiddlewarePage, authController.changePassword);
 
 app.post('/logout', authMiddlewarePage, (req, res) => {
   res.clearCookie('token');
@@ -85,6 +90,10 @@ app.get('/dashboard', authMiddlewarePage, (req, res) => {
     res.redirect('/dashboard_admin');
   } else if (role === 'sales') {
     res.redirect('/dashboard_sales');
+  } else if (role === 'finance') {
+    res.redirect('/dashboard_finance');
+  } else if (role === 'affiliate') {
+    res.redirect('/affiliate/dashboard');
   } else {
     res.redirect('/profile');
   }

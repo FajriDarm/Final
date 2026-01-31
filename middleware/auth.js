@@ -125,6 +125,8 @@ const checkAlreadyLoggedIn = async (req, res, next) => {
       return res.redirect("/dashboard_admin");
     } else if (role === "sales") {
       return res.redirect("/dashboard_sales");
+    } else if (role === "finance") {
+      return res.redirect("/dashboard_finance");
     } else {
       return res.redirect("/profile");
     }
@@ -155,7 +157,7 @@ const authMiddlewarePage = async (req, res, next) => {
     console.log("✅ Token verified, user_id:", decoded.user_id);
 
     const [users] = await db.query(
-      `SELECT u.id, u.name, u.email, u.role_id, u.affiliate_status, u.status, u.created_at, r.name as role
+      `SELECT u.id, u.name, u.email, u.role_id, u.affiliate_status, u.status, u.created_at, u.no_wa, u.bank_name, u.bank_account_number, u.bank_account_name, r.name as role
        FROM users u
        JOIN roles r ON u.role_id = r.id
        WHERE u.id = ?`,
@@ -168,7 +170,13 @@ const authMiddlewarePage = async (req, res, next) => {
     }
 
     console.log("✅ User found:", users[0].name);
-    req.user = users[0];
+    req.user = {
+      ...users[0],
+      phone: users[0].no_wa || '',
+      bank_name: users[0].bank_name || '',
+      bank_account: users[0].bank_account_number || '',
+      bank_account_name: users[0].bank_account_name || ''
+    };
     next();
   } catch (error) {
     console.error("❌ Auth middleware page error:", error.message);
