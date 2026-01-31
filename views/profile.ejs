@@ -53,17 +53,29 @@
                 <div class="space-y-3">
                   <div>
                     <label class="text-sm font-medium text-gray-600">Nama Lengkap</label>
-                    <p class="text-gray-800 font-medium"><%= user ? user.name : 'User' %></p>
+                    <p id="info-name" class="text-gray-800 font-medium"><%= user ? user.name : 'User' %></p>
                   </div>
                   <div>
                     <label class="text-sm font-medium text-gray-600">Email</label>
-                    <p class="text-gray-800"><%= user ? user.email : 'user@example.com' %></p>
+                    <p id="info-email" class="text-gray-800"><%= user ? user.email : 'user@example.com' %></p>
                   </div>
                   <div>
                     <label class="text-sm font-medium text-gray-600">Role</label>
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                    <span id="info-role" class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
                       <%= user ? user.role : 'User' %>
                     </span>
+                  </div>
+                  <div>
+                    <label class="text-sm font-medium text-gray-600">Nama Bank</label>
+                    <p id="info-bank-name" class="text-gray-800"><%= user && user.bank_name ? user.bank_name : '-' %></p>
+                  </div>
+                  <div>
+                    <label class="text-sm font-medium text-gray-600">Nama Rekening</label>
+                    <p id="info-bank-account-name" class="text-gray-800"><%= user && user.bank_account_name ? user.bank_account_name : '-' %></p>
+                  </div>
+                  <div>
+                    <label class="text-sm font-medium text-gray-600">Nomor Rekening</label>
+                    <p id="info-bank-account-number" class="text-gray-800"><%= user && user.bank_account_number ? user.bank_account_number : '-' %></p>
                   </div>
                   <div>
                     <label class="text-sm font-medium text-gray-600">Status Affiliate</label>
@@ -91,6 +103,21 @@
                   <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                   <input type="email" id="email" name="email" value="<%= user ? user.email : '' %>"
                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all" required>
+                </div>
+                <div>
+                  <label for="bank_name" class="block text-sm font-medium text-gray-700 mb-1">Nama Bank</label>
+                  <input type="text" id="bank_name" name="bank_name" value="<%= user && user.bank_name ? user.bank_name : '' %>"
+                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all">
+                </div>
+                <div>
+                  <label for="bank_account_name" class="block text-sm font-medium text-gray-700 mb-1">Nama Rekening</label>
+                  <input type="text" id="bank_account_name" name="bank_account_name" value="<%= user && user.bank_account_name ? user.bank_account_name : '' %>"
+                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all">
+                </div>
+                <div>
+                  <label for="bank_account_number" class="block text-sm font-medium text-gray-700 mb-1">Nomor Rekening</label>
+                  <input type="text" id="bank_account_number" name="bank_account_number" value="<%= user && user.bank_account_number ? user.bank_account_number : '' %>"
+                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all">
                 </div>
                 <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all font-medium">
                   <i class="fas fa-save mr-2"></i>Simpan Perubahan
@@ -123,8 +150,22 @@
         const result = await response.json();
         
         if (result.success) {
+          const updated = result.user || data;
+          document.getElementById('info-name').innerText = updated.name || '';
+          document.getElementById('info-email').innerText = updated.email || '';
+          document.getElementById('info-role').innerText = updated.role || (user && user.role) || '';
+          document.getElementById('info-bank-name').innerText = updated.bank_name || '-';
+          document.getElementById('info-bank-account-name').innerText = updated.bank_account_name || '-';
+          document.getElementById('info-bank-account-number').innerText = updated.bank_account_number || '-';
+
+          // Update form fields in case server normalized values
+          document.getElementById('name').value = updated.name || '';
+          document.getElementById('email').value = updated.email || '';
+          document.getElementById('bank_name').value = updated.bank_name || '';
+          document.getElementById('bank_account_name').value = updated.bank_account_name || '';
+          document.getElementById('bank_account_number').value = updated.bank_account_number || '';
+
           alert('Profil berhasil diperbarui!');
-          location.reload();
         } else {
           alert('Gagal memperbarui profil: ' + (result.message || 'Unknown error'));
         }
@@ -133,6 +174,53 @@
         alert('Terjadi kesalahan saat memperbarui profil');
       }
     });
+  </script>
+  <script>
+    // On page load, fetch profile via API and populate the info panel and form
+    (async function populateProfile() {
+      try {
+        const nameInput = document.getElementById('name');
+        if (!nameInput) return;
+
+        const headers = {};
+        const token = localStorage.getItem('token');
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const resp = await fetch('/api/auth/profile', {
+          method: 'GET',
+          headers,
+          credentials: 'include',
+        });
+
+        if (!resp.ok) return;
+        const json = await resp.json();
+        if (!json || !json.success || !json.user) return;
+
+        const u = json.user;
+
+        // Update info panel
+        const setText = (id, value) => {
+          const el = document.getElementById(id);
+          if (el) el.innerText = value != null && value !== '' ? value : '-';
+        };
+
+        setText('info-name', u.name || '-');
+        setText('info-email', u.email || '-');
+        setText('info-role', u.role || '-');
+        setText('info-bank-name', u.bank_name || '-');
+        setText('info-bank-account-name', u.bank_account_name || '-');
+        setText('info-bank-account-number', u.bank_account_number || '-');
+
+        // Update form inputs
+        document.getElementById('name').value = u.name || '';
+        document.getElementById('email').value = u.email || '';
+        document.getElementById('bank_name').value = u.bank_name || '';
+        document.getElementById('bank_account_name').value = u.bank_account_name || '';
+        document.getElementById('bank_account_number').value = u.bank_account_number || '';
+      } catch (err) {
+        console.warn('Could not auto-populate profile:', err);
+      }
+    })();
   </script>
 </body>
 </html>

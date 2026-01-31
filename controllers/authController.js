@@ -75,7 +75,7 @@ const register = async (req, res) => {
     }
 
     // Determine initial affiliate status
-    const affiliateStatus = isAffiliate ? 'pending' : 'inactive';
+    const affiliateStatus = isAffiliate ? "pending" : "inactive";
 
     // Insert user - try with role_id first, fall back to simple insert
     let result;
@@ -137,7 +137,8 @@ const register = async (req, res) => {
         name: newUser.name,
         email: newUser.email,
         role: newUser.role,
-        affiliate_status: newUser.affiliate_status || affiliateStatus || "inactive",
+        affiliate_status:
+          newUser.affiliate_status || affiliateStatus || "inactive",
       },
     });
   } catch (error) {
@@ -231,16 +232,16 @@ const login = async (req, res) => {
       { expiresIn: "7d" },
     );
 
-    console.log('✅ Login successful for user:', user.email);
-    console.log('🔐 Token created, expires in 7 days');
-    console.log('📦 Setting httpOnly cookie...');
+    console.log("✅ Login successful for user:", user.email);
+    console.log("🔐 Token created, expires in 7 days");
+    console.log("📦 Setting httpOnly cookie...");
 
     // Set token in cookie for page authentication
-    res.cookie('token', token, {
+    res.cookie("token", token, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       secure: false,
-      sameSite: 'lax'
+      sameSite: "lax",
     });
 
     res.json({
@@ -268,7 +269,9 @@ const login = async (req, res) => {
 const getProfile = async (req, res) => {
   try {
     const [users] = await db.query(
-      `SELECT u.id, u.name, u.email, u.affiliate_status, u.status, u.created_at, r.name as role
+      `SELECT u.id, u.name, u.email, u.affiliate_status, u.status, u.created_at,
+         u.bank_name, u.bank_account_name, u.bank_account_number,
+         r.name as role
        FROM users u
        LEFT JOIN roles r ON u.role_id = r.id
        WHERE u.id = ?`,
@@ -305,43 +308,64 @@ const logout = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const { name, email, bank_name, bank_account_name, bank_account_number } =
+      req.body;
 
     if (!name || !email) {
       return res.status(400).json({
         success: false,
-        message: 'Name and email are required'
+        message: "Name and email are required",
       });
     }
 
     // Check if email exists for another user
     const [existingUsers] = await db.query(
-      'SELECT id FROM users WHERE email = ? AND id != ?',
-      [email, req.user.id]
+      "SELECT id FROM users WHERE email = ? AND id != ?",
+      [email, req.user.id],
     );
 
     if (existingUsers.length > 0) {
       return res.status(400).json({
         success: false,
-        message: 'Email already in use'
+        message: "Email already in use",
       });
     }
 
     await db.query(
-      'UPDATE users SET name = ?, email = ? WHERE id = ?',
-      [name, email, req.user.id]
+      "UPDATE users SET name = ?, email = ?, bank_name = ?, bank_account_name = ?, bank_account_number = ? WHERE id = ?",
+      [
+        name,
+        email,
+        bank_name || null,
+        bank_account_name || null,
+        bank_account_number || null,
+        req.user.id,
+      ],
     );
+
+    const [updatedUsers] = await db.query(
+      `SELECT u.id, u.name, u.email, u.affiliate_status, u.status, u.created_at,
+              u.bank_name, u.bank_account_name, u.bank_account_number,
+              r.name as role
+       FROM users u
+       LEFT JOIN roles r ON u.role_id = r.id
+       WHERE u.id = ?`,
+      [req.user.id],
+    );
+
+    const updatedUser = updatedUsers[0] || null;
 
     res.json({
       success: true,
-      message: 'Profile updated successfully'
+      message: "Profile updated successfully",
+      user: updatedUser,
     });
   } catch (error) {
-    console.error('Update profile error:', error);
+    console.error("Update profile error:", error);
     res.status(500).json({
       success: false,
-      message: 'Internal server error',
-      error: error.message
+      message: "Internal server error",
+      error: error.message,
     });
   }
 };
@@ -353,53 +377,58 @@ const changePassword = async (req, res) => {
     if (!currentPassword || !newPassword || !confirmPassword) {
       return res.status(400).json({
         success: false,
-        message: 'All password fields are required'
+        message: "All password fields are required",
       });
     }
 
     if (newPassword !== confirmPassword) {
       return res.status(400).json({
         success: false,
-        message: 'New passwords do not match'
+        message: "New passwords do not match",
       });
     }
 
     // Get user from database to verify current password
-    const [users] = await db.query('SELECT password FROM users WHERE id = ?', [req.user.id]);
-    
+    const [users] = await db.query("SELECT password FROM users WHERE id = ?", [
+      req.user.id,
+    ]);
+
     if (users.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'User not found'
+        message: "User not found",
       });
     }
 
-    const isValidPassword = await bcrypt.compare(currentPassword, users[0].password);
-    
+    const isValidPassword = await bcrypt.compare(
+      currentPassword,
+      users[0].password,
+    );
+
     if (!isValidPassword) {
       return res.status(400).json({
         success: false,
-        message: 'Current password is incorrect'
+        message: "Current password is incorrect",
       });
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    
-    await db.query(
-      'UPDATE users SET password = ? WHERE id = ?',
-      [hashedPassword, req.user.id]
-    );
+
+    await db.query("UPDATE users SET password = ? WHERE id = ?", [
+      hashedPassword,
+      req.user.id,
+    ]);
 
     res.json({
       success: true,
-      message: 'Password changed successfully'
+      message: "Password changed successfully",
     });
   } catch (error) {
-    console.error('Change password error:', error);
+    console.error("Change password error:", error);
     res.status(500).json({
       success: false,
-      message: 'Internal server error',
-      error: error.message
+      message: "Internal server error",
+      error: error.message,
     });
   }
 };
@@ -407,18 +436,23 @@ const changePassword = async (req, res) => {
 const updateSettings = async (req, res) => {
   try {
     // Settings functionality - can be extended later with settings table
-    const { emailNotifications, referralNotifications, commissionNotifications, language } = req.body;
-    
+    const {
+      emailNotifications,
+      referralNotifications,
+      commissionNotifications,
+      language,
+    } = req.body;
+
     res.json({
       success: true,
-      message: 'Settings updated successfully'
+      message: "Settings updated successfully",
     });
   } catch (error) {
-    console.error('Update settings error:', error);
+    console.error("Update settings error:", error);
     res.status(500).json({
       success: false,
-      message: 'Internal server error',
-      error: error.message
+      message: "Internal server error",
+      error: error.message,
     });
   }
 };
@@ -430,5 +464,5 @@ module.exports = {
   logout,
   updateProfile,
   changePassword,
-  updateSettings
+  updateSettings,
 };
