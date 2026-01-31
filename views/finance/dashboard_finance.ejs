@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <!-- Navbar -->
+  <%- include('../navbar/navbar.ejs', { name: 'Finance' }) %>
+  <!-- Sidebar -->
+  <%- include('../sidebar/finance.ejs') %>
+  <!-- Main Content -->
+  <main class="ml-64 pt-16 min-h-screen">
+    <div class="p-6">
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900">Dashboard Finance</h1>
+            <p class="text-gray-600 mt-1">Selamat datang di panel keuangan</p>
+          </div>
+          <div class="text-sm text-gray-500">
+            <i class="fas fa-calendar-alt mr-2"></i>
+            <%= new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="statsContainer">
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm font-medium">Total Pembayaran Masuk</p>
+                <p class="text-3xl font-bold text-gray-900 mt-2">Rp <%= parseInt(stats.totalPaid).toLocaleString('id-ID') %></p>
+              </div>
+              <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-money-bill-wave text-white text-xl"></i>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm font-medium">Total Pembayaran Pending</p>
+                <p class="text-3xl font-bold text-gray-900 mt-2">Rp <%= parseInt(stats.totalPending).toLocaleString('id-ID') %></p>
+              </div>
+              <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-clock text-white text-xl"></i>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm font-medium">Transaksi Paid</p>
+                <p class="text-3xl font-bold text-gray-900 mt-2"><%= stats.countPaid %></p>
+              </div>
+              <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-check-circle text-white text-xl"></i>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm font-medium">Transaksi Pending</p>
+                <p class="text-3xl font-bold text-gray-900 mt-2"><%= stats.countPending %></p>
+              </div>
+              <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-hourglass-half text-white text-xl"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 mt-8">
+          <div class="p-6 border-b border-gray-100">
+            <h2 class="text-lg font-semibold text-gray-900">Pembayaran Terbaru</h2>
+            <p class="text-sm text-gray-500 mt-1">10 pembayaran terakhir</p>
+          </div>
+          <div class="p-6">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="text-left text-gray-500 text-sm">
+                    <th class="pb-3 font-medium">Customer</th>
+                    <th class="pb-3 font-medium">Amount</th>
+                    <th class="pb-3 font-medium">Status</th>
+                    <th class="pb-3 font-medium">Metode</th>
+                    <th class="pb-3 font-medium">Tanggal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (recentPayments.length === 0) { %>
+                    <tr>
+                      <td colspan="5" class="py-8 text-center text-gray-400">
+                        <i class="fas fa-inbox text-4xl mb-2"></i>
+                        <p>Belum ada pembayaran</p>
+                      </td>
+                    </tr>
+                  <% } else { %>
+                    <% recentPayments.forEach(function(t) { %>
+                      <tr class="border-b border-gray-50 hover:bg-gray-50">
+                        <td class="py-3"><%= t.customer_name || 'Unknown' %></td>
+                        <td class="py-3">Rp <%= parseInt(t.total_amount || 0).toLocaleString('id-ID') %></td>
+                        <td class="py-3">
+                          <% let statusClass = {
+                            'pending': 'bg-yellow-100 text-yellow-800',
+                            'paid': 'bg-green-100 text-green-800',
+                            'rejected': 'bg-red-100 text-red-800'
+                          }[t.payment_status] || 'bg-gray-100 text-gray-800'; %>
+                          <span class="px-2 py-1 rounded-full text-xs font-medium <%= statusClass %>">
+                            <%= t.payment_status %>
+                          </span>
+                        </td>
+                        <td class="py-3"><%= t.payment_method %></td>
+                        <td class="py-3"><%= t.created_at.toLocaleString('id-ID') %></td>
+                      </tr>
+                    <% }) %>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

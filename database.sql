@@ -6,7 +6,7 @@ USE my_database;
 
 -- =========================================
 -- ROLES
--- =========================================
+-- =========================================    
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name ENUM('super_admin','sales','finance','affiliate') NOT NULL

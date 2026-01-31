@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Affillink Affiliate</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <!-- Navbar -->
+  <%- include('../navbar/navbar.ejs', { name: typeof name !== 'undefined' ? name : '' }) %>
+
+  <!-- Sidebar -->
+  <%- include('../sidebar/affiliate.ejs') %>
+
+  <!-- Main Content -->
+  <main class="ml-64 pt-16 min-h-screen">
+    <div class="p-6">
+      <div class="space-y-6">
+
+        <!-- Page Header -->
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900">Dashboard Affiliate</h1>
+            <p class="text-gray-600 mt-1">Halo, <span class="font-semibold"><%= typeof name !== 'undefined' ? name : 'Affiliate' %></span></p>
+          </div>
+          <div class="text-sm text-gray-500">
+            <i class="fas fa-calendar-alt mr-2"></i>
+            <%= new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+          </div>
+        </div>
+
+        <!-- Top Cards (summary) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <p class="text-gray-500 text-sm font-medium">Program Affiliate Aktif</p>
+            <p class="text-3xl font-bold text-gray-900 mt-2"><%= typeof activeProgramsCount !== 'undefined' ? activeProgramsCount : 0 %></p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <p class="text-gray-500 text-sm font-medium">Komisi Anda</p>
+            <p class="text-3xl font-bold text-gray-900 mt-2">Rp <%= typeof totalCommission !== 'undefined' ? totalCommission : '0.00' %></p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <p class="text-gray-500 text-sm font-medium">Total Leads</p>
+            <p class="text-3xl font-bold text-gray-900 mt-2"><%= typeof totalLeads !== 'undefined' ? totalLeads : 0 %></p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <p class="text-gray-500 text-sm font-medium">Leads 30 hari terakhir</p>
+            <p class="text-3xl font-bold text-gray-900 mt-2"><%= typeof leadsLast30 !== 'undefined' ? leadsLast30 : 0 %></p>
+          </div>
+        </div>
+
+        <!-- Main Row: Leads table + Profile -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Leads table (left, spans 2 cols) -->
+          <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h2 class="text-lg font-semibold text-gray-900">Lead Terbaru</h2>
+                <p class="text-sm text-gray-500">10 lead terakhir yang terkait dengan referral Anda</p>
+              </div>
+              <div class="text-sm text-gray-500">Total: <span class="font-medium"><%= typeof totalLeads !== 'undefined' ? totalLeads : 0 %></span></div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm divide-y divide-gray-100">
+                <thead>
+                  <tr class="text-gray-500">
+                    <th class="py-2 font-medium">Nama</th>
+                    <th class="py-2 font-medium">Email</th>
+                    <th class="py-2 font-medium">WhatsApp</th>
+                    <th class="py-2 font-medium">Event</th>
+                    <th class="py-2 font-medium">Status</th>
+                    <th class="py-2 font-medium">Tanggal</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white">
+                  <% if (Array.isArray(leads) && leads.length > 0) { leads.forEach(function(l){ %>
+                    <tr class="hover:bg-gray-50">
+                      <td class="py-3"><%= l.name || '-' %></td>
+                      <td class="py-3"><%= l.email || '-' %></td>
+                      <td class="py-3"><%= l.phone || '-' %></td>
+                      <td class="py-3"><%= l.event_title || '-' %></td>
+                      <td class="py-3">
+                        <% if (l.payment_status === 'pending') { %>
+                          <span class="inline-block px-2 py-0.5 rounded text-yellow-700 bg-yellow-100">pending</span>
+                        <% } else if (l.payment_status === 'paid') { %>
+                          <span class="inline-block px-2 py-0.5 rounded text-green-700 bg-green-100">paid</span>
+                        <% } else { %>
+                          <span class="inline-block px-2 py-0.5 rounded text-red-700 bg-red-100"><%= l.payment_status %></span>
+                        <% } %>
+                      </td>
+                      <td class="py-3"><%= l.created_at ? new Date(l.created_at).toLocaleString() : '-' %></td>
+                    </tr>
+                  <% }) } else { %>
+                    <tr>
+                      <td class="py-8 text-center text-gray-400" colspan="6">Belum ada lead.</td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Profile & Bank (right column) -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Profil & Data Bank</h3>
+            <% if (typeof affiliateProfile !== 'undefined' && affiliateProfile) { %>
+              <div class="space-y-2 text-sm text-gray-700">
+                <div><strong>Nama:</strong> <span class="font-medium"><%= affiliateProfile.full_name || '-' %></span></div>
+                <div><strong>Email:</strong> <span class="font-medium"><%= affiliateProfile.email || '-' %></span></div>
+                <div><strong>WhatsApp:</strong> <span class="font-medium"><%= affiliateProfile.phone || '-' %></span></div>
+                <div><strong>Kota:</strong> <span class="font-medium"><%= affiliateProfile.city || '-' %></span></div>
+                <div><strong>Bank:</strong> <span class="font-medium"><%= affiliateProfile.bank_name || '-' %></span></div>
+                <div><strong>No. Rek:</strong> <span class="font-medium"><%= affiliateProfile.bank_account_number || '-' %></span></div>
+                <div><strong>Atas Nama:</strong> <span class="font-medium"><%= affiliateProfile.bank_account_name || '-' %></span></div>
+              </div>
+            <% } else { %>
+              <div class="text-sm text-gray-500">Belum ada data profil. Silakan lengkapi data bank untuk proses payout.</div>
+            <% } %>
+
+            <div class="mt-4 text-xs text-gray-500">Catatan: Komisi dihitung otomatis berdasarkan transaksi dan verifikasi. Finance memproses payout manual.</div>
+          </div>
+        </div>
+
+        <!-- Referral Link card -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h4 class="text-sm font-medium text-gray-700 mb-2">Link Referral</h4>
+          <div class="flex gap-3 items-center">
+            <input id="refLinkInput" class="flex-1 px-3 py-2 border rounded-md bg-gray-50" readonly value="<%= typeof referralLink !== 'undefined' && referralLink ? referralLink : (typeof siteUrl !== 'undefined' && typeof sampleRefCode !== 'undefined' ? siteUrl + '/?ref=' + sampleRefCode : '') %>" aria-label="Referral link" />
+            <button id="copyRefBtn" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">Copy</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const copyBtn = document.getElementById('copyRefBtn');
+    const refInput = document.getElementById('refLinkInput');
+    if (copyBtn && refInput) {
+      copyBtn.addEventListener('click', function(){
+        refInput.select();
+        refInput.setSelectionRange(0, 99999);
+        try {
+          navigator.clipboard.writeText(refInput.value);
+          copyBtn.textContent = 'Copied';
+          setTimeout(()=> copyBtn.textContent = 'Copy', 1500);
+        } catch(e) {
+          document.execCommand('copy');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
