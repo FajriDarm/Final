@@ -387,32 +387,40 @@
 
           const result = await response.json();
 
+
           if (result.success) {
-            // Show success message
-            const successAlert = document.createElement('div');
-            successAlert.className = 'mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg alert-success';
-            successAlert.innerHTML = `
-              <div class="flex items-center">
-                <div class="flex-shrink-0">
-                  <i class="fas fa-check-circle text-green-500 text-xl"></i>
+            // Modal sukses di tengah layar
+            let modal = document.getElementById('successModal');
+            if (!modal) {
+              modal = document.createElement('div');
+              modal.id = 'successModal';
+              modal.className = 'fixed inset-0 flex items-center justify-center z-50';
+              modal.innerHTML = `
+                <div class="bg-white rounded-2xl shadow-2xl px-16 py-14 flex flex-col items-center animate-fadeIn max-w-lg w-full">
+                  <svg class="mb-6" width="96" height="96" viewBox="0 0 52 52">
+                    <circle cx="26" cy="26" r="25" fill="none" stroke="#8fd19e" stroke-width="3" style="stroke-dasharray:166;stroke-dashoffset:166;animation:strokeCircle 0.6s cubic-bezier(0.65,0,0.45,1) forwards;"/>
+                    <path fill="none" stroke="#8fd19e" stroke-width="3" stroke-linecap="round" d="M14 27l7 7 16-16" style="stroke-dasharray:48;stroke-dashoffset:48;animation:strokeCheck 0.4s 0.6s cubic-bezier(0.65,0,0.45,1) forwards;"/>
+                  </svg>
+                  <h2 class="text-3xl font-bold text-gray-800 mb-2">Berhasil!</h2>
+                  <p class="text-lg text-gray-600">Profil berhasil diperbarui!</p>
                 </div>
-                <div class="ml-3">
-                  <p class="text-sm text-green-700 font-medium">
-                    Profil berhasil diperbarui!
-                  </p>
-                </div>
-              </div>
-            `;
-
-            const container = document.querySelector('.pt-20');
-            container.insertBefore(successAlert, container.children[1]);
-
-            // Remove alert after 5 seconds
+                <style>
+                  @keyframes strokeCircle { to { stroke-dashoffset: 0; } }
+                  @keyframes strokeCheck { to { stroke-dashoffset: 0; } }
+                </style>
+              `;
+              document.body.appendChild(modal);
+            } else {
+              modal.style.display = 'flex';
+            }
+            // Sembunyikan modal setelah 2 detik lalu reload halaman
             setTimeout(() => {
-              successAlert.remove();
-            }, 5000);
+              modal.style.display = 'none';
+              window.location.reload();
+            }, 2000);
 
-            // Update user info in sidebar if needed
+
+            // Update user info in sidebar jika perlu
             if (result.user) {
               const nameElement = document.querySelector('.text-xl.font-bold.text-gray-900');
               if (nameElement) nameElement.textContent = result.user.name || user.name;

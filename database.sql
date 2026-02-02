@@ -248,7 +248,6 @@ ADD bank_account_number VARCHAR(50) NULL AFTER bank_account_name;
 
 ALTER TABLE users
 ADD no_wa VARCHAR(20) NULL AFTER email;
-<<<<<<< HEAD
 
 CREATE TABLE IF NOT EXISTS affiliate_referrals (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -262,6 +261,4 @@ CREATE TABLE IF NOT EXISTS affiliate_referrals (
     FOREIGN KEY (event_id) REFERENCES events(id),
     FOREIGN KEY (referred_user_id) REFERENCES users(id)
 );
-=======
->>>>>>> 244ff27 (sync local changes)
 -- End of database.sql

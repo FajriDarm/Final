@@ -462,9 +462,34 @@
           const data = await response.json();
 
           if (data.success) {
-            // Show success and redirect
-            alert('Password berhasil diubah!');
-            window.location.href = '/settings?success=' + encodeURIComponent('Password berhasil diubah');
+            // Modal sukses besar di tengah layar
+            let modal = document.getElementById('successModal');
+            if (!modal) {
+              modal = document.createElement('div');
+              modal.id = 'successModal';
+              modal.className = 'fixed inset-0 flex items-center justify-center z-50';
+              modal.innerHTML = `
+                <div class="bg-white rounded-2xl shadow-2xl px-16 py-14 flex flex-col items-center animate-fadeIn max-w-lg w-full">
+                  <svg class="mb-6" width="96" height="96" viewBox="0 0 52 52">
+                    <circle cx="26" cy="26" r="25" fill="none" stroke="#8fd19e" stroke-width="3" style="stroke-dasharray:166;stroke-dashoffset:166;animation:strokeCircle 0.6s cubic-bezier(0.65,0,0.45,1) forwards;"/>
+                    <path fill="none" stroke="#8fd19e" stroke-width="3" stroke-linecap="round" d="M14 27l7 7 16-16" style="stroke-dasharray:48;stroke-dashoffset:48;animation:strokeCheck 0.4s 0.6s cubic-bezier(0.65,0,0.45,1) forwards;"/>
+                  </svg>
+                  <h2 class="text-3xl font-bold text-gray-800 mb-2">Berhasil!</h2>
+                  <p class="text-lg text-gray-600">Password berhasil diubah!</p>
+                </div>
+                <style>
+                  @keyframes strokeCircle { to { stroke-dashoffset: 0; } }
+                  @keyframes strokeCheck { to { stroke-dashoffset: 0; } }
+                </style>
+              `;
+              document.body.appendChild(modal);
+            } else {
+              modal.style.display = 'flex';
+            }
+            setTimeout(() => {
+              modal.style.display = 'none';
+              window.location.reload();
+            }, 2000);
           } else {
             // Show error
             alert(data.message || 'Terjadi kesalahan saat mengubah password');
@@ -510,9 +535,34 @@
           const data = await response.json();
 
           if (data.success) {
-            // Show success
-            alert('Pengaturan notifikasi berhasil disimpan!');
-            window.location.href = '/settings?success=' + encodeURIComponent('Pengaturan notifikasi berhasil disimpan');
+            // Modal sukses besar di tengah layar
+            let modal = document.getElementById('successModal');
+            if (!modal) {
+              modal = document.createElement('div');
+              modal.id = 'successModal';
+              modal.className = 'fixed inset-0 flex items-center justify-center z-50';
+              modal.innerHTML = `
+                <div class="bg-white rounded-2xl shadow-2xl px-16 py-14 flex flex-col items-center animate-fadeIn max-w-lg w-full">
+                  <svg class="mb-6" width="96" height="96" viewBox="0 0 52 52">
+                    <circle cx="26" cy="26" r="25" fill="none" stroke="#8fd19e" stroke-width="3" style="stroke-dasharray:166;stroke-dashoffset:166;animation:strokeCircle 0.6s cubic-bezier(0.65,0,0.45,1) forwards;"/>
+                    <path fill="none" stroke="#8fd19e" stroke-width="3" stroke-linecap="round" d="M14 27l7 7 16-16" style="stroke-dasharray:48;stroke-dashoffset:48;animation:strokeCheck 0.4s 0.6s cubic-bezier(0.65,0,0.45,1) forwards;"/>
+                  </svg>
+                  <h2 class="text-3xl font-bold text-gray-800 mb-2">Berhasil!</h2>
+                  <p class="text-lg text-gray-600">Pengaturan notifikasi berhasil disimpan!</p>
+                </div>
+                <style>
+                  @keyframes strokeCircle { to { stroke-dashoffset: 0; } }
+                  @keyframes strokeCheck { to { stroke-dashoffset: 0; } }
+                </style>
+              `;
+              document.body.appendChild(modal);
+            } else {
+              modal.style.display = 'flex';
+            }
+            setTimeout(() => {
+              modal.style.display = 'none';
+              window.location.reload();
+            }, 2000);
           } else {
             // Show error
             alert(data.message || 'Terjadi kesalahan saat menyimpan pengaturan');
