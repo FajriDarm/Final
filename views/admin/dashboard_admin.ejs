@@ -1,262 +1,622 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Affillink Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .gradient-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .gradient-secondary {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    }
+
+    .gradient-accent {
+      background: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%);
+    }
+
+    .gradient-dark {
+      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(5, 150, 105, 0.1), 0 10px 10px -5px rgba(5, 150, 105, 0.04);
+    }
+
+    .status-badge {
+      transition: all 0.2s ease;
+    }
+
+    .status-badge:hover {
+      transform: scale(1.05);
+    }
+
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .data-cell {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .data-cell::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
+
+<body class="bg-gradient-to-br from-emerald-50 to-green-50">
   <!-- Navbar -->
   <%- include('../navbar/navbar.ejs', { name: 'Admin' }) %>
 
-  <!-- Sidebar -->
-  <%- include('../sidebar/admin.ejs') %>
+    <!-- Sidebar -->
+    <%- include('../sidebar/admin.ejs') %>
 
-  <!-- Main Content -->
-  <main class="ml-64 pt-16 min-h-screen">
-    <div class="p-6">
-      <div class="space-y-6">
-  <!-- Page Header -->
-  <div class="flex items-center justify-between">
-    <div>
-      <h1 class="text-3xl font-bold text-gray-900">Dashboard Super Admin</h1>
-      <p class="text-gray-600 mt-1">Selamat datang di panel kontrol admin</p>
-    </div>
-    <div class="text-sm text-gray-500">
-      <i class="fas fa-calendar-alt mr-2"></i>
-      <%= new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
-    </div>
-  </div>
+      <!-- Main Content -->
+      <main class="ml-64 pt-16 min-h-screen">
+        <div class="p-6">
+          <!-- Page Header -->
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+            <div class="mb-4 md:mb-0">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-chart-line text-white text-xl"></i>
+                </div>
+                <div>
+                  <h1 class="text-3xl font-bold text-gray-900">Dashboard Super Admin</h1>
+                  <p class="text-gray-600 mt-1">Selamat datang di panel kontrol admin Affillink</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="hidden md:block px-4 py-2 bg-white rounded-lg shadow-sm border border-green-100">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-calendar-alt text-green-600"></i>
+                  <span class="text-sm font-medium text-gray-700">
+                    <%= new Date().toLocaleDateString('id-ID', { weekday: 'long' , year: 'numeric' , month: 'long' ,
+                      day: 'numeric' }) %>
+                  </span>
+                </div>
+              </div>
+              <div class="px-4 py-2 gradient-primary rounded-lg shadow-lg text-white">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-bell pulse-animation"></i>
+                  <span class="text-sm font-medium">Update Real-time</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-  <!-- Stats Cards -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="statsContainer">
-    <!-- Total Users -->
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-gray-500 text-sm font-medium">Total Users</p>
-          <p class="text-3xl font-bold text-gray-900 mt-2" id="totalUsers">-</p>
-        </div>
-        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-          <i class="fas fa-users text-white text-xl"></i>
-        </div>
-      </div>
-      <div class="mt-4 flex items-center text-sm">
-        <span class="text-green-500 font-medium"><i class="fas fa-arrow-up mr-1"></i>12%</span>
-        <span class="text-gray-400 ml-2">dari bulan lalu</span>
-      </div>
-    </div>
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" id="statsContainer">
+            <!-- Total Users -->
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Total Users</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2" id="totalUsers">-</p>
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                      <i class="fas fa-arrow-up mr-1"></i>12%
+                    </span>
+                    <span class="text-xs text-gray-500">dari bulan lalu</span>
+                  </div>
+                </div>
+                <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-users text-white text-2xl"></i>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-green-50">
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-gray-600">Active Now</span>
+                  <span class="font-medium text-green-700">24 Users</span>
+                </div>
+              </div>
+            </div>
 
-    <!-- Total Affiliates -->
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-gray-500 text-sm font-medium">Total Affiliates</p>
-          <p class="text-3xl font-bold text-gray-900 mt-2" id="totalAffiliates">-</p>
-        </div>
-        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
-          <i class="fas fa-user-tie text-white text-xl"></i>
-        </div>
-      </div>
-      <div class="mt-4 flex items-center text-sm">
-        <span class="text-yellow-500 font-medium" id="pendingAffiliatesBadge">-</span>
-        <span class="text-gray-400 ml-2">menunggu approval</span>
-      </div>
-    </div>
+            <!-- Total Affiliates -->
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Total Affiliates</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2" id="totalAffiliates">-</p>
+                  <div id="pendingAffiliatesBadge" class="flex items-center gap-2">
+                    <!-- Dynamic content -->
+                  </div>
+                </div>
+                <div class="w-14 h-14 gradient-secondary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-user-tie text-white text-2xl"></i>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-green-50">
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-gray-600">Active Rate</span>
+                  <span class="font-medium text-green-700">85%</span>
+                </div>
+              </div>
+            </div>
 
-    <!-- Active Events -->
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-gray-500 text-sm font-medium">Active Events</p>
-          <p class="text-3xl font-bold text-gray-900 mt-2" id="activeEvents">-</p>
-        </div>
-        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
-          <i class="fas fa-calendar-alt text-white text-xl"></i>
-        </div>
-      </div>
-      <div class="mt-4 flex items-center text-sm">
-        <span class="text-green-500 font-medium"><i class="fas fa-check-circle mr-1"></i>Running</span>
-        <span class="text-gray-400 ml-2">event aktif</span>
-      </div>
-    </div>
+            <!-- Active Events -->
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Active Events</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2" id="activeEvents">-</p>
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
+                      <i class="fas fa-check-circle mr-1"></i>Running
+                    </span>
+                    <span class="text-xs text-gray-500">event aktif</span>
+                  </div>
+                </div>
+                <div class="w-14 h-14 gradient-accent rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-calendar-alt text-white text-2xl"></i>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-green-50">
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-gray-600">Upcoming</span>
+                  <span class="font-medium text-green-700">5 Events</span>
+                </div>
+              </div>
+            </div>
 
-    <!-- Total Revenue -->
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-gray-500 text-sm font-medium">Total Revenue</p>
-          <p class="text-3xl font-bold text-gray-900 mt-2" id="totalRevenue">-</p>
-        </div>
-        <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center">
-          <i class="fas fa-dollar-sign text-white text-xl"></i>
-        </div>
-      </div>
-      <div class="mt-4 flex items-center text-sm">
-        <span class="text-green-500 font-medium"><i class="fas fa-arrow-up mr-1"></i>8%</span>
-        <span class="text-gray-400 ml-2">dari bulan lalu</span>
-      </div>
-    </div>
-  </div>
+            <!-- Total Revenue -->
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Total Revenue</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2" id="totalRevenue">-</p>
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium">
+                      <i class="fas fa-arrow-up mr-1"></i>8%
+                    </span>
+                    <span class="text-xs text-gray-500">dari bulan lalu</span>
+                  </div>
+                </div>
+                <div class="w-14 h-14 gradient-dark rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-dollar-sign text-white text-2xl"></i>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-green-50">
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-gray-600">This Month</span>
+                  <span class="font-medium text-green-700">Rp 12.5M</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-  <!-- Tables Row -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <!-- Recent Transactions -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-      <div class="p-6 border-b border-gray-100">
-        <h2 class="text-lg font-semibold text-gray-900">Transaksi Terbaru</h2>
-        <p class="text-sm text-gray-500 mt-1">10 transaksi terakhir</p>
-      </div>
-      <div class="p-6">
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead>
-              <tr class="text-left text-gray-500 text-sm">
-                <th class="pb-3 font-medium">Customer</th>
-                <th class="pb-3 font-medium">Amount</th>
-                <th class="pb-3 font-medium">Status</th>
-              </tr>
-            </thead>
-            <tbody id="transactionsTableBody">
-              <tr>
-                <td colspan="3" class="py-8 text-center text-gray-400">
-                  <i class="fas fa-spinner fa-spin mr-2"></i>Loading...
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+          <!-- Tables Row -->
+          <div class="w-full flex flex-col lg:flex-row gap-6">
+            <!-- Recent Transactions -->
+            <div class="flex-1 flex flex-col">
+              <div class="glass-card rounded-2xl shadow-lg border border-green-100 overflow-hidden flex flex-col flex-1 min-h-[400px] h-full">
+                <div class="px-6 py-4 gradient-primary">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <h2 class="text-lg font-semibold text-white">Transaksi Terbaru</h2>
+                      <p class="text-green-100 text-sm mt-1">10 transaksi terakhir</p>
+                    </div>
+                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-exchange-alt text-white"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-0 flex-1 flex flex-col">
+                  <div class="overflow-x-auto">
+                    <table class="w-full">
+                      <thead>
+                        <tr class="bg-green-50">
+                          <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Customer</th>
+                          <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Amount</th>
+                          <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="transactionsTableBody" class="divide-y divide-green-100">
+                        <tr>
+                          <td colspan="3" class="py-12 px-6 text-center">
+                            <div class="flex flex-col items-center justify-center">
+                              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-spinner fa-spin text-green-600 text-xl"></i>
+                              </div>
+                              <p class="text-gray-600 font-medium">Memuat transaksi...</p>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="px-6 py-4 bg-green-50 border-t border-green-100 rounded-b-2xl">
+                  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 text-sm">
+                    <a href="/admin/transactions"
+                      class="text-green-700 hover:text-green-800 font-medium flex items-center gap-2">
+                      <i class="fas fa-external-link-alt"></i>
+                      Lihat Semua Transaksi
+                    </a>
+                    <span class="text-gray-600">Terakhir diperbarui: Sekarang</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <!-- Recent Activity Logs -->
+            <div class="flex-1 flex flex-col">
+              <div class="glass-card rounded-2xl shadow-lg border border-green-100 overflow-hidden flex flex-col flex-1 min-h-[400px] h-full">
+                <div class="px-6 py-4 gradient-secondary">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <h2 class="text-lg font-semibold text-white">Aktivitas Terbaru</h2>
+                      <p class="text-green-100 text-sm mt-1">10 aktivitas terakhir</p>
+                    </div>
+                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-history text-white"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-0 flex-1 flex flex-col">
+                  <div class="max-h-[400px] overflow-y-auto scrollbar-hide flex-1" id="activityLogsBody">
+                    <div class="py-12 px-6 text-center">
+                      <div class="flex flex-col items-center justify-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                          <i class="fas fa-spinner fa-spin text-green-600 text-xl"></i>
+                        </div>
+                        <p class="text-gray-600 font-medium">Memuat aktivitas...</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="px-6 py-4 bg-green-50 border-t border-green-100">
+                  <div class="flex items-center justify-between text-sm">
+                    <a href="/admin/activity-logs"
+                      class="text-green-700 hover:text-green-800 font-medium flex items-center gap-2">
+                      <i class="fas fa-external-link-alt"></i>
+                      Lihat Log Lengkap
+                    </a>
+                    <span class="text-gray-600">Real-time Updates</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            </div>
+          </div>
 
-    <!-- Recent Activity Logs -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-      <div class="p-6 border-b border-gray-100">
-        <h2 class="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h2>
-        <p class="text-sm text-gray-500 mt-1">10 aktivitas terakhir</p>
-      </div>
-      <div class="p-6">
-        <div class="space-y-4" id="activityLogsBody">
-          <div class="py-8 text-center text-gray-400">
-            <i class="fas fa-spinner fa-spin mr-2"></i>Loading...
+          <!-- Quick Stats -->
+          <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-card rounded-2xl p-6 border border-green-100">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium">Conversion Rate</p>
+                  <p class="text-2xl font-bold text-gray-900">4.8%</p>
+                </div>
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center">
+                  <i class="fas fa-chart-pie text-green-600"></i>
+                </div>
+              </div>
+              <div class="mt-4">
+                <div class="h-2 bg-green-100 rounded-full overflow-hidden">
+                  <div class="h-full gradient-primary rounded-full" style="width: 48%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 border border-green-100">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium">Avg. Session</p>
+                  <p class="text-2xl font-bold text-gray-900">3m 24s</p>
+                </div>
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center">
+                  <i class="fas fa-clock text-green-600"></i>
+                </div>
+              </div>
+              <div class="mt-4">
+                <div class="h-2 bg-green-100 rounded-full overflow-hidden">
+                  <div class="h-full gradient-secondary rounded-full" style="width: 68%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 border border-green-100">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium">Satisfaction</p>
+                  <p class="text-2xl font-bold text-gray-900">92%</p>
+                </div>
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center">
+                  <i class="fas fa-heart text-green-600"></i>
+                </div>
+              </div>
+              <div class="mt-4">
+                <div class="h-2 bg-green-100 rounded-full overflow-hidden">
+                  <div class="h-full gradient-accent rounded-full" style="width: 92%"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
+      </main>
 
-<script>
-  async function loadDashboardStats() {
-    try {
-      const response = await fetch('/api/admin/dashboard/stats');
-      const data = await response.json();
+      <script>
+        async function loadDashboardStats() {
+          try {
+            const response = await fetch('/api/admin/dashboard/stats');
+            const data = await response.json();
 
-      if (data.success) {
-        // Update stats
-        document.getElementById('totalUsers').textContent = data.stats.totalUsers;
-        document.getElementById('totalAffiliates').textContent = data.stats.totalAffiliates;
-        document.getElementById('activeEvents').textContent = data.stats.activeEvents;
-        document.getElementById('totalRevenue').textContent = 'Rp ' + parseInt(data.stats.totalRevenue).toLocaleString('id-ID');
+            if (data.success) {
+              // Update stats with animation
+              animateValue('totalUsers', 0, data.stats.totalUsers, 1000);
+              animateValue('totalAffiliates', 0, data.stats.totalAffiliates, 1000);
+              animateValue('activeEvents', 0, data.stats.activeEvents, 1000);
 
-        // Update pending affiliates badge
-        const pendingBadge = document.getElementById('pendingAffiliatesBadge');
-        pendingBadge.innerHTML = `<i class="fas fa-clock mr-1"></i>${data.stats.pendingAffiliates} pending`;
+              const revenueValue = parseInt(data.stats.totalRevenue);
+              animateValue('totalRevenue', 0, revenueValue, 1000, true);
 
-        // Load transactions
-        loadTransactions(data.recentTransactions);
+              // Update pending affiliates badge
+              const pendingBadge = document.getElementById('pendingAffiliatesBadge');
+              if (data.stats.pendingAffiliates > 0) {
+                pendingBadge.innerHTML = `
+            <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium flex items-center gap-1 status-badge">
+              <i class="fas fa-clock"></i>
+              ${data.stats.pendingAffiliates} pending
+            </span>
+            <span class="text-xs text-gray-500">menunggu approval</span>
+          `;
+              } else {
+                pendingBadge.innerHTML = `
+            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium flex items-center gap-1 status-badge">
+              <i class="fas fa-check"></i>
+              Semua approved
+            </span>
+            <span class="text-xs text-gray-500">tidak ada pending</span>
+          `;
+              }
 
-        // Load activity logs
-        loadActivityLogs(data.recentActivities);
-      }
-    } catch (error) {
-      console.error('Error loading dashboard stats:', error);
-    }
-  }
+              // Load transactions
+              if (data.recentTransactions) {
+                loadTransactions(data.recentTransactions);
+              }
 
-  function loadTransactions(transactions) {
-    const tbody = document.getElementById('transactionsTableBody');
+              // Load activity logs
+              if (data.recentActivities) {
+                loadActivityLogs(data.recentActivities);
+              }
+            }
+          } catch (error) {
+            console.error('Error loading dashboard stats:', error);
+            showError('Gagal memuat data dashboard');
+          }
+        }
 
-    if (!transactions || transactions.length === 0) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="3" class="py-8 text-center text-gray-400">
-            <i class="fas fa-inbox text-4xl mb-2"></i>
-            <p>Belum ada transaksi</p>
+        function animateValue(id, start, end, duration, isCurrency = false) {
+          const obj = document.getElementById(id);
+          let startTimestamp = null;
+
+          const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const value = Math.floor(progress * (end - start) + start);
+
+            if (isCurrency) {
+              obj.textContent = 'Rp ' + value.toLocaleString('id-ID');
+            } else {
+              obj.textContent = value;
+            }
+
+            if (progress < 1) {
+              window.requestAnimationFrame(step);
+            }
+          };
+
+          window.requestAnimationFrame(step);
+        }
+
+        function loadTransactions(transactions) {
+          const tbody = document.getElementById('transactionsTableBody');
+
+          if (!transactions || transactions.length === 0) {
+            tbody.innerHTML = `
+        <tr style="height:320px;">
+          <td colspan="3" class="px-6 text-center h-full align-middle">
+            <div class="flex flex-col items-center justify-center min-h-[300px] h-full w-full">
+              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-inbox text-green-600 text-xl"></i>
+              </div>
+              <p class="text-gray-600 font-medium">Belum ada transaksi</p>
+              <p class="text-sm text-gray-500 mt-2">Transaksi akan muncul di sini</p>
+            </div>
           </td>
         </tr>
       `;
-      return;
-    }
+            return;
+          }
 
-    tbody.innerHTML = transactions.map(t => {
-      const statusClass = {
-        'pending': 'bg-yellow-100 text-yellow-800',
-        'completed': 'bg-green-100 text-green-800',
-        'rejected': 'bg-red-100 text-red-800'
-      }[t.status] || 'bg-gray-100 text-gray-800';
+          tbody.innerHTML = transactions.map((t, index) => {
+            const statusClass = {
+              'pending': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+              'completed': 'bg-green-100 text-green-800 border-green-200',
+              'rejected': 'bg-red-100 text-red-800 border-red-200',
+              'processing': 'bg-blue-100 text-blue-800 border-blue-200'
+            }[t.status] || 'bg-gray-100 text-gray-800 border-gray-200';
 
-      return `
-        <tr class="border-b border-gray-50 hover:bg-gray-50">
-          <td class="py-3">
-            <div class="font-medium text-gray-900">${t.customer_name || 'Unknown'}</div>
-            <div class="text-sm text-gray-500">${t.affiliate_name || 'No Affiliate'}</div>
+            const amount = parseInt(t.total_amount || 0);
+            const isHighValue = amount > 1000000;
+
+            return `
+        <tr class="hover:bg-green-50 transition-colors data-cell" style="animation-delay: ${index * 50}ms">
+          <td class="py-4 px-6">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-user text-green-600"></i>
+              </div>
+              <div>
+                <div class="font-medium text-gray-900">${t.customer_name || 'Unknown'}</div>
+                <div class="text-sm text-gray-500">${t.affiliate_name || 'No Affiliate'}</div>
+              </div>
+            </div>
           </td>
-          <td class="py-3">
-            <div class="font-medium text-gray-900">Rp ${parseInt(t.total_amount).toLocaleString('id-ID')}</div>
+          <td class="py-4 px-6">
+            <div class="flex flex-col">
+              <span class="font-bold ${isHighValue ? 'text-green-700 text-lg' : 'text-gray-900'}">
+                Rp ${amount.toLocaleString('id-ID')}
+              </span>
+              <span class="text-xs text-gray-500">${new Date(t.created_at).toLocaleDateString('id-ID')}</span>
+            </div>
           </td>
-          <td class="py-3">
-            <span class="px-2 py-1 rounded-full text-xs font-medium ${statusClass}">
-              ${t.status}
+          <td class="py-4 px-6">
+            <span class="px-3 py-1.5 rounded-full text-xs font-medium border ${statusClass} status-badge">
+              <i class="fas fa-circle text-xs mr-1.5"></i>
+              ${t.status.toUpperCase()}
             </span>
           </td>
         </tr>
       `;
-    }).join('');
-  }
+          }).join('');
+        }
 
-  function loadActivityLogs(activities) {
-    const container = document.getElementById('activityLogsBody');
+        function loadActivityLogs(activities) {
+          const container = document.getElementById('activityLogsBody');
 
-    if (!activities || activities.length === 0) {
-      container.innerHTML = `
-        <div class="py-8 text-center text-gray-400">
-          <i class="fas fa-inbox text-4xl mb-2"></i>
-          <p>Belum ada aktivitas</p>
+          if (!activities || activities.length === 0) {
+            container.innerHTML = `
+        <div class="py-12 px-6 text-center">
+          <div class="flex flex-col items-center justify-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+              <i class="fas fa-inbox text-green-600 text-xl"></i>
+            </div>
+            <p class="text-gray-600 font-medium">Belum ada aktivitas</p>
+            <p class="text-sm text-gray-500 mt-2">Aktivitas akan muncul di sini</p>
+          </div>
         </div>
       `;
-      return;
-    }
+            return;
+          }
 
-    const actionIcons = {
-      'affiliate_approved': 'fa-user-check text-green-500',
-      'affiliate_rejected': 'fa-user-times text-red-500',
-      'affiliate_registration': 'fa-user-plus text-blue-500',
-      'event_created': 'fa-calendar-plus text-purple-500',
-      'login': 'fa-sign-in-alt text-gray-500'
-    };
+          const actionConfig = {
+            'affiliate_approved': { icon: 'fa-user-check', color: 'text-green-500', bg: 'bg-green-100' },
+            'affiliate_rejected': { icon: 'fa-user-times', color: 'text-red-500', bg: 'bg-red-100' },
+            'affiliate_registration': { icon: 'fa-user-plus', color: 'text-blue-500', bg: 'bg-blue-100' },
+            'event_created': { icon: 'fa-calendar-plus', color: 'text-purple-500', bg: 'bg-purple-100' },
+            'login': { icon: 'fa-sign-in-alt', color: 'text-gray-500', bg: 'bg-gray-100' },
+            'transaction': { icon: 'fa-dollar-sign', color: 'text-amber-500', bg: 'bg-amber-100' },
+            'update': { icon: 'fa-sync-alt', color: 'text-indigo-500', bg: 'bg-indigo-100' }
+          };
 
-    container.innerHTML = activities.map(a => `
-      <div class="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50">
-        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-          <i class="fas ${actionIcons[a.action] || 'fa-bell text-gray-500'} text-sm"></i>
+          container.innerHTML = activities.map((a, index) => {
+            const config = actionConfig[a.action] || { icon: 'fa-bell', color: 'text-gray-500', bg: 'bg-gray-100' };
+
+            return `
+        <div class="p-4 border-b border-green-50 hover:bg-green-50 transition-all duration-200" style="animation-delay: ${index * 50}ms">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 ${config.bg} rounded-xl flex items-center justify-center flex-shrink-0">
+              <i class="fas ${config.icon} ${config.color}"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-900">${a.description}</p>
+              <div class="flex items-center gap-3 mt-2">
+                <span class="text-xs text-gray-500 flex items-center gap-1">
+                  <i class="fas fa-user"></i>
+                  ${a.user_name || 'System'}
+                </span>
+                <span class="text-xs text-gray-500 flex items-center gap-1">
+                  <i class="fas fa-clock"></i>
+                  ${new Date(a.created_at).toLocaleString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                </span>
+              </div>
+            </div>
+            <div class="text-xs text-gray-400">
+              ${new Date(a.created_at).toLocaleDateString('id-ID')}
+            </div>
+          </div>
         </div>
-        <div class="flex-1 min-w-0">
-          <p class="text-sm font-medium text-gray-900">${a.description}</p>
-          <p class="text-xs text-gray-500 mt-1">
-            ${a.user_name || 'System'} • ${new Date(a.created_at).toLocaleString('id-ID')}
-          </p>
+      `;
+          }).join('');
+        }
+
+        function showError(message) {
+          const statsContainer = document.getElementById('statsContainer');
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'col-span-4';
+          errorDiv.innerHTML = `
+      <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+            <i class="fas fa-exclamation-triangle text-red-600"></i>
+          </div>
+          <div>
+            <p class="text-red-700 font-medium">${message}</p>
+            <p class="text-red-600 text-sm mt-1">Coba refresh halaman atau hubungi support</p>
+          </div>
         </div>
       </div>
-    `).join('');
-  }
+    `;
+          statsContainer.insertBefore(errorDiv, statsContainer.firstChild);
+        }
 
-  // Load stats on page load
-  document.addEventListener('DOMContentLoaded', loadDashboardStats);
-</script>
-    </div>
-  </main>
+        // Load stats on page load
+        document.addEventListener('DOMContentLoaded', () => {
+          loadDashboardStats();
+
+          // Auto-refresh every 30 seconds
+          setInterval(loadDashboardStats, 30000);
+        });
+      </script>
 </body>
+
 </html>

@@ -1,203 +1,882 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Affiliates Management - Admin</title>
+  <title>Affiliates Management - Affillink Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .gradient-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .gradient-secondary {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    }
+
+    .gradient-accent {
+      background: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%);
+    }
+
+    .gradient-dark {
+      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(5, 150, 105, 0.1), 0 10px 10px -5px rgba(5, 150, 105, 0.04);
+    }
+
+    .modal-overlay {
+      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .success-badge {
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .user-avatar {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .tab-active {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.1);
+    }
+
+    .tab-inactive {
+      background: white;
+      color: #4b5563;
+      border: 1px solid #d1fae5;
+    }
+
+    .status-badge {
+      transition: all 0.2s ease;
+    }
+
+    .status-badge:hover {
+      transform: scale(1.05);
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
+
+<body class="bg-gradient-to-br from-emerald-50 to-green-50 min-h-screen">
   <%- include('../navbar/navbar.ejs', { name: 'Admin' }) %>
-  <%- include('../sidebar/admin.ejs') %>
+    <%- include('../sidebar/admin.ejs') %>
 
-  <main class="ml-64 pt-16 min-h-screen">
-    <div class="p-6">
-      <div class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Affiliates Management</h1>
-        <p class="text-gray-600 mt-1">Approve atau reject pendaftaran affiliate</p>
-      </div>
+      <main class="ml-64 pt-16 min-h-screen pb-8">
+        <div class="p-6">
+          <!-- Page Header -->
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+            <div class="mb-4 md:mb-0">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-user-tie text-white text-xl"></i>
+                </div>
+                <div>
+                  <h1 class="text-3xl font-bold text-gray-900">Affiliates Management</h1>
+                  <p class="text-gray-600 mt-1">Kelola pendaftaran dan status affiliate Affillink</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="hidden md:block px-4 py-2 bg-white rounded-lg shadow-sm border border-green-100">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-calendar-alt text-green-600"></i>
+                  <span class="text-sm font-medium text-gray-700">
+                    <%= new Date().toLocaleDateString('id-ID', { weekday: 'long' , year: 'numeric' , month: 'long' ,
+                      day: 'numeric' }) %>
+                  </span>
+                </div>
+              </div>
+              <div class="px-4 py-2 gradient-primary rounded-lg shadow-lg text-white pulse-animation">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-bell"></i>
+                  <span class="text-sm font-medium">Update Real-time</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <!-- Tabs -->
-      <div class="mb-6">
-        <div class="flex gap-2 border-b">
-          <button onclick="loadAffiliates('pending')" id="tabPending" class="px-4 py-2 border-b-2 border-yellow-500 text-yellow-600 font-medium">
-            Pending (<span id="pendingCount">-</span>)
-          </button>
-          <button onclick="loadAffiliates('all')" id="tabAll" class="px-4 py-2 border-b-2 border-transparent text-gray-600 font-medium hover:text-gray-800">
-            All Affiliates
-          </button>
+          <!-- Stats Cards - Hanya 3 cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Total Affiliates</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2" id="totalAffiliates">-</p>
+                </div>
+                <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-user-tie text-white text-2xl"></i>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-green-50">
+                <div class="flex items-center gap-2 text-sm">
+                  <span class="text-green-600 font-medium flex items-center">
+                    <i class="fas fa-chart-line mr-1"></i>
+                    <span id="affiliateGrowth">+15%</span>
+                  </span>
+                  <span class="text-gray-500">this month</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Pending Approval</p>
+                  <p class="text-3xl font-bold text-yellow-600 mb-2" id="pendingAffiliates">-</p>
+                </div>
+                <div
+                  class="w-14 h-14 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-clock text-white text-2xl"></i>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-green-50">
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-gray-600">Needs review</span>
+                  <span class="font-medium text-yellow-700" id="pendingNow">-</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Approved Affiliates</p>
+                  <p class="text-3xl font-bold text-green-600 mb-2" id="approvedAffiliates">-</p>
+                </div>
+                <div class="w-14 h-14 gradient-secondary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-check-circle text-white text-2xl"></i>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-green-50">
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-gray-600">Active now</span>
+                  <span class="font-medium text-green-700" id="activeNow">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabs -->
+          <div class="glass-card rounded-2xl p-6 border border-green-100 mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <!-- Tabs Navigation -->
+              <div class="flex gap-2 overflow-x-auto pb-2">
+                <button onclick="loadAffiliates('pending')" id="tabPending"
+                  class="px-6 py-3 rounded-xl font-semibold flex items-center gap-2 tab-active transition-all">
+                  <i class="fas fa-clock"></i>
+                  <span>Pending Approval</span>
+                  <span class="bg-white/30 px-2 py-0.5 rounded-full text-sm" id="pendingCount">-</span>
+                </button>
+                <button onclick="loadAffiliates('approved')" id="tabApproved"
+                  class="px-6 py-3 rounded-xl font-semibold flex items-center gap-2 tab-inactive hover:bg-green-50 transition-all">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Approved</span>
+                  <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-sm" id="approvedCount">-</span>
+                </button>
+                <button onclick="loadAffiliates('rejected')" id="tabRejected"
+                  class="px-6 py-3 rounded-xl font-semibold flex items-center gap-2 tab-inactive hover:bg-green-50 transition-all">
+                  <i class="fas fa-times-circle"></i>
+                  <span>Rejected</span>
+                  <span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-sm" id="rejectedCount">-</span>
+                </button>
+                <button onclick="loadAffiliates('all')" id="tabAll"
+                  class="px-6 py-3 rounded-xl font-semibold flex items-center gap-2 tab-inactive hover:bg-green-50 transition-all">
+                  <i class="fas fa-users"></i>
+                  <span>All Affiliates</span>
+                </button>
+              </div>
+
+              <!-- Search and Filter -->
+              <div class="flex flex-wrap gap-4">
+                <div class="relative">
+                  <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <input type="text" id="searchInput" placeholder="Search affiliates..."
+                    class="pl-12 pr-4 py-3 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm min-w-[250px]">
+                </div>
+
+                <button onclick="clearFilters()"
+                  class="px-4 py-3 border border-green-200 text-green-700 hover:bg-green-50 rounded-xl transition-colors flex items-center gap-2">
+                  <i class="fas fa-redo"></i>
+                  <span class="font-medium">Clear</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Affiliates Grid -->
+          <div id="affiliatesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="col-span-full text-center py-12 text-gray-400">
+              <div class="flex flex-col items-center">
+                <div
+                  class="w-16 h-16 gradient-primary rounded-full flex items-center justify-center mb-4 animate-pulse">
+                  <i class="fas fa-spinner fa-spin text-2xl text-white"></i>
+                </div>
+                <p class="text-lg font-medium">Loading affiliates...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Approval Modal -->
+      <div id="approvalModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden flex flex-col">
+          <!-- Modal Header -->
+          <div class="gradient-primary px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                <i class="fas fa-user-check text-white"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white" id="modalTitle">Approve Affiliate</h3>
+                <p class="text-green-100 text-sm mt-1">Review affiliate application</p>
+              </div>
+            </div>
+            <button onclick="closeApprovalModal()"
+              class="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-colors">
+              <i class="fas fa-times text-white"></i>
+            </button>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="p-6 overflow-y-auto flex-1 scrollbar-hide">
+            <div id="modalContent">
+              <!-- Content will be loaded dynamically -->
+            </div>
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 flex gap-4">
+            <button onclick="closeApprovalModal()"
+              class="flex-1 bg-gray-200 text-gray-700 py-3.5 rounded-xl hover:bg-gray-300 transition-all font-semibold flex items-center justify-center gap-2">
+              <i class="fas fa-times"></i>
+              Cancel
+            </button>
+            <div class="flex gap-2">
+              <button onclick="rejectAffiliate()"
+                class="px-6 py-3.5 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all font-semibold flex items-center justify-center gap-2">
+                <i class="fas fa-times"></i>
+                Reject
+              </button>
+              <button onclick="approveAffiliate()"
+                class="px-6 py-3.5 gradient-primary text-white rounded-xl hover:opacity-90 transition-all font-semibold flex items-center justify-center gap-2">
+                <i class="fas fa-check"></i>
+                Approve
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Affiliates Table -->
-      <div class="bg-white rounded-lg shadow-sm">
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Affiliate</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Applied Date</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="affiliatesTableBody" class="divide-y divide-gray-200">
-              <tr>
-                <td colspan="5" class="px-6 py-12 text-center text-gray-400">
-                  <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
-                  <p>Loading...</p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      <!-- Success Notification -->
+      <div id="successNotification"
+        class="fixed top-6 right-6 bg-green-500 text-white px-6 py-4 rounded-xl shadow-lg z-50 hidden success-badge">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+            <i class="fas fa-check"></i>
+          </div>
+          <div>
+            <p class="font-semibold" id="successMessage"></p>
+            <p class="text-green-100 text-sm mt-1">Action completed successfully</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Notification -->
+      <div id="errorNotification"
+        class="fixed top-6 right-6 bg-red-500 text-white px-6 py-4 rounded-xl shadow-lg z-50 hidden success-badge">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div>
+            <p class="font-semibold" id="errorMessage"></p>
+            <p class="text-red-100 text-sm mt-1">Please try again</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Affiliate Detail Modal -->
+      <div id="affiliateDetailModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto flex flex-col relative">
+          <button onclick="closeAffiliateDetailModal()" class="absolute top-4 right-4 w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors z-10">
+            <i class="fas fa-times text-gray-600"></i>
+          </button>
+          <div class="p-8" id="affiliateDetailContent">
+            <!-- Content populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <script>
+        let allAffiliates = [];
+        let currentFilter = 'pending';
+        let selectedUserId = null;
+
+        async function loadAffiliates(filter = 'pending') {
+          currentFilter = filter;
+          try {
+            let url = '/api/admin/users';
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.success) {
+              // Filter users who are affiliates
+              allAffiliates = data.data.filter(u => u.affiliate_status && u.affiliate_status !== 'inactive');
+
+              // Update stats
+              updateStats(allAffiliates);
+
+              // Filter based on current tab
+              const filtered = allAffiliates.filter(affiliate => {
+                if (filter === 'all') return true;
+                if (filter === 'pending') return affiliate.affiliate_status === 'pending';
+                if (filter === 'approved') return affiliate.affiliate_status === 'approved';
+                if (filter === 'rejected') return affiliate.affiliate_status === 'rejected';
+                return true;
+              });
+
+              displayAffiliates(filtered);
+              updateTabStyles(filter);
+            }
+          } catch (error) {
+            console.error('Error loading affiliates:', error);
+            showError('Failed to load affiliates');
+          }
+        }
+
+        function updateStats(affiliates) {
+          const total = affiliates.length;
+          const pending = affiliates.filter(a => a.affiliate_status === 'pending').length;
+          const approved = affiliates.filter(a => a.affiliate_status === 'approved').length;
+          const rejected = affiliates.filter(a => a.affiliate_status === 'rejected').length;
+
+          document.getElementById('totalAffiliates').textContent = total;
+          document.getElementById('pendingAffiliates').textContent = pending;
+          document.getElementById('approvedAffiliates').textContent = approved;
+
+          // Update tab counts
+          document.getElementById('pendingCount').textContent = pending;
+          document.getElementById('approvedCount').textContent = approved;
+          document.getElementById('rejectedCount').textContent = rejected;
+
+          document.getElementById('pendingNow').textContent = pending;
+          document.getElementById('activeNow').textContent = approved;
+        }
+
+        function displayAffiliates(affiliates) {
+          const container = document.getElementById('affiliatesContainer');
+
+          if (!affiliates || affiliates.length === 0) {
+            container.innerHTML = `
+          <div class="col-span-full text-center py-16">
+            <div class="flex flex-col items-center">
+              <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+                <i class="fas fa-user-tie text-4xl text-gray-300"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-700 mb-2">No Affiliates Found</h3>
+              <p class="text-gray-500 max-w-md mx-auto">No affiliates match your current filter.</p>
+              ${currentFilter !== 'all' ? `
+                <button onclick="loadAffiliates('all')" class="mt-6 px-6 py-3 gradient-primary text-white rounded-xl hover:opacity-90 transition-all font-semibold flex items-center gap-2">
+                  <i class="fas fa-eye"></i>
+                  View All Affiliates
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+            return;
+          }
+
+          container.innerHTML = affiliates.map(affiliate => {
+            const statusConfig = {
+              'pending': { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: 'fas fa-clock', badge: 'Pending', highlight: true },
+              'approved': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fas fa-check-circle', badge: 'Approved' },
+              'rejected': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle', badge: 'Rejected' }
+            }[affiliate.affiliate_status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-user', badge: 'Unknown' };
+
+            const userStatusConfig = {
+              'active': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fas fa-check-circle' },
+              'inactive': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle' }
+            }[affiliate.status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-user' };
+
+            const joinDate = affiliate.created_at ? new Date(affiliate.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+
+            return `
+          <div class="card-hover bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group ${statusConfig.highlight ? 'border-l-4 border-l-yellow-500' : ''}">
+            <!-- Header with avatar -->
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 user-avatar rounded-full flex items-center justify-center text-white font-bold text-lg">
+                  ${affiliate.name.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <h3 class="font-bold text-lg text-gray-900">${affiliate.name}</h3>
+                  <div class="flex items-center gap-1 text-sm text-gray-500 mt-1">
+                    <i class="fas fa-envelope text-gray-400"></i>
+                    <span class="truncate max-w-[150px]">${affiliate.email}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                ${affiliate.affiliate_status === 'pending' ? `
+                  <button onclick="showApprovalModal(${affiliate.id})" class="w-9 h-9 rounded-lg bg-green-50 text-green-600 hover:bg-green-100 transition-colors flex items-center justify-center" title="Review">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                ` : ''}
+                <button onclick="viewAffiliate(${affiliate.id})" class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors flex items-center justify-center" title="View">
+                  <i class="fas fa-external-link-alt"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6">
+              <div class="space-y-4">
+                <!-- Status Badges -->
+                <div class="flex flex-wrap gap-2">
+                  <span class="px-3 py-1.5 rounded-full text-xs font-semibold ${statusConfig.bg} ${statusConfig.text} flex items-center gap-2 status-badge">
+                    <i class="${statusConfig.icon}"></i>
+                    ${statusConfig.badge}
+                  </span>
+                  <span class="px-3 py-1.5 rounded-full text-xs font-semibold ${userStatusConfig.bg} ${userStatusConfig.text} flex items-center gap-2">
+                    <i class="${userStatusConfig.icon}"></i>
+                    ${affiliate.status.charAt(0).toUpperCase() + affiliate.status.slice(1)}
+                  </span>
+                </div>
+
+                <!-- Details -->
+                <div class="space-y-3 text-sm">
+                  <div class="flex items-center justify-between">
+                    <span class="text-gray-500 flex items-center gap-1">
+                      <i class="fas fa-id-card text-gray-400"></i>
+                      User ID
+                    </span>
+                    <span class="font-semibold text-gray-900">#${affiliate.id}</span>
+                  </div>
+                  
+                  <div class="flex items-center justify-between">
+                    <span class="text-gray-500 flex items-center gap-1">
+                      <i class="fas fa-calendar-plus text-gray-400"></i>
+                      Applied Date
+                    </span>
+                    <span class="font-medium text-gray-900">${joinDate}</span>
+                  </div>
+
+                  ${affiliate.referral_code ? `
+                    <div class="flex items-center justify-between">
+                      <span class="text-gray-500 flex items-center gap-1">
+                        <i class="fas fa-link text-gray-400"></i>
+                        Referral Code
+                      </span>
+                      <span class="font-medium text-gray-900 bg-gray-100 px-2 py-1 rounded">${affiliate.referral_code}</span>
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer with actions -->
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+              ${affiliate.affiliate_status === 'pending' ? `
+                <div class="flex gap-3">
+                  <button onclick="approveAffiliate(${affiliate.id})" class="flex-1 text-sm font-semibold text-white bg-green-600 hover:bg-green-700 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-check"></i>
+                    Approve
+                  </button>
+                  <button onclick="rejectAffiliate(${affiliate.id})" class="flex-1 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-times"></i>
+                    Reject
+                  </button>
+                </div>
+              ` : `
+                <div class="flex justify-between text-sm text-gray-600">
+                  <span class="flex items-center gap-2">
+                    <i class="fas fa-info-circle text-gray-400"></i>
+                    Status: ${affiliate.affiliate_status}
+                  </span>
+                  <button onclick="showApprovalModal(${affiliate.id})" class="text-green-600 hover:text-green-800 font-medium">
+                    <i class="fas fa-edit mr-1"></i>
+                    Edit Status
+                  </button>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+          }).join('');
+        }
+
+        function updateTabStyles(activeFilter) {
+          const tabs = ['pending', 'approved', 'rejected', 'all'];
+          tabs.forEach(tab => {
+            const tabElement = document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+            if (tabElement) {
+              if (tab === activeFilter) {
+                tabElement.classList.remove('tab-inactive');
+                tabElement.classList.add('tab-active');
+              } else {
+                tabElement.classList.remove('tab-active');
+                tabElement.classList.add('tab-inactive');
+              }
+            }
+          });
+        }
+
+        async function showApprovalModal(userId) {
+          selectedUserId = userId;
+          const affiliate = allAffiliates.find(a => a.id === userId);
+
+          if (affiliate) {
+            document.getElementById('modalTitle').textContent =
+              affiliate.affiliate_status === 'pending' ? 'Review Affiliate Application' : 'Edit Affiliate Status';
+
+            const content = `
+          <div class="space-y-6">
+            <!-- Affiliate Info -->
+            <div class="flex items-center gap-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-200">
+              <div class="w-16 h-16 user-avatar rounded-full flex items-center justify-center text-white font-bold text-xl">
+                ${affiliate.name.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <h4 class="font-bold text-lg text-gray-900">${affiliate.name}</h4>
+                <p class="text-gray-600">${affiliate.email}</p>
+                <p class="text-sm text-gray-500 mt-1">User ID: #${affiliate.id}</p>
+              </div>
+            </div>
+
+            <!-- Current Status -->
+            <div class="bg-gray-50 p-4 rounded-xl">
+              <p class="text-sm font-medium text-gray-700 mb-2">Current Status</p>
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1.5 rounded-full text-xs font-semibold 
+                  ${affiliate.affiliate_status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                affiliate.affiliate_status === 'approved' ? 'bg-green-100 text-green-800' :
+                  'bg-red-100 text-red-800'} 
+                  flex items-center gap-2">
+                  <i class="${affiliate.affiliate_status === 'pending' ? 'fas fa-clock' :
+                affiliate.affiliate_status === 'approved' ? 'fas fa-check-circle' :
+                  'fas fa-times-circle'}"></i>
+                  ${affiliate.affiliate_status.charAt(0).toUpperCase() + affiliate.affiliate_status.slice(1)}
+                </span>
+                <span class="text-xs text-gray-500">
+                  Applied on ${new Date(affiliate.created_at).toLocaleDateString('id-ID')}
+                </span>
+              </div>
+            </div>
+
+            <!-- Notes for Rejection -->
+            <div id="rejectionNotes" class="hidden">
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-comment-alt mr-2 text-red-600"></i>
+                Reason for Rejection
+              </label>
+              <textarea id="rejectionReason" rows="3" 
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all bg-white"
+                placeholder="Please provide a reason for rejecting this application..."></textarea>
+            </div>
+          </div>
+        `;
+
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('approvalModal').classList.remove('hidden');
+            document.getElementById('approvalModal').classList.add('flex');
+            document.body.style.overflow = 'hidden';
+          }
+        }
+
+        function closeApprovalModal() {
+          selectedUserId = null;
+          document.getElementById('approvalModal').classList.add('hidden');
+          document.getElementById('approvalModal').classList.remove('flex');
+          document.body.style.overflow = '';
+        }
+
+        async function approveAffiliate(userId = null) {
+          const id = userId || selectedUserId;
+          if (!id) return;
+
+          const affiliate = allAffiliates.find(a => a.id === id);
+          const affiliateName = affiliate ? affiliate.name : 'this affiliate';
+
+          if (!confirm(`Approve affiliate "${affiliateName}"?`)) return;
+
+          try {
+            const response = await fetch(`/api/admin/affiliates/${id}/approve`, {
+              method: 'PUT'
+            });
+            const data = await response.json();
+
+            if (data.success) {
+              showSuccess('Affiliate approved successfully');
+              closeApprovalModal();
+              loadAffiliates(currentFilter);
+            } else {
+              showError('Failed to approve affiliate: ' + (data.message || 'Unknown error'));
+            }
+          } catch (error) {
+            console.error('Error approving affiliate:', error);
+            showError('Failed to approve affiliate: ' + error.message);
+          }
+        }
+
+        async function rejectAffiliate(userId = null) {
+          const id = userId || selectedUserId;
+          if (!id) return;
+
+          const affiliate = allAffiliates.find(a => a.id === id);
+          const affiliateName = affiliate ? affiliate.name : 'this affiliate';
+
+          // Show rejection notes field
+          const rejectionNotes = document.getElementById('rejectionNotes');
+          if (rejectionNotes.classList.contains('hidden')) {
+            rejectionNotes.classList.remove('hidden');
+            return; // Wait for user to enter reason
+          }
+
+          const reason = document.getElementById('rejectionReason').value.trim();
+          if (!reason) {
+            alert('Please provide a reason for rejection');
+            return;
+          }
+
+          if (!confirm(`Reject affiliate "${affiliateName}"?`)) return;
+
+          try {
+            const response = await fetch(`/api/admin/affiliates/${id}/reject`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ reason })
+            });
+            const data = await response.json();
+
+            if (data.success) {
+              showSuccess('Affiliate rejected successfully');
+              closeApprovalModal();
+              loadAffiliates(currentFilter);
+            } else {
+              showError('Failed to reject affiliate: ' + (data.message || 'Unknown error'));
+            }
+          } catch (error) {
+            console.error('Error rejecting affiliate:', error);
+            showError('Failed to reject affiliate: ' + error.message);
+          }
+        }
+
+        function viewAffiliate(userId) {
+          const affiliate = allAffiliates.find(a => a.id === userId);
+          if (!affiliate) return;
+          // Populate modal content
+          const modal = document.getElementById('affiliateDetailModal');
+          const content = `
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-16 h-16 user-avatar rounded-full flex items-center justify-center text-white font-bold text-2xl">
+        ${affiliate.name.charAt(0).toUpperCase()}
+      </div>
+      <div>
+        <h2 class="font-bold text-2xl text-gray-900 mb-1">${affiliate.name}</h2>
+        <div class="flex items-center gap-2 text-gray-500 text-sm">
+          <i class="fas fa-envelope"></i>
+          <span>${affiliate.email}</span>
+        </div>
+        <div class="flex items-center gap-2 text-gray-500 text-sm mt-1">
+          <i class="fas fa-id-card"></i>
+          <span>User ID: #${affiliate.id}</span>
         </div>
       </div>
     </div>
-  </main>
-
-  <script>
-    async function loadAffiliates(filter = 'pending') {
-      try {
-        const url = filter === 'pending' ? '/api/admin/affiliates/pending' : '/api/admin/users';
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.success) {
-          const affiliates = filter === 'pending' ? data.data : data.data.filter(u => u.affiliate_status && u.affiliate_status !== 'inactive');
-          displayAffiliates(affiliates, filter);
-          updateTabStyles(filter);
+    <div class="space-y-3 text-sm">
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500 flex items-center gap-1">
+          <i class="fas fa-calendar-plus text-gray-400"></i>
+          Applied Date
+        </span>
+        <span class="font-medium text-gray-900">${affiliate.created_at ? new Date(affiliate.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'}</span>
+      </div>
+      ${affiliate.referral_code ? `
+        <div class="flex items-center justify-between">
+          <span class="text-gray-500 flex items-center gap-1">
+            <i class="fas fa-link text-gray-400"></i>
+            Referral Code
+          </span>
+          <span class="font-medium text-gray-900 bg-gray-100 px-2 py-1 rounded">${affiliate.referral_code}</span>
+        </div>
+      ` : ''}
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500 flex items-center gap-1">
+          <i class="fas fa-user-check text-gray-400"></i>
+          Affiliate Status
+        </span>
+        <span class="font-semibold text-gray-900">${affiliate.affiliate_status.charAt(0).toUpperCase() + affiliate.affiliate_status.slice(1)}</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500 flex items-center gap-1">
+          <i class="fas fa-user text-gray-400"></i>
+          User Status
+        </span>
+        <span class="font-semibold text-gray-900">${affiliate.status.charAt(0).toUpperCase() + affiliate.status.slice(1)}</span>
+      </div>
+    </div>
+  `;
+          document.getElementById('affiliateDetailContent').innerHTML = content;
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+          document.body.style.overflow = 'hidden';
         }
-      } catch (error) {
-        console.error('Error loading affiliates:', error);
-      }
-    }
 
-    function updateTabStyles(activeFilter) {
-      const tabPending = document.getElementById('tabPending');
-      const tabAll = document.getElementById('tabAll');
+        function closeAffiliateDetailModal() {
+          const modal = document.getElementById('affiliateDetailModal');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+          document.body.style.overflow = '';
+        }
 
-      if (activeFilter === 'pending') {
-        tabPending.classList.add('border-yellow-500', 'text-yellow-600');
-        tabPending.classList.remove('border-transparent', 'text-gray-600');
-        tabAll.classList.remove('border-yellow-500', 'text-yellow-600');
-        tabAll.classList.add('border-transparent', 'text-gray-600');
-      } else {
-        tabAll.classList.add('border-yellow-500', 'text-yellow-600');
-        tabAll.classList.remove('border-transparent', 'text-gray-600');
-        tabPending.classList.remove('border-yellow-500', 'text-yellow-600');
-        tabPending.classList.add('border-transparent', 'text-gray-600');
-      }
-    }
-
-    function displayAffiliates(affiliates, filter) {
-      const tbody = document.getElementById('affiliatesTableBody');
-
-      if (!affiliates || affiliates.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="5" class="px-6 py-12 text-center text-gray-400">
-              <i class="fas fa-users text-4xl mb-2"></i>
-              <p>No ${filter} affiliates</p>
-            </td>
-          </tr>
-        `;
-        return;
-      }
-
-      tbody.innerHTML = affiliates.map(affiliate => {
-        const statusBadge = {
-          'inactive': 'bg-gray-100 text-gray-800',
-          'pending': 'bg-yellow-100 text-yellow-800',
-          'approved': 'bg-green-100 text-green-800',
-          'rejected': 'bg-red-100 text-red-800'
-        }[affiliate.affiliate_status] || 'bg-gray-100 text-gray-800';
-
-        return `
-          <tr class="hover:bg-gray-50">
-            <td class="px-6 py-4">
-              <div class="flex items-center">
-                <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
-                  ${affiliate.name.charAt(0).toUpperCase()}
-                </div>
-                <div class="font-medium text-gray-900">${affiliate.name}</div>
-              </div>
-            </td>
-            <td class="px-6 py-4 text-gray-600">${affiliate.email}</td>
-            <td class="px-6 py-4">
-              <span class="px-2 py-1 rounded-full text-xs font-medium ${statusBadge}">${affiliate.affiliate_status}</span>
-            </td>
-            <td class="px-6 py-4 text-sm text-gray-500">
-              ${new Date(affiliate.created_at).toLocaleDateString('id-ID')}
-            </td>
-            <td class="px-6 py-4">
-              ${affiliate.affiliate_status === 'pending' ? `
-                <div class="flex gap-2">
-                  <button onclick="approveAffiliate(${affiliate.id})" class="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700">
-                    <i class="fas fa-check mr-1"></i>Approve
-                  </button>
-                  <button onclick="rejectAffiliate(${affiliate.id})" class="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700">
-                    <i class="fas fa-times mr-1"></i>Reject
-                  </button>
-                </div>
-              ` : '-'}
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      // Update pending count
-      const pendingCount = affiliates.filter(a => a.affiliate_status === 'pending').length;
-      document.getElementById('pendingCount').textContent = pendingCount;
-    }
-
-    async function approveAffiliate(userId) {
-      if (!confirm('Approve this affiliate application?')) return;
-
-      try {
-        const response = await fetch(`/api/admin/affiliates/${userId}/approve`, {
-          method: 'PUT'
+        // Search and filter
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(() => {
+            filterAffiliates();
+          }, 300);
         });
-        const data = await response.json();
 
-        if (data.success) {
-          alert('Affiliate approved successfully');
-          loadAffiliates('pending');
-        } else {
-          alert('Failed to approve affiliate');
+        function filterAffiliates() {
+          const search = document.getElementById('searchInput').value.toLowerCase();
+
+          const filtered = allAffiliates.filter(affiliate => {
+            if (currentFilter !== 'all') {
+              if (currentFilter === 'pending' && affiliate.affiliate_status !== 'pending') return false;
+              if (currentFilter === 'approved' && affiliate.affiliate_status !== 'approved') return false;
+              if (currentFilter === 'rejected' && affiliate.affiliate_status !== 'rejected') return false;
+            }
+
+            const matchSearch = search === '' ||
+              affiliate.name.toLowerCase().includes(search) ||
+              affiliate.email.toLowerCase().includes(search) ||
+              (affiliate.referral_code && affiliate.referral_code.toLowerCase().includes(search));
+
+            return matchSearch;
+          });
+
+          displayAffiliates(filtered);
         }
-      } catch (error) {
-        console.error('Error approving affiliate:', error);
-        alert('Failed to approve affiliate');
-      }
-    }
 
-    async function rejectAffiliate(userId) {
-      const reason = prompt('Reason for rejection:');
-      if (!reason) return;
+        function clearFilters() {
+          document.getElementById('searchInput').value = '';
+          filterAffiliates();
+        }
 
-      try {
-        const response = await fetch(`/api/admin/affiliates/${userId}/reject`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ reason })
+        function showSuccess(message) {
+          const notification = document.getElementById('successNotification');
+          document.getElementById('successMessage').textContent = message;
+          notification.classList.remove('hidden');
+
+          setTimeout(() => {
+            notification.classList.add('hidden');
+          }, 3000);
+        }
+
+        function showError(message) {
+          const notification = document.getElementById('errorNotification');
+          document.getElementById('errorMessage').textContent = message;
+          notification.classList.remove('hidden');
+
+          setTimeout(() => {
+            notification.classList.add('hidden');
+          }, 3000);
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            closeApprovalModal();
+            closeAffiliateDetailModal();
+          }
+          if (typeof origKeydown === 'function') origKeydown(e);
         });
-        const data = await response.json();
+        // Close modals on backdrop click
+        // Approval modal already handled
+        // For affiliate detail modal
+        // Wait for DOMContentLoaded to ensure element exists
+        document.addEventListener('DOMContentLoaded', () => {
+          const detailModal = document.getElementById('affiliateDetailModal');
+          if (detailModal) {
+            detailModal.addEventListener('click', (e) => {
+              if (e.target === detailModal) {
+                closeAffiliateDetailModal();
+              }
+            });
+          }
+        });
 
-        if (data.success) {
-          alert('Affiliate rejected successfully');
-          loadAffiliates('pending');
-        } else {
-          alert('Failed to reject affiliate');
-        }
-      } catch (error) {
-        console.error('Error rejecting affiliate:', error);
-        alert('Failed to reject affiliate');
-      }
-    }
+        // Load affiliates on page load
+        document.addEventListener('DOMContentLoaded', () => loadAffiliates('pending'));
 
-    document.addEventListener('DOMContentLoaded', () => loadAffiliates('pending'));
-  </script>
+        // Auto-refresh every 60 seconds
+        setInterval(() => loadAffiliates(currentFilter), 60000);
+      </script>
 </body>
+
 </html>
