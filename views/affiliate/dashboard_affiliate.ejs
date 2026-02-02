@@ -58,9 +58,21 @@
             <div class="flex items-center justify-between mb-4">
               <div>
                 <h2 class="text-lg font-semibold text-gray-900">Lead Terbaru</h2>
-                <p class="text-sm text-gray-500">10 lead terakhir yang terkait dengan referral Anda</p>
+                <p class="text-sm text-gray-500">Menampilkan <%= typeof perPage !== 'undefined' ? perPage : 5 %> lead per halaman</p>
               </div>
-              <div class="text-sm text-gray-500">Total: <span class="font-medium"><%= typeof totalLeads !== 'undefined' ? totalLeads : 0 %></span></div>
+              <div class="flex items-center gap-4">
+                <div class="text-sm text-gray-500">Total: <span class="font-medium"><%= typeof totalLeads !== 'undefined' ? totalLeads : 0 %></span></div>
+                <form method="GET" action="/affiliate/dashboard" class="flex items-center gap-2">
+                  <label class="text-sm text-gray-500">Status:</label>
+                  <select name="status" onchange="this.form.submit()" class="px-2 py-1 border rounded">
+                    <option value="all" <%= (typeof statusFilter === 'undefined' || statusFilter === 'all') ? 'selected' : '' %>>Semua</option>
+                    <option value="pending" <%= statusFilter === 'pending' ? 'selected' : '' %>>pending</option>
+                    <option value="paid" <%= statusFilter === 'paid' ? 'selected' : '' %>>paid</option>
+                    <option value="rejected" <%= statusFilter === 'rejected' ? 'selected' : '' %>>rejected</option>
+                  </select>
+                  <input type="hidden" name="page" value="1">
+                </form>
+              </div>
             </div>
 
             <div class="overflow-x-auto">
@@ -100,6 +112,28 @@
                   <% } %>
                 </tbody>
               </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-4 flex items-center justify-between">
+              <div class="text-sm text-gray-600">Halaman <%= currentPage %> dari <%= totalPages %></div>
+              <div class="flex items-center gap-2">
+                <% const baseUrl = '/affiliate/dashboard'; %>
+                <% const sf = typeof statusFilter !== 'undefined' ? statusFilter : 'all'; %>
+                <% if (currentPage > 1) { %>
+                  <a href="<%= baseUrl %>?page=<%= currentPage - 1 %>&status=<%= sf %>" class="px-3 py-1 bg-gray-100 rounded">&laquo; Prev</a>
+                <% } %>
+                <% for (let p = 1; p <= totalPages; p++) { %>
+                  <% if (p === currentPage) { %>
+                    <span class="px-3 py-1 bg-purple-600 text-white rounded"><%= p %></span>
+                  <% } else { %>
+                    <a href="<%= baseUrl %>?page=<%= p %>&status=<%= sf %>" class="px-3 py-1 bg-gray-100 rounded"><%= p %></a>
+                  <% } %>
+                <% } %>
+                <% if (currentPage < totalPages) { %>
+                  <a href="<%= baseUrl %>?page=<%= currentPage + 1 %>&status=<%= sf %>" class="px-3 py-1 bg-gray-100 rounded">Next &raquo;</a>
+                <% } %>
+              </div>
             </div>
           </div>
 
@@ -169,6 +203,87 @@
           </div>
         </div>
 
+        <!-- History: >7 days (paid & rejected) -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mt-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h4 class="text-lg font-semibold text-gray-900">Riwayat (lebih dari 7 hari)</h4>
+              <p class="text-sm text-gray-500">Menampilkan transaksi berstatus paid atau rejected lebih dari 7 hari lalu</p>
+            </div>
+            <div class="flex items-center gap-4">
+              <form method="GET" action="/affiliate/dashboard" class="flex items-center gap-2">
+                <label class="text-sm text-gray-500">Status:</label>
+                <select name="historyStatus" onchange="this.form.submit()" class="px-2 py-1 border rounded">
+                  <option value="all" <%= (typeof historyFilter === 'undefined' || historyFilter === 'all') ? 'selected' : '' %>>Semua</option>
+                  <option value="paid" <%= historyFilter === 'paid' ? 'selected' : '' %>>paid</option>
+                  <option value="rejected" <%= historyFilter === 'rejected' ? 'selected' : '' %>>rejected</option>
+                </select>
+                <input type="hidden" name="historyPage" value="1">
+              </form>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm divide-y divide-gray-100">
+              <thead>
+                <tr class="text-gray-500">
+                  <th class="py-2 font-medium">Nama</th>
+                  <th class="py-2 font-medium">Email</th>
+                  <th class="py-2 font-medium">WhatsApp</th>
+                  <th class="py-2 font-medium">Event</th>
+                  <th class="py-2 font-medium">Status</th>
+                  <th class="py-2 font-medium">Tanggal</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                <% if (Array.isArray(history) && history.length > 0) { history.forEach(function(h){ %>
+                  <tr class="hover:bg-gray-50">
+                    <td class="py-3"><%= h.name || '-' %></td>
+                    <td class="py-3"><%= h.email || '-' %></td>
+                    <td class="py-3"><%= h.phone || '-' %></td>
+                    <td class="py-3"><%= h.event_title || '-' %></td>
+                    <td class="py-3">
+                      <% if (h.payment_status === 'pending') { %>
+                        <span class="inline-block px-2 py-0.5 rounded text-yellow-700 bg-yellow-100">pending</span>
+                      <% } else if (h.payment_status === 'paid') { %>
+                        <span class="inline-block px-2 py-0.5 rounded text-green-700 bg-green-100">paid</span>
+                      <% } else { %>
+                        <span class="inline-block px-2 py-0.5 rounded text-red-700 bg-red-100"><%= h.payment_status %></span>
+                      <% } %>
+                    </td>
+                    <td class="py-3"><%= h.created_at ? new Date(h.created_at).toLocaleString() : '-' %></td>
+                  </tr>
+                <% }) } else { %>
+                  <tr>
+                    <td class="py-8 text-center text-gray-400" colspan="6">Belum ada riwayat.</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination for history -->
+          <div class="mt-4 flex items-center justify-between">
+            <div class="text-sm text-gray-600">Halaman <%= historyPage %> dari <%= historyTotalPages %></div>
+            <div class="flex items-center gap-2">
+              <% const baseUrlHist = '/affiliate/dashboard'; %>
+              <% const hf = typeof historyFilter !== 'undefined' ? historyFilter : 'all'; %>
+              <% if (historyPage > 1) { %>
+                <a href="<%= baseUrlHist %>?historyPage=<%= historyPage - 1 %>&historyStatus=<%= hf %>" class="px-3 py-1 bg-gray-100 rounded">&laquo; Prev</a>
+              <% } %>
+              <% for (let p = 1; p <= historyTotalPages; p++) { %>
+                <% if (p === historyPage) { %>
+                  <span class="px-3 py-1 bg-purple-600 text-white rounded"><%= p %></span>
+                <% } else { %>
+                  <a href="<%= baseUrlHist %>?historyPage=<%= p %>&historyStatus=<%= hf %>" class="px-3 py-1 bg-gray-100 rounded"><%= p %></a>
+                <% } %>
+              <% } %>
+              <% if (historyPage < historyTotalPages) { %>
+                <a href="<%= baseUrlHist %>?historyPage=<%= historyPage + 1 %>&historyStatus=<%= hf %>" class="px-3 py-1 bg-gray-100 rounded">Next &raquo;</a>
+              <% } %>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>

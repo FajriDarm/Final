@@ -1,13 +1,16 @@
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-require('dotenv').config();
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Import middleware
-const { authMiddlewarePage, checkAlreadyLoggedIn } = require('./middleware/auth');
+const {
+  authMiddlewarePage,
+  checkAlreadyLoggedIn,
+} = require("./middleware/auth");
 
 // Middleware
 app.use(express.json());
@@ -15,87 +18,98 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // View engine
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 // Static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   // Capture affiliate tracking parameters from URL
   const { ref, event } = req.query;
 
   // Store in cookies for tracking (30 days expiry)
   if (ref) {
-    res.cookie('affiliate_ref', ref, {
+    res.cookie("affiliate_ref", ref, {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-      httpOnly: true
+      httpOnly: true,
     });
   }
 
   if (event) {
-    res.cookie('event_slug', event, {
+    res.cookie("event_slug", event, {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-      httpOnly: true
+      httpOnly: true,
     });
   }
 
-  res.render('LandingPage', {
-    title: 'Home',
+  res.render("LandingPage", {
+    title: "Home",
     affiliateRef: ref || null,
-    eventSlug: event || null
+    eventSlug: event || null,
   });
 });
 
 // Auth Routes (Pages)
-app.get('/login', checkAlreadyLoggedIn, (req, res) => {
+app.get("/login", checkAlreadyLoggedIn, (req, res) => {
   // Preserve tracking params if redirecting
   const { ref, event } = req.query;
-  res.render('login', { trackingRef: ref, trackingEvent: event });
+  res.render("login", { trackingRef: ref, trackingEvent: event });
 });
 
-app.get('/register', checkAlreadyLoggedIn, (req, res) => {
+app.get("/register", checkAlreadyLoggedIn, (req, res) => {
   // Get tracking info from cookies or URL params
   const ref = req.query.ref || req.cookies.affiliate_ref;
   const event = req.query.event || req.cookies.event_slug;
 
-  res.render('register', {
+  res.render("register", {
     trackingRef: ref || null,
-    trackingEvent: event || null
+    trackingEvent: event || null,
   });
 });
 
-app.get('/profile', authMiddlewarePage, (req, res) => {
-  res.render('profile', { user: req.user, title: 'Profil', activePage: 'profile' });
+app.get("/profile", authMiddlewarePage, (req, res) => {
+  res.render("profile", {
+    user: req.user,
+    title: "Profil",
+    activePage: "profile",
+  });
 });
 
-
-app.get('/settings', authMiddlewarePage, (req, res) => {
-  res.render('settings', { user: req.user, title: 'Pengaturan', activePage: 'settings' });
+app.get("/settings", authMiddlewarePage, (req, res) => {
+  res.render("settings", {
+    user: req.user,
+    title: "Pengaturan",
+    activePage: "settings",
+  });
 });
 
 // Endpoint untuk ganti password dari halaman settings
-const authController = require('./controllers/authController');
-app.post('/settings/change-password', authMiddlewarePage, authController.changePassword);
+const authController = require("./controllers/authController");
+app.post(
+  "/settings/change-password",
+  authMiddlewarePage,
+  authController.changePassword,
+);
 
-app.post('/logout', authMiddlewarePage, (req, res) => {
-  res.clearCookie('token');
-  res.redirect('/login');
+app.post("/logout", authMiddlewarePage, (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/login");
 });
 
-app.get('/dashboard', authMiddlewarePage, (req, res) => {
+app.get("/dashboard", authMiddlewarePage, (req, res) => {
   const role = req.user.role;
-  if (role === 'super_admin') {
-    res.redirect('/dashboard_admin');
-  } else if (role === 'sales') {
-    res.redirect('/dashboard_sales');
-  } else if (role === 'finance') {
-    res.redirect('/dashboard_finance');
-  } else if (role === 'affiliate') {
-    res.redirect('/affiliate/dashboard');
+  if (role === "super_admin") {
+    res.redirect("/dashboard_admin");
+  } else if (role === "sales") {
+    res.redirect("/dashboard_sales");
+  } else if (role === "finance") {
+    res.redirect("/dashboard_finance");
+  } else if (role === "affiliate") {
+    res.redirect("/affiliate/dashboard");
   } else {
-    res.redirect('/profile');
+    res.redirect("/profile");
   }
 });
 
@@ -106,9 +120,17 @@ app.use("/api/auth", authRoutes);
 const adminRoutes = require("./routes/adminRoutes");
 app.use("/api/admin", adminRoutes);
 
+// Public API routes (landing page usage)
+const publicRoutes = require("./routes/publicRoutes");
+app.use("/api", publicRoutes);
+
 const affiliateRoutes = require("./routes/affiliateRoutes");
 app.use("/affiliate", affiliateRoutes);
 const authMiddleware = require("./middleware/auth");
+
+// Public transaction routes (landing page form)
+const transactionsRoutes = require("./routes/transactionsRoutes");
+app.use("/", transactionsRoutes);
 
 // Legacy/public-facing route for older links or redirects
 app.get("/dashboard_affiliate", authMiddleware, (req, res) => {
@@ -116,37 +138,37 @@ app.get("/dashboard_affiliate", authMiddleware, (req, res) => {
   res.redirect("/affiliate/dashboard");
 });
 
-const salesRoutes = require('./routes/salesRoutes');
-app.use('/sales', salesRoutes);
+const salesRoutes = require("./routes/salesRoutes");
+app.use("/sales", salesRoutes);
 
-const transactionReviewRoutes = require('./routes/transactionReviewRoutes');
-app.use('/sales', transactionReviewRoutes);
+const transactionReviewRoutes = require("./routes/transactionReviewRoutes");
+app.use("/sales", transactionReviewRoutes);
 
-const verifyStage1Routes = require('./routes/verifyStage1Routes');
-app.use('/sales', verifyStage1Routes);
+const verifyStage1Routes = require("./routes/verifyStage1Routes");
+app.use("/sales", verifyStage1Routes);
 
-const verifyStage3Routes = require('./routes/verifyStage3Routes');
-app.use('/sales', verifyStage3Routes);
+const verifyStage3Routes = require("./routes/verifyStage3Routes");
+app.use("/sales", verifyStage3Routes);
 
-const monitoringAffiliateRoutes = require('./routes/monitoringAffiliateRoutes');
-app.use('/sales', monitoringAffiliateRoutes);
+const monitoringAffiliateRoutes = require("./routes/monitoringAffiliateRoutes");
+app.use("/sales", monitoringAffiliateRoutes);
 
-const financeRoutes = require('./routes/financeRoutes');
-app.use('/finance', financeRoutes);
+const financeRoutes = require("./routes/financeRoutes");
+app.use("/finance", financeRoutes);
 
-const paymentVerificationFinanceRoutes = require('./routes/paymentVerificationFinanceRoutes');
-app.use('/finance', paymentVerificationFinanceRoutes);
+const paymentVerificationFinanceRoutes = require("./routes/paymentVerificationFinanceRoutes");
+app.use("/finance", paymentVerificationFinanceRoutes);
 
-const payoutProcessingFinanceRoutes = require('./routes/payoutProcessingFinanceRoutes');
-app.use('/finance', payoutProcessingFinanceRoutes);
+const payoutProcessingFinanceRoutes = require("./routes/payoutProcessingFinanceRoutes");
+app.use("/finance", payoutProcessingFinanceRoutes);
 
 // Dashboard Sales langsung di sini
-const salesController = require('./controllers/salesController');
-app.get('/dashboard_sales', salesController.getSalesDashboard);
+const salesController = require("./controllers/salesController");
+app.get("/dashboard_sales", salesController.getSalesDashboard);
 
 // Dashboard Finance langsung di sini
-const financeController = require('./controllers/financeController');
-app.get('/dashboard_finance', financeController.getFinanceDashboard);
+const financeController = require("./controllers/financeController");
+app.get("/dashboard_finance", financeController.getFinanceDashboard);
 
 // Admin Pages (Protected)
 app.get("/dashboard_admin", (req, res) => {

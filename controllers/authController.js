@@ -147,14 +147,19 @@ const register = async (req, res) => {
           await db.query(
             `INSERT INTO affiliate_referrals (affiliate_id, event_id, referred_user_id, referral_code, created_at)
              VALUES (?, ?, ?, ?, NOW())`,
-            [affiliateId, eventId, newUser.id, affiliateRef]
+            [affiliateId, eventId, newUser.id, affiliateRef],
           );
 
-          console.log(`[Affiliate Tracking] User ${newUser.id} referred by affiliate ${affiliateId} for event ${eventId} with code ${affiliateRef}`);
+          console.log(
+            `[Affiliate Tracking] User ${newUser.id} referred by affiliate ${affiliateId} for event ${eventId} with code ${affiliateRef}`,
+          );
         }
       } catch (trackingError) {
         // Don't fail registration if tracking fails
-        console.error('[Affiliate Tracking] Failed to log referral:', trackingError);
+        console.error(
+          "[Affiliate Tracking] Failed to log referral:",
+          trackingError,
+        );
       }
     }
 
@@ -319,7 +324,7 @@ const getProfile = async (req, res) => {
       success: true,
       user: {
         ...users[0],
-        phone: users[0].no_wa || ''
+        phone: users[0].no_wa || "",
       },
     });
   } catch (error) {
@@ -342,7 +347,15 @@ const logout = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     // Gabungkan field dari kedua versi
-    const { name, email, phone, bank_name, bank_account_name, bank_account_number, bank_account } = req.body;
+    const {
+      name,
+      email,
+      phone,
+      bank_name,
+      bank_account_name,
+      bank_account_number,
+      bank_account,
+    } = req.body;
 
     if (!name || !email) {
       return res.status(400).json({
@@ -366,16 +379,16 @@ const updateProfile = async (req, res) => {
 
     // Update semua field yang mungkin ada
     await db.query(
-      'UPDATE users SET name = ?, email = ?, no_wa = ?, bank_name = ?, bank_account_name = ?, bank_account_number = ? WHERE id = ?',
+      "UPDATE users SET name = ?, email = ?, no_wa = ?, bank_name = ?, bank_account_name = ?, bank_account_number = ? WHERE id = ?",
       [
         name,
         email,
         phone || null,
         bank_name || null,
         bank_account_name || null,
-        (bank_account_number || bank_account || null),
+        bank_account_number || bank_account || null,
         req.user.id,
-      ]
+      ],
     );
 
     const [updatedUsers] = await db.query(
@@ -395,7 +408,7 @@ const updateProfile = async (req, res) => {
       message: "Profile updated successfully",
       user: {
         ...updatedUser,
-        phone: updatedUser ? updatedUser.no_wa : ''
+        phone: updatedUser ? updatedUser.no_wa : "",
       },
     });
   } catch (error) {
@@ -411,9 +424,11 @@ const updateProfile = async (req, res) => {
 const changePassword = async (req, res) => {
   try {
     // Ambil field sesuai frontend (settings.ejs)
-    const currentPassword = req.body.current_password || req.body.currentPassword;
+    const currentPassword =
+      req.body.current_password || req.body.currentPassword;
     const newPassword = req.body.new_password || req.body.newPassword;
-    const confirmPassword = req.body.confirm_password || req.body.confirmPassword;
+    const confirmPassword =
+      req.body.confirm_password || req.body.confirmPassword;
 
     if (!currentPassword || !newPassword || !confirmPassword) {
       return res.status(400).json({

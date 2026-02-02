@@ -348,3 +348,253 @@ Toggle: Aktifkan Affiliate
 🔹 Admin WhatsApp
 
 Untuk konfirmasi pembayaran
+
+
+
+## WORKFLOW AFFILATE ##
+
+
+🔁 WORKFLOW AFFILIATE
+
+Dari Copy Link sampai Affiliate Menerima Uang
+
+🟢 PRAKONDISI (WAJIB)
+
+Affiliate SUDAH APPROVED
+
+Event ACTIVE
+
+Event affiliate_enabled = TRUE
+
+1️⃣ Affiliate Copy / Generate Link
+Alur
+
+Affiliate Login
+↓
+Buka Event List
+↓
+Klik Generate / Copy Affiliate Link
+
+Sistem Melakukan
+
+Generate code unik
+
+Simpan ke tabel:
+
+affiliate_links
+- affiliate_id
+- event_id
+- code (UNIQ)
+- clicks = 0
+- is_active = 1
+
+Output ke Affiliate
+https://domain.com/e/{event_slug}?ref=AFF123XYZ
+
+2️⃣ Customer Klik Link Affiliate
+Alur
+
+Customer klik link
+↓
+Sistem membaca ref
+↓
+Tracking click
+
+Update Database
+affiliate_links.clicks +1
+affiliate_links.last_clicked_at = now()
+
+3️⃣ Customer Masuk Landing Page (LP)
+LP Menampilkan
+
+Nama Event
+
+Deskripsi
+
+Harga coret & promo
+
+Form input customer
+
+Pilihan pembayaran:
+
+Transfer
+
+Cash
+
+4️⃣ Customer Isi Form & Submit
+Customer Mengisi
+
+Nama
+
+Email
+
+No HP
+
+Pilih metode pembayaran
+
+Database
+customers
+name
+email
+phone
+
+transactions
+event_id
+affiliate_id
+customer_id
+payment_method
+payment_status = pending
+transaction_status = pending
+
+5️⃣ Pembayaran Customer
+A. TRANSFER
+
+Customer:
+
+Transfer ke rekening event
+
+Upload bukti
+
+payment_proofs
+- transaction_id
+- proof_file
+
+B. CASH
+
+Customer:
+
+Menunggu konfirmasi manual
+
+payment_status = pending
+
+6️⃣ VERIFIKASI TAHAP 1 — SALES (INTENT)
+
+Sales:
+
+Cek chat / komunikasi
+
+Pastikan customer real
+
+Hasil
+Keputusan	Dampak
+Approve	Stage 1 approved
+Reject	Transaction rejected
+Database
+verifications
+- transaction_id
+- stage = 1
+- status = approved
+
+7️⃣ VERIFIKASI TAHAP 2 — FINANCE (PEMBAYARAN)
+
+Finance:
+
+Cek mutasi / bukti transfer
+
+Validasi cash / transfer
+
+Hasil
+Keputusan	Dampak
+Approve	Stage 2 approved
+Reject	Transaction rejected
+verifications
+- stage = 2
+
+8️⃣ VERIFIKASI TAHAP 3 — SALES (DELIVERY)
+
+Sales:
+
+Pastikan layanan / produk sudah diterima
+
+Event selesai / produk dikirim
+
+transaction_status = completed
+
+verifications
+- stage = 3
+- status = approved
+
+9️⃣ KOMISI AFFILIATE DIHITUNG
+Rule
+
+Komisi TIDAK BISA DITARIK sebelum semua stage approved
+
+Database
+commissions
+- transaction_id
+- affiliate_id
+- amount
+- commission_status = ready_for_withdraw
+
+🔟 Affiliate Melihat Dashboard
+
+Affiliate melihat:
+
+Total pending
+
+Total ready for withdraw
+
+Riwayat transaksi
+
+1️⃣1️⃣ Affiliate Request Withdraw
+
+Affiliate:
+
+Klik Withdraw
+
+Pilih saldo tersedia
+
+payouts
+- affiliate_id
+- total_amount
+- status = pending
+
+1️⃣2️⃣ Finance Proses Withdraw
+
+Finance:
+
+Cek data bank affiliate
+
+Transfer dana
+
+payouts.status = paid
+processed_at = now()
+
+1️⃣3️⃣ UANG MASUK KE AFFILIATE 🎉
+Final Status
+
+Komisi → paid
+
+Payout → paid
+
+Aktivitas tercatat
+
+activity_logs
+
+🔐 RULE WAJIB (ANTI FRAUD)
+
+✔ Komisi hanya READY jika 3 tahap approved
+✔ Cash TIDAK AUTO VALID
+✔ Affiliate tidak bisa edit transaksi
+✔ Withdraw butuh data bank valid
+
+🧠 RINGKASAN SUPER SINGKAT
+Copy Link
+↓
+Customer klik
+↓
+Isi form
+↓
+Bayar
+↓
+Verifikasi 1
+↓
+Verifikasi 2
+↓
+Verifikasi 3
+↓
+Komisi READY
+↓
+Withdraw
+↓
+Affiliate terima uang

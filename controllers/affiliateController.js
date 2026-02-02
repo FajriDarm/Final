@@ -18,7 +18,11 @@ const dashboard = async (req, res) => {
        WHERE u.id = ?`,
       [userId],
     );
-    const user = users[0] || { name: "Affiliate", status: "inactive", affiliate_status: "inactive" };
+    const user = users[0] || {
+      name: "Affiliate",
+      status: "inactive",
+      affiliate_status: "inactive",
+    };
 
     // Referral link - try to get existing affiliate_links, otherwise build a sample code
     let referralLink = "";
@@ -78,18 +82,45 @@ const dashboard = async (req, res) => {
       leadsLast30 = rows[0]?.cnt || 0;
     } catch (e) {}
 
-    // Recent leads details
+    // Pagination and filtering for recent leads
+    const perPage = 5;
+    const currentPage = Math.max(parseInt(req.query.page || "1", 10), 1);
+    const statusFilter = req.query.status || "all";
+
+    // Build where clause for filtered leads
+    let whereClause = "t.affiliate_id = ?";
+    const whereParams = [userId];
+    if (statusFilter && statusFilter !== "all") {
+      whereClause += " AND t.payment_status = ?";
+      whereParams.push(statusFilter);
+    }
+
+    // Total count for pagination (with filter)
+    let filteredCount = 0;
+    try {
+      const [countRows] = await db.query(
+        `SELECT COUNT(*) as cnt FROM transactions t WHERE ${whereClause}`,
+        whereParams,
+      );
+      filteredCount = countRows[0]?.cnt || 0;
+    } catch (e) {}
+
+    const totalPages = Math.max(Math.ceil((filteredCount || 0) / perPage), 1);
+    const offset = (currentPage - 1) * perPage;
+
+    // Recent leads details (paginated)
     let leads = [];
     try {
+      const params = [...whereParams, perPage, offset];
       const [rows] = await db.query(
-        `SELECT t.id, c.name, c.email, c.phone, e.title as event_title, t.payment_status, t.created_at
+        `SELECT t.id, COALESCE(t.customer_name, c.name) as name, c.email, c.phone, e.title as event_title, t.payment_status, t.created_at
          FROM transactions t
          LEFT JOIN customers c ON t.customer_id = c.id
          LEFT JOIN events e ON t.event_id = e.id
-         WHERE t.affiliate_id = ?
+         WHERE ${whereClause}
          ORDER BY t.created_at DESC
-         LIMIT 10`,
-        [userId],
+         LIMIT ? OFFSET ?`,
+        params,
       );
       leads = rows.map((r) => ({
         id: r.id,
@@ -114,6 +145,62 @@ const dashboard = async (req, res) => {
       // table may not exist
     }
 
+    // History: transactions older than 7 days with status paid or rejected
+    const historyPerPage = 10;
+    const historyPage = Math.max(parseInt(req.query.historyPage || "1", 10), 1);
+    const historyFilter = req.query.historyStatus || "all"; // 'paid', 'rejected', or 'all'
+
+    let historyWhere =
+      "t.affiliate_id = ? AND t.created_at < DATE_SUB(NOW(), INTERVAL 7 DAY)";
+    const historyParams = [userId];
+    if (historyFilter && historyFilter !== "all") {
+      historyWhere += " AND t.payment_status = ?";
+      historyParams.push(historyFilter);
+    } else {
+      // default: include both paid and rejected
+      historyWhere += " AND t.payment_status IN ('paid','rejected')";
+    }
+
+    // count
+    let historyTotalCount = 0;
+    try {
+      const [cntRows] = await db.query(
+        `SELECT COUNT(*) as cnt FROM transactions t WHERE ${historyWhere}`,
+        historyParams,
+      );
+      historyTotalCount = cntRows[0]?.cnt || 0;
+    } catch (e) {}
+
+    const historyTotalPages = Math.max(
+      Math.ceil((historyTotalCount || 0) / historyPerPage),
+      1,
+    );
+    const historyOffset = (historyPage - 1) * historyPerPage;
+
+    let history = [];
+    try {
+      const params = [...historyParams, historyPerPage, historyOffset];
+      const [rowsHist] = await db.query(
+        `SELECT t.id, COALESCE(t.customer_name, c.name) AS name, c.email, c.phone, e.title as event_title, t.payment_status, t.created_at
+         FROM transactions t
+         LEFT JOIN customers c ON t.customer_id = c.id
+         LEFT JOIN events e ON t.event_id = e.id
+         WHERE ${historyWhere}
+         ORDER BY t.created_at DESC
+         LIMIT ? OFFSET ?`,
+        params,
+      );
+      history = rowsHist.map((r) => ({
+        id: r.id,
+        name: r.name,
+        email: r.email,
+        phone: r.phone,
+        event_title: r.event_title || "-",
+        payment_status: r.payment_status,
+        created_at: r.created_at,
+      }));
+    } catch (e) {}
+
     res.render("affiliate/dashboard_affiliate", {
       name: user.name,
       userStatus: user.affiliate_status || user.status || "inactive",
@@ -127,7 +214,18 @@ const dashboard = async (req, res) => {
       totalLeads,
       leadsLast30,
       leads,
+      // pagination
+      currentPage,
+      totalPages,
+      perPage,
+      statusFilter,
       affiliateProfile,
+      // history (older than 7 days)
+      history,
+      historyPage,
+      historyTotalPages,
+      historyPerPage,
+      historyFilter,
     });
   } catch (error) {
     console.error("Affiliate dashboard error:", error);
@@ -142,7 +240,7 @@ const getActiveEvents = async (req, res) => {
     if (!userId) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorized - user id required"
+        message: "Unauthorized - user id required",
       });
     }
 
@@ -153,7 +251,7 @@ const getActiveEvents = async (req, res) => {
        FROM events
        WHERE status = 'active'
        AND (end_date >= CURDATE() OR end_date IS NULL)
-       ORDER BY created_at DESC`
+       ORDER BY created_at DESC`,
     );
 
     // Get existing affiliate links for this user with event info
@@ -162,14 +260,15 @@ const getActiveEvents = async (req, res) => {
        FROM affiliate_links al
        LEFT JOIN events e ON al.event_id = e.id
        WHERE al.affiliate_id = ?`,
-      [userId]
+      [userId],
     );
 
     // Create a map of existing links by event_id with full URL
     const linksMap = {};
-    const siteUrl = process.env.SITE_URL || (req.protocol + "://" + req.get("host"));
+    const siteUrl =
+      process.env.SITE_URL || req.protocol + "://" + req.get("host");
 
-    existingLinks.forEach(link => {
+    existingLinks.forEach((link) => {
       // Generate full URL for existing links
       const fullUrl = link.slug
         ? `${siteUrl}/?event=${link.slug}&ref=${link.code}`
@@ -177,27 +276,27 @@ const getActiveEvents = async (req, res) => {
 
       linksMap[link.event_id] = {
         ...link,
-        url: fullUrl
+        url: fullUrl,
       };
     });
 
     // Combine events with their existing links (if any)
-    const eventsWithLinks = events.map(event => ({
+    const eventsWithLinks = events.map((event) => ({
       ...event,
       affiliate_link: linksMap[event.id] || null,
-      has_link: !!linksMap[event.id]
+      has_link: !!linksMap[event.id],
     }));
 
     res.json({
       success: true,
-      data: eventsWithLinks
+      data: eventsWithLinks,
     });
   } catch (error) {
     console.error("Get active events error:", error);
     res.status(500).json({
       success: false,
       message: "Internal server error",
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -210,67 +309,68 @@ const generateLink = async (req, res) => {
     if (!userId) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorized - user id required"
+        message: "Unauthorized - user id required",
       });
     }
 
     if (!eventId) {
       return res.status(400).json({
         success: false,
-        message: "Event ID is required"
+        message: "Event ID is required",
       });
     }
 
     // Check if user is approved affiliate
     const [users] = await db.query(
       "SELECT id, name, affiliate_status FROM users WHERE id = ?",
-      [userId]
+      [userId],
     );
 
     if (users.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "User not found"
+        message: "User not found",
       });
     }
 
     const user = users[0];
 
     // VALIDASI: Affiliate harus approved
-    if (user.affiliate_status !== 'approved') {
+    if (user.affiliate_status !== "approved") {
       return res.status(403).json({
         success: false,
-        message: "Anda belum di-approve sebagai affiliate. Silakan tunggu approval admin.",
-        status: user.affiliate_status
+        message:
+          "Anda belum di-approve sebagai affiliate. Silakan tunggu approval admin.",
+        status: user.affiliate_status,
       });
     }
 
     // Check if event exists and is active
     const [events] = await db.query(
       "SELECT id, title, slug, status FROM events WHERE id = ?",
-      [eventId]
+      [eventId],
     );
 
     if (events.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "Event not found"
+        message: "Event not found",
       });
     }
 
     const event = events[0];
 
-    if (event.status !== 'active') {
+    if (event.status !== "active") {
       return res.status(400).json({
         success: false,
-        message: "Event is not active"
+        message: "Event is not active",
       });
     }
 
     // Check if link already exists
     const [existingLinks] = await db.query(
       "SELECT id, code FROM affiliate_links WHERE affiliate_id = ? AND event_id = ?",
-      [userId, eventId]
+      [userId, eventId],
     );
 
     let code;
@@ -286,12 +386,13 @@ const generateLink = async (req, res) => {
       await db.query(
         `INSERT INTO affiliate_links (affiliate_id, event_id, code, is_active)
          VALUES (?, ?, ?, 1)`,
-        [userId, eventId, code]
+        [userId, eventId, code],
       );
     }
 
     // Generate full URL - mengarah ke landing page dengan parameter event dan ref
-    const siteUrl = process.env.SITE_URL || req.protocol + "://" + req.get("host");
+    const siteUrl =
+      process.env.SITE_URL || req.protocol + "://" + req.get("host");
     const fullUrl = `${siteUrl}/?event=${event.slug}&ref=${code}`;
 
     res.json({
@@ -302,15 +403,15 @@ const generateLink = async (req, res) => {
         url: fullUrl,
         event_id: event.id,
         event_title: event.title,
-        event_slug: event.slug
-      }
+        event_slug: event.slug,
+      },
     });
   } catch (error) {
     console.error("Generate link error:", error);
     res.status(500).json({
       success: false,
       message: "Internal server error",
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -322,7 +423,7 @@ const getUserStatus = async (req, res) => {
     if (!userId) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorized - user id required"
+        message: "Unauthorized - user id required",
       });
     }
 
@@ -331,13 +432,13 @@ const getUserStatus = async (req, res) => {
        FROM users u
        LEFT JOIN roles r ON u.role_id = r.id
        WHERE u.id = ?`,
-      [userId]
+      [userId],
     );
 
     if (users.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "User not found"
+        message: "User not found",
       });
     }
 
@@ -351,15 +452,15 @@ const getUserStatus = async (req, res) => {
         email: user.email,
         affiliate_status: user.affiliate_status || "inactive",
         status: user.status || "inactive",
-        role: user.role || "user"
-      }
+        role: user.role || "user",
+      },
     });
   } catch (error) {
     console.error("Get user status error:", error);
     res.status(500).json({
       success: false,
       message: "Internal server error",
-      error: error.message
+      error: error.message,
     });
   }
 };
