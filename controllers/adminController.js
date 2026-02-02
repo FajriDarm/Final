@@ -81,7 +81,7 @@ const getDashboardStats = async (req, res) => {
     // Recent Transactions
     const [recentTransactions] = await db.query(
       `SELECT t.id, t.total_amount, t.status, t.payment_status, t.created_at,
-              COALESCE(t.customer_name, c.name) as customer_name, u.name as affiliate_name
+              COALESCE(c.name, 'Unknown') as customer_name, u.name as affiliate_name
        FROM transactions t
        LEFT JOIN customers c ON t.customer_id = c.id
        LEFT JOIN users u ON t.affiliate_id = u.id
