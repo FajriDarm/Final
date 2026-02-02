@@ -428,7 +428,7 @@ const getUserStatus = async (req, res) => {
     }
 
     const [users] = await db.query(
-      `SELECT id, name, email, affiliate_status, status, r.name as role
+      `SELECT u.id, u.name, u.email, u.affiliate_status, u.status, r.name as role
        FROM users u
        LEFT JOIN roles r ON u.role_id = r.id
        WHERE u.id = ?`,

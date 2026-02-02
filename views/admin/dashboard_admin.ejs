@@ -560,6 +560,16 @@
 
           container.innerHTML = activities.map((a, index) => {
             const config = actionConfig[a.action] || { icon: 'fa-bell', color: 'text-gray-500', bg: 'bg-gray-100' };
+            
+            // Build description based on action
+            let displayText = a.description;
+            if (a.approver_name && a.target_user_name) {
+              if (a.action === 'affiliate_approved') {
+                displayText = `${a.approver_name} approved ${a.target_user_name}`;
+              } else if (a.action === 'affiliate_rejected') {
+                displayText = `${a.approver_name} rejected ${a.target_user_name}`;
+              }
+            }
 
             return `
         <div class="p-4 border-b border-green-50 hover:bg-green-50 transition-all duration-200" style="animation-delay: ${index * 50}ms">
@@ -568,16 +578,20 @@
               <i class="fas ${config.icon} ${config.color}"></i>
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-gray-900">${a.description}</p>
-              <div class="flex items-center gap-3 mt-2">
+              <p class="text-sm font-medium text-gray-900">${displayText}</p>
+              <div class="flex items-center gap-3 mt-2 flex-wrap">
                 <span class="text-xs text-gray-500 flex items-center gap-1">
+                  <i class="fas fa-shield-alt"></i>
+                  ${a.approver_name || 'System'}
+                </span>
+                ${a.target_user_name ? `<span class="text-xs text-gray-500 flex items-center gap-1">
                   <i class="fas fa-user"></i>
-                  ${a.user_name || 'System'}
-                </span>
-                <span class="text-xs text-gray-500 flex items-center gap-1">
-                  <i class="fas fa-clock"></i>
-                  ${new Date(a.created_at).toLocaleString('id-ID', { hour: '2-digit', minute: '2-digit' })}
-                </span>
+                  ${a.target_user_name}
+                </span>` : ''}
+                ${a.old_status && a.new_status ? `<span class="text-xs text-gray-500 flex items-center gap-1">
+                  <i class="fas fa-arrow-right"></i>
+                  ${a.old_status} → ${a.new_status}
+                </span>` : ''}
               </div>
             </div>
             <div class="text-xs text-gray-400">

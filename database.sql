@@ -261,4 +261,25 @@ CREATE TABLE IF NOT EXISTS affiliate_referrals (
     FOREIGN KEY (event_id) REFERENCES events(id),
     FOREIGN KEY (referred_user_id) REFERENCES users(id)
 );
+
+-- Add new columns to activity_logs table
+ALTER TABLE activity_logs
+ADD COLUMN approved_by BIGINT AFTER id,
+ADD COLUMN target_user_id BIGINT AFTER approved_by,
+ADD COLUMN target_type VARCHAR(50) AFTER action,
+ADD COLUMN target_id BIGINT AFTER target_type,
+ADD COLUMN old_status VARCHAR(50) AFTER target_id,
+ADD COLUMN new_status VARCHAR(50) AFTER old_status;
+
+-- Add foreign key constraints
+ALTER TABLE activity_logs
+ADD CONSTRAINT fk_activity_logs_approved_by 
+FOREIGN KEY (approved_by) REFERENCES users(id);
+
+ALTER TABLE activity_logs
+ADD CONSTRAINT fk_activity_logs_target_user_id 
+FOREIGN KEY (target_user_id) REFERENCES users(id);
+
+
+ALTER TABLE activity_logs DROP COLUMN user_id;
 -- End of database.sql

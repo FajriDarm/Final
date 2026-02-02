@@ -91,9 +91,14 @@ const getDashboardStats = async (req, res) => {
 
     // Recent Activity Logs
     const [recentActivities] = await db.query(
-      `SELECT al.*, u.name as user_name
+      `SELECT al.*, 
+              approver.name as approver_name,
+              approver.email as approver_email,
+              target.name as target_user_name,
+              target.email as target_user_email
        FROM activity_logs al
-       LEFT JOIN users u ON al.user_id = u.id
+       LEFT JOIN users approver ON al.approved_by = approver.id
+       LEFT JOIN users target ON al.target_user_id = target.id
        ORDER BY al.created_at DESC
        LIMIT 10`,
     );
@@ -341,16 +346,18 @@ const getPendingAffiliates = async (req, res) => {
 const approveAffiliate = async (req, res) => {
   try {
     const { userId } = req.params;
+    const approverId = req.user?.id || 1; // Get approver ID from authenticated user
 
     await db.query(
       'UPDATE users SET affiliate_status = "approved" WHERE id = ?',
       [userId],
     );
 
-    // Log activity
+    // Log activity with detailed info
     await db.query(
-      "INSERT INTO activity_logs (user_id, action, description) VALUES (?, ?, ?)",
-      [userId, "affiliate_approved", "Affiliate approved by admin"],
+      `INSERT INTO activity_logs (approved_by, target_user_id, action, target_type, target_id, old_status, new_status, description) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [approverId, userId, "affiliate_approved", "affiliate", userId, "pending", "approved", "Affiliate approved by admin"],
     );
 
     res.json({
@@ -371,20 +378,18 @@ const rejectAffiliate = async (req, res) => {
   try {
     const { userId } = req.params;
     const { reason } = req.body;
+    const rejecterId = req.user?.id || 1; // Get rejector ID from authenticated user
 
     await db.query(
       'UPDATE users SET affiliate_status = "rejected" WHERE id = ?',
       [userId],
     );
 
-    // Log activity
+    // Log activity with detailed info
     await db.query(
-      "INSERT INTO activity_logs (user_id, action, description) VALUES (?, ?, ?)",
-      [
-        userId,
-        "affiliate_rejected",
-        `Affiliate rejected. Reason: ${reason || "Not specified"}`,
-      ],
+      `INSERT INTO activity_logs (approved_by, target_user_id, action, target_type, target_id, old_status, new_status, description) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [rejecterId, userId, "affiliate_rejected", "affiliate", userId, "pending", "rejected", `Affiliate rejected. Reason: ${reason || "Not specified"}`],
     );
 
     res.json({
@@ -461,9 +466,14 @@ const generateTokenForUser = async (req, res) => {
 const getActivityLogs = async (req, res) => {
   try {
     const [logs] = await db.query(
-      `SELECT al.*, u.name as user_name
+      `SELECT al.*,
+              approver.name as approver_name,
+              approver.email as approver_email,
+              target.name as target_user_name,
+              target.email as target_user_email
        FROM activity_logs al
-       LEFT JOIN users u ON al.user_id = u.id
+       LEFT JOIN users approver ON al.approved_by = approver.id
+       LEFT JOIN users target ON al.target_user_id = target.id
        ORDER BY al.created_at DESC
        LIMIT 100`,
     );
