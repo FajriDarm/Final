@@ -1,438 +1,944 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Events Management - Admin</title>
+  <title>Events Management - Affillink Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    .gradient-bg {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
     }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .gradient-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .gradient-secondary {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    }
+
+    .gradient-accent {
+      background: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%);
+    }
+
+    .gradient-dark {
+      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    }
+
     .card-hover {
       transition: all 0.3s ease;
     }
+
     .card-hover:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(5, 150, 105, 0.1), 0 10px 10px -5px rgba(5, 150, 105, 0.04);
     }
-    .modal-overlay {
-      backdrop-filter: blur(4px);
-    }
-    .type-radio:checked + label {
+
+    .type-radio:checked+label {
       border-color: #10b981;
       background-color: #f0fdf4;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
     }
-    .stat-card {
-      transition: all 0.3s ease;
+
+    .modal-overlay {
+      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.6);
     }
-    .stat-card:hover {
-      transform: scale(1.02);
+
+    .pulse-animation {
+      animation: pulse 2s infinite;
     }
-    @media (max-width: 1024px) {
-      .main-content {
-        margin-left: 0;
-        padding-left: 1rem;
-        padding-right: 1rem;
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
       }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .data-cell {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .data-cell::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
+    }
+
+    .success-badge {
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+
+<body class="bg-gradient-to-br from-emerald-50 to-green-50 min-h-screen">
   <%- include('../navbar/navbar.ejs', { name: 'Admin' }) %>
-  <%- include('../sidebar/admin.ejs') %>
+    <%- include('../sidebar/admin.ejs') %>
 
-  <main class="main-content lg:ml-64 pt-20 lg:pt-16 min-h-screen pb-8">
-    <div class="p-4 lg:p-6 max-w-7xl mx-auto">
-      <!-- Header Section -->
-      <div class="mb-6 lg:mb-8">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 class="text-2xl lg:text-3xl font-bold text-gray-900 flex items-center gap-3">
-              <span class="gradient-bg text-white p-2 rounded-lg">
-                <i class="fas fa-calendar-alt"></i>
-              </span>
-              Events Management
-            </h1>
-            <p class="text-gray-600 mt-2 ml-11">Kelola event promo dan penawaran khusus</p>
+      <main class="ml-64 pt-16 min-h-screen pb-8">
+        <div class="p-6">
+          <!-- Page Header -->
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+            <div class="mb-4 md:mb-0">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-calendar-alt text-white text-xl"></i>
+                </div>
+                <div>
+                  <h1 class="text-3xl font-bold text-gray-900">Events Management</h1>
+                  <p class="text-gray-600 mt-1">Kelola event promo dan penawaran khusus</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="hidden md:block px-4 py-2 bg-white rounded-lg shadow-sm border border-green-100">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-calendar-alt text-green-600"></i>
+                  <span class="text-sm font-medium text-gray-700">
+                    <%= new Date().toLocaleDateString('id-ID', { weekday: 'long' , year: 'numeric' , month: 'long' ,
+                      day: 'numeric' }) %>
+                  </span>
+                </div>
+              </div>
+              <div class="px-4 py-2 gradient-primary rounded-lg shadow-lg text-white pulse-animation">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-bell"></i>
+                  <span class="text-sm font-medium">Update Real-time</span>
+                </div>
+              </div>
+              <button onclick="showCreateModal()"
+                class="px-6 py-3 gradient-primary text-white rounded-xl hover:opacity-90 transition-all shadow-lg hover:shadow-xl flex items-center gap-2">
+                <i class="fas fa-plus"></i>
+                <span>Create Event</span>
+              </button>
+            </div>
           </div>
-          <button onclick="showCreateModal()" class="self-start sm:self-auto px-6 py-3 gradient-bg text-white rounded-xl hover:opacity-90 transition-all shadow-lg hover:shadow-xl flex items-center gap-2">
-            <i class="fas fa-plus"></i>
-            <span>Create Event</span>
-          </button>
-        </div>
-      </div>
 
-      <!-- Stats Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-500 text-sm">Total Events</p>
-              <p id="totalEvents" class="text-2xl font-bold text-gray-900">-</p>
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Total Events</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2" id="totalEvents">-</p>
+                </div>
+                <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-calendar text-white text-2xl"></i>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-green-50">
+                <div class="flex items-center gap-2 text-sm">
+                  <span class="text-green-600 font-medium flex items-center">
+                    <i class="fas fa-chart-line mr-1"></i>
+                    <span id="monthGrowth">+12%</span>
+                  </span>
+                  <span class="text-gray-500">this month</span>
+                </div>
+              </div>
             </div>
-            <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center">
-              <i class="fas fa-calendar text-white"></i>
-            </div>
-          </div>
-        </div>
-        <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-500 text-sm">Active Events</p>
-              <p id="activeEvents" class="text-2xl font-bold text-green-600">-</p>
-            </div>
-            <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
-              <i class="fas fa-check-circle text-white"></i>
-            </div>
-          </div>
-        </div>
-        <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-500 text-sm">Draft Events</p>
-              <p id="draftEvents" class="text-2xl font-bold text-yellow-600">-</p>
-            </div>
-            <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center">
-              <i class="fas fa-file-alt text-white"></i>
-            </div>
-          </div>
-        </div>
-        <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-gray-500 text-sm">Free Events</p>
-              <p id="freeEvents" class="text-2xl font-bold text-blue-600">-</p>
-            </div>
-            <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-              <i class="fas fa-gift text-white"></i>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Search and Filter -->
-      <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-6">
-        <div class="flex flex-col sm:flex-row gap-4">
-          <div class="flex-1 relative">
-            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-            <input type="text" id="searchInput" placeholder="Search events..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-          </div>
-          <select id="statusFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-            <option value="">All Status</option>
-            <option value="draft">Draft</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-          <select id="typeFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-            <option value="">All Types</option>
-            <option value="gratis">Gratis</option>
-            <option value="berbayar">Berbayar</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Events Grid -->
-      <div id="eventsContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        <div class="col-span-full text-center py-12 text-gray-400">
-          <div class="flex flex-col items-center">
-            <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-4 animate-pulse">
-              <i class="fas fa-spinner fa-spin text-2xl text-white"></i>
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Active Events</p>
+                  <p class="text-3xl font-bold text-green-600 mb-2" id="activeEvents">-</p>
+                </div>
+                <div class="w-14 h-14 gradient-secondary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-check-circle text-white text-2xl"></i>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-green-50">
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-gray-600">Running now</span>
+                  <span class="font-medium text-green-700" id="activeNow">-</span>
+                </div>
+              </div>
             </div>
-            <p class="text-lg font-medium">Loading events...</p>
+
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Draft Events</p>
+                  <p class="text-3xl font-bold text-amber-600 mb-2" id="draftEvents">-</p>
+                </div>
+                <div
+                  class="w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-file-edit text-white text-2xl"></i>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-green-50">
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-gray-600">To publish</span>
+                  <span class="font-medium text-amber-700" id="draftCount">-</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Free Events</p>
+                  <p class="text-3xl font-bold text-blue-600 mb-2" id="freeEvents">-</p>
+                </div>
+                <div
+                  class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-gift text-white text-2xl"></i>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-green-50">
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-gray-600">Free access</span>
+                  <span class="font-medium text-blue-700" id="freeCount">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search and Filter -->
+          <div class="glass-card rounded-2xl p-6 border border-green-100 mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div class="flex-1">
+                <div class="relative">
+                  <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <input type="text" id="searchInput" placeholder="Search events by title, description..."
+                    class="w-full pl-12 pr-4 py-3 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm transition-all">
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-4">
+                <div class="relative">
+                  <i class="fas fa-filter absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <select id="statusFilter"
+                    class="pl-12 pr-4 py-3 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm appearance-none min-w-[180px]">
+                    <option value="">All Status</option>
+                    <option value="draft">📝 Draft</option>
+                    <option value="active">✅ Active</option>
+                    <option value="inactive">❌ Inactive</option>
+                  </select>
+                </div>
+
+                <div class="relative">
+                  <i class="fas fa-tag absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <select id="typeFilter"
+                    class="pl-12 pr-4 py-3 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm appearance-none min-w-[180px]">
+                    <option value="">All Types</option>
+                    <option value="gratis">🎁 Free</option>
+                    <option value="berbayar">💎 Paid</option>
+                  </select>
+                </div>
+
+                <button onclick="clearFilters()"
+                  class="px-4 py-3 border border-green-200 text-green-700 hover:bg-green-50 rounded-xl transition-colors flex items-center gap-2">
+                  <i class="fas fa-redo"></i>
+                  <span class="font-medium">Clear</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Events Grid -->
+          <div id="eventsContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div class="col-span-full text-center py-12 text-gray-400">
+              <div class="flex flex-col items-center">
+                <div
+                  class="w-16 h-16 gradient-primary rounded-full flex items-center justify-center mb-4 animate-pulse">
+                  <i class="fas fa-spinner fa-spin text-2xl text-white"></i>
+                </div>
+                <p class="text-lg font-medium">Loading events...</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </main>
+      </main>
 
-  <!-- Create/Edit Modal -->
-  <div id="eventModal" class="fixed inset-0 bg-black/60 modal-overlay hidden items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-      <!-- Modal Header -->
-      <div class="gradient-bg px-6 py-4 flex items-center justify-between">
-        <h3 class="text-xl font-bold text-white" id="modalTitle">
-          <i class="fas fa-calendar-plus mr-2"></i>
-          <span id="modalTitleText">Create Event</span>
-        </h3>
-        <button onclick="closeModal()" class="text-white hover:bg-white/20 rounded-lg p-2 transition-colors">
-          <i class="fas fa-times text-xl"></i>
-        </button>
-      </div>
+      <!-- View Event Modal -->
+      <div id="viewModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+          <!-- Modal Header (rapi) -->
+          <div class="gradient-primary px-6 py-3 flex items-center justify-between rounded-t-2xl">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                <i class="fas fa-calendar-alt text-white text-lg"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white">Event Details</h3>
+            </div>
+            <button onclick="closeViewModal()"
+              class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-colors">
+              <i class="fas fa-times text-white text-lg"></i>
+            </button>
+          </div>
 
-      <!-- Modal Body -->
-      <div class="p-6 overflow-y-auto flex-1">
-        <form id="eventForm" class="space-y-5">
-          <input type="hidden" id="eventId">
-          
-          <!-- Event Type Selection -->
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-3">
-              <i class="fas fa-tags mr-1 text-purple-600"></i>
-              Tipe Event
-            </label>
-            <div class="grid grid-cols-2 gap-4">
-              <label class="relative cursor-pointer">
-                <input type="radio" name="event_type" value="gratis" class="peer sr-only type-radio">
-                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all peer-checked:border-green-500 peer-checked:bg-green-50 hover:border-green-300">
-                  <div class="flex flex-col items-center text-center">
-                    <span class="text-3xl mb-2">🎁</span>
-                    <div class="font-bold text-gray-800">Gratis</div>
-                    <p class="text-xs text-gray-500 mt-1">Event tanpa biaya</p>
+          <!-- Modal Body (kembali ke semula) -->
+          <div class="p-6 overflow-y-auto flex-1 scrollbar-hide">
+            <!-- Event Header -->
+            <div class="flex flex-col md:flex-row md:items-start gap-6 mb-6">
+              <div class="flex-1">
+                <h2 id="viewEventTitle" class="text-2xl font-bold text-gray-900 mb-2"></h2>
+                <div class="flex flex-wrap gap-2 mb-3">
+                  <span id="viewEventStatusBadge" class="px-3 py-1.5 rounded-full text-xs font-semibold"></span>
+                  <span id="viewEventTypeBadge" class="px-3 py-1.5 rounded-full text-xs font-semibold"></span>
+                  <span id="viewEventPriceBadge" class="px-3 py-1.5 rounded-full text-xs font-semibold"></span>
+                </div>
+                <p id="viewEventDescription" class="text-gray-600 mb-4"></p>
+              </div>
+            </div>
+
+            <!-- Event Information -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <!-- Left Column -->
+              <div class="space-y-4">
+                <div class="bg-gray-50 p-5 rounded-xl">
+                  <h4 class="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-info-circle text-green-600"></i>
+                    Event Information
+                  </h4>
+                  <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-500">Event ID</span>
+                      <span id="viewEventId" class="font-semibold text-gray-900"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-500">Slug</span>
+                      <span id="viewEventSlug" class="font-medium text-green-700"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-500">Event Type</span>
+                      <span id="viewEventType" class="font-semibold text-gray-900"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-500">Status</span>
+                      <span id="viewEventStatus" class="font-semibold text-gray-900"></span>
+                    </div>
                   </div>
                 </div>
-              </label>
-              <label class="relative cursor-pointer">
-                <input type="radio" name="event_type" value="berbayar" checked class="peer sr-only type-radio">
-                <div class="border-2 border-gray-200 rounded-xl p-4 transition-all peer-checked:border-green-500 peer-checked:bg-green-50 hover:border-green-300">
-                  <div class="flex flex-col items-center text-center">
-                    <span class="text-3xl mb-2">💎</span>
-                    <div class="font-bold text-gray-800">Berbayar</div>
-                    <p class="text-xs text-gray-500 mt-1">Event berbayar lengkap</p>
+
+                <!-- Date Information -->
+                <div class="bg-blue-50 p-5 rounded-xl">
+                  <h4 class="text-sm font-semibold text-blue-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-calendar-alt text-blue-600"></i>
+                    Date Information
+                  </h4>
+                  <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-blue-600">Start Date</span>
+                      <span id="viewStartDate" class="font-semibold text-blue-900"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-blue-600">End Date</span>
+                      <span id="viewEndDate" class="font-semibold text-blue-900"></span>
+                    </div>
                   </div>
                 </div>
-              </label>
-            </div>
-          </div>
+              </div>
 
-          <!-- Gratis Fields -->
-          <div id="gratisFields" class="hidden space-y-4 bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200">
-            <p class="text-sm font-semibold text-blue-700 mb-2">
-              <i class="fas fa-gift mr-2"></i>Info Event Gratis
-            </p>
-            <div class="text-xs text-gray-600 space-y-1 ml-6">
-              <p>• Tidak perlu harga & pembayaran</p>
-              <p>• User langsung bisa daftar</p>
-              <p>• Bank info tidak diperlukan</p>
-            </div>
-            
-            <div class="mt-4 space-y-3">
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" id="title_gratis" required class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Slug</label>
-                <input type="text" id="slug_gratis" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="URL-friendly event name">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Description</label>
-                <textarea id="description_gratis" rows="3" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"></textarea>
-              </div>
-            </div>
-          </div>
-
-          <!-- Berbayar Fields -->
-          <div id="berbayarFields" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-semibold text-gray-700">Title</label>
-                <input type="text" id="title" required class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="Event title">
-              </div>
-              <div>
-                <label class="block text-sm font-semibold text-gray-700">Slug</label>
-                <input type="text" id="slug" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="url-friendly-event-name">
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-sm font-semibold text-gray-700">Description</label>
-              <textarea id="description" rows="3" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="Event description..."></textarea>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-semibold text-gray-700">
-                  <i class="fas fa-tag mr-1 text-green-600"></i>
-                  Price Original (Rp)
-                </label>
-                <input type="number" id="price_original" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="0">
-              </div>
-              <div>
-                <label class="block text-sm font-semibold text-gray-700">
-                  <i class="fas fa-tags mr-1 text-red-600"></i>
-                  Price Promo (Rp)
-                </label>
-                <input type="number" id="price_promo" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" placeholder="0">
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
-                <i class="fas fa-credit-card mr-1 text-blue-600"></i>
-                Payment Methods
-              </label>
-              <div class="flex flex-wrap gap-3">
-                <label class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-                  <input type="checkbox" value="cash" class="payment-method-checkbox mr-2">
-                  <span class="text-sm"><i class="fas fa-money-bill-wave mr-1 text-green-600"></i>Cash</span>
-                </label>
-                <label class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-                  <input type="checkbox" value="transfer" class="payment-method-checkbox mr-2">
-                  <span class="text-sm"><i class="fas fa-university mr-1 text-blue-600"></i>Transfer</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="bg-gray-50 p-4 rounded-xl space-y-3">
-              <p class="text-sm font-semibold text-gray-700">
-                <i class="fas fa-university mr-1 text-indigo-600"></i>
-                Bank Information
-              </p>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <div>
-                  <label class="block text-xs font-medium text-gray-600">Bank Name</label>
-                  <input type="text" id="bank_name" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+              <!-- Right Column -->
+              <div class="space-y-4">
+                <!-- Pricing Information -->
+                <div id="viewPricingSection" class="bg-green-50 p-5 rounded-xl">
+                  <h4 class="text-sm font-semibold text-green-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-tags text-green-600"></i>
+                    Pricing Information
+                  </h4>
+                  <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-green-600">Original Price</span>
+                      <span id="viewPriceOriginal" class="font-semibold text-green-900"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-green-600">Promo Price</span>
+                      <span id="viewPricePromo" class="font-bold text-green-700 text-lg"></span>
+                    </div>
+                    <div class="pt-3 border-t border-green-200">
+                      <span class="text-sm text-green-600">Payment Methods</span>
+                      <div id="viewPaymentMethods" class="mt-2 space-y-2"></div>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label class="block text-xs font-medium text-gray-600">Account Name</label>
-                  <input type="text" id="bank_account_name" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+
+                <!-- Free Event Banner -->
+                <div id="viewFreeEventSection" class="bg-blue-50 p-5 rounded-xl hidden">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                      <i class="fas fa-gift text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                      <h4 class="text-lg font-bold text-blue-900">Free Event</h4>
+                      <p class="text-sm text-blue-700">No payment required</p>
+                    </div>
+                  </div>
+                  <p class="text-sm text-blue-600">Participants can register for free without any payment process.</p>
                 </div>
-                <div>
-                  <label class="block text-xs font-medium text-gray-600">Account Number</label>
-                  <input type="text" id="bank_account_number" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm">
+
+                <!-- Bank Information -->
+                <div id="viewBankSection" class="bg-indigo-50 p-5 rounded-xl">
+                  <h4 class="text-sm font-semibold text-indigo-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-university text-indigo-600"></i>
+                    Bank Information
+                  </h4>
+                  <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-indigo-600">Bank Name</span>
+                      <span id="viewBankName" class="font-medium text-indigo-900">-</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-indigo-600">Account Name</span>
+                      <span id="viewAccountName" class="font-medium text-indigo-900">-</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-indigo-600">Account Number</span>
+                      <span id="viewAccountNumber" class="font-medium text-indigo-900">-</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-semibold text-gray-700">
-                  <i class="fas fa-calendar mr-1 text-purple-600"></i>
-                  Start Date
-                </label>
-                <input type="date" id="start_date" required class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+            <!-- Contact Information -->
+            <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl border border-green-200">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                  <i class="fab fa-whatsapp text-green-600"></i>
+                </div>
+                <div>
+                  <h5 class="font-semibold text-green-900 text-lg">Admin Contact</h5>
+                  <p class="text-sm text-green-700">For payment confirmation and participant communication</p>
+                </div>
               </div>
-              <div>
-                <label class="block text-sm font-semibold text-gray-700">
-                  <i class="fas fa-calendar-check mr-1 text-purple-600"></i>
-                  End Date
-                </label>
-                <input type="date" id="end_date" required class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                  <i class="fas fa-phone text-green-600"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">WhatsApp Number</p>
+                  <p id="viewAdminWhatsApp" class="font-semibold text-gray-900">-</p>
+                </div>
               </div>
             </div>
+
           </div>
 
-          <!-- Admin WhatsApp (For both types) -->
-          <div>
-            <label class="block text-sm font-semibold text-gray-700">
-              <i class="fab fa-whatsapp mr-1 text-green-600"></i>
-              Admin WhatsApp
-            </label>
-            <input type="text" id="admin_whatsapp" placeholder="62812xxxxxxxxx" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
-            <p class="text-xs text-gray-500 mt-1">Untuk konfirmasi pembayaran dan komunikasi dengan peserta</p>
+          <!-- Modal Footer -->
+          <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 flex gap-4">
+            <button onclick="closeViewModal()"
+              class="flex-1 bg-gray-200 text-gray-700 py-3.5 rounded-xl hover:bg-gray-300 transition-all font-semibold flex items-center justify-center gap-2">
+              <i class="fas fa-times"></i>
+              Close
+            </button>
+            <button onclick="editFromView()" id="editFromViewBtn"
+              class="flex-1 gradient-primary text-white py-3.5 rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg flex items-center justify-center gap-2">
+              <i class="fas fa-edit"></i>
+              Edit Event
+            </button>
           </div>
-
-          <!-- Status -->
-          <div>
-            <label class="block text-sm font-semibold text-gray-700">
-              <i class="fas fa-toggle-on mr-1 text-gray-600"></i>
-              Status
-            </label>
-            <select id="status" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
-              <option value="draft">📝 Draft</option>
-              <option value="active">✅ Active</option>
-              <option value="inactive">❌ Inactive</option>
-            </select>
-          </div>
+        </div>
       </div>
 
-      <!-- Modal Footer -->
-      <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 flex gap-3">
-        <button type="submit" class="flex-1 gradient-bg text-white py-2.5 rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg">
-          <i class="fas fa-save mr-2"></i>Save Event
-        </button>
-        <button type="button" onclick="closeModal()" class="flex-1 bg-gray-200 text-gray-700 py-2.5 rounded-xl hover:bg-gray-300 transition-all font-semibold">
-          <i class="fas fa-times mr-2"></i>Cancel
-        </button>
+      <!-- Create/Edit Modal -->
+      <div id="eventModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+          <!-- Modal Header -->
+          <div class="gradient-primary px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                <i class="fas fa-calendar-plus text-white text-lg"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white" id="modalTitle">
+                  <span id="modalTitleText">Create Event</span>
+                </h3>
+                <p class="text-green-100 text-sm mt-1">Fill in the event details below</p>
+              </div>
+            </div>
+            <button onclick="closeModal()"
+              class="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-colors">
+              <i class="fas fa-times text-white text-lg"></i>
+            </button>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="p-6 overflow-y-auto flex-1 scrollbar-hide">
+            <form id="eventForm" class="space-y-6">
+              <input type="hidden" id="eventId">
+
+              <!-- Event Type Selection -->
+              <div>
+                <div class="flex items-center gap-2 mb-4">
+                  <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-tags text-green-600"></i>
+                  </div>
+                  <h4 class="text-lg font-semibold text-gray-900">Tipe Event</h4>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <label class="relative cursor-pointer">
+                    <input type="radio" name="event_type" value="gratis" class="peer sr-only type-radio">
+                    <div
+                      class="border-2 border-gray-200 rounded-2xl p-6 transition-all peer-checked:border-green-500 peer-checked:bg-gradient-to-br peer-checked:from-green-50 peer-checked:to-emerald-50 hover:border-green-300">
+                      <div class="flex flex-col items-center text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                          <i class="fas fa-gift text-blue-600 text-2xl"></i>
+                        </div>
+                        <h5 class="font-bold text-gray-900 text-lg">Gratis</h5>
+                        <p class="text-sm text-gray-600 mt-2">Event tanpa biaya pendaftaran</p>
+                        <div class="mt-4 text-xs text-green-700 bg-green-50 px-3 py-1.5 rounded-full">
+                          <i class="fas fa-check-circle mr-1"></i>
+                          No payment required
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                  <label class="relative cursor-pointer">
+                    <input type="radio" name="event_type" value="berbayar" checked class="peer sr-only type-radio">
+                    <div
+                      class="border-2 border-gray-200 rounded-2xl p-6 transition-all peer-checked:border-green-500 peer-checked:bg-gradient-to-br peer-checked:from-green-50 peer-checked:to-emerald-50 hover:border-green-300">
+                      <div class="flex flex-col items-center text-center">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                          <i class="fas fa-gem text-purple-600 text-2xl"></i>
+                        </div>
+                        <h5 class="font-bold text-gray-900 text-lg">Berbayar</h5>
+                        <p class="text-sm text-gray-600 mt-2">Event dengan sistem pembayaran</p>
+                        <div class="mt-4 text-xs text-purple-700 bg-purple-50 px-3 py-1.5 rounded-full">
+                          <i class="fas fa-credit-card mr-1"></i>
+                          Payment & bank info required
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Gratis Fields -->
+              <div id="gratisFields"
+                class="hidden space-y-4 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-200">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-gift text-blue-600"></i>
+                  </div>
+                  <h5 class="font-semibold text-blue-900 text-lg">Info Event Gratis</h5>
+                </div>
+                <div class="text-xs text-gray-600 space-y-1 ml-6">
+                  <p>• Tidak perlu harga & pembayaran</p>
+                  <p>• User langsung bisa daftar</p>
+                  <p>• Bank info tidak diperlukan</p>
+                </div>
+
+                <div class="mt-4 space-y-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                    <input type="text" id="title_gratis" required
+                      class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Slug</label>
+                    <input type="text" id="slug_gratis"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white"
+                      placeholder="URL-friendly event name">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <textarea id="description_gratis" rows="3"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Berbayar Fields -->
+              <div id="berbayarFields" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Title</label>
+                    <input type="text" id="title" required
+                      class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white"
+                      placeholder="Event title">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Slug</label>
+                    <input type="text" id="slug"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white"
+                      placeholder="url-friendly-event-name">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+                  <textarea id="description" rows="3"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white"
+                    placeholder="Event description..."></textarea>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl border border-green-200">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-tags text-green-600"></i>
+                    </div>
+                    <h5 class="font-semibold text-green-900 text-lg">Pricing Information</h5>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-tag mr-2 text-gray-600"></i>
+                        Price Original (Rp)
+                      </label>
+                      <div class="relative">
+                        <span
+                          class="absolute left-3 top-1/2 transform -translate-y-1/2 font-medium text-gray-500">Rp</span>
+                        <input type="number" id="price_original"
+                          class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white"
+                          placeholder="0">
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-tags mr-2 text-green-600"></i>
+                        Price Promo (Rp)
+                      </label>
+                      <div class="relative">
+                        <span
+                          class="absolute left-3 top-1/2 transform -translate-y-1/2 font-medium text-green-600">Rp</span>
+                        <input type="number" id="price_promo"
+                          class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white"
+                          placeholder="0">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-credit-card text-purple-600"></i>
+                    </div>
+                    <h5 class="font-semibold text-gray-900 text-lg">Payment Methods</h5>
+                  </div>
+                  <div class="flex flex-wrap gap-4">
+                    <label class="cursor-pointer">
+                      <input type="checkbox" value="cash" class="peer sr-only payment-method-checkbox">
+                      <div
+                        class="px-6 py-4 border-2 border-gray-200 rounded-xl hover:border-green-300 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all">
+                        <div class="flex items-center gap-3">
+                          <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-money-bill-wave text-green-600"></i>
+                          </div>
+                          <div>
+                            <p class="font-medium text-gray-900">Cash</p>
+                            <p class="text-sm text-gray-500">Bayar di tempat</p>
+                          </div>
+                        </div>
+                      </div>
+                    </label>
+                    <label class="cursor-pointer">
+                      <input type="checkbox" value="transfer" class="peer sr-only payment-method-checkbox">
+                      <div
+                        class="px-6 py-4 border-2 border-gray-200 rounded-xl hover:border-green-300 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all">
+                        <div class="flex items-center gap-3">
+                          <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-university text-blue-600"></i>
+                          </div>
+                          <div>
+                            <p class="font-medium text-gray-900">Transfer</p>
+                            <p class="text-sm text-gray-500">Transfer bank</p>
+                          </div>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-2xl border border-indigo-200">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-university text-indigo-600"></i>
+                    </div>
+                    <h5 class="font-semibold text-indigo-900 text-lg">Bank Information</h5>
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-2">Bank Name</label>
+                      <input type="text" id="bank_name"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm bg-white">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-2">Account Name</label>
+                      <input type="text" id="bank_account_name"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm bg-white">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-2">Account Number</label>
+                      <input type="text" id="bank_account_number"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm bg-white">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                      <i class="fas fa-calendar mr-1 text-purple-600"></i>
+                      Start Date
+                    </label>
+                    <input type="date" id="start_date" required
+                      class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                      <i class="fas fa-calendar-check mr-1 text-purple-600"></i>
+                      End Date
+                    </label>
+                    <input type="date" id="end_date" required
+                      class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Admin WhatsApp (For both types) -->
+              <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl border border-green-200">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                    <i class="fab fa-whatsapp text-green-600"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-semibold text-green-900 text-lg">Admin WhatsApp</h5>
+                    <p class="text-sm text-green-700">Untuk konfirmasi pembayaran dan komunikasi dengan peserta</p>
+                  </div>
+                </div>
+                <div class="relative">
+                  <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">+62</span>
+                  <input type="text" id="admin_whatsapp" placeholder="812xxxxxxxx"
+                    class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white">
+                </div>
+              </div>
+
+              <!-- Status -->
+              <div>
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-toggle-on text-gray-600"></i>
+                  </div>
+                  <h5 class="font-semibold text-gray-900 text-lg">Status</h5>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <label class="cursor-pointer">
+                    <input type="radio" name="status" value="draft" class="peer sr-only">
+                    <div
+                      class="p-4 border-2 border-gray-200 rounded-xl hover:border-yellow-400 peer-checked:border-yellow-500 peer-checked:bg-yellow-50 transition-all text-center">
+                      <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-file-alt text-yellow-600"></i>
+                      </div>
+                      <p class="font-medium text-gray-900">Draft</p>
+                      <p class="text-xs text-gray-500 mt-1">Save as draft</p>
+                    </div>
+                  </label>
+                  <label class="cursor-pointer">
+                    <input type="radio" name="status" value="active" class="peer sr-only" checked>
+                    <div
+                      class="p-4 border-2 border-gray-200 rounded-xl hover:border-green-400 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all text-center">
+                      <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-check-circle text-green-600"></i>
+                      </div>
+                      <p class="font-medium text-gray-900">Active</p>
+                      <p class="text-xs text-gray-500 mt-1">Publish now</p>
+                    </div>
+                  </label>
+                  <label class="cursor-pointer">
+                    <input type="radio" name="status" value="inactive" class="peer sr-only">
+                    <div
+                      class="p-4 border-2 border-gray-200 rounded-xl hover:border-red-400 peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-center">
+                      <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-times-circle text-red-600"></i>
+                      </div>
+                      <p class="font-medium text-gray-900">Inactive</p>
+                      <p class="text-xs text-gray-500 mt-1">Archive event</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 flex gap-4">
+            <button type="button" onclick="closeModal()"
+              class="flex-1 bg-gray-200 text-gray-700 py-3.5 rounded-xl hover:bg-gray-300 transition-all font-semibold flex items-center justify-center gap-2">
+              <i class="fas fa-times"></i>
+              Cancel
+            </button>
+            <button type="submit" form="eventForm"
+              class="flex-1 gradient-primary text-white py-3.5 rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg flex items-center justify-center gap-2">
+              <i class="fas fa-save"></i>
+              <span id="submitButtonText">Save Event</span>
+            </button>
+          </div>
+        </div>
       </div>
-      </form>
-    </div>
-  </div>
 
-  <script>
-    let allEvents = [];
+      <!-- Success Notification -->
+      <div id="successNotification"
+        class="fixed top-6 right-6 bg-green-500 text-white px-6 py-4 rounded-xl shadow-lg z-50 hidden success-badge">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+            <i class="fas fa-check"></i>
+          </div>
+          <div>
+            <p class="font-semibold" id="successMessage"></p>
+            <p class="text-green-100 text-sm mt-1">Action completed successfully</p>
+          </div>
+        </div>
+      </div>
 
-    async function loadEvents() {
-      try {
-        const response = await fetch('/api/admin/events');
-        const data = await response.json();
+      <!-- Error Notification -->
+      <div id="errorNotification"
+        class="fixed top-6 right-6 bg-red-500 text-white px-6 py-4 rounded-xl shadow-lg z-50 hidden success-badge">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div>
+            <p class="font-semibold" id="errorMessage"></p>
+            <p class="text-red-100 text-sm mt-1">Please try again</p>
+          </div>
+        </div>
+      </div>
 
-        if (data.success) {
-          allEvents = data.data;
-          updateStats(data.data);
-          displayEvents(data.data);
+      <script>
+        let allEvents = [];
+
+        async function loadEvents() {
+          try {
+            const response = await fetch('/api/admin/events');
+            const data = await response.json();
+
+            if (data.success) {
+              allEvents = data.data;
+              updateStats(data.data);
+              displayEvents(data.data);
+            }
+          } catch (error) {
+            console.error('Error loading events:', error);
+            showError('Failed to load events');
+          }
         }
-      } catch (error) {
-        console.error('Error loading events:', error);
-        showError('Failed to load events');
-      }
-    }
 
-    function updateStats(events) {
-      const total = events.length;
-      const active = events.filter(e => e.status === 'active').length;
-      const draft = events.filter(e => e.status === 'draft').length;
-      const free = events.filter(e => e.event_type === 'gratis').length;
+        function updateStats(events) {
+          const total = events.length;
+          const active = events.filter(e => e.status === 'active').length;
+          const draft = events.filter(e => e.status === 'draft').length;
+          const free = events.filter(e => e.event_type === 'gratis').length;
 
-      document.getElementById('totalEvents').textContent = total;
-      document.getElementById('activeEvents').textContent = active;
-      document.getElementById('draftEvents').textContent = draft;
-      document.getElementById('freeEvents').textContent = free;
-    }
+          document.getElementById('totalEvents').textContent = total;
+          document.getElementById('activeEvents').textContent = active;
+          document.getElementById('draftEvents').textContent = draft;
+          document.getElementById('freeEvents').textContent = free;
+          document.getElementById('activeNow').textContent = active;
+          document.getElementById('draftCount').textContent = draft;
+          document.getElementById('freeCount').textContent = free;
+        }
 
-    function displayEvents(events) {
-      const container = document.getElementById('eventsContainer');
+        function displayEvents(events) {
+          const container = document.getElementById('eventsContainer');
 
-      if (!events || events.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full text-center py-16 text-gray-400">
+          if (!events || events.length === 0) {
+            container.innerHTML = `
+          <div class="col-span-full text-center py-16">
             <div class="flex flex-col items-center">
-              <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+              <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
                 <i class="fas fa-calendar-times text-4xl text-gray-300"></i>
               </div>
-              <p class="text-lg font-medium text-gray-500">Tidak ada event</p>
-              <p class="text-sm text-gray-400 mt-1">Silakan buat event baru</p>
+              <h3 class="text-xl font-semibold text-gray-700 mb-2">No Events Found</h3>
+              <p class="text-gray-500 max-w-md mx-auto">Create your first event to get started.</p>
+              <button onclick="showCreateModal()" class="mt-6 px-6 py-3 gradient-primary text-white rounded-xl hover:opacity-90 transition-all font-semibold flex items-center gap-2">
+                <i class="fas fa-plus"></i>
+                Create Your First Event
+              </button>
             </div>
           </div>
         `;
-        return;
-      }
+            return;
+          }
 
-      container.innerHTML = events.map(event => {
-        const statusConfig = {
-          'draft': { bg: 'bg-gray-100', text: 'text-gray-700', icon: '📝' },
-          'active': { bg: 'bg-green-100', text: 'text-green-700', icon: '✅' },
-          'inactive': { bg: 'bg-red-100', text: 'text-red-700', icon: '❌' }
-        }[event.status] || { bg: 'bg-gray-100', text: 'text-gray-700', icon: '📋' };
+          container.innerHTML = events.map(event => {
+            const statusConfig = {
+              'draft': { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: 'fas fa-file-alt', badge: 'Draft' },
+              'active': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fas fa-check-circle', badge: 'Active' },
+              'inactive': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle', badge: 'Inactive' }
+            }[event.status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-file', badge: 'Unknown' };
 
-        const typeConfig = {
-          'gratis': { bg: 'bg-blue-500', text: 'Gratis', icon: '🎁' },
-          'berbayar': { bg: 'bg-purple-500', text: 'Berbayar', icon: '💎' }
-        }[event.event_type] || { bg: 'bg-gray-500', text: 'Unknown', icon: '📋' };
+            const typeConfig = {
+              'gratis': { bg: 'bg-blue-500', text: 'text-blue-100', icon: 'fas fa-gift', badge: 'Free' },
+              'berbayar': { bg: 'bg-purple-500', text: 'text-purple-100', icon: 'fas fa-gem', badge: 'Paid' }
+            }[event.event_type] || { bg: 'bg-gray-500', text: 'text-gray-100', icon: 'fas fa-calendar', badge: 'Unknown' };
 
-        const startDate = event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
-        const endDate = event.end_date ? new Date(event.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+            const startDate = event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+            const endDate = event.end_date ? new Date(event.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
 
-        return `
+            return `
           <div class="card-hover bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
-            <!-- Header with status -->
+            <!-- Header with status and view button -->
             <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusConfig.bg} ${statusConfig.text} flex items-center gap-1">
-                  ${statusConfig.icon} ${event.status.charAt(0).toUpperCase() + event.status.slice(1)}
+                <span class="px-3 py-1.5 rounded-full text-xs font-semibold ${statusConfig.bg} ${statusConfig.text} flex items-center gap-2">
+                  <i class="${statusConfig.icon}"></i>
+                  ${statusConfig.badge}
                 </span>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold ${typeConfig.bg} text-white flex items-center gap-1">
-                  ${typeConfig.icon} ${typeConfig.text}
+                <span class="px-3 py-1.5 rounded-full text-xs font-semibold ${typeConfig.bg} ${typeConfig.text} flex items-center gap-2">
+                  <i class="${typeConfig.icon}"></i>
+                  ${typeConfig.badge}
                 </span>
               </div>
-              <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button onclick="editEvent(${event.id})" class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors flex items-center justify-center">
-                  <i class="fas fa-edit text-sm"></i>
-                </button>
-                <button onclick="deleteEvent(${event.id})" class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors flex items-center justify-center">
-                  <i class="fas fa-trash text-sm"></i>
+              <div class="flex gap-2">
+                <button onclick="viewEvent(${event.id})" class="w-9 h-9 rounded-lg bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors flex items-center justify-center">
+                  <i class="fas fa-arrow-up-right-from-square"></i>
                 </button>
               </div>
             </div>
@@ -459,11 +965,12 @@
                     <span class="font-bold text-green-600">Rp ${parseInt(event.price_promo || 0).toLocaleString('id-ID')}</span>
                   </div>
                 ` : `
-                  <div class="flex items-center justify-between text-sm bg-blue-50 px-3 py-2 rounded-lg">
-                    <span class="text-blue-700 font-semibold flex items-center gap-1">
+                  <div class="flex items-center justify-between text-sm bg-blue-50 px-4 py-3 rounded-xl">
+                    <span class="text-blue-700 font-semibold flex items-center gap-2">
                       <i class="fas fa-gift"></i>
                       Event Gratis
                     </span>
+                    <span class="text-blue-600 font-bold">No Payment Required</span>
                   </div>
                 `}
                 <div class="flex items-center justify-between text-sm pt-2 border-t border-gray-100">
@@ -476,282 +983,457 @@
               </div>
             </div>
 
-            <!-- Footer with quick actions -->
-            <div class="px-6 py-3 bg-gray-50 border-t border-gray-100 flex gap-2">
-              <button onclick="editEvent(${event.id})" class="flex-1 text-sm font-medium text-blue-600 hover:text-blue-800 py-1">
-                <i class="fas fa-edit mr-1"></i>Edit
+            <!-- Footer with edit and delete buttons -->
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex gap-2">
+              <button onclick="editEvent(${event.id})" class="flex-1 text-sm font-semibold bg-blue-50 text-blue-600 hover:bg-blue-100 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                <i class="fas fa-edit"></i>
+                Edit
               </button>
-              <div class="w-px bg-gray-300"></div>
-              <button onclick="deleteEvent(${event.id})" class="flex-1 text-sm font-medium text-red-600 hover:text-red-800 py-1">
-                <i class="fas fa-trash mr-1"></i>Delete
+              <button onclick="deleteEvent(${event.id})" class="flex-1 text-sm font-semibold bg-red-50 text-red-600 hover:bg-red-100 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                <i class="fas fa-trash"></i>
+                Delete
               </button>
             </div>
           </div>
         `;
-      }).join('');
-    }
-
-    function showCreateModal() {
-      document.getElementById('modalTitleText').textContent = 'Create Event';
-      document.getElementById('eventForm').reset();
-      document.getElementById('eventId').value = '';
-      // Ensure fields match selected type after reset
-      toggleEventFields();
-      document.getElementById('eventModal').classList.remove('hidden');
-      document.getElementById('eventModal').classList.add('flex');
-      document.body.style.overflow = 'hidden';
-    }
-
-    async function editEvent(eventId) {
-      const event = allEvents.find(e => e.id === eventId);
-      if (!event) {
-        alert('Event not found');
-        return;
-      }
-
-      document.getElementById('modalTitleText').textContent = 'Edit Event';
-      document.getElementById('eventId').value = event.id;
-
-      // Set event type
-      const eventTypeRadio = document.querySelector(`input[name="event_type"][value="${event.event_type}"]`);
-      if (eventTypeRadio) {
-        eventTypeRadio.checked = true;
-        toggleEventFields();
-      }
-
-      // Fill form based on event type
-      if (event.event_type === 'gratis') {
-        document.getElementById('title_gratis').value = event.title || '';
-        document.getElementById('slug_gratis').value = event.slug || '';
-        document.getElementById('description_gratis').value = event.description || '';
-      } else {
-        document.getElementById('title').value = event.title || '';
-        document.getElementById('slug').value = event.slug || '';
-        document.getElementById('description').value = event.description || '';
-        document.getElementById('price_original').value = event.price_original || '';
-        document.getElementById('price_promo').value = event.price_promo || '';
-        document.getElementById('start_date').value = event.start_date || '';
-        document.getElementById('end_date').value = event.end_date || '';
-        document.getElementById('bank_name').value = event.bank_name || '';
-        document.getElementById('bank_account_name').value = event.bank_account_name || '';
-        document.getElementById('bank_account_number').value = event.bank_account_number || '';
-
-        // Set payment methods
-        document.querySelectorAll('.payment-method-checkbox').forEach(cb => {
-          cb.checked = event.payment_methods && event.payment_methods.includes(cb.value);
-        });
-      }
-
-      document.getElementById('admin_whatsapp').value = event.admin_whatsapp || '';
-      document.getElementById('status').value = event.status || 'draft';
-
-      document.getElementById('eventModal').classList.remove('hidden');
-      document.getElementById('eventModal').classList.add('flex');
-      document.body.style.overflow = 'hidden';
-    }
-
-    async function deleteEvent(eventId) {
-      const event = allEvents.find(e => e.id === eventId);
-      const eventName = event ? event.title : 'this event';
-      
-      if (!confirm(`Are you sure you want to delete "${eventName}"?`)) return;
-
-      try {
-        const response = await fetch(`/api/admin/events/${eventId}`, {
-          method: 'DELETE'
-        });
-        const data = await response.json();
-
-        if (data.success) {
-          showSuccess('Event deleted successfully');
-          loadEvents();
-        } else {
-          showError('Failed to delete event: ' + (data.message || 'Unknown error'));
+          }).join('');
         }
-      } catch (error) {
-        console.error('Error deleting event:', error);
-        showError('Failed to delete event: ' + error.message);
-      }
-    }
 
-    function closeModal() {
-      document.getElementById('eventModal').classList.add('hidden');
-      document.getElementById('eventModal').classList.remove('flex');
-      document.body.style.overflow = '';
-    }
+        function viewEvent(eventId) {
+          const event = allEvents.find(e => e.id === eventId);
+          if (!event) {
+            showError('Event not found');
+            return;
+          }
 
-    function toggleEventFields() {
-      const eventType = document.querySelector('input[name="event_type"]:checked').value;
-      const gratisFields = document.getElementById('gratisFields');
-      const berbayarFields = document.getElementById('berbayarFields');
+          // Set event information
+          document.getElementById('viewEventId').textContent = event.id;
+          document.getElementById('viewEventTitle').textContent = event.title;
+          document.getElementById('viewEventDescription').textContent = event.description || 'No description';
+          document.getElementById('viewEventSlug').textContent = event.slug || '-';
+          document.getElementById('viewEventType').textContent = event.event_type === 'gratis' ? 'Free' : 'Paid';
+          document.getElementById('viewEventStatus').textContent = event.status.charAt(0).toUpperCase() + event.status.slice(1);
 
-      if (eventType === 'gratis') {
-        // Show gratis fields and set required attributes
-        gratisFields.classList.remove('hidden');
-        berbayarFields.classList.add('hidden');
+          // Set badges
+          const statusConfig = {
+            'draft': { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: 'fas fa-file-alt', badge: 'Draft' },
+            'active': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fas fa-check-circle', badge: 'Active' },
+            'inactive': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle', badge: 'Inactive' }
+          }[event.status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-file', badge: 'Unknown' };
 
-        document.getElementById('title_gratis').required = true;
-        document.getElementById('slug_gratis').required = false;
-        document.getElementById('description_gratis').required = false;
+          const statusBadge = document.getElementById('viewEventStatusBadge');
+          statusBadge.className = `px-3 py-1.5 rounded-full text-xs font-semibold ${statusConfig.bg} ${statusConfig.text} flex items-center gap-2`;
+          statusBadge.innerHTML = `<i class="${statusConfig.icon}"></i>${statusConfig.badge}`;
 
-        document.getElementById('title').required = false;
-        document.getElementById('slug').required = false;
-        document.getElementById('description').required = false;
-        document.getElementById('price_original').required = false;
-        document.getElementById('price_promo').required = false;
-        document.getElementById('start_date').required = false;
-        document.getElementById('end_date').required = false;
-      } else {
-        // Show berbayar fields and set required attributes
-        gratisFields.classList.add('hidden');
-        berbayarFields.classList.remove('hidden');
+          const typeConfig = {
+            'gratis': { bg: 'bg-blue-100', text: 'text-blue-800', icon: 'fas fa-gift', badge: 'Free Event' },
+            'berbayar': { bg: 'bg-purple-100', text: 'text-purple-800', icon: 'fas fa-gem', badge: 'Paid Event' }
+          }[event.event_type] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-calendar', badge: 'Unknown' };
 
-        document.getElementById('title_gratis').required = false;
-        document.getElementById('slug_gratis').required = false;
-        document.getElementById('description_gratis').required = false;
+          const typeBadge = document.getElementById('viewEventTypeBadge');
+          typeBadge.className = `px-3 py-1.5 rounded-full text-xs font-semibold ${typeConfig.bg} ${typeConfig.text} flex items-center gap-2`;
+          typeBadge.innerHTML = `<i class="${typeConfig.icon}"></i>${typeConfig.badge}`;
 
-        document.getElementById('title').required = true;
-        document.getElementById('slug').required = false;
-        document.getElementById('description').required = false;
-        document.getElementById('price_original').required = false;
-        document.getElementById('price_promo').required = false;
-        document.getElementById('start_date').required = true;
-        document.getElementById('end_date').required = true;
-      }
-    }
+          // Set price badge
+          const priceBadge = document.getElementById('viewEventPriceBadge');
+          if (event.event_type === 'gratis') {
+            priceBadge.className = 'px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 flex items-center gap-2';
+            priceBadge.innerHTML = '<i class="fas fa-gift"></i>FREE';
+          } else {
+            const promoPrice = parseInt(event.price_promo || 0);
+            priceBadge.className = 'px-3 py-1.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 flex items-center gap-2';
+            priceBadge.innerHTML = `<i class="fas fa-tags"></i>Rp ${promoPrice.toLocaleString('id-ID')}`;
+          }
 
-    function generateSlug(title) {
-      return title
-        .toLowerCase()
-        .trim()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '');
-    }
+          // Set dates
+          const startDate = event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          }) : '-';
+          const endDate = event.end_date ? new Date(event.end_date).toLocaleDateString('id-ID', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          }) : '-';
 
-    function showSuccess(message) {
-      alert(message);
-    }
+          document.getElementById('viewStartDate').textContent = startDate;
+          document.getElementById('viewEndDate').textContent = endDate;
 
-    function showError(message) {
-      alert(message);
-    }
+          // Set pricing information
+          if (event.event_type === 'berbayar') {
+            document.getElementById('viewPricingSection').classList.remove('hidden');
+            document.getElementById('viewFreeEventSection').classList.add('hidden');
 
-    // Form submission
-    document.getElementById('eventForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
+            document.getElementById('viewPriceOriginal').textContent = `Rp ${parseInt(event.price_original || 0).toLocaleString('id-ID')}`;
+            document.getElementById('viewPricePromo').textContent = `Rp ${parseInt(event.price_promo || 0).toLocaleString('id-ID')}`;
 
-      const eventId = document.getElementById('eventId').value;
-      const eventType = document.querySelector('input[name="event_type"]:checked').value;
+            // Set payment methods
+            const paymentMethodsContainer = document.getElementById('viewPaymentMethods');
+            paymentMethodsContainer.innerHTML = '';
 
-      let formData = {
-        event_type: eventType,
-        admin_whatsapp: document.getElementById('admin_whatsapp').value,
-        status: document.getElementById('status').value
-      };
+            if (event.payment_methods) {
+              const methods = event.payment_methods.split(',');
+              methods.forEach(method => {
+                const methodConfig = {
+                  'cash': { icon: 'fas fa-money-bill-wave', text: 'Cash', color: 'green' },
+                  'transfer': { icon: 'fas fa-university', text: 'Bank Transfer', color: 'blue' }
+                }[method] || { icon: 'fas fa-money-bill', text: method, color: 'gray' };
 
-      if (eventType === 'gratis') {
-        formData.title = document.getElementById('title_gratis').value;
-        formData.slug = document.getElementById('slug_gratis').value || generateSlug(document.getElementById('title_gratis').value);
-        formData.description = document.getElementById('description_gratis').value;
-        formData.price_original = 0;
-        formData.price_promo = 0;
-        formData.payment_methods = '';
-      } else {
-        // Get selected payment methods
-        const paymentMethods = [];
-        document.querySelectorAll('.payment-method-checkbox:checked').forEach(checkbox => {
-          paymentMethods.push(checkbox.value);
-        });
+                const methodElement = document.createElement('div');
+                methodElement.className = `flex items-center gap-2 text-sm text-${methodConfig.color}-600`;
+                methodElement.innerHTML = `
+                  <i class="${methodConfig.icon}"></i>
+                  <span>${methodConfig.text}</span>
+                `;
+                paymentMethodsContainer.appendChild(methodElement);
+              });
+            }
 
-        formData.title = document.getElementById('title').value;
-        formData.slug = document.getElementById('slug').value || generateSlug(document.getElementById('title').value);
-        formData.description = document.getElementById('description').value;
-        formData.price_original = document.getElementById('price_original').value || 0;
-        formData.price_promo = document.getElementById('price_promo').value || 0;
-        formData.payment_methods = paymentMethods.join(',');
-        formData.bank_name = document.getElementById('bank_name').value;
-        formData.bank_account_name = document.getElementById('bank_account_name').value;
-        formData.bank_account_number = document.getElementById('bank_account_number').value;
-        formData.start_date = document.getElementById('start_date').value;
-        formData.end_date = document.getElementById('end_date').value;
-      }
+            // Set bank information
+            document.getElementById('viewBankName').textContent = event.bank_name || '-';
+            document.getElementById('viewAccountName').textContent = event.bank_account_name || '-';
+            document.getElementById('viewAccountNumber').textContent = event.bank_account_number || '-';
+            document.getElementById('viewBankSection').classList.remove('hidden');
+          } else {
+            document.getElementById('viewPricingSection').classList.add('hidden');
+            document.getElementById('viewFreeEventSection').classList.remove('hidden');
+            document.getElementById('viewBankSection').classList.add('hidden');
+          }
 
-      try {
-        const url = eventId ? `/api/admin/events/${eventId}` : '/api/admin/events';
-        const method = eventId ? 'PUT' : 'POST';
+          // Set admin WhatsApp
+          document.getElementById('viewAdminWhatsApp').textContent = event.admin_whatsapp ? `+62 ${event.admin_whatsapp}` : '-';
 
-        const response = await fetch(url, {
-          method: method,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        });
+          // Set edit button to current event
+          document.getElementById('editFromViewBtn').setAttribute('onclick', `closeViewModal(); editEvent(${event.id})`);
 
-        const data = await response.json();
-
-        if (data.success) {
-          showSuccess(eventId ? 'Event updated successfully' : 'Event created successfully');
-          closeModal();
-          loadEvents();
-        } else {
-          showError('Failed to save event: ' + (data.message || 'Unknown error'));
+          // Show modal
+          document.getElementById('viewModal').classList.remove('hidden');
+          document.getElementById('viewModal').classList.add('flex');
+          document.body.style.overflow = 'hidden';
         }
-      } catch (error) {
-        console.error('Error saving event:', error);
-        showError('Failed to save event: ' + error.message);
-      }
-    });
 
-    // Event type change handler
-    document.querySelectorAll('input[name="event_type"]').forEach(radio => {
-      radio.addEventListener('change', toggleEventFields);
-    });
+        function closeViewModal() {
+          document.getElementById('viewModal').classList.add('hidden');
+          document.getElementById('viewModal').classList.remove('flex');
+          document.body.style.overflow = '';
+        }
 
-    // Search and filter handlers
-    let searchTimeout;
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        filterEvents();
-      }, 300);
-    });
+        function editFromView() {
+          closeViewModal();
+          // Wait a bit before opening edit modal for smooth animation
+          setTimeout(() => {
+            const eventId = document.getElementById('viewEventId').textContent;
+            editEvent(parseInt(eventId));
+          }, 300);
+        }
 
-    document.getElementById('statusFilter').addEventListener('change', filterEvents);
-    document.getElementById('typeFilter').addEventListener('change', filterEvents);
+        function showCreateModal() {
+          document.getElementById('modalTitleText').textContent = 'Create Event';
+          document.getElementById('submitButtonText').textContent = 'Create Event';
+          document.getElementById('eventForm').reset();
+          document.getElementById('eventId').value = '';
+          // Ensure fields match selected type after reset
+          toggleEventFields();
+          document.getElementById('eventModal').classList.remove('hidden');
+          document.getElementById('eventModal').classList.add('flex');
+          document.body.style.overflow = 'hidden';
+        }
 
-    function filterEvents() {
-      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-      const statusFilter = document.getElementById('statusFilter').value;
-      const typeFilter = document.getElementById('typeFilter').value;
+        async function editEvent(eventId) {
+          const event = allEvents.find(e => e.id === eventId);
+          if (!event) {
+            showError('Event not found');
+            return;
+          }
 
-      const filtered = allEvents.filter(event => {
-        const matchesSearch = !searchTerm || 
-          event.title.toLowerCase().includes(searchTerm) ||
-          (event.description && event.description.toLowerCase().includes(searchTerm));
-        
-        const matchesStatus = !statusFilter || event.status === statusFilter;
-        const matchesType = !typeFilter || event.event_type === typeFilter;
+          document.getElementById('modalTitleText').textContent = 'Edit Event';
+          document.getElementById('submitButtonText').textContent = 'Update Event';
+          document.getElementById('eventId').value = event.id;
 
-        return matchesSearch && matchesStatus && matchesType;
-      });
+          // Set event type
+          const eventTypeRadio = document.querySelector(`input[name="event_type"][value="${event.event_type}"]`);
+          if (eventTypeRadio) {
+            eventTypeRadio.checked = true;
+            toggleEventFields();
+          }
 
-      displayEvents(filtered);
-    }
+          // Fill form based on event type
+          if (event.event_type === 'gratis') {
+            document.getElementById('title_gratis').value = event.title || '';
+            document.getElementById('slug_gratis').value = event.slug || '';
+            document.getElementById('description_gratis').value = event.description || '';
+          } else {
+            document.getElementById('title').value = event.title || '';
+            document.getElementById('slug').value = event.slug || '';
+            document.getElementById('description').value = event.description || '';
+            document.getElementById('price_original').value = event.price_original || '';
+            document.getElementById('price_promo').value = event.price_promo || '';
+            document.getElementById('start_date').value = event.start_date || '';
+            document.getElementById('end_date').value = event.end_date || '';
+            document.getElementById('bank_name').value = event.bank_name || '';
+            document.getElementById('bank_account_name').value = event.bank_account_name || '';
+            document.getElementById('bank_account_number').value = event.bank_account_number || '';
 
-    // Close modal on escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
-    });
+            // Set payment methods
+            document.querySelectorAll('.payment-method-checkbox').forEach(cb => {
+              cb.checked = event.payment_methods && event.payment_methods.includes(cb.value);
+            });
+          }
 
-    // Close modal on backdrop click
-    document.getElementById('eventModal').addEventListener('click', (e) => {
-      if (e.target === document.getElementById('eventModal')) {
-        closeModal();
-      }
-    });
+          // Set status
+          const statusRadio = document.querySelector(`input[name="status"][value="${event.status || 'draft'}"]`);
+          if (statusRadio) {
+            statusRadio.checked = true;
+          }
 
-    // Load events on page load
-    document.addEventListener('DOMContentLoaded', loadEvents);
-  </script>
+          document.getElementById('admin_whatsapp').value = event.admin_whatsapp || '';
+
+          document.getElementById('eventModal').classList.remove('hidden');
+          document.getElementById('eventModal').classList.add('flex');
+          document.body.style.overflow = 'hidden';
+        }
+
+        async function deleteEvent(eventId) {
+          const event = allEvents.find(e => e.id === eventId);
+          const eventName = event ? event.title : 'this event';
+
+          if (!confirm(`Are you sure you want to delete "${eventName}"?`)) return;
+
+          try {
+            const response = await fetch(`/api/admin/events/${eventId}`, {
+              method: 'DELETE'
+            });
+            const data = await response.json();
+
+            if (data.success) {
+              showSuccess('Event deleted successfully');
+              loadEvents();
+            } else {
+              showError('Failed to delete event: ' + (data.message || 'Unknown error'));
+            }
+          } catch (error) {
+            console.error('Error deleting event:', error);
+            showError('Failed to delete event: ' + error.message);
+          }
+        }
+
+        function closeModal() {
+          document.getElementById('eventModal').classList.add('hidden');
+          document.getElementById('eventModal').classList.remove('flex');
+          document.body.style.overflow = '';
+        }
+
+        function toggleEventFields() {
+          const eventType = document.querySelector('input[name="event_type"]:checked').value;
+          const gratisFields = document.getElementById('gratisFields');
+          const berbayarFields = document.getElementById('berbayarFields');
+
+          if (eventType === 'gratis') {
+            // Show gratis fields and set required attributes
+            gratisFields.classList.remove('hidden');
+            berbayarFields.classList.add('hidden');
+
+            document.getElementById('title_gratis').required = true;
+            document.getElementById('slug_gratis').required = false;
+            document.getElementById('description_gratis').required = false;
+
+            document.getElementById('title').required = false;
+            document.getElementById('slug').required = false;
+            document.getElementById('description').required = false;
+            document.getElementById('price_original').required = false;
+            document.getElementById('price_promo').required = false;
+            document.getElementById('start_date').required = false;
+            document.getElementById('end_date').required = false;
+          } else {
+            // Show berbayar fields and set required attributes
+            gratisFields.classList.add('hidden');
+            berbayarFields.classList.remove('hidden');
+
+            document.getElementById('title_gratis').required = false;
+            document.getElementById('slug_gratis').required = false;
+            document.getElementById('description_gratis').required = false;
+
+            document.getElementById('title').required = true;
+            document.getElementById('slug').required = false;
+            document.getElementById('description').required = false;
+            document.getElementById('price_original').required = false;
+            document.getElementById('price_promo').required = false;
+            document.getElementById('start_date').required = true;
+            document.getElementById('end_date').required = true;
+          }
+        }
+
+        function generateSlug(title) {
+          return title
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+        }
+
+        function showSuccess(message) {
+          const notification = document.getElementById('successNotification');
+          document.getElementById('successMessage').textContent = message;
+          notification.classList.remove('hidden');
+
+          setTimeout(() => {
+            notification.classList.add('hidden');
+          }, 3000);
+        }
+
+        function showError(message) {
+          const notification = document.getElementById('errorNotification');
+          document.getElementById('errorMessage').textContent = message;
+          notification.classList.remove('hidden');
+
+          setTimeout(() => {
+            notification.classList.add('hidden');
+          }, 3000);
+        }
+
+        // Form submission
+        document.getElementById('eventForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const eventId = document.getElementById('eventId').value;
+          const eventType = document.querySelector('input[name="event_type"]:checked').value;
+          const status = document.querySelector('input[name="status"]:checked').value;
+
+          let formData = {
+            event_type: eventType,
+            admin_whatsapp: document.getElementById('admin_whatsapp').value,
+            status: status
+          };
+
+          if (eventType === 'gratis') {
+            formData.title = document.getElementById('title_gratis').value;
+            formData.slug = document.getElementById('slug_gratis').value || generateSlug(document.getElementById('title_gratis').value);
+            formData.description = document.getElementById('description_gratis').value;
+            formData.price_original = 0;
+            formData.price_promo = 0;
+            formData.payment_methods = '';
+          } else {
+            // Get selected payment methods
+            const paymentMethods = [];
+            document.querySelectorAll('.payment-method-checkbox:checked').forEach(checkbox => {
+              paymentMethods.push(checkbox.value);
+            });
+
+            formData.title = document.getElementById('title').value;
+            formData.slug = document.getElementById('slug').value || generateSlug(document.getElementById('title').value);
+            formData.description = document.getElementById('description').value;
+            formData.price_original = document.getElementById('price_original').value || 0;
+            formData.price_promo = document.getElementById('price_promo').value || 0;
+            formData.payment_methods = paymentMethods.join(',');
+            formData.bank_name = document.getElementById('bank_name').value;
+            formData.bank_account_name = document.getElementById('bank_account_name').value;
+            formData.bank_account_number = document.getElementById('bank_account_number').value;
+            formData.start_date = document.getElementById('start_date').value;
+            formData.end_date = document.getElementById('end_date').value;
+          }
+
+          try {
+            const url = eventId ? `/api/admin/events/${eventId}` : '/api/admin/events';
+            const method = eventId ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+              method: method,
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              showSuccess(eventId ? 'Event updated successfully' : 'Event created successfully');
+              closeModal();
+              loadEvents();
+            } else {
+              showError('Failed to save event: ' + (data.message || 'Unknown error'));
+            }
+          } catch (error) {
+            console.error('Error saving event:', error);
+            showError('Failed to save event: ' + error.message);
+          }
+        });
+
+        // Event type change handler
+        document.querySelectorAll('input[name="event_type"]').forEach(radio => {
+          radio.addEventListener('change', toggleEventFields);
+        });
+
+        // Search and filter handlers
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(() => {
+            filterEvents();
+          }, 300);
+        });
+
+        document.getElementById('statusFilter').addEventListener('change', filterEvents);
+        document.getElementById('typeFilter').addEventListener('change', filterEvents);
+
+        function filterEvents() {
+          const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+          const statusFilter = document.getElementById('statusFilter').value;
+          const typeFilter = document.getElementById('typeFilter').value;
+
+          const filtered = allEvents.filter(event => {
+            const matchesSearch = !searchTerm ||
+              event.title.toLowerCase().includes(searchTerm) ||
+              (event.description && event.description.toLowerCase().includes(searchTerm));
+
+            const matchesStatus = !statusFilter || event.status === statusFilter;
+            const matchesType = !typeFilter || event.event_type === typeFilter;
+
+            return matchesSearch && matchesStatus && matchesType;
+          });
+
+          displayEvents(filtered);
+        }
+
+        function clearFilters() {
+          document.getElementById('searchInput').value = '';
+          document.getElementById('statusFilter').value = '';
+          document.getElementById('typeFilter').value = '';
+          filterEvents();
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            if (!document.getElementById('viewModal').classList.contains('hidden')) {
+              closeViewModal();
+            } else if (!document.getElementById('eventModal').classList.contains('hidden')) {
+              closeModal();
+            }
+          }
+        });
+
+        // Close modal on backdrop click
+        document.getElementById('viewModal').addEventListener('click', (e) => {
+          if (e.target === document.getElementById('viewModal')) {
+            closeViewModal();
+          }
+        });
+
+        document.getElementById('eventModal').addEventListener('click', (e) => {
+          if (e.target === document.getElementById('eventModal')) {
+            closeModal();
+          }
+        });
+
+        // Load events on page load
+        document.addEventListener('DOMContentLoaded', loadEvents);
+
+        // Auto-refresh every 60 seconds
+        setInterval(loadEvents, 60000);
+      </script>
 </body>
+
 </html>
