@@ -50,412 +50,306 @@
 
     <!-- Main Content -->
     <div class="pt-20 pb-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">Profile Saya</h1>
-        <p class="mt-2 text-gray-600">Kelola informasi profil dan rekening Anda</p>
-      </div>
-
-<<<<<<< HEAD
-        <!-- Profile Content -->
-        <div class="p-8">
-          <div class="grid md:grid-cols-2 gap-8">
-            <!-- Profile Info -->
-            <div class="space-y-6">
-              <div class="text-center">
-                <div class="w-32 h-32 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full mx-auto flex items-center justify-center shadow-lg">
-                  <i class="fas fa-user text-white text-4xl"></i>
-                </div>
-                <button class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
-                  <i class="fas fa-camera mr-2"></i>Ubah Foto
-                </button>
-              </div>
-
-              <div class="bg-gray-50 rounded-xl p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Informasi Dasar</h3>
-                <div class="space-y-3">
-                  <div>
-                    <label class="text-sm font-medium text-gray-600">Nama Lengkap</label>
-                    <p id="info-name" class="text-gray-800 font-medium"><%= user ? user.name : 'User' %></p>
-                  </div>
-                  <div>
-                    <label class="text-sm font-medium text-gray-600">Email</label>
-                    <p id="info-email" class="text-gray-800"><%= user ? user.email : 'user@example.com' %></p>
-                  </div>
-                  <div>
-                    <label class="text-sm font-medium text-gray-600">Role</label>
-                    <span id="info-role" class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                      <%= user ? user.role : 'User' %>
-                    </span>
-                  </div>
-                  <div>
-                    <label class="text-sm font-medium text-gray-600">Nama Bank</label>
-                    <p id="info-bank-name" class="text-gray-800"><%= user && user.bank_name ? user.bank_name : '-' %></p>
-                  </div>
-                  <div>
-                    <label class="text-sm font-medium text-gray-600">Nama Rekening</label>
-                    <p id="info-bank-account-name" class="text-gray-800"><%= user && user.bank_account_name ? user.bank_account_name : '-' %></p>
-                  </div>
-                  <div>
-                    <label class="text-sm font-medium text-gray-600">Nomor Rekening</label>
-                    <p id="info-bank-account-number" class="text-gray-800"><%= user && user.bank_account_number ? user.bank_account_number : '-' %></p>
-                  </div>
-                  <div>
-                    <label class="text-sm font-medium text-gray-600">Status Affiliate</label>
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <%= user && user.affiliate_status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>">
-                      <%= user ? user.affiliate_status : 'inactive' %>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Edit Form -->
-            <div class="bg-gray-50 rounded-xl p-6">
-              <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                <i class="fas fa-edit text-green-600"></i>
-                Edit Profil
-              </h3>
-              <form id="profileForm" class="space-y-4">
-                <div>
-                  <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                  <input type="text" id="name" name="name" value="<%= user ? user.name : '' %>"
-                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all" required>
-                </div>
-                <div>
-                  <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                  <input type="email" id="email" name="email" value="<%= user ? user.email : '' %>"
-                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all" required>
-                </div>
-                <div>
-                  <label for="bank_name" class="block text-sm font-medium text-gray-700 mb-1">Nama Bank</label>
-                  <input type="text" id="bank_name" name="bank_name" value="<%= user && user.bank_name ? user.bank_name : '' %>"
-                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all">
-                </div>
-                <div>
-                  <label for="bank_account_name" class="block text-sm font-medium text-gray-700 mb-1">Nama Rekening</label>
-                  <input type="text" id="bank_account_name" name="bank_account_name" value="<%= user && user.bank_account_name ? user.bank_account_name : '' %>"
-                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all">
-                </div>
-                <div>
-                  <label for="bank_account_number" class="block text-sm font-medium text-gray-700 mb-1">Nomor Rekening</label>
-                  <input type="text" id="bank_account_number" name="bank_account_number" value="<%= user && user.bank_account_number ? user.bank_account_number : '' %>"
-                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all">
-                </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all font-medium">
-                  <i class="fas fa-save mr-2"></i>Simpan Perubahan
-                </button>
-              </form>
-=======
-      <!-- Alert Messages -->
-      <% if (typeof success !=='undefined' && success) { %>
-        <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg alert-success">
+      <% if (typeof error !=='undefined' && error) { %>
+        <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg alert-success">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <i class="fas fa-check-circle text-green-500 text-xl"></i>
+              <i class="fas fa-exclamation-circle text-red-500 text-xl"></i>
             </div>
             <div class="ml-3">
-              <p class="text-sm text-green-700 font-medium">
-                <%= success %>
+              <p class="text-sm text-red-700 font-medium">
+                <%= error %>
               </p>
->>>>>>> 244ff27 (sync local changes)
             </div>
           </div>
         </div>
         <% } %>
 
-          <% if (typeof error !=='undefined' && error) { %>
-            <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg alert-success">
-              <div class="flex items-center">
-                <div class="flex-shrink-0">
-                  <i class="fas fa-exclamation-circle text-red-500 text-xl"></i>
+          <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Profile Saya</h1>
+            <p class="mt-2 text-gray-600">Kelola informasi profil dan rekening Anda</p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+              <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-gray-100">
+                  <div class="flex flex-col items-center text-center">
+                    <!-- Avatar -->
+                    <div class="w-24 h-24 profile-avatar rounded-full flex items-center justify-center mb-4 shadow-lg">
+                      <span class="text-white text-3xl font-bold">
+                        <%= user.name.charAt(0).toUpperCase() %>
+                      </span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900">
+                      <%= user.name %>
+                    </h3>
+                    <p class="text-sm text-gray-500 mt-1">
+                      <%= user.email %>
+                    </p>
+                    <span
+                      class="mt-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      <i class="fas fa-circle text-green-500 text-xs mr-1.5"></i>
+                      <%= user.role ? user.role.replace('_', ' ' ).toUpperCase() : 'USER' %>
+                    </span>
+                    <span
+                      class="mt-2 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <%= user.affiliate_status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>">
+                      <i
+                        class="fas fa-circle <%= user.affiliate_status === 'approved' ? 'text-green-500' : 'text-yellow-500' %> text-xs mr-1.5"></i>
+                      <%= user.affiliate_status ? user.affiliate_status.toUpperCase() : 'INACTIVE' %>
+                    </span>
+                  </div>
                 </div>
-                <div class="ml-3">
-                  <p class="text-sm text-red-700 font-medium">
-                    <%= error %>
-                  </p>
+                <nav class="p-4 space-y-2">
+                  <a href="/dashboard"
+                    class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors <%= (activePage === 'dashboard') ? 'bg-green-50 text-green-700 font-medium' : '' %>">
+                    <div class="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-home text-gray-600 text-sm"></i>
+                    </div>
+                    <span>Dashboard</span>
+                  </a>
+                  <a href="/settings"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors <%= (activePage === 'settings') ? 'bg-green-50 text-green-700 font-medium' : 'text-gray-700 hover:bg-gray-50' %>">
+                    <div
+                      class="w-8 h-8 <%= (activePage === 'settings') ? 'bg-green-500' : 'bg-gray-200' %> rounded-lg flex items-center justify-center">
+                      <i
+                        class="fas fa-cog <%= (activePage === 'settings') ? 'text-white' : 'text-gray-600' %> text-sm"></i>
+                    </div>
+                    <span>Settings</span>
+                  </a>
+                  <a href="/profile"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors <%= (activePage === 'profile') ? 'bg-green-50 text-green-700 font-medium' : 'text-gray-700 hover:bg-gray-50' %>">
+                    <div
+                      class="w-8 h-8 <%= (activePage === 'profile') ? 'bg-green-500' : 'bg-gray-200' %> rounded-lg flex items-center justify-center">
+                      <i
+                        class="fas fa-user <%= (activePage === 'profile') ? 'text-white' : 'text-gray-600' %> text-sm"></i>
+                    </div>
+                    <span>Profile</span>
+                  </a>
+                </nav>
+              </div>
+
+              <!-- Stats Box -->
+              <div class="mt-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
+                <h3 class="font-semibold text-green-900 mb-4">Statistik Akun</h3>
+                <div class="space-y-3">
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-green-700">Total Komisi</span>
+                    <span class="font-semibold text-green-900">Rp <%= (user.total_commission ||
+                        0).toLocaleString('id-ID') %></span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-green-700">Total Penarikan</span>
+                    <span class="font-semibold text-green-900">Rp <%= (user.total_withdrawn ||
+                        0).toLocaleString('id-ID') %></span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-green-700">Rate Komisi</span>
+                    <span class="font-semibold text-green-900">
+                      <%= user.commission_rate || 0 %>%
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Account Info -->
+              <div class="mt-6 bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+                <h3 class="font-semibold text-gray-900 mb-4">Informasi Akun</h3>
+                <div class="space-y-3 text-sm">
+                  <div>
+                    <span class="text-gray-500">Status</span>
+                    <p class="font-medium text-gray-900 flex items-center gap-2">
+                      <i class="fas fa-circle text-green-500 text-xs"></i>
+                      <%= user.status==='active' ? 'Aktif' : user.status || 'Aktif' %>
+                    </p>
+                  </div>
+                  <div>
+                    <span class="text-gray-500">Terdaftar Sejak</span>
+                    <p class="font-medium text-gray-900">
+                      <%= user.created_at ? new Date(user.created_at).toLocaleDateString('id-ID', { day: 'numeric' ,
+                        month: 'long' , year: 'numeric' }) : new Date().toLocaleDateString('id-ID', { day: 'numeric' ,
+                        month: 'long' , year: 'numeric' }) %>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-            <% } %>
 
-              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Sidebar -->
-                <div class="lg:col-span-1">
-                  <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <div class="p-6 border-b border-gray-100">
-                      <div class="flex flex-col items-center text-center">
-                        <!-- Avatar -->
-                        <div
-                          class="w-24 h-24 profile-avatar rounded-full flex items-center justify-center mb-4 shadow-lg">
-                          <span class="text-white text-3xl font-bold">
-                            <%= user.name.charAt(0).toUpperCase() %>
-                          </span>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900">
-                          <%= user.name %>
-                        </h3>
-                        <p class="text-sm text-gray-500 mt-1">
-                          <%= user.email %>
-                        </p>
-                        <span
-                          class="mt-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          <i class="fas fa-circle text-green-500 text-xs mr-1.5"></i>
-                          <%= user.role ? user.role.replace('_', ' ' ).toUpperCase() : 'USER' %>
-                        </span>
-                        <span
-                          class="mt-2 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <%= user.affiliate_status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>">
-                          <i
-                            class="fas fa-circle <%= user.affiliate_status === 'approved' ? 'text-green-500' : 'text-yellow-500' %> text-xs mr-1.5"></i>
-                          <%= user.affiliate_status ? user.affiliate_status.toUpperCase() : 'INACTIVE' %>
-                        </span>
-                      </div>
+            <!-- Main Content -->
+            <div class="lg:col-span-2">
+              <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-gray-100">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-user-edit text-white"></i>
                     </div>
-                    <nav class="p-4 space-y-2">
-                      <a href="/dashboard"
-                        class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors <%= (activePage === 'dashboard') ? 'bg-green-50 text-green-700 font-medium' : '' %>">
-                        <div class="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center">
-                          <i class="fas fa-home text-gray-600 text-sm"></i>
-                        </div>
-                        <span>Dashboard</span>
-                      </a>
-                      <a href="/settings"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors <%= (activePage === 'settings') ? 'bg-green-50 text-green-700 font-medium' : 'text-gray-700 hover:bg-gray-50' %>">
-                        <div class="w-8 h-8 <%= (activePage === 'settings') ? 'bg-green-500' : 'bg-gray-200' %> rounded-lg flex items-center justify-center">
-                          <i class="fas fa-cog <%= (activePage === 'settings') ? 'text-white' : 'text-gray-600' %> text-sm"></i>
-                        </div>
-                        <span>Settings</span>
-                      </a>
-                      <a href="/profile"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors <%= (activePage === 'profile') ? 'bg-green-50 text-green-700 font-medium' : 'text-gray-700 hover:bg-gray-50' %>">
-                        <div class="w-8 h-8 <%= (activePage === 'profile') ? 'bg-green-500' : 'bg-gray-200' %> rounded-lg flex items-center justify-center">
-                          <i class="fas fa-user <%= (activePage === 'profile') ? 'text-white' : 'text-gray-600' %> text-sm"></i>
-                        </div>
-                        <span>Profile</span>
-                      </a>
-                    </nav>
-                  </div>
-
-                  <!-- Stats Box -->
-                  <div
-                    class="mt-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
-                    <h3 class="font-semibold text-green-900 mb-4">Statistik Akun</h3>
-                    <div class="space-y-3">
-                      <div class="flex justify-between items-center">
-                        <span class="text-sm text-green-700">Total Komisi</span>
-                        <span class="font-semibold text-green-900">Rp <%= (user.total_commission ||
-                            0).toLocaleString('id-ID') %></span>
-                      </div>
-                      <div class="flex justify-between items-center">
-                        <span class="text-sm text-green-700">Total Penarikan</span>
-                        <span class="font-semibold text-green-900">Rp <%= (user.total_withdrawn ||
-                            0).toLocaleString('id-ID') %></span>
-                      </div>
-                      <div class="flex justify-between items-center">
-                        <span class="text-sm text-green-700">Rate Komisi</span>
-                        <span class="font-semibold text-green-900">
-                          <%= user.commission_rate || 0 %>%
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Account Info -->
-                  <div class="mt-6 bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-                    <h3 class="font-semibold text-gray-900 mb-4">Informasi Akun</h3>
-                    <div class="space-y-3 text-sm">
-                      <div>
-                        <span class="text-gray-500">Status</span>
-                        <p class="font-medium text-gray-900 flex items-center gap-2">
-                          <i class="fas fa-circle text-green-500 text-xs"></i>
-                          <%= user.status==='active' ? 'Aktif' : user.status || 'Aktif' %>
-                        </p>
-                      </div>
-                      <div>
-                        <span class="text-gray-500">Terdaftar Sejak</span>
-                        <p class="font-medium text-gray-900">
-                          <%= user.created_at ? new Date(user.created_at).toLocaleDateString('id-ID', { day: 'numeric' ,
-                            month: 'long' , year: 'numeric' }) : new Date().toLocaleDateString('id-ID', { day: 'numeric'
-                            , month: 'long' , year: 'numeric' }) %>
-                        </p>
-                      </div>
+                    <div>
+                      <h2 class="text-xl font-semibold text-gray-900">Edit Profil</h2>
+                      <p class="text-sm text-gray-500 mt-1">Update informasi pribadi dan rekening</p>
                     </div>
                   </div>
                 </div>
 
-                <!-- Main Content -->
-                <div class="lg:col-span-2">
-                  <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <div class="p-6 border-b border-gray-100">
-                      <div class="flex items-center gap-3">
-                        <div
-                          class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                          <i class="fas fa-user-edit text-white"></i>
-                        </div>
+                <div class="p-6">
+                  <form id="updateProfileForm" class="space-y-6">
+                    <!-- Personal Information -->
+                    <div>
+                      <h3 class="text-lg font-medium text-gray-900 mb-4">Informasi Pribadi</h3>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Name -->
                         <div>
-                          <h2 class="text-xl font-semibold text-gray-900">Edit Profil</h2>
-                          <p class="text-sm text-gray-500 mt-1">Update informasi pribadi dan rekening</p>
+                          <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Nama Lengkap <span class="text-red-500">*</span>
+                          </label>
+                          <div class="input-group relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                              <i class="fas fa-user text-gray-400 transition-colors"></i>
+                            </div>
+                            <input type="text" id="name" name="name" value="<%= user.name %>" required
+                              class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition-all duration-200"
+                              placeholder="Nama lengkap" />
+                          </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                          <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email <span class="text-red-500">*</span>
+                          </label>
+                          <div class="input-group relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                              <i class="fas fa-envelope text-gray-400 transition-colors"></i>
+                            </div>
+                            <input type="email" id="email" name="email" value="<%= user.email %>" required
+                              class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition-all duration-200"
+                              placeholder="email@contoh.com" />
+                          </div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="md:col-span-2">
+                          <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+                            Nomor Telepon
+                          </label>
+                          <div class="input-group relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                              <i class="fas fa-phone text-gray-400 transition-colors"></i>
+                            </div>
+                            <input type="tel" id="phone" name="phone" value="<%= user.phone || '' %>"
+                              class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition-all duration-200"
+                              placeholder="08xxxxxxxxxx" />
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    <div class="p-6">
-                      <form id="updateProfileForm" class="space-y-6">
-                        <!-- Personal Information -->
+                    <!-- Bank Information -->
+                    <div class="border-t border-gray-100 pt-6">
+                      <h3 class="text-lg font-medium text-gray-900 mb-4">
+                        Informasi Rekening Bank
+                        <span class="text-sm font-normal text-gray-500">(Untuk penarikan komisi)</span>
+                      </h3>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Bank Name -->
                         <div>
-                          <h3 class="text-lg font-medium text-gray-900 mb-4">Informasi Pribadi</h3>
-                          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Name -->
-                            <div>
-                              <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                                Nama Lengkap <span class="text-red-500">*</span>
-                              </label>
-                              <div class="input-group relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                  <i class="fas fa-user text-gray-400 transition-colors"></i>
-                                </div>
-                                <input type="text" id="name" name="name" value="<%= user.name %>" required
-                                  class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition-all duration-200"
-                                  placeholder="Nama lengkap" />
-                              </div>
+                          <label for="bank_name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Nama Bank
+                          </label>
+                          <div class="input-group relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                              <i class="fas fa-university text-gray-400 transition-colors"></i>
                             </div>
-
-                            <!-- Email -->
-                            <div>
-                              <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                                Email <span class="text-red-500">*</span>
-                              </label>
-                              <div class="input-group relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                  <i class="fas fa-envelope text-gray-400 transition-colors"></i>
-                                </div>
-                                <input type="email" id="email" name="email" value="<%= user.email %>" required
-                                  class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition-all duration-200"
-                                  placeholder="email@contoh.com" />
-                              </div>
-                            </div>
-
-                            <!-- Phone -->
-                            <div class="md:col-span-2">
-                              <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-                                Nomor Telepon
-                              </label>
-                              <div class="input-group relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                  <i class="fas fa-phone text-gray-400 transition-colors"></i>
-                                </div>
-                                <input type="tel" id="phone" name="phone" value="<%= user.phone || '' %>"
-                                  class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition-all duration-200"
-                                  placeholder="08xxxxxxxxxx" />
-                              </div>
-                            </div>
+                            <select id="bank_name" name="bank_name"
+                              class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition-all duration-200 bg-white">
+                              <option value="">Pilih Bank</option>
+                              <option value="BCA" <%=user.bank_name==='BCA' ? 'selected' : '' %>>BCA</option>
+                              <option value="BNI" <%=user.bank_name==='BNI' ? 'selected' : '' %>>BNI</option>
+                              <option value="BRI" <%=user.bank_name==='BRI' ? 'selected' : '' %>>BRI</option>
+                              <option value="MANDIRI" <%=user.bank_name==='MANDIRI' ? 'selected' : '' %>>MANDIRI
+                              </option>
+                              <option value="CIMB" <%=user.bank_name==='CIMB' ? 'selected' : '' %>>CIMB Niaga
+                              </option>
+                              <option value="PERMATA" <%=user.bank_name==='PERMATA' ? 'selected' : '' %>>Permata
+                              </option>
+                              <option value="DANAMON" <%=user.bank_name==='DANAMON' ? 'selected' : '' %>>Danamon
+                              </option>
+                              <option value="BTN" <%=user.bank_name==='BTN' ? 'selected' : '' %>>BTN</option>
+                              <option value="JENIUS" <%=user.bank_name==='JENIUS' ? 'selected' : '' %>>Jenius
+                              </option>
+                              <option value="BSI" <%=user.bank_name==='BSI' ? 'selected' : '' %>>BSI</option>
+                              <option value="LAINNYA" <%=user.bank_name==='LAINNYA' ? 'selected' : '' %>>Lainnya
+                              </option>
+                            </select>
                           </div>
                         </div>
 
-                        <!-- Bank Information -->
-                        <div class="border-t border-gray-100 pt-6">
-                          <h3 class="text-lg font-medium text-gray-900 mb-4">
-                            Informasi Rekening Bank
-                            <span class="text-sm font-normal text-gray-500">(Untuk penarikan komisi)</span>
-                          </h3>
-                          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Bank Name -->
-                            <div>
-                              <label for="bank_name" class="block text-sm font-medium text-gray-700 mb-2">
-                                Nama Bank
-                              </label>
-                              <div class="input-group relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                  <i class="fas fa-university text-gray-400 transition-colors"></i>
-                                </div>
-                                <select id="bank_name" name="bank_name"
-                                  class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition-all duration-200 bg-white">
-                                  <option value="">Pilih Bank</option>
-                                  <option value="BCA" <%=user.bank_name==='BCA' ? 'selected' : '' %>>BCA</option>
-                                  <option value="BNI" <%=user.bank_name==='BNI' ? 'selected' : '' %>>BNI</option>
-                                  <option value="BRI" <%=user.bank_name==='BRI' ? 'selected' : '' %>>BRI</option>
-                                  <option value="MANDIRI" <%=user.bank_name==='MANDIRI' ? 'selected' : '' %>>MANDIRI
-                                  </option>
-                                  <option value="CIMB" <%=user.bank_name==='CIMB' ? 'selected' : '' %>>CIMB Niaga
-                                  </option>
-                                  <option value="PERMATA" <%=user.bank_name==='PERMATA' ? 'selected' : '' %>>Permata
-                                  </option>
-                                  <option value="DANAMON" <%=user.bank_name==='DANAMON' ? 'selected' : '' %>>Danamon
-                                  </option>
-                                  <option value="BTN" <%=user.bank_name==='BTN' ? 'selected' : '' %>>BTN</option>
-                                  <option value="JENIUS" <%=user.bank_name==='JENIUS' ? 'selected' : '' %>>Jenius
-                                  </option>
-                                  <option value="BSI" <%=user.bank_name==='BSI' ? 'selected' : '' %>>BSI</option>
-                                  <option value="LAINNYA" <%=user.bank_name==='LAINNYA' ? 'selected' : '' %>>Lainnya
-                                  </option>
-                                </select>
-                              </div>
+                        <!-- Bank Account -->
+                        <div>
+                          <label for="bank_account" class="block text-sm font-medium text-gray-700 mb-2">
+                            Nomor Rekening
+                          </label>
+                          <div class="input-group relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                              <i class="fas fa-credit-card text-gray-400 transition-colors"></i>
                             </div>
-
-                            <!-- Bank Account -->
-                            <div>
-                              <label for="bank_account" class="block text-sm font-medium text-gray-700 mb-2">
-                                Nomor Rekening
-                              </label>
-                              <div class="input-group relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                  <i class="fas fa-credit-card text-gray-400 transition-colors"></i>
-                                </div>
-                                <input type="text" id="bank_account" name="bank_account"
-                                  value="<%= user.bank_account || '' %>"
-                                  class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition-all duration-200"
-                                  placeholder="Nomor rekening" />
-                              </div>
-                            </div>
-
-                            <!-- Bank Account Name -->
-                            <div class="md:col-span-2">
-                              <label for="bank_account_name" class="block text-sm font-medium text-gray-700 mb-2">
-                                Nama Pemilik Rekening
-                              </label>
-                              <div class="input-group relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                  <i class="fas fa-user-tie text-gray-400 transition-colors"></i>
-                                </div>
-                                <input type="text" id="bank_account_name" name="bank_account_name"
-                                  value="<%= user.bank_account_name || '' %>"
-                                  class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition-all duration-200"
-                                  placeholder="Nama sesuai rekening" />
-                              </div>
-                            </div>
+                            <input type="text" id="bank_account" name="bank_account"
+                              value="<%= user.bank_account || '' %>"
+                              class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition-all duration-200"
+                              placeholder="Nomor rekening" />
                           </div>
                         </div>
 
-                        <!-- Submit Button -->
-                        <div class="pt-4 border-t border-gray-100">
-                          <button type="submit" id="submitBtn"
-                            class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-6 rounded-lg font-medium hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                            <i class="fas fa-save"></i>
-                            <span>Simpan Perubahan</span>
-                          </button>
+                        <!-- Bank Account Name -->
+                        <div class="md:col-span-2">
+                          <label for="bank_account_name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Nama Pemilik Rekening
+                          </label>
+                          <div class="input-group relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                              <i class="fas fa-user-tie text-gray-400 transition-colors"></i>
+                            </div>
+                            <input type="text" id="bank_account_name" name="bank_account_name"
+                              value="<%= user.bank_account_name || '' %>"
+                              class="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition-all duration-200"
+                              placeholder="Nama sesuai rekening" />
+                          </div>
                         </div>
-                      </form>
+                      </div>
                     </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-4 border-t border-gray-100">
+                      <button type="submit" id="submitBtn"
+                        class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-6 rounded-lg font-medium hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                        <i class="fas fa-save"></i>
+                        <span>Simpan Perubahan</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Additional Info -->
+              <div class="mt-6 bg-blue-50 rounded-xl p-6 border border-blue-100">
+                <div class="flex items-start gap-3">
+                  <div class="flex-shrink-0">
+                    <i class="fas fa-info-circle text-blue-600 text-xl"></i>
                   </div>
-
-                  <!-- Additional Info -->
-                  <div class="mt-6 bg-blue-50 rounded-xl p-6 border border-blue-100">
-                    <div class="flex items-start gap-3">
-                      <div class="flex-shrink-0">
-                        <i class="fas fa-info-circle text-blue-600 text-xl"></i>
-                      </div>
-                      <div>
-                        <h3 class="font-semibold text-blue-900 mb-2">Informasi Penting</h3>
-                        <ul class="text-sm text-blue-700 space-y-1">
-                          <li>• Pastikan informasi rekening bank benar untuk penarikan komisi</li>
-                          <li>• Nama pemilik rekening harus sesuai dengan nama di KTP</li>
-                          <li>• Email digunakan untuk notifikasi dan reset password</li>
-                          <li>• Perubahan profil akan langsung disimpan ke database</li>
-                        </ul>
-                      </div>
-                    </div>
+                  <div>
+                    <h3 class="font-semibold text-blue-900 mb-2">Informasi Penting</h3>
+                    <ul class="text-sm text-blue-700 space-y-1">
+                      <li>• Pastikan informasi rekening bank benar untuk penarikan komisi</li>
+                      <li>• Nama pemilik rekening harus sesuai dengan nama di KTP</li>
+                      <li>• Email digunakan untuk notifikasi dan reset password</li>
+                      <li>• Perubahan profil akan langsung disimpan ke database</li>
+                    </ul>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
     </div>
 
     <!-- Loading Overlay -->
@@ -466,166 +360,78 @@
       </div>
     </div>
 
-<<<<<<< HEAD
-  <script>
-    document.getElementById('profileForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData);
-      
-      try {
-        const response = await fetch('/api/auth/profile', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          body: JSON.stringify(data)
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-          const updated = result.user || data;
-          document.getElementById('info-name').innerText = updated.name || '';
-          document.getElementById('info-email').innerText = updated.email || '';
-          document.getElementById('info-role').innerText = updated.role || (user && user.role) || '';
-          document.getElementById('info-bank-name').innerText = updated.bank_name || '-';
-          document.getElementById('info-bank-account-name').innerText = updated.bank_account_name || '-';
-          document.getElementById('info-bank-account-number').innerText = updated.bank_account_number || '-';
-
-          // Update form fields in case server normalized values
-          document.getElementById('name').value = updated.name || '';
-          document.getElementById('email').value = updated.email || '';
-          document.getElementById('bank_name').value = updated.bank_name || '';
-          document.getElementById('bank_account_name').value = updated.bank_account_name || '';
-          document.getElementById('bank_account_number').value = updated.bank_account_number || '';
-
-          alert('Profil berhasil diperbarui!');
-        } else {
-          alert('Gagal memperbarui profil: ' + (result.message || 'Unknown error'));
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Terjadi kesalahan saat memperbarui profil');
-      }
-    });
-  </script>
-  <script>
-    // On page load, fetch profile via API and populate the info panel and form
-    (async function populateProfile() {
-      try {
-        const nameInput = document.getElementById('name');
-        if (!nameInput) return;
-
-        const headers = {};
-        const token = localStorage.getItem('token');
-        if (token) headers['Authorization'] = `Bearer ${token}`;
-
-        const resp = await fetch('/api/auth/profile', {
-          method: 'GET',
-          headers,
-          credentials: 'include',
-        });
-
-        if (!resp.ok) return;
-        const json = await resp.json();
-        if (!json || !json.success || !json.user) return;
-
-        const u = json.user;
-
-        // Update info panel
-        const setText = (id, value) => {
-          const el = document.getElementById(id);
-          if (el) el.innerText = value != null && value !== '' ? value : '-';
-        };
-
-        setText('info-name', u.name || '-');
-        setText('info-email', u.email || '-');
-        setText('info-role', u.role || '-');
-        setText('info-bank-name', u.bank_name || '-');
-        setText('info-bank-account-name', u.bank_account_name || '-');
-        setText('info-bank-account-number', u.bank_account_number || '-');
-
-        // Update form inputs
-        document.getElementById('name').value = u.name || '';
-        document.getElementById('email').value = u.email || '';
-        document.getElementById('bank_name').value = u.bank_name || '';
-        document.getElementById('bank_account_name').value = u.bank_account_name || '';
-        document.getElementById('bank_account_number').value = u.bank_account_number || '';
-      } catch (err) {
-        console.warn('Could not auto-populate profile:', err);
-      }
-    })();
-  </script>
-=======
     <script>
-      // Form submission
-      const form = document.getElementById('updateProfileForm');
-      const submitBtn = document.getElementById('submitBtn');
-      const loadingOverlay = document.getElementById('loadingOverlay');
-
-      form.addEventListener('submit', async function (e) {
+      document.getElementById('updateProfileForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const formData = {
-          name: document.getElementById('name').value,
-          email: document.getElementById('email').value,
-          phone: document.getElementById('phone').value,
-          bank_name: document.getElementById('bank_name').value,
-          bank_account: document.getElementById('bank_account').value,
-          bank_account_name: document.getElementById('bank_account_name').value
-        };
-
-        // Client-side validation
-        if (!formData.name || !formData.email) {
-          alert('Nama dan email harus diisi');
-          return;
-        }
-
-        // Email format validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.email)) {
-          alert('Format email tidak valid');
-          return;
-        }
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
 
         // Show loading
-        loadingOverlay.classList.remove('hidden');
         submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Menyimpan...</span>';
+        loadingOverlay.classList.remove('hidden');
+
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
 
         try {
           const response = await fetch('/api/auth/profile', {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(data)
           });
 
-          const data = await response.json();
+          const result = await response.json();
 
-          if (data.success) {
-            // Show success and redirect
-            alert('Profil berhasil diperbarui!');
-            window.location.href = '/profile?success=' + encodeURIComponent('Profil berhasil diperbarui');
+          if (result.success) {
+            // Show success message
+            const successAlert = document.createElement('div');
+            successAlert.className = 'mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg alert-success';
+            successAlert.innerHTML = `
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-green-700 font-medium">
+                    Profil berhasil diperbarui!
+                  </p>
+                </div>
+              </div>
+            `;
+
+            const container = document.querySelector('.pt-20');
+            container.insertBefore(successAlert, container.children[1]);
+
+            // Remove alert after 5 seconds
+            setTimeout(() => {
+              successAlert.remove();
+            }, 5000);
+
+            // Update user info in sidebar if needed
+            if (result.user) {
+              const nameElement = document.querySelector('.text-xl.font-bold.text-gray-900');
+              if (nameElement) nameElement.textContent = result.user.name || user.name;
+            }
+
           } else {
-            // Show error
-            alert(data.message || 'Terjadi kesalahan saat mengupdate profil');
-            window.location.href = '/profile?error=' + encodeURIComponent(data.message);
+            alert('Gagal memperbarui profil: ' + (result.message || 'Unknown error'));
           }
         } catch (error) {
           console.error('Error:', error);
-          alert('Terjadi kesalahan saat mengupdate profil');
-          window.location.href = '/profile?error=' + encodeURIComponent('Terjadi kesalahan server');
+          alert('Terjadi kesalahan saat memperbarui profil');
         } finally {
-          loadingOverlay.classList.add('hidden');
+          // Hide loading
           submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-save"></i><span>Simpan Perubahan</span>';
+          loadingOverlay.classList.add('hidden');
         }
       });
     </script>
->>>>>>> 244ff27 (sync local changes)
 </body>
 
 </html>
