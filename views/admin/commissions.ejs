@@ -454,9 +454,10 @@
                                         <i class="fas fa-dollar-sign mr-2 text-green-600"></i>
                                         Commission Value *
                                     </label>
-                                    <input type="number" id="commissionValue" name="commission_value"
-                                        placeholder="Enter value" step="0.01" required
+                                    <input type="text" id="commissionValue" name="commission_value" inputmode="numeric"
+                                        placeholder="Enter value" required
                                         class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:outline-none transition-all">
+                                    <p class="text-xs text-gray-400 mt-1">For <strong>Flat (IDR)</strong> use Rupiah format (e.g. 1.000.000). For percentage, enter as number (e.g. 5 or 2.5).</p>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -506,11 +507,78 @@
                 let currentEditId = null;
                 let commissionData = [];
 
+                // Helper: format and parse Rupiah strings
+                function formatRupiahInputString(value) {
+                    if (value === null || value === undefined) return '';
+                    const s = String(value).trim();
+                    if (!s) return '';
+                    const cleaned = s.replace(/[^0-9,\.]/g, '');
+
+                    let intPart = cleaned;
+                    let decPart = '';
+
+                    if (cleaned.indexOf(',') !== -1) {
+                        [intPart, decPart] = cleaned.split(',');
+                    } else if (cleaned.indexOf('.') !== -1) {
+                        const dotCount = (cleaned.match(/\./g) || []).length;
+                        if (dotCount > 1) {
+                            intPart = cleaned.replace(/\./g, '');
+                        } else {
+                            const parts = cleaned.split('.');
+                            if (parts[1] && parts[1].length <= 2) {
+                                intPart = parts[0];
+                                decPart = parts[1];
+                            } else {
+                                intPart = cleaned.replace(/\./g, '');
+                            }
+                        }
+                    }
+
+                    intPart = intPart.replace(/^0+(?=\d)/, '');
+                    intPart = intPart || '0';
+                    const withDots = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+                    if (decPart) {
+                        decPart = decPart.replace(/[^0-9]/g, '').slice(0,2);
+                        return withDots + ',' + decPart;
+                    }
+                    return withDots;
+                }
+
+                function parseRupiahToNumber(str) {
+                    if (!str) return 0;
+                    const cleaned = String(str).replace(/\./g, '').replace(/,/g, '.').replace(/[^0-9\.\-]/g, '');
+                    return parseFloat(cleaned) || 0;
+                }
+
                 // Load data on page load
                 document.addEventListener('DOMContentLoaded', () => {
                     loadCommissions();
                     loadEvents();
                     loadStats();
+
+                    // Hook events for commission type/value formatting
+                    const commissionTypeEl = document.getElementById('commissionType');
+                    const commissionValueEl = document.getElementById('commissionValue');
+
+                    if (commissionTypeEl && commissionValueEl) {
+                        commissionTypeEl.addEventListener('change', () => {
+                            if (commissionTypeEl.value === 'flat') {
+                                commissionValueEl.value = formatRupiahInputString(commissionValueEl.value);
+                            } else {
+                                // remove thousand separators and convert comma to dot if any
+                                commissionValueEl.value = commissionValueEl.value ? String(commissionValueEl.value).replace(/\./g, '').replace(/,/g, '.') : '';
+                            }
+                        });
+
+                        commissionValueEl.addEventListener('input', () => {
+                            if (commissionTypeEl.value === 'flat') {
+                                commissionValueEl.value = formatRupiahInputString(commissionValueEl.value);
+                            } else {
+                                commissionValueEl.value = commissionValueEl.value.replace(/[^0-9\.]/g, '');
+                            }
+                        });
+                    }
                 });
 
                 // Load all commission rules
@@ -746,6 +814,11 @@
                     currentEditId = null;
                     document.getElementById('modalTitle').textContent = 'Add Commission Rule';
                     document.getElementById('commissionForm').reset();
+                    // Ensure commission inputs are in the correct state
+                    const commissionTypeEl = document.getElementById('commissionType');
+                    const commissionValueEl = document.getElementById('commissionValue');
+                    if (commissionTypeEl) commissionTypeEl.value = '';
+                    if (commissionValueEl) commissionValueEl.value = '';
                     document.getElementById('commissionModal').classList.add('show');
                 }
 
@@ -758,7 +831,12 @@
                     document.getElementById('modalTitle').textContent = 'Edit Commission Rule';
                     document.getElementById('eventSelect').value = commission.event_id || '';
                     document.getElementById('commissionType').value = commission.commission_type;
-                    document.getElementById('commissionValue').value = commission.commission_value;
+                    const valEl = document.getElementById('commissionValue');
+                    if (commission.commission_type === 'flat') {
+                        valEl.value = formatRupiahInputString(commission.commission_value);
+                    } else {
+                        valEl.value = commission.commission_value;
+                    }
                     document.getElementById('minStage').value = commission.min_stage;
                     document.getElementById('isActive').value = commission.is_active ? '1' : '0';
 
@@ -776,10 +854,19 @@
                     event.preventDefault();
 
                     const formData = new FormData(document.getElementById('commissionForm'));
+
+                    const rawValueInput = formData.get('commission_value');
+                    let parsedValue;
+                    if (formData.get('commission_type') === 'flat') {
+                        parsedValue = parseRupiahToNumber(rawValueInput);
+                    } else {
+                        parsedValue = parseFloat(rawValueInput);
+                    }
+
                     const data = {
                         event_id: formData.get('event_id') || null,
                         commission_type: formData.get('commission_type'),
-                        commission_value: parseFloat(formData.get('commission_value')),
+                        commission_value: parsedValue,
                         min_stage: parseInt(formData.get('min_stage')),
                         is_active: parseInt(formData.get('is_active'))
                     };
