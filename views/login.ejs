@@ -10,6 +10,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+        @keyframes notif-progress {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
+
+        .animate-notif-progress {
+          width: 0%;
+          animation: notif-progress 1.2s linear forwards;
+        }
     body {
       font-family: 'Poppins', sans-serif;
     }
@@ -88,6 +97,14 @@
 </head>
 
 <body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+  <!-- Notification Modal -->
+  <div id="notif-modal" class="fixed top-6 right-6 z-50 min-w-[260px] max-w-xs bg-green-100 border-l-4 border-green-500 shadow-lg rounded-lg flex items-center px-5 py-3 text-green-800 text-sm font-medium transition-all duration-500 opacity-0 pointer-events-none" style="box-shadow: 0 2px 12px rgba(76,175,80,0.15);">
+    <svg class="animate-spin mr-2 h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+    <span id="notif-text">Mengalihkan ke halaman dashboard...</span>
+    <div class="absolute left-0 bottom-0 w-full h-1 overflow-hidden">
+      <div id="notif-progress" class="h-full bg-green-500 animate-notif-progress"></div>
+    </div>
+  </div>
   <div class="w-full max-w-md">
     <!-- Card -->
     <div class="glass-effect rounded-2xl shadow-2xl p-8 md:p-10">
@@ -254,13 +271,34 @@
           document.cookie = 'token=' + encodeURIComponent(data.token) + '; path=/';
 
           // Redirect berdasarkan role
-          if (data.user && data.user.role === 'affiliate') {
-            window.location.href = '/affiliate/dashboard';
-          } else if (data.user && (data.user.role === 'admin' || data.user.role === 'superadmin')) {
-            window.location.href = '/dashboard_admin' ;
-          } else {
-            window.location.href = '/dashboard';
-          }
+          // Show notification modal before redirect
+          showNotifModal('Mengalihkan ke halaman dashboard...');
+          setTimeout(() => {
+            if (data.user && data.user.role === 'affiliate') {
+              window.location.href = '/affiliate/dashboard';
+            } else if (data.user && (data.user.role === 'admin' || data.user.role === 'superadmin')) {
+              window.location.href = '/dashboard_admin' ;
+            } else {
+              window.location.href = '/dashboard';
+            }
+          }, 1200);
+            // Show notification modal function
+            function showNotifModal(message) {
+              const modal = document.getElementById('notif-modal');
+              const text = document.getElementById('notif-text');
+              const progress = document.getElementById('notif-progress');
+              text.textContent = message;
+              modal.style.opacity = '1';
+              modal.style.pointerEvents = 'auto';
+              // Reset progress bar animation
+              progress.classList.remove('animate-notif-progress');
+              void progress.offsetWidth; // force reflow
+              progress.classList.add('animate-notif-progress');
+              setTimeout(() => {
+                modal.style.opacity = '0';
+                modal.style.pointerEvents = 'none';
+              }, 2000);
+            }
         } else {
           // Reset button state
           loginBtn.disabled = false;
