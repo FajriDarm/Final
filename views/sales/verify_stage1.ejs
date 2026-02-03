@@ -24,6 +24,7 @@
               <th class="px-4 py-2">Customer</th>
               <th class="px-4 py-2">Affiliate</th>
               <th class="px-4 py-2">Amount</th>
+              <th class="px-4 py-2">Komisi</th>
               <th class="px-4 py-2">Status</th>
               <th class="px-4 py-2">Aksi</th>
             </tr>
@@ -35,7 +36,14 @@
                 <td class="px-4 py-2"><%= trx.customer_name || '-' %></td>
                 <td class="px-4 py-2"><%= trx.affiliate_name || '-' %></td>
                 <td class="px-4 py-2">Rp <%= parseInt(trx.total_amount || 0).toLocaleString('id-ID') %></td>
-                <td class="px-4 py-2"><%= trx.status %></td>
+                <td class="px-4 py-2">
+                <% if (typeof trx.projected_commission !== 'undefined' && trx.projected_commission !== null) { %>
+                  Rp <%= parseFloat(trx.projected_commission).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                <% } else { %>
+                  -
+                <% } %>
+              </td>
+              <td class="px-4 py-2"><%= trx.status %></td>
                 <td class="px-4 py-2">
                   <form method="POST" action="/sales/verify-stage1" class="inline">
                     <input type="hidden" name="id" value="<%= trx.id %>">

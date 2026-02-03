@@ -12,6 +12,19 @@ exports.getPaymentVerification = async (req, res) => {
       WHERE t.payment_status = 'pending' AND t.status = 'stage_1_approved'
       ORDER BY t.created_at DESC
     `);
+    // Compute projected commission for each pending payment (stage 2)
+    try {
+      const {
+        getProjectedCommissionForTransaction,
+      } = require("./commissionService");
+      for (const p of pendingPayments) {
+        const proj = await getProjectedCommissionForTransaction(p.id, 2);
+        p.projected_commission = proj && proj.amount ? proj.amount : null;
+      }
+    } catch (e) {
+      console.error("Error computing projected commissions (stage 2)", e);
+    }
+
     res.render("finance/payment_verification", {
       pendingPayments,
     });
@@ -31,6 +44,14 @@ exports.approvePayment = async (req, res) => {
       "UPDATE transactions SET payment_status = 'paid', status = 'stage_2_approved' WHERE id = ?",
       [id],
     );
+
+    // Try awarding commission for stage 2
+    try {
+      const { awardCommissionForTransaction } = require("./commissionService");
+      await awardCommissionForTransaction(id, 2);
+    } catch (e) {
+      console.error("Error awarding commission (stage 2)", e);
+    }
 
     res.redirect("/finance/payment-verification");
   } catch (err) {

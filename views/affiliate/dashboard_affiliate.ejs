@@ -39,7 +39,7 @@
           </div>
           <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <p class="text-gray-500 text-sm font-medium">Komisi Anda</p>
-            <p class="text-3xl font-bold text-gray-900 mt-2">Rp <%= typeof totalCommission !== 'undefined' ? totalCommission : '0.00' %></p>
+            <p class="text-3xl font-bold text-gray-900 mt-2">Rp <%= (typeof totalCommission !== 'undefined' && !isNaN(Number(totalCommission))) ? Number(totalCommission).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0,00' %></p>
           </div>
           <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <p class="text-gray-500 text-sm font-medium">Total Leads</p>

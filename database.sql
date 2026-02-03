@@ -202,6 +202,25 @@ CREATE TABLE commissions (
 );
 
 -- =========================================
+-- COMMISSION RULES
+-- =========================================
+CREATE TABLE IF NOT EXISTS `commission_rules` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `event_id` bigint DEFAULT NULL,
+  `commission_type` enum('flat','percentage') NOT NULL,
+  `commission_value` decimal(15,2) NOT NULL,
+  `min_stage` tinyint DEFAULT '3',
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_by` bigint DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `event_id` (`event_id`),
+  KEY `created_by` (`created_by`),
+  CONSTRAINT `commission_rules_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`),
+  CONSTRAINT `commission_rules_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- =========================================
 -- PAYOUTS
 -- =========================================
 CREATE TABLE payouts (

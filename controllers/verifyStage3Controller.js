@@ -13,6 +13,19 @@ exports.getVerifyStage3 = async (req, res) => {
       WHERE t.status = 'stage_2_approved'
       ORDER BY t.created_at DESC
     `);
+    // Compute projected commission for each transaction (stage 3)
+    try {
+      const {
+        getProjectedCommissionForTransaction,
+      } = require("./commissionService");
+      for (const t of transactions) {
+        const proj = await getProjectedCommissionForTransaction(t.id, 3);
+        t.projected_commission = proj && proj.amount ? proj.amount : null;
+      }
+    } catch (e) {
+      console.error("Error computing projected commissions (stage 3)", e);
+    }
+
     res.render("sales/verify_stage3", {
       title: "Verifikasi Tahap 3",
       transactions,
@@ -39,20 +52,14 @@ exports.postVerifyStage3 = async (req, res) => {
           [id],
         );
 
-        // Award commission for stage 3: 500 (IDR)
-        // Protect against duplicate commissions by checking existing record for this transaction and stage
-        if (trx.affiliate_id) {
-          const [existingCom] = await db.query(
-            `SELECT id FROM commissions WHERE transaction_id = ? AND stage = 3 LIMIT 1`,
-            [id],
-          );
-          if (!existingCom || existingCom.length === 0) {
-            await db.query(
-              `INSERT INTO commissions (transaction_id, affiliate_id, stage, amount, stage_status, commission_status)
-               VALUES (?, ?, 3, ?, 'approved', 'approved')`,
-              [id, trx.affiliate_id, 500],
-            );
-          }
+        // Award commission for stage 3 using commission rules
+        try {
+          const {
+            awardCommissionForTransaction,
+          } = require("./commissionService");
+          await awardCommissionForTransaction(id, 3);
+        } catch (e) {
+          console.error("Error awarding commission (stage 3)", e);
         }
       } else {
         // If transaction not found, still attempt to mark as completed defensively

@@ -13,6 +13,19 @@ exports.getVerifyStage1 = async (req, res) => {
       WHERE t.status = 'pending'
       ORDER BY t.created_at DESC
     `);
+    // Compute projected commission for each transaction (stage 1)
+    try {
+      const {
+        getProjectedCommissionForTransaction,
+      } = require("./commissionService");
+      for (const t of transactions) {
+        const proj = await getProjectedCommissionForTransaction(t.id, 1);
+        t.projected_commission = proj && proj.amount ? proj.amount : null;
+      }
+    } catch (e) {
+      console.error("Error computing projected commissions (stage 1)", e);
+    }
+
     res.render("sales/verify_stage1", {
       title: "Verifikasi Tahap 1",
       transactions,
@@ -31,6 +44,16 @@ exports.postVerifyStage1 = async (req, res) => {
         `UPDATE transactions SET status = 'stage_1_approved' WHERE id = ?`,
         [id],
       );
+
+      // Try awarding commission for stage 1
+      try {
+        const {
+          awardCommissionForTransaction,
+        } = require("./commissionService");
+        await awardCommissionForTransaction(id, 1);
+      } catch (e) {
+        console.error("Error awarding commission (stage 1)", e);
+      }
     } else if (action === "reject") {
       await db.query(
         `UPDATE transactions SET status = 'rejected' WHERE id = ?`,
