@@ -50,7 +50,7 @@
 
     <!-- Main Content -->
     <div class="pt-20 pb-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <% if (typeof error !=='undefined' && error) { %>
+        <% if (typeof error !=='undefined' && error) { %>
         <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg alert-success">
           <div class="flex items-center">
             <div class="flex-shrink-0">
@@ -68,6 +68,17 @@
           <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900">Profile Saya</h1>
             <p class="mt-2 text-gray-600">Kelola informasi profil dan rekening Anda</p>
+          </div>
+
+          <!-- Profile completion indicator (real-time) -->
+          <div id="profileRealtimeWrapper" class="mb-6 flex items-center gap-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold" id="profileRealtimePercent">-</div>
+            <div class="flex-1">
+              <div class="text-sm text-gray-600">Kelengkapan Profil</div>
+              <div class="w-full bg-gray-100 rounded-full h-3 mt-2 overflow-hidden">
+                <div id="profileRealtimeBar" class="h-3 bg-green-500" style="width:0%"></div>
+              </div>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -414,6 +425,22 @@
               modal.style.display = 'flex';
             }
             // Sembunyikan modal setelah 2 detik lalu reload halaman
+            // Also write updated profile subset to localStorage so dashboard updates in other tabs
+            try {
+              const updatedProfileForSync = {
+                full_name: data.name || '',
+                email: data.email || '',
+                phone: data.phone || '',
+                city: data.city || '',
+                bank_name: data.bank_name || '',
+                bank_account_number: data.bank_account || '',
+                bank_account_name: data.bank_account_name || ''
+              };
+              localStorage.setItem('affiliateProfileUpdate', JSON.stringify(updatedProfileForSync));
+              // also set a timestamp to ensure storage event triggers reliably
+              localStorage.setItem('affiliateProfileUpdate_ts', Date.now().toString());
+            } catch (e) { console.warn('Could not write affiliateProfileUpdate to localStorage', e); }
+
             setTimeout(() => {
               modal.style.display = 'none';
               window.location.reload();
@@ -439,6 +466,39 @@
           loadingOverlay.classList.add('hidden');
         }
       });
+
+      // Real-time profile completeness calculation
+      function computeProfileRealtime() {
+        try {
+          const fields = ['name','email','phone','bank_name','bank_account','bank_account_name'];
+          let filled = 0;
+          fields.forEach(id => {
+            const el = document.getElementById(id);
+            const v = el ? (el.value || '').toString().trim() : '';
+            if (v) filled++;
+          });
+          const percent = Math.round((filled / fields.length) * 100);
+          const percentEl = document.getElementById('profileRealtimePercent');
+          const barEl = document.getElementById('profileRealtimeBar');
+          if (percentEl) percentEl.textContent = percent + '%';
+          if (barEl) barEl.style.width = percent + '%';
+        } catch (e) {
+          console.error('computeProfileRealtime error', e);
+        }
+      }
+
+      // Attach listeners to inputs for live update
+      (function attachRealtimeListeners(){
+        const ids = ['name','email','phone','bank_name','bank_account','bank_account_name'];
+        ids.forEach(id => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const ev = (el.tagName === 'SELECT') ? 'change' : 'input';
+          el.addEventListener(ev, computeProfileRealtime);
+        });
+        // initial compute
+        computeProfileRealtime();
+      })();
     </script>
 </body>
 

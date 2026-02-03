@@ -35,7 +35,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <p class="text-gray-500 text-sm font-medium">Program Affiliate Aktif</p>
-            <p class="text-3xl font-bold text-gray-900 mt-2"><%= typeof activeProgramsCount !== 'undefined' ? activeProgramsCount : 0 %></p>
+            <p class="text-3xl font-bold text-gray-900 mt-2"><span id="activeProgramsCount"><%= typeof activeProgramsCount !== 'undefined' ? activeProgramsCount : 0 %></span></p>
           </div>
           <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <p class="text-gray-500 text-sm font-medium">Komisi Anda</p>
@@ -95,13 +95,32 @@
                       <td class="py-3"><%= l.phone || '-' %></td>
                       <td class="py-3"><%= l.event_title || '-' %></td>
                       <td class="py-3">
-                        <% if (l.payment_status === 'pending') { %>
-                          <span class="inline-block px-2 py-0.5 rounded text-yellow-700 bg-yellow-100">pending</span>
-                        <% } else if (l.payment_status === 'paid') { %>
-                          <span class="inline-block px-2 py-0.5 rounded text-green-700 bg-green-100">paid</span>
-                        <% } else { %>
-                          <span class="inline-block px-2 py-0.5 rounded text-red-700 bg-red-100"><%= l.payment_status %></span>
-                        <% } %>
+                        <% 
+                          let statusLabel = '';
+                          let statusColor = '';
+                          
+                          // Determine verification stage based on transaction status
+                          if (l.status === 'rejected') {
+                            statusLabel = 'Rejected';
+                            statusColor = 'text-red-700 bg-red-100';
+                          } else if (l.status === 'completed') {
+                            statusLabel = 'Complete';
+                            statusColor = 'text-green-700 bg-green-100';
+                          } else if (l.status === 'stage_2_approved') {
+                            statusLabel = 'Verifikasi 3';
+                            statusColor = 'text-blue-700 bg-blue-100';
+                          } else if (l.status === 'stage_1_approved') {
+                            statusLabel = 'Verifikasi 2';
+                            statusColor = 'text-purple-700 bg-purple-100';
+                          } else {
+                            // pending status = stage 1
+                            statusLabel = 'Verifikasi 1';
+                            statusColor = 'text-yellow-700 bg-yellow-100';
+                          }
+                        %>
+                        <span class="inline-block px-2 py-0.5 rounded text-xs font-medium <%= statusColor %>">
+                          <%= statusLabel %>
+                        </span>
                       </td>
                       <td class="py-3"><%= l.created_at ? new Date(l.created_at).toLocaleString() : '-' %></td>
                     </tr>
@@ -139,20 +158,108 @@
 
           <!-- Profile & Bank (right column) -->
           <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">Profil & Data Bank</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Profil & Data Bank</h3>
+            
+            <!-- Profile Completion Indicator -->
+            <div class="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-gray-700">Kelengkapan Profil</span>
+                <span class="text-sm font-bold text-blue-600" id="profileCompletionPercent">0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                <div id="profileCompletionBar" class="h-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+              <p class="text-xs text-gray-600 mt-2">
+                <i class="fas fa-info-circle mr-1"></i>
+                Lengkapi semua data untuk aktifkan fitur generate link
+              </p>
+            </div>
+
+            <% 
+              // Server-side calculation of profile completion percentage (kept in sync with client-side rules)
+              const _requiredFields = ['full_name','email','phone','bank_name','bank_account_number','bank_account_name'];
+              let _filledCount = 0;
+              if (typeof affiliateProfile !== 'undefined' && affiliateProfile) {
+                _requiredFields.forEach(function(f){ if (affiliateProfile[f] && String(affiliateProfile[f]).trim() !== '') _filledCount++; });
+              }
+              const serverProfilePercent = Math.round((_filledCount / _requiredFields.length) * 100);
+            %>
+
             <% if (typeof affiliateProfile !== 'undefined' && affiliateProfile) { %>
               <div class="space-y-2 text-sm text-gray-700">
-                <div><strong>Nama:</strong> <span class="font-medium"><%= affiliateProfile.full_name || '-' %></span></div>
-                <div><strong>Email:</strong> <span class="font-medium"><%= affiliateProfile.email || '-' %></span></div>
-                <div><strong>WhatsApp:</strong> <span class="font-medium"><%= affiliateProfile.phone || '-' %></span></div>
-                <div><strong>Kota:</strong> <span class="font-medium"><%= affiliateProfile.city || '-' %></span></div>
-                <div><strong>Bank:</strong> <span class="font-medium"><%= affiliateProfile.bank_name || '-' %></span></div>
-                <div><strong>No. Rek:</strong> <span class="font-medium"><%= affiliateProfile.bank_account_number || '-' %></span></div>
-                <div><strong>Atas Nama:</strong> <span class="font-medium"><%= affiliateProfile.bank_account_name || '-' %></span></div>
+                <div class="flex items-center justify-between">
+                  <div><strong>Nama:</strong> <span class="font-medium"><%= affiliateProfile.full_name || '-' %></span></div>
+                  <span id="field-name" class="text-xs">
+                    <% if (affiliateProfile.full_name) { %>
+                      <i class="fas fa-check-circle text-green-500"></i>
+                    <% } else { %>
+                      <i class="fas fa-circle text-gray-300"></i>
+                    <% } %>
+                  </span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div><strong>Email:</strong> <span class="font-medium"><%= affiliateProfile.email || '-' %></span></div>
+                  <span id="field-email" class="text-xs">
+                    <% if (affiliateProfile.email) { %>
+                      <i class="fas fa-check-circle text-green-500"></i>
+                    <% } else { %>
+                      <i class="fas fa-circle text-gray-300"></i>
+                    <% } %>
+                  </span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div><strong>WhatsApp:</strong> <span class="font-medium"><%= affiliateProfile.phone || '-' %></span></div>
+                  <span id="field-phone" class="text-xs">
+                    <% if (affiliateProfile.phone) { %>
+                      <i class="fas fa-check-circle text-green-500"></i>
+                    <% } else { %>
+                      <i class="fas fa-circle text-gray-300"></i>
+                    <% } %>
+                  </span>
+                </div>
+                <div class="flex items-center justify-between border-t border-gray-200 pt-2 mt-2">
+                  <div><strong>Bank:</strong> <span class="font-medium"><%= affiliateProfile.bank_name || '-' %></span></div>
+                  <span id="field-bank_name" class="text-xs">
+                    <% if (affiliateProfile.bank_name) { %>
+                      <i class="fas fa-check-circle text-green-500"></i>
+                    <% } else { %>
+                      <i class="fas fa-circle text-gray-300"></i>
+                    <% } %>
+                  </span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div><strong>No. Rek:</strong> <span class="font-medium"><%= affiliateProfile.bank_account_number || '-' %></span></div>
+                  <span id="field-bank_account_number" class="text-xs">
+                    <% if (affiliateProfile.bank_account_number) { %>
+                      <i class="fas fa-check-circle text-green-500"></i>
+                    <% } else { %>
+                      <i class="fas fa-circle text-gray-300"></i>
+                    <% } %>
+                  </span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div><strong>Atas Nama:</strong> <span class="font-medium"><%= affiliateProfile.bank_account_name || '-' %></span></div>
+                  <span id="field-bank_account_name" class="text-xs">
+                    <% if (affiliateProfile.bank_account_name) { %>
+                      <i class="fas fa-check-circle text-green-500"></i>
+                    <% } else { %>
+                      <i class="fas fa-circle text-gray-300"></i>
+                    <% } %>
+                  </span>
+                </div>
               </div>
-            <% } else { %>
-              <div class="text-sm text-gray-500">Belum ada data profil. Silakan lengkapi data bank untuk proses payout.</div>
             <% } %>
+
+            <% if (serverProfilePercent < 100) { %>
+              <div id="profileIncompleteWarning" class="text-sm text-gray-500">Belum ada data profil. Silakan lengkapi data bank untuk proses payout.</div>
+            <% } %>
+
+            <div class="mt-4 pt-4 border-t border-gray-200">
+              <a href="/profile" class="text-sm text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-2">
+                <i class="fas fa-edit"></i>
+                Lengkapi/Edit Profil
+              </a>
+            </div>
 
             <div class="mt-4 text-xs text-gray-500">Catatan: Komisi dihitung otomatis berdasarkan transaksi dan verifikasi. Finance memproses payout manual.</div>
           </div>
@@ -203,20 +310,23 @@
           </div>
         </div>
 
-        <!-- History: >7 days (paid & rejected) -->
+        <!-- History: >7 days (all leads) -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mt-6">
           <div class="flex items-center justify-between mb-4">
             <div>
               <h4 class="text-lg font-semibold text-gray-900">Riwayat (lebih dari 7 hari)</h4>
-              <p class="text-sm text-gray-500">Menampilkan transaksi berstatus paid atau rejected lebih dari 7 hari lalu</p>
+              <p class="text-sm text-gray-500">Menampilkan semua lead yang sudah lebih dari 7 hari lalu</p>
             </div>
             <div class="flex items-center gap-4">
               <form method="GET" action="/affiliate/dashboard" class="flex items-center gap-2">
-                <label class="text-sm text-gray-500">Status:</label>
+                <label class="text-sm text-gray-500">Verifikasi:</label>
                 <select name="historyStatus" onchange="this.form.submit()" class="px-2 py-1 border rounded">
                   <option value="all" <%= (typeof historyFilter === 'undefined' || historyFilter === 'all') ? 'selected' : '' %>>Semua</option>
-                  <option value="paid" <%= historyFilter === 'paid' ? 'selected' : '' %>>paid</option>
-                  <option value="rejected" <%= historyFilter === 'rejected' ? 'selected' : '' %>>rejected</option>
+                  <option value="pending" <%= historyFilter === 'pending' ? 'selected' : '' %>>Verifikasi 1</option>
+                  <option value="stage_1_approved" <%= historyFilter === 'stage_1_approved' ? 'selected' : '' %>>Verifikasi 2</option>
+                  <option value="stage_2_approved" <%= historyFilter === 'stage_2_approved' ? 'selected' : '' %>>Verifikasi 3</option>
+                  <option value="completed" <%= historyFilter === 'completed' ? 'selected' : '' %>>Complete</option>
+                  <option value="rejected" <%= historyFilter === 'rejected' ? 'selected' : '' %>>Rejected</option>
                 </select>
                 <input type="hidden" name="historyPage" value="1">
               </form>
@@ -243,13 +353,32 @@
                     <td class="py-3"><%= h.phone || '-' %></td>
                     <td class="py-3"><%= h.event_title || '-' %></td>
                     <td class="py-3">
-                      <% if (h.payment_status === 'pending') { %>
-                        <span class="inline-block px-2 py-0.5 rounded text-yellow-700 bg-yellow-100">pending</span>
-                      <% } else if (h.payment_status === 'paid') { %>
-                        <span class="inline-block px-2 py-0.5 rounded text-green-700 bg-green-100">paid</span>
-                      <% } else { %>
-                        <span class="inline-block px-2 py-0.5 rounded text-red-700 bg-red-100"><%= h.payment_status %></span>
-                      <% } %>
+                      <% 
+                        let statusLabel = '';
+                        let statusColor = '';
+                        
+                        // Determine verification stage based on transaction status
+                        if (h.status === 'rejected') {
+                          statusLabel = 'Rejected';
+                          statusColor = 'text-red-700 bg-red-100';
+                        } else if (h.status === 'completed') {
+                          statusLabel = 'Complete';
+                          statusColor = 'text-green-700 bg-green-100';
+                        } else if (h.status === 'stage_2_approved') {
+                          statusLabel = 'Verifikasi 3';
+                          statusColor = 'text-blue-700 bg-blue-100';
+                        } else if (h.status === 'stage_1_approved') {
+                          statusLabel = 'Verifikasi 2';
+                          statusColor = 'text-purple-700 bg-purple-100';
+                        } else {
+                          // pending status = stage 1
+                          statusLabel = 'Verifikasi 1';
+                          statusColor = 'text-yellow-700 bg-yellow-100';
+                        }
+                      %>
+                      <span class="inline-block px-2 py-0.5 rounded text-xs font-medium <%= statusColor %>">
+                        <%= statusLabel %>
+                      </span>
                     </td>
                     <td class="py-3"><%= h.created_at ? new Date(h.created_at).toLocaleString() : '-' %></td>
                   </tr>
@@ -291,11 +420,164 @@
   <script>
     // Affiliate user status from server - fallback, will be updated from API
     let userStatus = '<%= typeof userStatus !== "undefined" ? userStatus : "inactive" %>';
+    let profileCompletionPercent = 0;
     console.debug('User status from server (initial):', userStatus);
+
+    // Calculate profile completion percentage
+    function calculateProfileCompletion() {
+      // First, try to get updated profile from localStorage (from profile page update)
+      let updatedProfileFromStorage = null;
+      try {
+        const stored = localStorage.getItem('affiliateProfileUpdate');
+        if (stored) {
+          updatedProfileFromStorage = JSON.parse(stored);
+          console.debug('Using profile data from localStorage:', updatedProfileFromStorage);
+        }
+      } catch (e) {
+        console.debug('No profile data in localStorage or invalid JSON');
+      }
+
+      // Get affiliate profile data from template
+      let affiliateProfile = {
+        full_name: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.full_name : "" %>',
+        email: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.email : "" %>',
+        phone: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.phone : "" %>',
+        bank_name: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.bank_name : "" %>',
+        bank_account_number: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.bank_account_number : "" %>',
+        bank_account_name: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.bank_account_name : "" %>'
+      };
+
+      // If we have updated data from storage, merge it
+      if (updatedProfileFromStorage) {
+        affiliateProfile = {
+          full_name: updatedProfileFromStorage.full_name || affiliateProfile.full_name,
+          email: updatedProfileFromStorage.email || affiliateProfile.email,
+          phone: updatedProfileFromStorage.phone || affiliateProfile.phone,
+          bank_name: updatedProfileFromStorage.bank_name || affiliateProfile.bank_name,
+          bank_account_number: updatedProfileFromStorage.bank_account_number || affiliateProfile.bank_account_number,
+          bank_account_name: updatedProfileFromStorage.bank_account_name || affiliateProfile.bank_account_name
+        };
+      }
+
+      // Count fields that need to be filled
+      const requiredFields = ['full_name', 'email', 'phone', 'bank_name', 'bank_account_number', 'bank_account_name'];
+      let filledCount = 0;
+      
+      requiredFields.forEach(field => {
+        if (affiliateProfile[field] && String(affiliateProfile[field]).trim() !== '') {
+          filledCount++;
+        }
+      });
+
+      profileCompletionPercent = Math.round((filledCount / requiredFields.length) * 100);
+      
+      // Update UI
+      updateProfileCompletionUI();
+      
+      console.debug('Profile completion:', profileCompletionPercent + '%', 'Filled:', filledCount, 'Total:', requiredFields.length);
+      return profileCompletionPercent;
+    }
+
+    function updateProfileCompletionUI() {
+      const percentElement = document.getElementById('profileCompletionPercent');
+      const barElement = document.getElementById('profileCompletionBar');
+      
+      if (percentElement) {
+        percentElement.textContent = profileCompletionPercent + '%';
+      }
+      
+      if (barElement) {
+        barElement.style.width = profileCompletionPercent + '%';
+        // Change color based on percentage
+        if (profileCompletionPercent === 100) {
+          barElement.className = 'h-2.5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full transition-all duration-500';
+        } else if (profileCompletionPercent >= 70) {
+          barElement.className = 'h-2.5 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-full transition-all duration-500';
+        } else {
+          barElement.className = 'h-2.5 bg-gradient-to-r from-red-500 to-pink-600 rounded-full transition-all duration-500';
+        }
+
+        // Toggle server-side warning visibility if present
+        const warnEl = document.getElementById('profileIncompleteWarning');
+        if (warnEl) {
+          warnEl.style.display = (profileCompletionPercent < 100) ? 'block' : 'none';
+        }
+      }
+    }
+
+    // Listen for profile updates from other pages (via localStorage)
+    window.addEventListener('storage', function(event) {
+      if (event.key === 'affiliateProfileUpdate_ts' || event.key === 'affiliateProfileUpdate') {
+        console.debug('Profile update detected from another page, recalculating...');
+        // Reload full profile data from API to ensure accuracy
+        refreshProfileCompletion();
+      }
+    });
+
+    // Also setup periodic check for profile updates (as fallback)
+    let lastProfileUpdateTime = parseInt(localStorage.getItem('affiliateProfileUpdate_ts') || '0');
+    setInterval(() => {
+      const currentUpdateTime = parseInt(localStorage.getItem('affiliateProfileUpdate_ts') || '0');
+      if (currentUpdateTime > lastProfileUpdateTime) {
+        console.debug('Profile update detected via polling, recalculating...');
+        lastProfileUpdateTime = currentUpdateTime;
+        refreshProfileCompletion();
+      }
+    }, 1000); // Check every 1 second
+
+    // Refresh profile completion by fetching latest data
+    async function refreshProfileCompletion() {
+      try {
+        // Get updated profile from localStorage if available
+        const updatedProfile = localStorage.getItem('affiliateProfileUpdate');
+        if (updatedProfile) {
+          const profileData = JSON.parse(updatedProfile);
+          console.debug('Using updated profile from storage:', profileData);
+          
+          // Recalculate with new data
+          const newPercent = calculateProfileCompletionFromData(profileData);
+          
+          // Only update if percentage changed
+          if (newPercent !== profileCompletionPercent) {
+            profileCompletionPercent = newPercent;
+            updateProfileCompletionUI();
+            
+            // Re-render events if already loaded (to update button states)
+            const eventsContainer = document.getElementById('eventsContainer');
+            if (eventsContainer && !eventsContainer.classList.contains('hidden')) {
+              console.debug('Reloading events due to profile completion change');
+              await loadEventsAndLinks();
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error refreshing profile completion:', error);
+      }
+    }
+
+    // Calculate completion percentage from given data object
+    function calculateProfileCompletionFromData(profileData) {
+      const requiredFields = ['full_name', 'email', 'phone', 'bank_name', 'bank_account_number', 'bank_account_name'];
+      let filledCount = 0;
+      
+      requiredFields.forEach(field => {
+        const value = profileData[field];
+        if (value && String(value).trim() !== '') {
+          filledCount++;
+        }
+      });
+
+      const percent = Math.round((filledCount / requiredFields.length) * 100);
+      console.debug('Profile completion recalculated:', percent + '%', 'Filled:', filledCount, 'Data:', profileData);
+      return percent;
+    }
 
     // Load events on page load
     document.addEventListener('DOMContentLoaded', async function() {
       console.debug('DOM loaded, loading events...');
+
+      // Calculate profile completion
+      calculateProfileCompletion();
 
       // First, fetch user status from API
       await fetchUserStatus();
@@ -370,6 +652,10 @@
 
         console.debug('Events loaded:', data.data.length, 'events');
 
+        // Update active programs count (number of active events returned by API)
+        const activeCountEl = document.getElementById('activeProgramsCount');
+        if (activeCountEl) activeCountEl.textContent = data.data.length;
+
         if (data.data.length === 0) {
           noEvents.classList.remove('hidden');
           return;
@@ -397,6 +683,10 @@
 
       } catch (error) {
         console.error('Error loading events:', error);
+        // Reset active programs count when failing to load events
+        const activeCountEl = document.getElementById('activeProgramsCount');
+        if (activeCountEl) activeCountEl.textContent = '0';
+
         eventsLoading.classList.add('hidden');
         eventsContainer.innerHTML = `
           <div class="text-center py-8 text-red-500">
@@ -414,6 +704,7 @@
 
       console.debug('Displaying events:', events);
       console.debug('User status:', userStatus);
+      console.debug('Profile completion:', profileCompletionPercent + '%');
 
       events.forEach((event, index) => {
         console.debug(`Event ${index}:`, event);
@@ -426,8 +717,53 @@
 
         const isApproved = userStatus === 'approved';
         const hasLink = event.has_link;
+        const isProfileComplete = profileCompletionPercent === 100;
 
-        console.debug(`Event: ${event.title}, hasLink: ${hasLink}, isApproved: ${isApproved}`);
+        console.debug(`Event: ${event.title}, hasLink: ${hasLink}, isApproved: ${isApproved}, profileComplete: ${isProfileComplete}`);
+
+        let buttonHTML = '';
+        if (hasLink) {
+          buttonHTML = `
+            <div class="flex items-center gap-2">
+              <input type="text"
+                class="w-48 px-3 py-2 text-sm border border-gray-300 rounded-lg bg-gray-50"
+                readonly
+                value="${event.affiliate_link?.url || ''}"
+                id="link-${event.id}"
+              />
+              <button onclick="copyLink('link-${event.id}', this)"
+                class="px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors">
+                <i class="fas fa-copy"></i>
+              </button>
+            </div>
+          `;
+        } else if (!isApproved) {
+          buttonHTML = `
+            <button disabled
+              class="px-4 py-2 bg-gray-300 text-gray-500 text-sm rounded-lg cursor-not-allowed flex items-center gap-2"
+              title="Akun Anda belum di-approve">
+              <i class="fas fa-lock"></i>
+              Generate Link
+            </button>
+          `;
+        } else if (!isProfileComplete) {
+          buttonHTML = `
+            <button disabled
+              class="px-4 py-2 bg-orange-300 text-orange-700 text-sm rounded-lg cursor-not-allowed flex items-center gap-2 font-medium"
+              title="Lengkapi profil terlebih dahulu (${profileCompletionPercent}%)">
+              <i class="fas fa-exclamation-circle"></i>
+              Lengkapi Profil
+            </button>
+          `;
+        } else {
+          buttonHTML = `
+            <button onclick="generateLink(${event.id}, '${event.title.replace(/'/g, "\\'")}')"
+              class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg transition-colors flex items-center gap-2">
+              <i class="fas fa-plus"></i>
+              Generate Link
+            </button>
+          `;
+        }
 
         eventCard.innerHTML = `
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -452,27 +788,7 @@
             </div>
 
             <div class="flex items-center gap-2">
-              ${hasLink ? `
-                <div class="flex items-center gap-2">
-                  <input type="text"
-                    class="w-48 px-3 py-2 text-sm border border-gray-300 rounded-lg bg-gray-50"
-                    readonly
-                    value="${event.affiliate_link?.url || ''}"
-                    id="link-${event.id}"
-                  />
-                  <button onclick="copyLink('link-${event.id}', this)"
-                    class="px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors">
-                    <i class="fas fa-copy"></i>
-                  </button>
-                </div>
-              ` : `
-                <button onclick="generateLink(${event.id}, '${event.title.replace(/'/g, "\\'")}')"
-                  class="px-4 py-2 ${isApproved ? 'bg-purple-600 hover:bg-purple-700' : 'bg-gray-300 cursor-not-allowed'} text-white text-sm rounded-lg transition-colors"
-                  ${!isApproved ? 'disabled' : ''}>
-                  <i class="fas fa-plus mr-1"></i>
-                  Generate Link
-                </button>
-              `}
+              ${buttonHTML}
             </div>
           </div>
         `;
@@ -482,10 +798,17 @@
     }
 
     async function generateLink(eventId, eventTitle) {
-      console.debug('generateLink called with eventId:', eventId, 'userStatus:', userStatus);
+      console.debug('generateLink called with eventId:', eventId, 'userStatus:', userStatus, 'profileCompletion:', profileCompletionPercent);
 
+      // Validasi user approved
       if (userStatus !== 'approved') {
-        alert('Anda belum di-approve sebagai affiliate. Silakan tunggu approval admin.');
+        alert('Anda belum di-approve sebagai affiliate. Silakan tunggu approval dari admin.');
+        return;
+      }
+
+      // Validasi profil lengkap
+      if (profileCompletionPercent < 100) {
+        alert(`Profil Anda belum lengkap (${profileCompletionPercent}%). Silakan lengkapi semua data terlebih dahulu sebelum generate link.\n\nKlik "Lengkapi/Edit Profil" di bagian Profil & Data Bank.`);
         return;
       }
 

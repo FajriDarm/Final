@@ -113,7 +113,7 @@ const dashboard = async (req, res) => {
     try {
       const params = [...whereParams, perPage, offset];
       const [rows] = await db.query(
-        `SELECT t.id, COALESCE(t.customer_name, c.name) as name, c.email, c.phone, e.title as event_title, t.payment_status, t.created_at
+        `SELECT t.id, COALESCE(t.customer_name, c.name) as name, c.email, c.phone, e.title as event_title, t.payment_status, t.status, t.created_at
          FROM transactions t
          LEFT JOIN customers c ON t.customer_id = c.id
          LEFT JOIN events e ON t.event_id = e.id
@@ -129,6 +129,7 @@ const dashboard = async (req, res) => {
         phone: r.phone,
         event_title: r.event_title || "-",
         payment_status: r.payment_status,
+        status: r.status,
         created_at: r.created_at,
       }));
     } catch (e) {}
@@ -148,17 +149,14 @@ const dashboard = async (req, res) => {
     // History: transactions older than 7 days with status paid or rejected
     const historyPerPage = 10;
     const historyPage = Math.max(parseInt(req.query.historyPage || "1", 10), 1);
-    const historyFilter = req.query.historyStatus || "all"; // 'paid', 'rejected', or 'all'
+    const historyFilter = req.query.historyStatus || "all"; // 'pending', 'stage_1_approved', 'stage_2_approved', 'completed', 'rejected', or 'all'
 
     let historyWhere =
       "t.affiliate_id = ? AND t.created_at < DATE_SUB(NOW(), INTERVAL 7 DAY)";
     const historyParams = [userId];
     if (historyFilter && historyFilter !== "all") {
-      historyWhere += " AND t.payment_status = ?";
+      historyWhere += " AND t.status = ?";
       historyParams.push(historyFilter);
-    } else {
-      // default: include both paid and rejected
-      historyWhere += " AND t.payment_status IN ('paid','rejected')";
     }
 
     // count
@@ -181,7 +179,7 @@ const dashboard = async (req, res) => {
     try {
       const params = [...historyParams, historyPerPage, historyOffset];
       const [rowsHist] = await db.query(
-        `SELECT t.id, COALESCE(t.customer_name, c.name) AS name, c.email, c.phone, e.title as event_title, t.payment_status, t.created_at
+        `SELECT t.id, COALESCE(t.customer_name, c.name) AS name, c.email, c.phone, e.title as event_title, t.status, t.payment_status, t.created_at
          FROM transactions t
          LEFT JOIN customers c ON t.customer_id = c.id
          LEFT JOIN events e ON t.event_id = e.id
@@ -196,6 +194,7 @@ const dashboard = async (req, res) => {
         email: r.email,
         phone: r.phone,
         event_title: r.event_title || "-",
+        status: r.status,
         payment_status: r.payment_status,
         created_at: r.created_at,
       }));
