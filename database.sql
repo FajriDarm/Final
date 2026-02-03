@@ -282,4 +282,23 @@ FOREIGN KEY (target_user_id) REFERENCES users(id);
 
 
 ALTER TABLE activity_logs DROP COLUMN user_id;
+
+
+CREATE TABLE commission_rules (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    event_id BIGINT NULL,
+
+    commission_type ENUM('flat','percentage') NOT NULL,
+    commission_value DECIMAL(15,2) NOT NULL,
+
+    min_stage TINYINT DEFAULT 3,
+    is_active BOOLEAN DEFAULT TRUE,
+
+    created_by BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (event_id) REFERENCES events(id),
+    FOREIGN KEY (created_by) REFERENCES users(id)
+);
+
 -- End of database.sql

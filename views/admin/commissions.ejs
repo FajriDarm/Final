@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commission Management - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #334155;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #334155;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-active {
+            background: #dcfce7;
+            color: #065f46;
+        }
+        .badge-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .badge-flat {
+            background: #dbeafe;
+            color: #0c2d6b;
+        }
+        .badge-percentage {
+            background: #fce7f3;
+            color: #831843;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: #f8fafc;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #334155;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        tr:hover {
+            background: #f8fafc;
+        }
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .alert.show {
+            display: block;
+        }
+        .alert-success {
+            background: #dcfce7;
+            color: #065f46;
+            border: 1px solid #86efac;
+        }
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        .info-box {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #065f46;
+        }
+        .info-box i {
+            margin-right: 8px;
+            color: #10b981;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <%- include('../navbar/navbar.ejs', { name: 'Admin' }) %>
+
+    <!-- Sidebar -->
+    <%- include('../sidebar/admin.ejs') %>
+
+    <div class="min-h-screen">
+        <!-- Main Content -->
+        <div class="ml-64 pt-20 p-8">
+            <!-- Header -->
+            <div class="mb-8">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Commission Management</h1>
+                        <p class="text-gray-600 mt-2">Manage affiliate commission rules and rates</p>
+                    </div>
+                    <button class="btn-primary flex items-center gap-2" onclick="openAddModal()">
+                        <i class="fas fa-plus"></i> Add Commission Rule
+                    </button>
+                </div>
+            </div>
+
+            <!-- Alert Messages -->
+            <div id="alertSuccess" class="alert alert-success">
+                <i class="fas fa-check-circle"></i> <span id="successMessage"></span>
+            </div>
+            <div id="alertError" class="alert alert-error">
+                <i class="fas fa-exclamation-circle"></i> <span id="errorMessage"></span>
+            </div>
+
+            <!-- Statistics -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalRules">-</div>
+                    <div class="stat-label">Total Rules</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="activeRules">-</div>
+                    <div class="stat-label">Active Rules</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="flatRules">-</div>
+                    <div class="stat-label">Flat Type</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="percentageRules">-</div>
+                    <div class="stat-label">Percentage Type</div>
+                </div>
+            </div>
+
+            <!-- Commission Rules Table -->
+            <div class="card">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-900 mb-6">Commission Rules</h2>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Event</th>
+                                    <th>Type</th>
+                                    <th>Value</th>
+                                    <th>Min Stage</th>
+                                    <th>Status</th>
+                                    <th>Created By</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="commissionTableBody">
+                                <tr>
+                                    <td colspan="9" class="text-center py-8 text-gray-500">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div id="commissionModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900" id="modalTitle">Add Commission Rule</h2>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <strong>Global Commission:</strong> Applied to all events when no specific event is selected.
+                <br><strong>Event-Specific:</strong> Applied only to transactions from the selected event.
+            </div>
+
+            <form id="commissionForm" onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label for="eventSelect">
+                        <i class="fas fa-calendar-alt"></i> Event Selection
+                        <span style="color: #64748b; font-size: 12px;">(Leave empty for Global Commission)</span>
+                    </label>
+                    <select id="eventSelect" name="event_id">
+                        <option value="">🌍 Global Commission (All Events)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="commissionType">Commission Type *</label>
+                    <select id="commissionType" name="commission_type" required>
+                        <option value="">Select Type</option>
+                        <option value="flat">Flat (IDR) - Fixed amount per transaction</option>
+                        <option value="percentage">Percentage (%) - Percentage of transaction amount</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="commissionValue">Commission Value *</label>
+                    <input type="number" id="commissionValue" name="commission_value" placeholder="Enter value" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="minStage">Minimum Stage for Commission</label>
+                    <select id="minStage" name="min_stage">
+                        <option value="1">Stage 1 (Sales Chat)</option>
+                        <option value="2">Stage 2 (Payment Verification)</option>
+                        <option value="3" selected>Stage 3 (Delivery Confirmation)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="isActive">Status</label>
+                    <select id="isActive" name="is_active">
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="flex gap-3">
+                    <button type="submit" class="btn-primary flex-1">
+                        <i class="fas fa-save"></i> Save Commission
+                    </button>
+                    <button type="button" class="btn-secondary flex-1" onclick="closeModal()">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentEditId = null;
+        let commissionData = [];
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCommissions();
+            loadEvents();
+            loadStats();
+        });
+
+        // Load all commission rules
+        function loadCommissions() {
+            fetch('/api/commissions')
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP Error: ${res.status}`);
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        commissionData = data.commissions || [];
+                        renderTable();
+                    } else {
+                        showError(data.message || 'Failed to load commission rules');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading commissions:', err);
+                    showError('Failed to load commission rules: ' + err.message);
+                });
+        }
+
+        // Load events for dropdown
+        function loadEvents() {
+            fetch('/api/commissions/events/list')
+                .then(res => {
+                    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        const select = document.getElementById('eventSelect');
+                        data.data.forEach(event => {
+                            const option = document.createElement('option');
+                            option.value = event.id;
+                            option.textContent = event.title;
+                            select.appendChild(option);
+                        });
+                    }
+                })
+                .catch(err => console.error('Error loading events:', err));
+        }
+
+        // Load statistics
+        function loadStats() {
+            fetch('/api/commissions/stats')
+                .then(res => {
+                    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        const stats = data.data;
+                        document.getElementById('totalRules').textContent = stats.total_rules || 0;
+                        document.getElementById('activeRules').textContent = stats.active_rules || 0;
+                        document.getElementById('flatRules').textContent = stats.flat_rules || 0;
+                        document.getElementById('percentageRules').textContent = stats.percentage_rules || 0;
+                    }
+                })
+                .catch(err => console.error('Error loading stats:', err));
+        }
+
+        // Render commission table
+        function renderTable() {
+            const tbody = document.getElementById('commissionTableBody');
+            
+            if (commissionData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" class="text-center py-8 text-gray-500">No commission rules found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = commissionData.map(commission => `
+                <tr>
+                    <td>${commission.id}</td>
+                    <td>
+                        ${commission.event_id ? 
+                            `<span><i class="fas fa-calendar-alt" style="color: #10b981;"></i> ${commission.event_title}</span>` : 
+                            `<span style="color: #64748b; font-style: italic;"><i class="fas fa-globe"></i> Global Commission</span>`}
+                    </td>
+                    <td>
+                        <span class="badge ${commission.commission_type === 'flat' ? 'badge-flat' : 'badge-percentage'}">
+                            ${commission.commission_type.toUpperCase()}
+                        </span>
+                    </td>
+                    <td>
+                        ${commission.commission_type === 'flat' ? 
+                            'IDR ' + new Intl.NumberFormat('id-ID').format(commission.commission_value) : 
+                            commission.commission_value + '%'}
+                    </td>
+                    <td>Stage ${commission.min_stage}</td>
+                    <td>
+                        <span class="badge ${commission.is_active ? 'badge-active' : 'badge-inactive'}">
+                            ${commission.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                    </td>
+                    <td>${commission.created_by_name || '-'}</td>
+                    <td>${new Date(commission.created_at).toLocaleDateString('id-ID')}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-secondary text-xs px-2 py-1" onclick="editCommission(${commission.id})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn-danger text-xs px-2 py-1" onclick="deleteCommission(${commission.id})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Open add modal
+        function openAddModal() {
+            currentEditId = null;
+            document.getElementById('modalTitle').textContent = 'Add Commission Rule';
+            document.getElementById('commissionForm').reset();
+            document.getElementById('commissionModal').classList.add('show');
+        }
+
+        // Open edit modal
+        function editCommission(id) {
+            const commission = commissionData.find(c => c.id === id);
+            if (!commission) return;
+
+            currentEditId = id;
+            document.getElementById('modalTitle').textContent = 'Edit Commission Rule';
+            document.getElementById('eventSelect').value = commission.event_id || '';
+            document.getElementById('commissionType').value = commission.commission_type;
+            document.getElementById('commissionValue').value = commission.commission_value;
+            document.getElementById('minStage').value = commission.min_stage;
+            document.getElementById('isActive').value = commission.is_active ? '1' : '0';
+            
+            document.getElementById('commissionModal').classList.add('show');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('commissionModal').classList.remove('show');
+            currentEditId = null;
+        }
+
+        // Submit form
+        function submitForm(event) {
+            event.preventDefault();
+
+            const formData = new FormData(document.getElementById('commissionForm'));
+            const data = {
+                event_id: formData.get('event_id') || null,
+                commission_type: formData.get('commission_type'),
+                commission_value: parseFloat(formData.get('commission_value')),
+                min_stage: parseInt(formData.get('min_stage')),
+                is_active: parseInt(formData.get('is_active'))
+            };
+
+            const url = currentEditId ? `/api/commissions/${currentEditId}` : '/api/commissions';
+            const method = currentEditId ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    showSuccess(result.message);
+                    closeModal();
+                    loadCommissions();
+                    loadStats();
+                } else {
+                    showError(result.message || 'Operation failed');
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                showError('An error occurred');
+            });
+        }
+
+        // Delete commission
+        function deleteCommission(id) {
+            if (!confirm('Are you sure you want to delete this commission rule?')) return;
+
+            fetch(`/api/commissions/${id}`, {
+                method: 'DELETE'
+            })
+            .then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    showSuccess('Commission rule deleted successfully');
+                    loadCommissions();
+                    loadStats();
+                } else {
+                    showError(result.message || 'Failed to delete commission rule');
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                showError('An error occurred');
+            });
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            const alert = document.getElementById('alertSuccess');
+            document.getElementById('successMessage').textContent = message;
+            alert.classList.add('show');
+            setTimeout(() => alert.classList.remove('show'), 4000);
+        }
+
+        // Show error message
+        function showError(message) {
+            const alert = document.getElementById('alertError');
+            document.getElementById('errorMessage').textContent = message;
+            alert.classList.add('show');
+            setTimeout(() => alert.classList.remove('show'), 4000);
+        }
+
+        // Close modal on background click
+        document.getElementById('commissionModal').addEventListener('click', (e) => {
+            if (e.target.id === 'commissionModal') closeModal();
+        });
+    </script>
+</body>
+
+</html>

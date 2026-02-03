@@ -191,6 +191,11 @@ app.get("/admin/activity-logs", (req, res) => {
   res.render("admin/activity-logs");
 });
 
+// Commission Routes (Page and API)
+const commissionRoutes = require("./routes/commissionRoutes");
+app.use("/", commissionRoutes);
+app.use("/api", commissionRoutes);
+
 // Start
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);

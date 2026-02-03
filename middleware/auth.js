@@ -185,5 +185,6 @@ const authMiddlewarePage = async (req, res, next) => {
 };
 
 module.exports = authMiddleware;
+module.exports.verifyToken = authMiddleware;
 module.exports.authMiddlewarePage = authMiddlewarePage;
 module.exports.checkAlreadyLoggedIn = checkAlreadyLoggedIn;
