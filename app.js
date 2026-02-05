@@ -210,6 +210,10 @@ app.get("/admin/commissions", authMiddlewarePage, (req, res) => {
   res.render("admin/commissions");
 });
 
+app.get("/admin/withdrawals", (req, res) => {
+  res.render("admin/withdrawal_approvals");
+});
+
 // Commission Routes (Page and API)
 const commissionRoutes = require("./routes/commissionRoutes");
 app.use("/", commissionRoutes);

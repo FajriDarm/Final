@@ -56,4 +56,11 @@ router.post(
   adminController.rejectWithdrawal,
 );
 
+// Withdrawal Approvals
+router.get('/withdrawals', authMiddleware, adminController.getWithdrawalApprovalsPage);
+router.get('/withdrawals/approval', authMiddleware, adminController.getPendingWithdrawalsForApproval);
+router.get('/withdrawals/approval/:id', authMiddleware, adminController.getWithdrawalDetailForApproval);
+router.post('/withdrawals/approval/:id/approve', authMiddleware, adminController.approveWithdrawal);
+router.post('/withdrawals/approval/:id/reject', authMiddleware, adminController.rejectWithdrawal);
+
 module.exports = router;
