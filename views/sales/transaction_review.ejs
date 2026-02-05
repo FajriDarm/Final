@@ -1,52 +1,457 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transaction Review - Sales</title>
+  <title>Transaction Review - Sales Affillink</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .gradient-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+    .gradient-secondary {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    }
+
+    .gradient-info {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    }
+
+    .gradient-purple {
+      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    }
+
+    .gradient-amber {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    .gradient-dark {
+      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(5, 150, 105, 0.1), 0 10px 10px -5px rgba(5, 150, 105, 0.04);
+    }
+
+    .status-badge {
+      transition: all 0.2s ease;
+    }
+
+    .status-badge:hover {
+      transform: scale(1.05);
+    }
+
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
+
+    .data-cell {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .data-cell::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
+
+<body class="bg-gradient-to-br from-emerald-50 to-green-50">
   <!-- Navbar -->
   <%- include('../navbar/navbar.ejs', { name: 'Sales' }) %>
 
-  <!-- Sidebar -->
-  <%- include('../sidebar/sales.ejs') %>
+    <!-- Sidebar -->
+    <%- include('../sidebar/sales.ejs') %>
 
-  <!-- Main Content -->
-  <main class="ml-64 pt-16 min-h-screen">
-    <div class="p-6">
-      <h2 class="text-2xl font-bold mb-4">Transaction Review</h2>
-      <div class="overflow-x-auto">
-        <table class="table-auto w-full border">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-4 py-2">ID</th>
-              <th class="px-4 py-2">Customer</th>
-              <th class="px-4 py-2">Affiliate</th>
-              <th class="px-4 py-2">Amount</th>
-              <th class="px-4 py-2">Payment</th>
-              <th class="px-4 py-2">Status</th>
-              <th class="px-4 py-2">Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% transactions.forEach(function(trx) { %>
-              <tr class="border-b">
-                <td class="px-4 py-2"><%= trx.id %></td>
-                <td class="px-4 py-2"><%= trx.customer_name || '-' %></td>
-                <td class="px-4 py-2"><%= trx.affiliate_name || '-' %></td>
-                <td class="px-4 py-2">Rp <%= parseInt(trx.total_amount || 0).toLocaleString('id-ID') %></td>
-                <td class="px-4 py-2"><%= trx.payment_method %> (<%= trx.payment_status %>)</td>
-                <td class="px-4 py-2"><%= trx.status %></td>
-                <td class="px-4 py-2"><%= trx.created_at.toLocaleString('id-ID') %></td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </main>
+      <!-- Main Content -->
+      <main class="ml-64 pt-16 min-h-screen">
+        <div class="p-6">
+          <!-- Page Header -->
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+            <div class="mb-4 md:mb-0">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-file-invoice-dollar text-white text-xl"></i>
+                </div>
+                <div>
+                  <h1 class="text-3xl font-bold text-gray-900">Transaction Review</h1>
+                  <p class="text-gray-600 mt-1">Review dan monitor semua transaksi sales</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="hidden md:block px-4 py-2 bg-white rounded-lg shadow-sm border border-green-100">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-calendar-alt text-green-600"></i>
+                  <span class="text-sm font-medium text-gray-700">
+                    <%= new Date().toLocaleDateString('id-ID', { weekday: 'long' , year: 'numeric' , month: 'long' ,
+                      day: 'numeric' }) %>
+                  </span>
+                </div>
+              </div>
+              <div class="px-4 py-2 gradient-secondary rounded-lg shadow-lg text-white pulse-animation">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-exchange-alt"></i>
+                  <span class="text-sm font-medium">Total: <%= transactions.length || 0 %> Transaksi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <!-- Total Transactions -->
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Total Transaksi</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2">
+                    <%= transactions.length || 0 %>
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-500">semua transaksi</span>
+                  </div>
+                </div>
+                <div class="w-14 h-14 gradient-secondary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-receipt text-white text-2xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Total Amount -->
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Total Amount</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2">
+                    Rp <% let totalAmount=0; if (transactions && transactions.length> 0) {
+                      transactions.forEach(trx => {
+                      totalAmount += parseFloat(trx.total_amount) || 0;
+                      });
+                      }
+                      %>
+                      <%= totalAmount.toLocaleString('id-ID') %>
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-500">nilai total</span>
+                  </div>
+                </div>
+                <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-money-bill-wave text-white text-2xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Avg. Transaction -->
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Avg. Transaction</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2">
+                    Rp <% let sumAmount=0; if (transactions && transactions.length> 0) {
+                      transactions.forEach(trx => {
+                      sumAmount += parseFloat(trx.total_amount) || 0;
+                      });
+                      const avgAmount = sumAmount / transactions.length;
+                      %>
+                      <%= avgAmount.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                        <% } else { %>
+                          0
+                          <% } %>
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-500">rata-rata per transaksi</span>
+                  </div>
+                </div>
+                <div class="w-14 h-14 gradient-secondary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-chart-line text-white text-2xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unique Affiliates -->
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Unique Affiliates</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2">
+                    <% let affiliateSet=new Set(); if (transactions && transactions.length> 0) {
+                      transactions.forEach(trx => {
+                      if (trx.affiliate_name && trx.affiliate_name !== '-') {
+                      affiliateSet.add(trx.affiliate_name);
+                      }
+                      });
+                      }
+                      %>
+                      <%= affiliateSet.size %>
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-500">affiliate aktif</span>
+                  </div>
+                </div>
+                <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-user-tie text-white text-2xl"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transactions Table -->
+          <div class="glass-card rounded-2xl shadow-lg border border-green-100 overflow-hidden">
+            <div class="px-6 py-4 gradient-primary">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h2 class="text-lg font-semibold text-white">Review Transaksi</h2>
+                  <p class="text-green-100 text-sm mt-1">Detail semua transaksi dalam sistem</p>
+                </div>
+                <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                  <i class="fas fa-search text-white"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="bg-green-50">
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">ID</th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Customer</th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Affiliate</th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Amount</th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Payment</th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Status</th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Created At</th>
+                  </tr>
+                </thead>
+                <tbody id="transactionsTableBody" class="divide-y divide-green-100">
+                  <% if (!transactions || transactions.length===0) { %>
+                    <tr style="height:320px;">
+                      <td colspan="7" class="py-12 px-6 text-center">
+                        <div class="flex flex-col items-center justify-center">
+                          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-inbox text-green-600 text-xl"></i>
+                          </div>
+                          <p class="text-gray-600 font-medium">Tidak ada transaksi</p>
+                          <p class="text-sm text-gray-500 mt-2">Transaksi akan muncul di sini</p>
+                        </div>
+                      </td>
+                    </tr>
+                    <% } else { %>
+                      <% transactions.forEach(function(trx, index) { %>
+                        <% const statusClass={ 'pending' : 'bg-yellow-100 text-yellow-800 border-yellow-200'
+                          , 'completed' : 'bg-green-100 text-green-800 border-green-200' , 'rejected'
+                          : 'bg-red-100 text-red-800 border-red-200' , 'processing'
+                          : 'bg-blue-100 text-blue-800 border-blue-200' }[trx.status]
+                          || 'bg-gray-100 text-gray-800 border-gray-200' ; const paymentStatusClass={ 'pending'
+                          : 'bg-yellow-100 text-yellow-800' , 'paid' : 'bg-green-100 text-green-800' , 'failed'
+                          : 'bg-red-100 text-red-800' }[trx.payment_status] || 'bg-gray-100 text-gray-800' ; const
+                          amount=parseInt(trx.total_amount || 0); const isHighValue=amount> 1000000;
+
+                          const methodIcon = {
+                          'bank_transfer': 'fas fa-university',
+                          'credit_card': 'fas fa-credit-card',
+                          'e-wallet': 'fas fa-wallet',
+                          'cash': 'fas fa-money-bill'
+                          }[trx.payment_method] || 'fas fa-money-bill-wave';
+                          %>
+                          <tr class="hover:bg-green-50 transition-colors data-cell"
+                            style="animation-delay: <%= index * 50 %>ms">
+                            <td class="py-4 px-6">
+                              <div class="flex flex-col">
+                                <span class="font-medium text-gray-900">#<%= trx.id %></span>
+                                <span class="text-xs text-gray-500">Transaction</span>
+                              </div>
+                            </td>
+                            <td class="py-4 px-6">
+                              <div class="flex items-center gap-3">
+                                <div
+                                  class="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
+                                  <i class="fas fa-user text-green-600"></i>
+                                </div>
+                                <div>
+                                  <div class="font-medium text-gray-900">
+                                    <%= trx.customer_name || '-' %>
+                                  </div>
+                                  <div class="text-xs text-gray-500">Customer</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td class="py-4 px-6">
+                              <div class="flex items-center gap-3">
+                                <% if (trx.affiliate_name && trx.affiliate_name !=='-' ) { %>
+                                  <div
+                                    class="w-10 h-10 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-user-tie text-purple-600"></i>
+                                  </div>
+                                  <div>
+                                    <div class="font-medium text-gray-900">
+                                      <%= trx.affiliate_name %>
+                                    </div>
+                                    <div class="text-xs text-gray-500">Affiliate</div>
+                                  </div>
+                                  <% } else { %>
+                                    <div
+                                      class="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
+                                      <i class="fas fa-times text-gray-500"></i>
+                                    </div>
+                                    <div>
+                                      <div class="font-medium text-gray-400">No Affiliate</div>
+                                      <div class="text-xs text-gray-500">Direct Sale</div>
+                                    </div>
+                                    <% } %>
+                              </div>
+                            </td>
+                            <td class="py-4 px-6">
+                              <div class="flex flex-col">
+                                <span class="font-bold <%= isHighValue ? 'text-green-700 text-lg' : 'text-gray-900' %>">
+                                  Rp <%= amount.toLocaleString('id-ID') %>
+                                </span>
+                                <% if (trx.commission_amount) { %>
+                                  <span class="text-xs text-gray-500">
+                                    Komisi: Rp <%= parseInt(trx.commission_amount).toLocaleString('id-ID') %>
+                                  </span>
+                                  <% } %>
+                              </div>
+                            </td>
+                            <td class="py-4 px-6">
+                              <div class="flex flex-col gap-1">
+                                <div class="flex items-center gap-2">
+                                  <i class="<%= methodIcon %> text-gray-500 text-sm"></i>
+                                  <span class="text-sm text-gray-700">
+                                    <%= trx.payment_method %>
+                                  </span>
+                                </div>
+                                <span class="px-2 py-1 rounded-full text-xs font-medium <%= paymentStatusClass %>">
+                                  <%= trx.payment_status %>
+                                </span>
+                              </div>
+                            </td>
+                            <td class="py-4 px-6">
+                              <span
+                                class="px-3 py-1.5 rounded-full text-xs font-medium border <%= statusClass %> status-badge">
+                                <i class="fas fa-circle text-xs mr-1.5"></i>
+                                <%= trx.status.toUpperCase() %>
+                              </span>
+                            </td>
+                            <td class="py-4 px-6">
+                              <div class="flex flex-col">
+                                <span class="text-sm text-gray-600">
+                                  <%= new Date(trx.created_at).toLocaleDateString('id-ID', { day: 'numeric' ,
+                                    month: 'short' , year: 'numeric' }) %>
+                                </span>
+                                <span class="text-xs text-gray-500">
+                                  <%= new Date(trx.created_at).toLocaleTimeString('id-ID', { hour: '2-digit' ,
+                                    minute: '2-digit' }) %>
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                          <% }); %>
+                            <% } %>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="px-6 py-4 bg-green-50 border-t border-green-100 rounded-b-2xl">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 text-sm">
+                <div class="text-gray-600">
+                  Menampilkan <span class="font-medium">
+                    <%= transactions.length || 0 %>
+                  </span> transaksi
+                </div>
+                <div class="flex items-center gap-4">
+                  <span class="text-gray-600">Terakhir diperbarui: Sekarang</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          // Add animation to status badges
+          const statusBadges = document.querySelectorAll('.status-badge');
+          statusBadges.forEach(badge => {
+            badge.addEventListener('mouseenter', function () {
+              this.style.transform = 'scale(1.05)';
+            });
+            badge.addEventListener('mouseleave', function () {
+              this.style.transform = 'scale(1)';
+            });
+          });
+
+          // Add hover effect to table rows
+          const tableRows = document.querySelectorAll('tbody tr[style*="animation-delay"]');
+          tableRows.forEach(row => {
+            row.addEventListener('mouseenter', function () {
+              this.style.backgroundColor = '#f0fdf4';
+            });
+            row.addEventListener('mouseleave', function () {
+              this.style.backgroundColor = '';
+            });
+          });
+
+          // Filter functionality (optional)
+          const filterButtons = document.querySelectorAll('.filter-btn');
+          filterButtons.forEach(button => {
+            button.addEventListener('click', function () {
+              const status = this.getAttribute('data-status');
+              filterByStatus(status);
+            });
+          });
+
+          function filterByStatus(status) {
+            const rows = document.querySelectorAll('tbody tr[data-status]');
+            rows.forEach(row => {
+              if (status === 'all' || row.getAttribute('data-status') === status) {
+                row.style.display = '';
+              } else {
+                row.style.display = 'none';
+              }
+            });
+          }
+        });
+      </script>
 </body>
+
 </html>
