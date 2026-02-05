@@ -8,6 +8,19 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
+        /* Animasi shimmer/glow untuk progress bar loading modal */
+        @keyframes shimmer {
+          0% {
+            background-position: -200% center;
+          }
+          100% {
+            background-position: 200% center;
+          }
+        }
+
+        .animate-shimmer {
+          animation: shimmer 1.5s infinite linear;
+        }
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -667,7 +680,7 @@
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay"
-      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+      class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
       <div
         class="bg-white rounded-2xl p-10 flex flex-col items-center gap-6 max-w-md w-full mx-4 animate-fadeIn shadow-2xl">
         <div class="relative">
@@ -680,8 +693,39 @@
           <h3 class="text-gray-800 font-bold text-xl mb-2">Memperbarui Profil</h3>
           <p class="text-gray-600">Harap tunggu sebentar, data Anda sedang diproses...</p>
         </div>
-        <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-          <div class="h-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse-gentle"></div>
+        <!-- Progress Bar dengan Animasi Mengkilap -->
+        <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden relative">
+          <!-- Background static bar -->
+          <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200"></div>
+
+          <!-- Animated shimmer bar -->
+          <div class="absolute inset-0 h-2.5 rounded-full animate-shimmer" style="
+            background: linear-gradient(
+              90deg,
+              rgba(34, 197, 94, 0.1) 0%,
+              rgba(34, 197, 94, 0.3) 25%,
+              rgba(34, 197, 94, 0.6) 50%,
+              rgba(34, 197, 94, 0.3) 75%,
+              rgba(34, 197, 94, 0.1) 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+          "></div>
+
+          <!-- Glowing overlay effect -->
+          <div class="absolute inset-0 h-2.5 rounded-full" style="
+            background: linear-gradient(
+              90deg,
+              transparent 0%,
+              rgba(255, 255, 255, 0.4) 25%,
+              rgba(255, 255, 255, 0.8) 50%,
+              rgba(255, 255, 255, 0.4) 75%,
+              transparent 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+            filter: blur(1px);
+          "></div>
         </div>
       </div>
     </div>

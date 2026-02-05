@@ -1,46 +1,454 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monitoring Affiliate - Sales</title>
+  <title>Monitoring Affiliate - Sales Affillink</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .gradient-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+    .gradient-secondary {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    }
+    .gradient-accent {
+      background: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%);
+    }
+    .gradient-dark {
+      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(5, 150, 105, 0.1), 0 10px 10px -5px rgba(5, 150, 105, 0.04);
+    }
+
+    .status-badge {
+      transition: all 0.2s ease;
+    }
+
+    .status-badge:hover {
+      transform: scale(1.05);
+    }
+
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
+
+    .data-cell {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .data-cell::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
+
+<body class="bg-gradient-to-br from-emerald-50 to-green-50">
   <!-- Navbar -->
   <%- include('../navbar/navbar.ejs', { name: 'Sales' }) %>
-  <!-- Sidebar -->
-  <%- include('../sidebar/sales.ejs') %>
-  <!-- Main Content -->
-  <main class="ml-64 pt-16 min-h-screen">
-    <div class="p-6">
-      <h2 class="text-2xl font-bold mb-4">Monitoring Affiliate</h2>
-      <div class="overflow-x-auto">
-        <table class="table-auto w-full border">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-4 py-2">Nama</th>
-              <th class="px-4 py-2">Email</th>
-              <th class="px-4 py-2">Total Transaksi</th>
-              <th class="px-4 py-2">Transaksi Selesai</th>
-              <th class="px-4 py-2">Total Penjualan</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% affiliates.forEach(function(a) { %>
-              <tr class="border-b">
-                <td class="px-4 py-2"><%= a.name %></td>
-                <td class="px-4 py-2"><%= a.email %></td>
-                <td class="px-4 py-2"><%= a.total_transaksi %></td>
-                <td class="px-4 py-2"><%= a.transaksi_selesai %></td>
-                <td class="px-4 py-2">Rp <%= parseInt(a.total_penjualan || 0).toLocaleString('id-ID') %></td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </main>
+
+    <!-- Sidebar -->
+    <%- include('../sidebar/sales.ejs') %>
+
+      <!-- Main Content -->
+      <main class="ml-64 pt-16 min-h-screen">
+        <div class="p-6">
+          <!-- Page Header -->
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+            <div class="mb-4 md:mb-0">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-user-check text-white text-xl"></i>
+                </div>
+                <div>
+                  <h1 class="text-3xl font-bold text-gray-900">Monitoring Affiliate</h1>
+                  <p class="text-gray-600 mt-1">Analisis dan monitoring performa affiliate sales</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="hidden md:block px-4 py-2 bg-white rounded-lg shadow-sm border border-green-100">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-calendar-alt text-green-600"></i>
+                  <span class="text-sm font-medium text-gray-700">
+                    <%= new Date().toLocaleDateString('id-ID', { weekday: 'long' , year: 'numeric' , month: 'long' ,
+                      day: 'numeric' }) %>
+                  </span>
+                </div>
+              </div>
+              <div class="px-4 py-2 gradient-secondary rounded-lg shadow-lg text-white pulse-animation">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-user-tie text-white text-lg"></i>
+                  <span class="text-sm font-medium">Total: <%= affiliates.length || 0 %> Affiliate</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <!-- Total Affiliates -->
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Total Affiliates</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2">
+                    <%= affiliates.length || 0 %>
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-500">aktif dalam sistem</span>
+                  </div>
+                </div>
+                <div class="w-14 h-14 gradient-secondary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-user-tie text-white text-2xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Total Sales -->
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Total Penjualan</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2">
+                    Rp <% let totalSales=0; if (affiliates && affiliates.length> 0) {
+                      affiliates.forEach(a => {
+                      totalSales += parseFloat(a.total_penjualan) || 0;
+                      });
+                      }
+                      %>
+                      <%= totalSales.toLocaleString('id-ID') %>
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-500">nilai total penjualan</span>
+                  </div>
+                </div>
+                <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-money-bill-wave text-white text-2xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Avg. Success Rate -->
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Avg. Success Rate</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2">
+                    <% let totalSuccessRate=0; let affiliateCount=0; if (affiliates && affiliates.length> 0) {
+                      affiliates.forEach(a => {
+                      if (a.total_transaksi > 0) {
+                      const successRate = (a.transaksi_selesai / a.total_transaksi) * 100;
+                      totalSuccessRate += successRate;
+                      affiliateCount++;
+                      }
+                      });
+                      const avgSuccessRate = affiliateCount > 0 ? totalSuccessRate / affiliateCount : 0;
+                      %>
+                      <%= avgSuccessRate.toFixed(1) %>%
+                        <% } else { %>
+                          0%
+                          <% } %>
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-500">rata-rata keberhasilan</span>
+                  </div>
+                </div>
+                <div class="w-14 h-14 gradient-secondary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-chart-line text-white text-2xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Avg. Sales per Affiliate -->
+            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Avg. Sales/Affiliate</p>
+                  <p class="text-3xl font-bold text-gray-900 mb-2">
+                    Rp <% let totalAllSales=0; if (affiliates && affiliates.length> 0) {
+                      affiliates.forEach(a => {
+                      totalAllSales += parseFloat(a.total_penjualan) || 0;
+                      });
+                      const avgSales = totalAllSales / affiliates.length;
+                      %>
+                      <%= avgSales.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                        <% } else { %>
+                          0
+                          <% } %>
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-500">penjualan rata-rata</span>
+                  </div>
+                </div>
+                <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-user-tie text-white text-2xl"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Affiliate Monitoring Table -->
+          <div class="glass-card rounded-2xl shadow-lg border border-green-100 overflow-hidden">
+            <div class="px-6 py-4 gradient-primary">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h2 class="text-lg font-semibold text-white">Monitoring Performa Affiliate</h2>
+                  <p class="text-green-100 text-sm mt-1">Analisis detail performa setiap affiliate</p>
+                </div>
+                <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                  <i class="fas fa-chart-bar text-white"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="bg-green-50">
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Nama</th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Email</th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Total Transaksi</th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Transaksi Selesai</th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Total Penjualan</th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Success Rate</th>
+                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Avg. Transaction</th>
+                  </tr>
+                </thead>
+                <tbody id="affiliatesTableBody" class="divide-y divide-green-100">
+                  <% if (!affiliates || affiliates.length===0) { %>
+                    <tr style="height:320px;">
+                      <td colspan="7" class="py-12 px-6 text-center">
+                        <div class="flex flex-col items-center justify-center">
+                          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-user-tie text-green-600 text-2xl"></i>
+                          </div>
+                          <p class="text-gray-600 font-medium">Belum ada affiliate</p>
+                          <p class="text-sm text-gray-500 mt-2">Data affiliate akan muncul di sini</p>
+                        </div>
+                      </td>
+                    </tr>
+                    <% } else { %>
+                      <% affiliates.forEach(function(a, index) { %>
+                        <tr class="hover:bg-green-50 transition-colors data-cell"
+                          style="animation-delay: <%= index * 50 %>ms">
+                          <td class="py-4 px-6">
+                            <div class="flex items-center gap-3">
+                              <div
+                                class="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-user-tie text-green-600 text-lg"></i>
+                              </div>
+                              <div>
+                                <div class="font-medium text-gray-900">
+                                  <%= a.name %>
+                                </div>
+                                <div class="text-xs text-gray-500">Affiliate</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="py-4 px-6">
+                            <div class="flex items-center gap-2">
+                              <div
+                                class="w-8 h-8 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-envelope text-green-600 text-sm"></i>
+                              </div>
+                              <span class="text-sm text-gray-700">
+                                <%= a.email %>
+                              </span>
+                            </div>
+                          </td>
+                          <td class="py-4 px-6">
+                            <div class="flex flex-col">
+                              <span class="font-bold text-lg text-gray-900">
+                                <%= a.total_transaksi %>
+                              </span>
+                              <span class="text-xs text-gray-500">Total</span>
+                            </div>
+                          </td>
+                          <td class="py-4 px-6">
+                            <div class="flex flex-col">
+                              <span class="font-medium text-green-700">
+                                <%= a.transaksi_selesai %>
+                              </span>
+                              <span class="text-xs text-gray-500">Completed</span>
+                            </div>
+                          </td>
+                          <td class="py-4 px-6">
+                            <div class="flex flex-col">
+                              <% const salesAmount=parseInt(a.total_penjualan || 0); const isHighValue=salesAmount>
+                                5000000;
+                                %>
+                                <span class="font-bold <%= isHighValue ? 'text-green-700 text-lg' : 'text-gray-900' %>">
+                                  Rp <%= salesAmount.toLocaleString('id-ID') %>
+                                </span>
+                                <span class="text-xs text-gray-500">Total Sales</span>
+                            </div>
+                          </td>
+                          <td class="py-4 px-6">
+                            <div class="flex flex-col">
+                              <% let successRate=0; let successClass='text-gray-500' ; if (a.total_transaksi> 0) {
+                                successRate = (a.transaksi_selesai / a.total_transaksi) * 100;
+
+                                if (successRate >= 80) {
+                                successClass = 'text-green-600';
+                                } else if (successRate >= 60) {
+                                successClass = 'text-yellow-600';
+                                } else {
+                                successClass = 'text-red-600';
+                                }
+                                }
+                                %>
+                                <span class="font-medium <%= successClass %>">
+                                  <%= successRate.toFixed(1) %>%
+                                </span>
+                                <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
+                                  <div class="<%= successClass.replace('text-', 'bg-') %> h-1.5 rounded-full"
+                                    style="width: <%= Math.min(successRate, 100) %>%"></div>
+                                </div>
+                            </div>
+                          </td>
+                          <td class="py-4 px-6">
+                            <div class="flex flex-col">
+                              <% let avgTransaction=0; if (a.total_transaksi> 0) {
+                                avgTransaction = salesAmount / a.total_transaksi;
+                                }
+                                %>
+                                <span class="font-medium text-green-700">
+                                  Rp <%= avgTransaction.toLocaleString('id-ID', { minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2 }) %>
+                                </span>
+                                <span class="text-xs text-gray-500">per transaksi</span>
+                            </div>
+                          </td>
+                        </tr>
+                        <% }); %>
+                          <% } %>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="px-6 py-4 bg-green-50 border-t border-green-100 rounded-b-2xl">
+              <div class="flex items-center gap-4 justify-between text-sm">
+                <span class="text-gray-600">
+                  Menampilkan <span class="font-medium">
+                    <%= affiliates.length || 0 %>
+                  </span> affiliate
+                </span>
+                <span class="text-gray-600">Terakhir diperbarui: Sekarang</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          // Add hover effects to table rows
+          const tableRows = document.querySelectorAll('tbody tr[style*="animation-delay"]');
+          tableRows.forEach(row => {
+            row.addEventListener('mouseenter', function () {
+              this.style.backgroundColor = '#faf5ff';
+            });
+            row.addEventListener('mouseleave', function () {
+              this.style.backgroundColor = '';
+            });
+          });
+
+          // Sort table by columns
+          const tableHeaders = document.querySelectorAll('thead th');
+          tableHeaders.forEach((header, index) => {
+            header.style.cursor = 'pointer';
+            header.addEventListener('click', function () {
+              sortTable(index);
+            });
+          });
+
+          function sortTable(columnIndex) {
+            const table = document.getElementById('affiliatesTableBody');
+            const rows = Array.from(table.querySelectorAll('tr:not([style*="height:320px"])'));
+
+            const isAscending = !table.getAttribute('data-sort-asc') || table.getAttribute('data-sort-asc') === 'false';
+
+            rows.sort((a, b) => {
+              const aValue = a.cells[columnIndex].textContent.trim();
+              const bValue = b.cells[columnIndex].textContent.trim();
+
+              // Handle numeric values
+              const aNum = parseFloat(aValue.replace(/[^0-9.-]+/g, ''));
+              const bNum = parseFloat(bValue.replace(/[^0-9.-]+/g, ''));
+
+              if (!isNaN(aNum) && !isNaN(bNum)) {
+                return isAscending ? aNum - bNum : bNum - aNum;
+              }
+
+              // Handle percentage values
+              if (aValue.includes('%') && bValue.includes('%')) {
+                const aPct = parseFloat(aValue);
+                const bPct = parseFloat(bValue);
+                return isAscending ? aPct - bPct : bPct - aPct;
+              }
+
+              // Default string comparison
+              return isAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+            });
+
+            // Reorder rows
+            rows.forEach(row => table.appendChild(row));
+            table.setAttribute('data-sort-asc', isAscending);
+          }
+
+          // Export data function
+          window.exportAffiliateData = function () {
+            const confirmExport = confirm('Apakah Anda ingin mengekspor data affiliate ke CSV?');
+            if (confirmExport) {
+              alert('Data berhasil diekspor! (Simulasi)');
+              // In a real implementation, this would trigger a download
+            }
+          };
+        });
+      </script>
 </body>
+
 </html>
