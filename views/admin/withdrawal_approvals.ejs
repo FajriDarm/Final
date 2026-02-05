@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Approval Penarikan Komisi - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <%- include('../navbar/navbar.ejs') %>
+
+    <div class="flex">
+      <%- include('../sidebar/admin.ejs') %>
+
+      <main class="ml-64 pt-24 min-h-screen pb-8 w-full">
+        <div class="max-w-6xl mx-auto px-8 mt-6">
+          <!-- Header -->
+          <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+              <i class="fas fa-check-circle text-blue-600 mr-3"></i>
+              Approval Penarikan Komisi
+            </h1>
+            <p class="text-gray-600">
+              Review dan approve/reject permintaan penarikan dari Finance
+            </p>
+          </div>
+
+          <!-- Tab Navigation -->
+          <div class="bg-white rounded-lg shadow mb-6 sticky top-16 z-10">
+            <div class="flex border-b">
+              <button
+                onclick="switchTab('pending')"
+                class="tab-btn active flex-1 py-4 px-6 text-center font-semibold border-b-2 border-blue-600 text-blue-600 transition"
+              >
+                <i class="fas fa-hourglass-half mr-2"></i>
+                Menunggu Approval
+                <span
+                  id="pending-count"
+                  class="ml-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+                  >0</span
+                >
+              </button>
+              <button
+                onclick="switchTab('approved')"
+                class="tab-btn flex-1 py-4 px-6 text-center font-semibold border-b-2 border-transparent text-gray-600 hover:text-gray-900 transition"
+              >
+                <i class="fas fa-check-circle mr-2"></i>
+                Sudah Diapprove
+                <span
+                  id="approved-count"
+                  class="ml-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
+                  >0</span
+                >
+              </button>
+              <button
+                onclick="switchTab('rejected')"
+                class="tab-btn flex-1 py-4 px-6 text-center font-semibold border-b-2 border-transparent text-gray-600 hover:text-gray-900 transition"
+              >
+                <i class="fas fa-times-circle mr-2"></i>
+                Ditolak
+                <span
+                  id="rejected-count"
+                  class="ml-2 bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm"
+                  >0</span
+                >
+              </button>
+            </div>
+          </div>
+
+          <!-- Pending Tab -->
+          <div id="pending-tab" class="tab-content">
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+              <div id="pending-list" class="divide-y">
+                <div class="p-8 text-center text-gray-500">
+                  <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                  <p>Loading...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Approved Tab -->
+          <div id="approved-tab" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+              <div id="approved-list" class="divide-y">
+                <div class="p-8 text-center text-gray-500">
+                  <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                  <p>Loading...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rejected Tab -->
+          <div id="rejected-tab" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+              <div id="rejected-list" class="divide-y">
+                <div class="p-8 text-center text-gray-500">
+                  <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                  <p>Loading...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Detail Modal -->
+    <div
+      id="detail-modal"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+    >
+      <div
+        class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-96 overflow-y-auto"
+      >
+        <div
+          class="sticky top-0 bg-gray-50 border-b px-6 py-4 flex justify-between items-center"
+        >
+          <h3 class="text-xl font-bold text-gray-900" id="detail-title">
+            Detail Penarikan
+          </h3>
+          <button
+            onclick="closeDetailModal()"
+            class="text-gray-500 hover:text-gray-700"
+          >
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        <div id="detail-content" class="p-6">
+          <!-- Content loaded dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Approve Modal -->
+    <div
+      id="approve-modal"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+    >
+      <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+        <div class="bg-green-50 border-b px-6 py-4">
+          <h3 class="text-lg font-bold text-green-900">
+            <i class="fas fa-check-circle text-green-600 mr-2"></i>
+            Approve Penarikan
+          </h3>
+        </div>
+        <div class="p-6">
+          <div id="approve-info" class="mb-6">
+            <p class="text-gray-700">
+              <strong>Affiliate:</strong> <span id="approve-affiliate"></span>
+            </p>
+            <p class="text-gray-700 mt-2">
+              <strong>Jumlah:</strong> <span id="approve-amount"></span>
+            </p>
+          </div>
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Catatan (opsional)</label
+            >
+            <textarea
+              id="approve-note"
+              class="w-full border border-gray-300 rounded px-4 py-2 text-sm"
+              rows="3"
+              placeholder="Tambahkan catatan approval..."
+            ></textarea>
+          </div>
+        </div>
+        <div class="bg-gray-50 border-t px-6 py-4 flex gap-3">
+          <button
+            onclick="closeApproveModal()"
+            class="flex-1 px-4 py-2 border border-gray-300 rounded font-medium text-gray-700 hover:bg-gray-50 transition"
+          >
+            Batal
+          </button>
+          <button
+            onclick="submitApproval()"
+            class="flex-1 px-4 py-2 bg-green-600 text-white rounded font-medium hover:bg-green-700 transition"
+          >
+            <i class="fas fa-check mr-2"></i>
+            Approve
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reject Modal -->
+    <div
+      id="reject-modal"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+    >
+      <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+        <div class="bg-red-50 border-b px-6 py-4">
+          <h3 class="text-lg font-bold text-red-900">
+            <i class="fas fa-times-circle text-red-600 mr-2"></i>
+            Reject Penarikan
+          </h3>
+        </div>
+        <div class="p-6">
+          <div id="reject-info" class="mb-6">
+            <p class="text-gray-700">
+              <strong>Affiliate:</strong> <span id="reject-affiliate"></span>
+            </p>
+            <p class="text-gray-700 mt-2">
+              <strong>Jumlah:</strong> <span id="reject-amount"></span>
+            </p>
+          </div>
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Alasan Penolakan *</label
+            >
+            <textarea
+              id="reject-reason"
+              class="w-full border border-gray-300 rounded px-4 py-2 text-sm"
+              rows="3"
+              placeholder="Jelaskan mengapa penarikan ini ditolak..."
+              required
+            ></textarea>
+          </div>
+        </div>
+        <div class="bg-gray-50 border-t px-6 py-4 flex gap-3">
+          <button
+            onclick="closeRejectModal()"
+            class="flex-1 px-4 py-2 border border-gray-300 rounded font-medium text-gray-700 hover:bg-gray-50 transition"
+          >
+            Batal
+          </button>
+          <button
+            onclick="submitReject()"
+            class="flex-1 px-4 py-2 bg-red-600 text-white rounded font-medium hover:bg-red-700 transition"
+          >
+            <i class="fas fa-times mr-2"></i>
+            Reject
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentPayoutId = null;
+      const token = localStorage.getItem("token");
+
+      // Switch tabs
+      function switchTab(tab) {
+        document
+          .querySelectorAll(".tab-content")
+          .forEach((el) => el.classList.add("hidden"));
+        document.querySelectorAll(".tab-btn").forEach((el) => {
+          el.classList.remove("border-blue-600", "text-blue-600");
+          el.classList.add("border-transparent", "text-gray-600");
+        });
+
+        document.getElementById(tab + "-tab").classList.remove("hidden");
+        event.target
+          .closest(".tab-btn")
+          .classList.add("border-blue-600", "text-blue-600");
+        event.target
+          .closest(".tab-btn")
+          .classList.remove("border-transparent", "text-gray-600");
+
+        loadWithdrawals(tab);
+      }
+
+      // Load withdrawals
+      async function loadWithdrawals(status) {
+        try {
+          const response = await fetch(
+            `/api/admin/withdrawals/approval?status=${status}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
+          const result = await response.json();
+
+          if (!result.success) throw new Error(result.message);
+
+          const listId = status + "-list";
+          const countId = status + "-count";
+          document.getElementById(countId).textContent = result.data.length;
+
+          if (result.data.length === 0) {
+            document.getElementById(listId).innerHTML = `
+                        <div class="p-8 text-center text-gray-500">
+                            <i class="fas fa-inbox text-3xl mb-4"></i>
+                            <p>Tidak ada penarikan dengan status ini</p>
+                        </div>
+                    `;
+            return;
+          }
+
+          document.getElementById(listId).innerHTML = result.data
+            .map(
+              (payout) => `
+                    <div class="p-6 hover:bg-gray-50 transition cursor-pointer" onclick="viewDetail(${payout.id})">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <p class="font-semibold text-gray-900">${payout.affiliate_name}</p>
+                                <p class="text-sm text-gray-600">ID Penarikan: #${payout.id}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-lg text-gray-900">Rp ${parseFloat(payout.total_amount).toLocaleString("id-ID")}</p>
+                                <p class="text-sm text-gray-600">${payout.commission_count} komisi</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center text-sm text-gray-600">
+                            <span>Diajukan: ${new Date(payout.created_at).toLocaleDateString("id-ID")}</span>
+                            ${status === "pending" ? `<button class="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition" onclick="event.stopPropagation(); viewDetail(${payout.id})">Review</button>` : ""}
+                        </div>
+                    </div>
+                `,
+            )
+            .join("");
+        } catch (error) {
+          console.error("Error:", error);
+          alert("Error loading withdrawals: " + error.message);
+        }
+      }
+
+      // View detail
+      async function viewDetail(payoutId) {
+        try {
+          const response = await fetch(
+            `/api/admin/withdrawals/approval/${payoutId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
+          const result = await response.json();
+
+          if (!result.success) throw new Error(result.message);
+
+          const payout = result.data;
+          let detailHTML = `
+                    <div class="space-y-6">
+                        <!-- Affiliate Info -->
+                        <div class="border-b pb-4">
+                            <h4 class="font-semibold text-gray-900 mb-3">Informasi Affiliate</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-sm text-gray-600">Nama</p>
+                                    <p class="font-medium text-gray-900">${payout.affiliate_name}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Email</p>
+                                    <p class="font-medium text-gray-900">${payout.affiliate_email}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Tanggal Permohonan</p>
+                                    <p class="font-medium text-gray-900">${new Date(payout.created_at).toLocaleString("id-ID")}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Status</p>
+                                    <p class="font-medium"><span class="px-2 py-1 rounded text-sm ${getStatusBadge(payout.status)}">${getStatusLabel(payout.status)}</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Withdrawal Info -->
+                        <div class="border-b pb-4">
+                            <h4 class="font-semibold text-gray-900 mb-3">Detail Penarikan</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-sm text-gray-600">Total Jumlah</p>
+                                    <p class="font-bold text-lg text-gray-900">Rp ${parseFloat(payout.total_amount).toLocaleString("id-ID")}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Jumlah Komisi</p>
+                                    <p class="font-bold text-lg text-gray-900">${payout.commission_count}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bank Info -->
+                        <div class="border-b pb-4">
+                            <h4 class="font-semibold text-gray-900 mb-3">Informasi Bank</h4>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <p class="text-sm text-gray-600">Nama Bank</p>
+                                    <p class="font-medium text-gray-900">${payout.bank_name || "-"}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Nomor Rekening</p>
+                                    <p class="font-medium text-gray-900">${payout.bank_account_number || "-"}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Atas Nama</p>
+                                    <p class="font-medium text-gray-900">${payout.bank_account_name || "-"}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Commissions -->
+                        <div>
+                            <h4 class="font-semibold text-gray-900 mb-3">Komisi yang Ditarik</h4>
+                            <div class="bg-gray-50 rounded p-4 max-h-48 overflow-y-auto">
+                                ${payout.commissions
+                                  .map(
+                                    (comm, idx) => `
+                                    <div class="flex justify-between py-2 ${idx > 0 ? "border-t" : ""}">
+                                        <span class="text-gray-700">${comm.description}</span>
+                                        <span class="font-semibold text-gray-900">Rp ${parseFloat(comm.amount).toLocaleString("id-ID")}</span>
+                                    </div>
+                                `,
+                                  )
+                                  .join("")}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+          // Add action buttons for pending status
+          if (payout.status === "pending") {
+            detailHTML += `
+                        <div class="mt-6 flex gap-3">
+                            <button onclick="openRejectModal(${payoutId}, '${payout.affiliate_name}', '${payout.total_amount}')" class="flex-1 px-4 py-2 bg-red-600 text-white rounded font-medium hover:bg-red-700 transition">
+                                <i class="fas fa-times mr-2"></i>
+                                Reject
+                            </button>
+                            <button onclick="openApproveModal(${payoutId}, '${payout.affiliate_name}', '${payout.total_amount}')" class="flex-1 px-4 py-2 bg-green-600 text-white rounded font-medium hover:bg-green-700 transition">
+                                <i class="fas fa-check mr-2"></i>
+                                Approve
+                            </button>
+                        </div>
+                    `;
+          }
+
+          document.getElementById("detail-title").textContent =
+            `Detail Penarikan - ${payout.affiliate_name}`;
+          document.getElementById("detail-content").innerHTML = detailHTML;
+          document.getElementById("detail-modal").classList.remove("hidden");
+        } catch (error) {
+          console.error("Error:", error);
+          alert("Error loading detail: " + error.message);
+        }
+      }
+
+      // Open approve modal
+      function openApproveModal(payoutId, affiliateName, amount) {
+        currentPayoutId = payoutId;
+        document.getElementById("approve-affiliate").textContent =
+          affiliateName;
+        document.getElementById("approve-amount").textContent =
+          "Rp " + parseFloat(amount).toLocaleString("id-ID");
+        document.getElementById("approve-note").value = "";
+        document.getElementById("approve-modal").classList.remove("hidden");
+      }
+
+      // Submit approval
+      async function submitApproval() {
+        if (!currentPayoutId) return;
+
+        try {
+          const response = await fetch(
+            `/api/admin/withdrawals/approval/${currentPayoutId}/approve`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                note: document.getElementById("approve-note").value,
+              }),
+            },
+          );
+          const result = await response.json();
+
+          if (!result.success) throw new Error(result.message);
+
+          alert("✅ Penarikan berhasil di-approve!");
+          closeApproveModal();
+          closeDetailModal();
+          loadWithdrawals("pending");
+        } catch (error) {
+          console.error("Error:", error);
+          alert("Error: " + error.message);
+        }
+      }
+
+      // Open reject modal
+      function openRejectModal(payoutId, affiliateName, amount) {
+        currentPayoutId = payoutId;
+        document.getElementById("reject-affiliate").textContent = affiliateName;
+        document.getElementById("reject-amount").textContent =
+          "Rp " + parseFloat(amount).toLocaleString("id-ID");
+        document.getElementById("reject-reason").value = "";
+        document.getElementById("reject-modal").classList.remove("hidden");
+      }
+
+      // Submit reject
+      async function submitReject() {
+        if (!currentPayoutId) return;
+        const reason = document.getElementById("reject-reason").value.trim();
+
+        if (!reason) {
+          alert("Alasan penolakan harus diisi!");
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            `/api/admin/withdrawals/approval/${currentPayoutId}/reject`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                reason: reason,
+              }),
+            },
+          );
+          const result = await response.json();
+
+          if (!result.success) throw new Error(result.message);
+
+          alert("✅ Penarikan berhasil di-reject!");
+          closeRejectModal();
+          closeDetailModal();
+          loadWithdrawals("pending");
+        } catch (error) {
+          console.error("Error:", error);
+          alert("Error: " + error.message);
+        }
+      }
+
+      // Close modals
+      function closeDetailModal() {
+        document.getElementById("detail-modal").classList.add("hidden");
+      }
+
+      function closeApproveModal() {
+        document.getElementById("approve-modal").classList.add("hidden");
+      }
+
+      function closeRejectModal() {
+        document.getElementById("reject-modal").classList.add("hidden");
+      }
+
+      // Utility functions
+      function getStatusBadge(status) {
+        const badges = {
+          pending: "bg-yellow-100 text-yellow-800",
+          approved: "bg-green-100 text-green-800",
+          rejected: "bg-red-100 text-red-800",
+          paid: "bg-blue-100 text-blue-800",
+        };
+        return badges[status] || "bg-gray-100 text-gray-800";
+      }
+
+      function getStatusLabel(status) {
+        const labels = {
+          pending: "Menunggu Approval",
+          approved: "Sudah Diapprove",
+          rejected: "Ditolak",
+          paid: "Sudah Dibayarkan",
+        };
+        return labels[status] || status;
+      }
+
+      // Load pending withdrawals on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        loadWithdrawals("pending");
+      });
+    </script>
+  </body>
+</html>
