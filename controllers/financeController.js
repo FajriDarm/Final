@@ -466,6 +466,8 @@ exports.getWithdrawalDetailAPI = async (req, res) => {
     );
 
     payout.commissions = commissions;
+    // Ensure commission_count is present for the detail API (avoid undefined in frontend)
+    payout.commission_count = commissions ? commissions.length : 0;
 
     res.json({
       success: true,

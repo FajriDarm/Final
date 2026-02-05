@@ -287,6 +287,23 @@
     const token = localStorage.getItem('token');
     let selectedProofFile = null;
 
+    // Helpers to avoid undefined and sanitize strings
+    function safeCurrency(val) {
+      const n = parseFloat(val);
+      return Number.isFinite(n) ? n.toLocaleString('id-ID') : '-';
+    }
+
+    function safeCount(val, fallback = 0) {
+      if (typeof val === 'number') return val;
+      if (typeof val === 'string' && val.trim() !== '') return parseInt(val, 10) || fallback;
+      return fallback;
+    }
+
+    function escapeJsString(s) {
+      if (s === null || s === undefined) return '';
+      return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'" ).replace(/\"/g, '\\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+    }
+
     // Handle file selection
     function handleFileSelect(event) {
       const file = event.target.files[0];
@@ -386,8 +403,8 @@
                 <p class="text-sm text-gray-600 mt-1">Bank: ${payout.bank_name} - ${payout.bank_account_number}</p>
               </div>
               <div class="text-right">
-                <p class="font-bold text-lg text-gray-900">Rp ${parseFloat(payout.total_amount).toLocaleString('id-ID')}</p>
-                <p class="text-sm text-gray-600">${payout.commission_count} komisi</p>
+                <p class="font-bold text-lg text-gray-900">Rp ${safeCurrency(payout.total_amount)}</p>
+                <p class="text-sm text-gray-600">${safeCount(payout.commission_count, 0)} komisi</p> 
               </div>
             </div>
             <div class="flex justify-between items-center text-sm text-gray-600 mb-4">
@@ -398,12 +415,12 @@
                 <i class="fas fa-eye mr-2"></i>Lihat Detail
               </button>
               ${status === 'pending' ? `
-                <button onclick="openSubmitModal(${payout.id}, '${payout.affiliate_name}', ${payout.total_amount})" class="flex-1 px-3 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition text-sm">
+                <button onclick="openSubmitModal(${payout.id}, '${escapeJsString(payout.affiliate_name)}', ${payout.total_amount || 0})" class="flex-1 px-3 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition text-sm">
                   <i class="fas fa-paper-plane mr-2"></i>Submit ke Admin
                 </button>
               ` : ''}
               ${status === 'approved' ? `
-                <button onclick="openPaidModal(${payout.id}, '${payout.affiliate_name}', ${payout.total_amount}, '${payout.bank_account_number}')" class="flex-1 px-3 py-2 bg-green-600 text-white rounded font-medium hover:bg-green-700 transition text-sm">
+                <button onclick="openPaidModal(${payout.id}, '${escapeJsString(payout.affiliate_name)}', ${payout.total_amount || 0}, '${escapeJsString(payout.bank_account_number)}')" class="flex-1 px-3 py-2 bg-green-600 text-white rounded font-medium hover:bg-green-700 transition text-sm">
                   <i class="fas fa-money-bill-wave mr-2"></i>Tandai Dibayar
                 </button>
               ` : ''}
@@ -453,11 +470,11 @@
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <p class="text-sm text-gray-600">Total Jumlah</p>
-                  <p class="font-bold text-lg text-gray-900">Rp ${parseFloat(payout.total_amount).toLocaleString('id-ID')}</p>
+                  <p class="font-bold text-lg text-gray-900">Rp ${safeCurrency(payout.total_amount)}</p>
                 </div>
                 <div>
                   <p class="text-sm text-gray-600">Jumlah Komisi</p>
-                  <p class="font-bold text-lg text-gray-900">${payout.commission_count}</p>
+                  <p class="font-bold text-lg text-gray-900">${safeCount(payout.commission_count, (payout.commissions && payout.commissions.length) || 0)}</p>
                 </div>
               </div>
             </div>
@@ -499,7 +516,7 @@
                 ${payout.commissions && payout.commissions.length > 0 ? payout.commissions.map((comm, idx) => `
                   <div class="flex justify-between py-2 ${idx > 0 ? 'border-t' : ''}">
                     <span class="text-gray-700">${comm.event_title || 'Event'}</span>
-                    <span class="font-semibold text-gray-900">Rp ${parseFloat(comm.amount).toLocaleString('id-ID')}</span>
+                    <span class="font-semibold text-gray-900">Rp ${comm.amount ? safeCurrency(comm.amount) : '-'}</span>
                   </div>
                 `).join('') : '<p class="text-gray-500 text-sm">Tidak ada komisi</p>'}
               </div>
@@ -521,7 +538,7 @@
     function openSubmitModal(payoutId, affiliateName, amount) {
       currentPayoutId = payoutId;
       document.getElementById('submit-affiliate').textContent = affiliateName;
-      document.getElementById('submit-amount').textContent = 'Rp ' + parseFloat(amount).toLocaleString('id-ID');
+      document.getElementById('submit-amount').textContent = 'Rp ' + safeCurrency(amount);
       document.getElementById('submit-note').value = '';
       document.getElementById('submit-modal').classList.remove('hidden');
     }
@@ -561,7 +578,7 @@
       currentPayoutId = payoutId;
       selectedProofFile = null;
       document.getElementById('paid-affiliate').textContent = affiliateName;
-      document.getElementById('paid-amount').textContent = 'Rp ' + parseFloat(amount).toLocaleString('id-ID');
+      document.getElementById('paid-amount').textContent = 'Rp ' + safeCurrency(amount);
       document.getElementById('paid-account').textContent = accountNumber;
       document.getElementById('proof-file-info').classList.add('hidden');
       document.getElementById('proof-file-input').value = '';
