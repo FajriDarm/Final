@@ -6,8 +6,108 @@
   <title>Manajemen Penarikan - Finance</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .gradient-primary {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    }
+
+    .gradient-secondary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .gradient-accent {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    }
+
+    .gradient-dark {
+      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    }
+
+    .gradient-warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    .gradient-info {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    }
+
+    .gradient-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(5, 150, 105, 0.1), 0 10px 10px -5px rgba(5, 150, 105, 0.04);
+    }
+
+    .status-badge {
+      transition: all 0.2s ease;
+    }
+
+    .status-badge:hover {
+      transform: scale(1.05);
+    }
+
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .data-cell {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .data-cell::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
+    }
+  </style> 
 </head>
-<body class="bg-gray-50">
+<body class="bg-gradient-to-br from-emerald-50 to-green-50">
   <%- include('../navbar/navbar.ejs') %>
   
   <div class="flex">
@@ -15,65 +115,81 @@
     
     <main class="flex-1 p-8 pt-24 md:ml-64">
       <div class="max-w-6xl mx-auto">
-        <!-- Header + Cards (like Finance Dashboard) -->
-        <div class="mb-6 flex items-center justify-between">
-          <div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">
-              <i class="fas fa-file-invoice-dollar text-blue-600 mr-3"></i>
-              Manajemen Penarikan Komisi
-            </h1>
-            <p class="text-gray-600">Review penarikan dari affiliate dan submit ke Admin untuk persetujuan</p>
+        <!-- Page Header -->
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+          <div class="mb-4 md:mb-0">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-file-invoice-dollar text-white text-xl"></i>
+              </div>
+              <div>
+                <h1 class="text-3xl font-bold text-gray-900">Manajemen Penarikan Komisi</h1>
+                <p class="text-gray-600 mt-1">Review penarikan dari affiliate dan submit ke Admin untuk persetujuan</p>
+              </div>
+            </div>
           </div>
-          <div class="text-sm text-gray-500">
-            <i class="fas fa-calendar-alt mr-2"></i>
-            <%= new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+          <div class="flex items-center gap-4">
+            <div class="hidden md:block px-4 py-2 bg-white rounded-lg shadow-sm border border-green-100">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-calendar-alt text-green-600"></i>
+                <span class="text-sm font-medium text-gray-700">
+                  <%= new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+                </span>
+              </div>
+            </div>
+            <div class="px-4 py-2 gradient-primary rounded-lg shadow-lg text-white">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bell pulse-animation"></i>
+                <span class="text-sm font-medium">Update Real-time</span>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-gray-500 text-sm font-medium">Total Pembayaran Masuk</p>
                 <p class="text-2xl font-bold text-gray-900 mt-2">Rp <%= parseInt((stats && stats.totalPaid) || 0).toLocaleString('id-ID') %></p>
               </div>
-              <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+              <div class="w-12 h-12 gradient-primary rounded-lg flex items-center justify-center shadow-lg">
                 <i class="fas fa-money-bill-wave text-white text-xl"></i>
               </div>
             </div>
           </div>
 
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-gray-500 text-sm font-medium">Total Pembayaran Pending</p>
                 <p class="text-2xl font-bold text-gray-900 mt-2">Rp <%= parseInt((stats && stats.totalPending) || 0).toLocaleString('id-ID') %></p>
               </div>
-              <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center">
+              <div class="w-12 h-12 gradient-warning rounded-lg flex items-center justify-center shadow-lg">
                 <i class="fas fa-clock text-white text-xl"></i>
               </div>
             </div>
           </div>
 
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-gray-500 text-sm font-medium">Transaksi Paid</p>
                 <p class="text-2xl font-bold text-gray-900 mt-2"><%= (stats && stats.countPaid) || 0 %></p>
               </div>
-              <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+              <div class="w-12 h-12 gradient-info rounded-lg flex items-center justify-center shadow-lg">
                 <i class="fas fa-check-circle text-white text-xl"></i>
               </div>
             </div>
           </div>
 
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-gray-500 text-sm font-medium">Transaksi Pending</p>
                 <p class="text-2xl font-bold text-gray-900 mt-2"><%= (stats && stats.countPending) || 0 %></p>
               </div>
-              <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center">
+              <div class="w-12 h-12 gradient-accent rounded-lg flex items-center justify-center shadow-lg">
                 <i class="fas fa-hourglass-half text-white text-xl"></i>
               </div>
             </div>
@@ -81,19 +197,19 @@
         </div>
 
         <!-- 3-Tier Workflow Diagram -->
-        <div class="bg-white rounded-lg shadow p-6 mb-8">
-          <h3 class="font-semibold text-gray-900 mb-4">Alur Persetujuan Penarikan</h3>
+        <div class="glass-card rounded-2xl shadow-lg p-6 mb-8">
+          <h3 class="font-semibold text-gray-900 mb-4">Alur Persetujuan Penarikan</h3> 
           <div class="flex items-center justify-center gap-4 flex-wrap">
             <div class="text-center">
-              <div class="w-16 h-16 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                <i class="fas fa-user text-blue-600 text-xl"></i>
+              <div class="w-16 h-16 mx-auto bg-white ring-2 ring-emerald-100 rounded-full flex items-center justify-center mb-2 shadow-sm">
+                <i class="fas fa-user text-emerald-600 text-xl"></i>
               </div>
               <p class="text-sm font-semibold text-gray-900">Affiliate</p>
               <p class="text-xs text-gray-600">Request Withdrawal</p>
             </div>
             <div class="text-gray-400 text-2xl">→</div>
             <div class="text-center">
-              <div class="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-2">
+              <div class="w-16 h-16 mx-auto bg-white ring-2 ring-green-100 rounded-full flex items-center justify-center mb-2 shadow-sm">
                 <i class="fas fa-building text-green-600 text-xl"></i>
               </div>
               <p class="text-sm font-semibold text-gray-900">Finance</p>
@@ -101,7 +217,7 @@
             </div>
             <div class="text-gray-400 text-2xl">→</div>
             <div class="text-center">
-              <div class="w-16 h-16 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-2">
+              <div class="w-16 h-16 mx-auto bg-white ring-2 ring-purple-100 rounded-full flex items-center justify-center mb-2 shadow-sm">
                 <i class="fas fa-shield-alt text-purple-600 text-xl"></i>
               </div>
               <p class="text-sm font-semibold text-gray-900">Admin</p>
@@ -109,7 +225,7 @@
             </div>
             <div class="text-gray-400 text-2xl">→</div>
             <div class="text-center">
-              <div class="w-16 h-16 mx-auto bg-yellow-100 rounded-full flex items-center justify-center mb-2">
+              <div class="w-16 h-16 mx-auto bg-white ring-2 ring-yellow-100 rounded-full flex items-center justify-center mb-2 shadow-sm">
                 <i class="fas fa-money-bill-wave text-yellow-600 text-xl"></i>
               </div>
               <p class="text-sm font-semibold text-gray-900">Finance</p>
@@ -119,26 +235,26 @@
         </div>
 
         <!-- Tabs -->
-        <div class="bg-white rounded-lg shadow mb-6 sticky top-28 z-10">
+        <div class="glass-card rounded-2xl shadow-lg mb-6 sticky top-28 z-10">
           <div class="flex border-b">
-            <button onclick="switchTab('pending')" class="tab-btn active flex-1 py-4 px-6 text-center font-semibold border-b-2 border-blue-600 text-blue-600 transition">
+            <button onclick="switchTab('pending')" class="tab-btn active flex-none px-5 py-2 mx-2 rounded-full font-semibold bg-emerald-600 text-white shadow-sm transition transform hover:scale-105">
               <i class="fas fa-hourglass-half mr-2"></i>
-              Pending (Belum Submit)
+              Pending
               <span id="pending-count" class="ml-2 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">0</span>
             </button>
-            <button onclick="switchTab('approved')" class="tab-btn flex-1 py-4 px-6 text-center font-semibold border-b-2 border-transparent text-gray-600 hover:text-gray-900 transition">
+            <button onclick="switchTab('approved')" class="tab-btn flex-none px-5 py-2 mx-2 rounded-full font-semibold bg-transparent text-gray-600 hover:bg-emerald-50 transition">
               <i class="fas fa-check-circle mr-2"></i>
-              Approved (Menunggu Pembayaran)
+              Approved
               <span id="approved-count" class="ml-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">0</span>
             </button>
-            <button onclick="switchTab('paid')" class="tab-btn flex-1 py-4 px-6 text-center font-semibold border-b-2 border-transparent text-gray-600 hover:text-gray-900 transition">
+            <button onclick="switchTab('paid')" class="tab-btn flex-none px-5 py-2 mx-2 rounded-full font-semibold bg-transparent text-gray-600 hover:bg-emerald-50 transition">
               <i class="fas fa-check-double mr-2"></i>
-              Paid (Selesai)
-              <span id="paid-count" class="ml-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">0</span>
+              Paid
+              <span id="paid-count" class="ml-2 bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm">0</span>
             </button>
-            <button onclick="switchTab('rejected')" class="tab-btn flex-1 py-4 px-6 text-center font-semibold border-b-2 border-transparent text-gray-600 hover:text-gray-900 transition">
+            <button onclick="switchTab('rejected')" class="tab-btn flex-none px-5 py-2 mx-2 rounded-full font-semibold bg-transparent text-gray-600 hover:bg-rose-50 transition">
               <i class="fas fa-times-circle mr-2"></i>
-              Rejected (Ditolak)
+              Rejected
               <span id="rejected-count" class="ml-2 bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">0</span>
             </button>
           </div>
@@ -146,10 +262,10 @@
 
         <!-- Pending Tab -->
         <div id="pending-tab" class="tab-content">
-          <div class="bg-white rounded-lg shadow">
+          <div class="glass-card rounded-2xl shadow-lg">
             <div id="pending-list" class="divide-y">
               <div class="p-8 text-center text-gray-500">
-                <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                <i class="fas fa-spinner fa-spin text-2xl mb-4 text-emerald-600"></i>
                 <p>Loading...</p>
               </div>
             </div>
@@ -158,10 +274,10 @@
 
         <!-- Approved Tab -->
         <div id="approved-tab" class="tab-content hidden">
-          <div class="bg-white rounded-lg shadow">
+          <div class="glass-card rounded-2xl shadow-lg">
             <div id="approved-list" class="divide-y">
               <div class="p-8 text-center text-gray-500">
-                <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                <i class="fas fa-spinner fa-spin text-2xl mb-4 text-emerald-600"></i>
                 <p>Loading...</p>
               </div>
             </div>
@@ -170,10 +286,10 @@
 
         <!-- Paid Tab -->
         <div id="paid-tab" class="tab-content hidden">
-          <div class="bg-white rounded-lg shadow">
+          <div class="glass-card rounded-2xl shadow-lg">
             <div id="paid-list" class="divide-y">
               <div class="p-8 text-center text-gray-500">
-                <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                <i class="fas fa-spinner fa-spin text-2xl mb-4 text-emerald-600"></i>
                 <p>Loading...</p>
               </div>
             </div>
@@ -182,10 +298,10 @@
 
         <!-- Rejected Tab -->
         <div id="rejected-tab" class="tab-content hidden">
-          <div class="bg-white rounded-lg shadow">
+          <div class="glass-card rounded-2xl shadow-lg">
             <div id="rejected-list" class="divide-y">
               <div class="p-8 text-center text-gray-500">
-                <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                <i class="fas fa-spinner fa-spin text-2xl mb-4 text-emerald-600"></i>
                 <p>Loading...</p>
               </div>
             </div>
@@ -197,7 +313,7 @@
 
   <!-- Detail Modal -->
   <div id="detail-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-96 overflow-y-auto">
+    <div class="glass-card rounded-2xl shadow-xl max-w-2xl w-full max-h-96 overflow-y-auto">
       <div class="sticky top-0 bg-gray-50 border-b px-6 py-4 flex justify-between items-center">
         <h3 class="text-xl font-bold text-gray-900" id="detail-title">Detail Penarikan</h3>
         <button onclick="closeDetailModal()" class="text-gray-500 hover:text-gray-700">
@@ -213,9 +329,9 @@
   <!-- Submit Modal -->
   <div id="submit-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
-      <div class="bg-blue-50 border-b px-6 py-4">
-        <h3 class="text-lg font-bold text-blue-900">
-          <i class="fas fa-paper-plane text-blue-600 mr-2"></i>
+      <div class="bg-emerald-50 border-b px-6 py-4">
+        <h3 class="text-lg font-bold text-emerald-900">
+          <i class="fas fa-paper-plane text-emerald-600 mr-2"></i>
           Submit ke Admin
         </h3>
       </div>
@@ -233,7 +349,7 @@
         <button onclick="closeSubmitModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded font-medium text-gray-700 hover:bg-gray-50 transition">
           Batal
         </button>
-        <button onclick="submitToAdmin()" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition">
+        <button onclick="submitToAdmin()" class="flex-1 px-4 py-2 bg-emerald-600 text-white rounded font-medium hover:bg-emerald-700 transition">
           <i class="fas fa-paper-plane mr-2"></i>
           Submit
         </button>
@@ -244,9 +360,9 @@
   <!-- Mark Paid Modal -->
   <div id="paid-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
-      <div class="bg-green-50 border-b px-6 py-4">
-        <h3 class="text-lg font-bold text-green-900">
-          <i class="fas fa-check-double text-green-600 mr-2"></i>
+      <div class="bg-emerald-50 border-b px-6 py-4">
+        <h3 class="text-lg font-bold text-emerald-900">
+          <i class="fas fa-check-double text-emerald-600 mr-2"></i>
           Tandai Sudah Dibayar
         </h3>
       </div>
@@ -258,8 +374,8 @@
         </div>
         <div class="mb-6">
           <label class="block text-sm font-medium text-gray-700 mb-2">Upload Bukti Transfer (Image/PDF) *</label>
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition cursor-pointer" onclick="document.getElementById('proof-file-input').click()">
-            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+          <div class="border-2 border-dashed border-emerald-200 rounded-lg p-6 text-center hover:bg-emerald-50 transition cursor-pointer" onclick="document.getElementById('proof-file-input').click()">
+            <i class="fas fa-cloud-upload-alt text-3xl text-emerald-500 mb-2"></i>
             <p class="text-sm text-gray-600">Klik untuk upload atau drag & drop</p>
             <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, PDF (Max 5MB)</p>
             <input type="file" id="proof-file-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;" onchange="handleFileSelect(event)">
@@ -274,7 +390,7 @@
         <button onclick="closePaidModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded font-medium text-gray-700 hover:bg-gray-50 transition">
           Batal
         </button>
-        <button onclick="confirmPaid()" class="flex-1 px-4 py-2 bg-green-600 text-white rounded font-medium hover:bg-green-700 transition">
+        <button onclick="confirmPaid()" class="flex-1 px-4 py-2 bg-emerald-600 text-white rounded font-medium hover:bg-emerald-700 transition">
           <i class="fas fa-check-double mr-2"></i>
           Tandai Dibayar
         </button>
@@ -357,13 +473,13 @@
     function switchTab(tab) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(el => {
-        el.classList.remove('border-blue-600', 'text-blue-600');
-        el.classList.add('border-transparent', 'text-gray-600');
+        el.classList.remove('bg-emerald-600', 'text-white', 'shadow-sm');
+        el.classList.add('bg-transparent', 'text-gray-600');
       });
 
       document.getElementById(tab + '-tab').classList.remove('hidden');
-      event.target.closest('.tab-btn').classList.add('border-blue-600', 'text-blue-600');
-      event.target.closest('.tab-btn').classList.remove('border-transparent', 'text-gray-600');
+      event.target.closest('.tab-btn').classList.add('bg-emerald-600', 'text-white', 'shadow-sm');
+      event.target.closest('.tab-btn').classList.remove('bg-transparent', 'text-gray-600');
 
       loadWithdrawals(tab);
     }
@@ -387,7 +503,7 @@
         if (result.data.length === 0) {
           document.getElementById(listId).innerHTML = `
             <div class="p-8 text-center text-gray-500">
-              <i class="fas fa-inbox text-3xl mb-4"></i>
+              <i class="fas fa-inbox text-3xl mb-4 text-emerald-600"></i>
               <p>Tidak ada penarikan dengan status ini</p>
             </div>
           `;
@@ -395,7 +511,7 @@
         }
 
         document.getElementById(listId).innerHTML = result.data.map(payout => `
-          <div class="p-6 hover:bg-gray-50 transition cursor-pointer border-b last:border-b-0">
+          <div class="p-6 bg-white/60 backdrop-blur-sm border border-gray-100 rounded-lg mb-4 cursor-pointer hover:shadow-lg transition transform hover:-translate-y-1">
             <div class="flex justify-between items-start mb-4">
               <div>
                 <p class="font-semibold text-gray-900">${payout.affiliate_name}</p>
@@ -411,16 +527,16 @@
               <span>ID: #${payout.id} | Diajukan: ${new Date(payout.created_at).toLocaleDateString('id-ID')}</span>
             </div>
             <div class="flex gap-2">
-              <button onclick="viewDetail(${payout.id})" class="flex-1 px-3 py-2 bg-gray-100 text-gray-700 rounded font-medium hover:bg-gray-200 transition text-sm">
+              <button onclick="viewDetail(${payout.id})" class="flex-1 px-3 py-2 border border-emerald-200 text-emerald-700 rounded font-medium hover:bg-emerald-50 transition text-sm">
                 <i class="fas fa-eye mr-2"></i>Lihat Detail
               </button>
               ${status === 'pending' ? `
-                <button onclick="openSubmitModal(${payout.id}, '${escapeJsString(payout.affiliate_name)}', ${payout.total_amount || 0})" class="flex-1 px-3 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition text-sm">
+                <button onclick="openSubmitModal(${payout.id}, '${escapeJsString(payout.affiliate_name)}', ${payout.total_amount || 0})" class="flex-1 px-3 py-2 bg-emerald-600 text-white rounded font-medium hover:bg-emerald-700 transition text-sm">
                   <i class="fas fa-paper-plane mr-2"></i>Submit ke Admin
                 </button>
               ` : ''}
               ${status === 'approved' ? `
-                <button onclick="openPaidModal(${payout.id}, '${escapeJsString(payout.affiliate_name)}', ${payout.total_amount || 0}, '${escapeJsString(payout.bank_account_number)}')" class="flex-1 px-3 py-2 bg-green-600 text-white rounded font-medium hover:bg-green-700 transition text-sm">
+                <button onclick="openPaidModal(${payout.id}, '${escapeJsString(payout.affiliate_name)}', ${payout.total_amount || 0}, '${escapeJsString(payout.bank_account_number)}')" class="flex-1 px-3 py-2 bg-emerald-600 text-white rounded font-medium hover:bg-emerald-700 transition text-sm">
                   <i class="fas fa-money-bill-wave mr-2"></i>Tandai Dibayar
                 </button>
               ` : ''}
@@ -500,12 +616,12 @@
 
             <!-- Finance Note (if exists) -->
             ${payout.finance_note ? `
-              <div class="border-b pb-4 bg-blue-50 rounded p-4">
-                <h4 class="font-semibold text-blue-900 mb-2">
+              <div class="border-b pb-4 bg-emerald-50 rounded p-4">
+                <h4 class="font-semibold text-emerald-900 mb-2">
                   <i class="fas fa-sticky-note mr-2"></i>
                   Catatan Finance
                 </h4>
-                <p class="text-sm text-blue-800">${payout.finance_note}</p>
+                <p class="text-sm text-emerald-800">${payout.finance_note}</p>
               </div>
             ` : ''}
 

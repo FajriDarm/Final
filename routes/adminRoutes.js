@@ -11,6 +11,7 @@ router.get("/dashboard/stats", adminController.getDashboardStats);
 
 // Users - Remove auth temporarily for development
 router.get("/users", adminController.getUsers);
+router.put("/users/:id", adminController.updateUser);
 
 // Events - Remove auth temporarily for development
 router.get("/events", adminController.getEvents);

@@ -874,6 +874,60 @@ const getActivityLogsPage = async (req, res) => {
   }
 };
 
+// Update User
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { name, email, role_id, status } = req.body;
+
+    // Build dynamic UPDATE query - only update fields that are provided
+    let updateFields = [];
+    let updateValues = [];
+
+    if (name) {
+      updateFields.push("name = ?");
+      updateValues.push(name);
+    }
+    if (email) {
+      updateFields.push("email = ?");
+      updateValues.push(email);
+    }
+    if (role_id) {
+      updateFields.push("role_id = ?");
+      updateValues.push(role_id);
+    }
+    if (status) {
+      updateFields.push("status = ?");
+      updateValues.push(status);
+    }
+
+    if (updateFields.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields to update",
+      });
+    }
+
+    updateValues.push(userId);
+
+    const query = `UPDATE users SET ${updateFields.join(", ")} WHERE id = ?`;
+
+    await db.query(query, updateValues);
+
+    res.json({
+      success: true,
+      message: "User updated successfully",
+    });
+  } catch (error) {
+    console.error("Update user error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update user",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getActiveEvents,
   getDashboardStats,
@@ -892,6 +946,7 @@ module.exports = {
   getWithdrawalDetailForApproval,
   approveWithdrawal,
   rejectWithdrawal,
+  updateUser,
   // Page render methods
   getUsersPage,
   getEventsPage,
