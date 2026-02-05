@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manajemen Penarikan - Finance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <%- include('../navbar/navbar.ejs') %>
+  
+  <div class="flex">
+    <%- include('../sidebar/finance.ejs') %>
+    
+    <main class="flex-1 p-8 pt-24 md:ml-64">
+      <div class="max-w-6xl mx-auto">
+        <!-- Header + Cards (like Finance Dashboard) -->
+        <div class="mb-6 flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+              <i class="fas fa-file-invoice-dollar text-blue-600 mr-3"></i>
+              Manajemen Penarikan Komisi
+            </h1>
+            <p class="text-gray-600">Review penarikan dari affiliate dan submit ke Admin untuk persetujuan</p>
+          </div>
+          <div class="text-sm text-gray-500">
+            <i class="fas fa-calendar-alt mr-2"></i>
+            <%= new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm font-medium">Total Pembayaran Masuk</p>
+                <p class="text-2xl font-bold text-gray-900 mt-2">Rp <%= parseInt((stats && stats.totalPaid) || 0).toLocaleString('id-ID') %></p>
+              </div>
+              <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-money-bill-wave text-white text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm font-medium">Total Pembayaran Pending</p>
+                <p class="text-2xl font-bold text-gray-900 mt-2">Rp <%= parseInt((stats && stats.totalPending) || 0).toLocaleString('id-ID') %></p>
+              </div>
+              <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-clock text-white text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm font-medium">Transaksi Paid</p>
+                <p class="text-2xl font-bold text-gray-900 mt-2"><%= (stats && stats.countPaid) || 0 %></p>
+              </div>
+              <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-check-circle text-white text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm font-medium">Transaksi Pending</p>
+                <p class="text-2xl font-bold text-gray-900 mt-2"><%= (stats && stats.countPending) || 0 %></p>
+              </div>
+              <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-hourglass-half text-white text-xl"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3-Tier Workflow Diagram -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+          <h3 class="font-semibold text-gray-900 mb-4">Alur Persetujuan Penarikan</h3>
+          <div class="flex items-center justify-center gap-4 flex-wrap">
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                <i class="fas fa-user text-blue-600 text-xl"></i>
+              </div>
+              <p class="text-sm font-semibold text-gray-900">Affiliate</p>
+              <p class="text-xs text-gray-600">Request Withdrawal</p>
+            </div>
+            <div class="text-gray-400 text-2xl">→</div>
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-2">
+                <i class="fas fa-building text-green-600 text-xl"></i>
+              </div>
+              <p class="text-sm font-semibold text-gray-900">Finance</p>
+              <p class="text-xs text-gray-600">Review & Submit</p>
+            </div>
+            <div class="text-gray-400 text-2xl">→</div>
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                <i class="fas fa-shield-alt text-purple-600 text-xl"></i>
+              </div>
+              <p class="text-sm font-semibold text-gray-900">Admin</p>
+              <p class="text-xs text-gray-600">Approve/Reject</p>
+            </div>
+            <div class="text-gray-400 text-2xl">→</div>
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto bg-yellow-100 rounded-full flex items-center justify-center mb-2">
+                <i class="fas fa-money-bill-wave text-yellow-600 text-xl"></i>
+              </div>
+              <p class="text-sm font-semibold text-gray-900">Finance</p>
+              <p class="text-xs text-gray-600">Transfer & Mark Paid</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="bg-white rounded-lg shadow mb-6 sticky top-28 z-10">
+          <div class="flex border-b">
+            <button onclick="switchTab('pending')" class="tab-btn active flex-1 py-4 px-6 text-center font-semibold border-b-2 border-blue-600 text-blue-600 transition">
+              <i class="fas fa-hourglass-half mr-2"></i>
+              Pending (Belum Submit)
+              <span id="pending-count" class="ml-2 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">0</span>
+            </button>
+            <button onclick="switchTab('approved')" class="tab-btn flex-1 py-4 px-6 text-center font-semibold border-b-2 border-transparent text-gray-600 hover:text-gray-900 transition">
+              <i class="fas fa-check-circle mr-2"></i>
+              Approved (Menunggu Pembayaran)
+              <span id="approved-count" class="ml-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">0</span>
+            </button>
+            <button onclick="switchTab('paid')" class="tab-btn flex-1 py-4 px-6 text-center font-semibold border-b-2 border-transparent text-gray-600 hover:text-gray-900 transition">
+              <i class="fas fa-check-double mr-2"></i>
+              Paid (Selesai)
+              <span id="paid-count" class="ml-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">0</span>
+            </button>
+            <button onclick="switchTab('rejected')" class="tab-btn flex-1 py-4 px-6 text-center font-semibold border-b-2 border-transparent text-gray-600 hover:text-gray-900 transition">
+              <i class="fas fa-times-circle mr-2"></i>
+              Rejected (Ditolak)
+              <span id="rejected-count" class="ml-2 bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Pending Tab -->
+        <div id="pending-tab" class="tab-content">
+          <div class="bg-white rounded-lg shadow">
+            <div id="pending-list" class="divide-y">
+              <div class="p-8 text-center text-gray-500">
+                <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                <p>Loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Approved Tab -->
+        <div id="approved-tab" class="tab-content hidden">
+          <div class="bg-white rounded-lg shadow">
+            <div id="approved-list" class="divide-y">
+              <div class="p-8 text-center text-gray-500">
+                <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                <p>Loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paid Tab -->
+        <div id="paid-tab" class="tab-content hidden">
+          <div class="bg-white rounded-lg shadow">
+            <div id="paid-list" class="divide-y">
+              <div class="p-8 text-center text-gray-500">
+                <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                <p>Loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rejected Tab -->
+        <div id="rejected-tab" class="tab-content hidden">
+          <div class="bg-white rounded-lg shadow">
+            <div id="rejected-list" class="divide-y">
+              <div class="p-8 text-center text-gray-500">
+                <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                <p>Loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Detail Modal -->
+  <div id="detail-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-96 overflow-y-auto">
+      <div class="sticky top-0 bg-gray-50 border-b px-6 py-4 flex justify-between items-center">
+        <h3 class="text-xl font-bold text-gray-900" id="detail-title">Detail Penarikan</h3>
+        <button onclick="closeDetailModal()" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      <div id="detail-content" class="p-6">
+        <!-- Content loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Modal -->
+  <div id="submit-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+      <div class="bg-blue-50 border-b px-6 py-4">
+        <h3 class="text-lg font-bold text-blue-900">
+          <i class="fas fa-paper-plane text-blue-600 mr-2"></i>
+          Submit ke Admin
+        </h3>
+      </div>
+      <div class="p-6">
+        <div id="submit-info" class="mb-6">
+          <p class="text-gray-700"><strong>Affiliate:</strong> <span id="submit-affiliate"></span></p>
+          <p class="text-gray-700 mt-2"><strong>Jumlah:</strong> <span id="submit-amount"></span></p>
+        </div>
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Catatan untuk Admin (opsional)</label>
+          <textarea id="submit-note" class="w-full border border-gray-300 rounded px-4 py-2 text-sm" rows="3" placeholder="Tambahkan catatan untuk Admin..."></textarea>
+        </div>
+      </div>
+      <div class="bg-gray-50 border-t px-6 py-4 flex gap-3">
+        <button onclick="closeSubmitModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded font-medium text-gray-700 hover:bg-gray-50 transition">
+          Batal
+        </button>
+        <button onclick="submitToAdmin()" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition">
+          <i class="fas fa-paper-plane mr-2"></i>
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mark Paid Modal -->
+  <div id="paid-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+      <div class="bg-green-50 border-b px-6 py-4">
+        <h3 class="text-lg font-bold text-green-900">
+          <i class="fas fa-check-double text-green-600 mr-2"></i>
+          Tandai Sudah Dibayar
+        </h3>
+      </div>
+      <div class="p-6">
+        <div id="paid-info" class="mb-6">
+          <p class="text-gray-700"><strong>Affiliate:</strong> <span id="paid-affiliate"></span></p>
+          <p class="text-gray-700 mt-2"><strong>Jumlah:</strong> <span id="paid-amount"></span></p>
+          <p class="text-gray-700 mt-2"><strong>Rekening:</strong> <span id="paid-account"></span></p>
+        </div>
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Upload Bukti Transfer (Image/PDF) *</label>
+          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition cursor-pointer" onclick="document.getElementById('proof-file-input').click()">
+            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+            <p class="text-sm text-gray-600">Klik untuk upload atau drag & drop</p>
+            <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, PDF (Max 5MB)</p>
+            <input type="file" id="proof-file-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;" onchange="handleFileSelect(event)">
+          </div>
+          <div id="proof-file-info" class="mt-3 hidden">
+            <p class="text-sm text-gray-600">File terpilih: <span id="proof-file-name" class="font-semibold text-gray-900"></span></p>
+            <p class="text-xs text-gray-500 mt-1">Ukuran: <span id="proof-file-size"></span></p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-gray-50 border-t px-6 py-4 flex gap-3">
+        <button onclick="closePaidModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded font-medium text-gray-700 hover:bg-gray-50 transition">
+          Batal
+        </button>
+        <button onclick="confirmPaid()" class="flex-1 px-4 py-2 bg-green-600 text-white rounded font-medium hover:bg-green-700 transition">
+          <i class="fas fa-check-double mr-2"></i>
+          Tandai Dibayar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentPayoutId = null;
+    const token = localStorage.getItem('token');
+    let selectedProofFile = null;
+
+    // Handle file selection
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+      if (!allowedTypes.includes(file.type)) {
+        alert('Format file tidak didukung. Gunakan JPG, PNG, atau PDF.');
+        return;
+      }
+
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Ukuran file terlalu besar. Maksimal 5MB.');
+        return;
+      }
+
+      selectedProofFile = file;
+      document.getElementById('proof-file-name').textContent = file.name;
+      document.getElementById('proof-file-size').textContent = (file.size / 1024).toFixed(2) + ' KB';
+      document.getElementById('proof-file-info').classList.remove('hidden');
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadWithdrawals('pending');
+      updateCounts();
+      // Poll counts every 10 seconds
+      setInterval(updateCounts, 10000);
+    });
+
+    // Fetch and update counts for all tabs
+    async function updateCounts() {
+      try {
+        const response = await fetch('/finance/api/withdrawals/counts', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const result = await response.json();
+        if (!result.success) throw new Error(result.message || 'Failed to fetch counts');
+
+        const counts = result.data || {};
+        document.getElementById('pending-count').textContent = counts.pending || 0;
+        document.getElementById('approved-count').textContent = counts.approved || 0;
+        document.getElementById('paid-count').textContent = counts.paid || 0;
+        document.getElementById('rejected-count').textContent = counts.rejected || 0;
+      } catch (error) {
+        console.error('Error updating counts:', error);
+      }
+    }
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('border-blue-600', 'text-blue-600');
+        el.classList.add('border-transparent', 'text-gray-600');
+      });
+
+      document.getElementById(tab + '-tab').classList.remove('hidden');
+      event.target.closest('.tab-btn').classList.add('border-blue-600', 'text-blue-600');
+      event.target.closest('.tab-btn').classList.remove('border-transparent', 'text-gray-600');
+
+      loadWithdrawals(tab);
+    }
+
+    // Load withdrawals
+    async function loadWithdrawals(status) {
+      try {
+        const response = await fetch(`/finance/api/withdrawals?status=${status}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const result = await response.json();
+
+        if (!result.success) throw new Error(result.message);
+
+        const listId = status + '-list';
+        const countId = status + '-count';
+        document.getElementById(countId).textContent = result.data.length;
+
+        if (result.data.length === 0) {
+          document.getElementById(listId).innerHTML = `
+            <div class="p-8 text-center text-gray-500">
+              <i class="fas fa-inbox text-3xl mb-4"></i>
+              <p>Tidak ada penarikan dengan status ini</p>
+            </div>
+          `;
+          return;
+        }
+
+        document.getElementById(listId).innerHTML = result.data.map(payout => `
+          <div class="p-6 hover:bg-gray-50 transition cursor-pointer border-b last:border-b-0">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="font-semibold text-gray-900">${payout.affiliate_name}</p>
+                <p class="text-sm text-gray-600">Email: ${payout.affiliate_email}</p>
+                <p class="text-sm text-gray-600 mt-1">Bank: ${payout.bank_name} - ${payout.bank_account_number}</p>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-lg text-gray-900">Rp ${parseFloat(payout.total_amount).toLocaleString('id-ID')}</p>
+                <p class="text-sm text-gray-600">${payout.commission_count} komisi</p>
+              </div>
+            </div>
+            <div class="flex justify-between items-center text-sm text-gray-600 mb-4">
+              <span>ID: #${payout.id} | Diajukan: ${new Date(payout.created_at).toLocaleDateString('id-ID')}</span>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="viewDetail(${payout.id})" class="flex-1 px-3 py-2 bg-gray-100 text-gray-700 rounded font-medium hover:bg-gray-200 transition text-sm">
+                <i class="fas fa-eye mr-2"></i>Lihat Detail
+              </button>
+              ${status === 'pending' ? `
+                <button onclick="openSubmitModal(${payout.id}, '${payout.affiliate_name}', ${payout.total_amount})" class="flex-1 px-3 py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 transition text-sm">
+                  <i class="fas fa-paper-plane mr-2"></i>Submit ke Admin
+                </button>
+              ` : ''}
+              ${status === 'approved' ? `
+                <button onclick="openPaidModal(${payout.id}, '${payout.affiliate_name}', ${payout.total_amount}, '${payout.bank_account_number}')" class="flex-1 px-3 py-2 bg-green-600 text-white rounded font-medium hover:bg-green-700 transition text-sm">
+                  <i class="fas fa-money-bill-wave mr-2"></i>Tandai Dibayar
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `).join('');
+
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error loading withdrawals: ' + error.message);
+      }
+    }
+
+    // View detail
+    async function viewDetail(payoutId) {
+      try {
+        const response = await fetch(`/finance/api/withdrawals/${payoutId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const result = await response.json();
+
+        if (!result.success) throw new Error(result.message);
+
+        const payout = result.data;
+        let detailHTML = `
+          <div class="space-y-6">
+            <!-- Affiliate Info -->
+            <div class="border-b pb-4">
+              <h4 class="font-semibold text-gray-900 mb-3">Informasi Affiliate</h4>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <p class="text-sm text-gray-600">Nama</p>
+                  <p class="font-medium text-gray-900">${payout.affiliate_name}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">Email</p>
+                  <p class="font-medium text-gray-900">${payout.affiliate_email}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Withdrawal Info -->
+            <div class="border-b pb-4">
+              <h4 class="font-semibold text-gray-900 mb-3">Detail Penarikan</h4>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <p class="text-sm text-gray-600">Total Jumlah</p>
+                  <p class="font-bold text-lg text-gray-900">Rp ${parseFloat(payout.total_amount).toLocaleString('id-ID')}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">Jumlah Komisi</p>
+                  <p class="font-bold text-lg text-gray-900">${payout.commission_count}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bank Info -->
+            <div class="border-b pb-4">
+              <h4 class="font-semibold text-gray-900 mb-3">Informasi Bank</h4>
+              <div class="grid grid-cols-1 gap-4">
+                <div>
+                  <p class="text-sm text-gray-600">Nama Bank</p>
+                  <p class="font-medium text-gray-900">${payout.bank_name || '-'}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">Nomor Rekening</p>
+                  <p class="font-medium text-gray-900">${payout.bank_account_number || '-'}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">Atas Nama</p>
+                  <p class="font-medium text-gray-900">${payout.bank_account_name || '-'}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Finance Note (if exists) -->
+            ${payout.finance_note ? `
+              <div class="border-b pb-4 bg-blue-50 rounded p-4">
+                <h4 class="font-semibold text-blue-900 mb-2">
+                  <i class="fas fa-sticky-note mr-2"></i>
+                  Catatan Finance
+                </h4>
+                <p class="text-sm text-blue-800">${payout.finance_note}</p>
+              </div>
+            ` : ''}
+
+            <!-- Commissions -->
+            <div>
+              <h4 class="font-semibold text-gray-900 mb-3">Komisi yang Ditarik</h4>
+              <div class="bg-gray-50 rounded p-4 max-h-48 overflow-y-auto">
+                ${payout.commissions && payout.commissions.length > 0 ? payout.commissions.map((comm, idx) => `
+                  <div class="flex justify-between py-2 ${idx > 0 ? 'border-t' : ''}">
+                    <span class="text-gray-700">${comm.event_title || 'Event'}</span>
+                    <span class="font-semibold text-gray-900">Rp ${parseFloat(comm.amount).toLocaleString('id-ID')}</span>
+                  </div>
+                `).join('') : '<p class="text-gray-500 text-sm">Tidak ada komisi</p>'}
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('detail-title').textContent = `Detail Penarikan - ${payout.affiliate_name}`;
+        document.getElementById('detail-content').innerHTML = detailHTML;
+        document.getElementById('detail-modal').classList.remove('hidden');
+
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error loading detail: ' + error.message);
+      }
+    }
+
+    // Open submit modal
+    function openSubmitModal(payoutId, affiliateName, amount) {
+      currentPayoutId = payoutId;
+      document.getElementById('submit-affiliate').textContent = affiliateName;
+      document.getElementById('submit-amount').textContent = 'Rp ' + parseFloat(amount).toLocaleString('id-ID');
+      document.getElementById('submit-note').value = '';
+      document.getElementById('submit-modal').classList.remove('hidden');
+    }
+
+    // Submit to Admin
+    async function submitToAdmin() {
+      if (!currentPayoutId) return;
+
+      try {
+        const response = await fetch(`/finance/api/withdrawals/${currentPayoutId}/submit-to-admin`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            note: document.getElementById('submit-note').value
+          })
+        });
+        const result = await response.json();
+
+        if (!result.success) throw new Error(result.message);
+
+        alert('✅ Penarikan berhasil di-submit ke Admin!');
+        closeSubmitModal();
+        closeDetailModal();
+        loadWithdrawals('pending');
+
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error: ' + error.message);
+      }
+    }
+
+    // Open mark paid modal
+    function openPaidModal(payoutId, affiliateName, amount, accountNumber) {
+      currentPayoutId = payoutId;
+      selectedProofFile = null;
+      document.getElementById('paid-affiliate').textContent = affiliateName;
+      document.getElementById('paid-amount').textContent = 'Rp ' + parseFloat(amount).toLocaleString('id-ID');
+      document.getElementById('paid-account').textContent = accountNumber;
+      document.getElementById('proof-file-info').classList.add('hidden');
+      document.getElementById('proof-file-input').value = '';
+      document.getElementById('paid-modal').classList.remove('hidden');
+    }
+
+    // Confirm mark as paid
+    async function confirmPaid() {
+      if (!currentPayoutId) return;
+
+      if (!selectedProofFile) {
+        alert('Pilih file bukti transfer terlebih dahulu!');
+        return;
+      }
+
+      try {
+        // Create FormData to upload file
+        const formData = new FormData();
+        formData.append('proof_file', selectedProofFile);
+        formData.append('payout_id', currentPayoutId);
+
+        const response = await fetch(`/finance/api/withdrawals/${currentPayoutId}/mark-paid`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData
+        });
+        const result = await response.json();
+
+        if (!result.success) throw new Error(result.message);
+
+        alert('✅ Penarikan berhasil ditandai sebagai dibayar dengan bukti transfer!');
+        closePaidModal();
+        closeDetailModal();
+        loadWithdrawals('approved');
+
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error: ' + error.message);
+      }
+    }
+
+    // Close modals
+    function closeDetailModal() {
+      document.getElementById('detail-modal').classList.add('hidden');
+    }
+
+    function closeSubmitModal() {
+      document.getElementById('submit-modal').classList.add('hidden');
+    }
+
+    function closePaidModal() {
+      document.getElementById('paid-modal').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>

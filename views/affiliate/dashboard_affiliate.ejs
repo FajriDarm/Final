@@ -38,8 +38,16 @@
             <p class="text-3xl font-bold text-gray-900 mt-2"><span id="activeProgramsCount"><%= typeof activeProgramsCount !== 'undefined' ? activeProgramsCount : 0 %></span></p>
           </div>
           <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <p class="text-gray-500 text-sm font-medium">Komisi Anda</p>
-            <p class="text-3xl font-bold text-gray-900 mt-2">Rp <%= (typeof totalCommission !== 'undefined' && !isNaN(Number(totalCommission))) ? Number(totalCommission).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0,00' %></p>
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 text-sm font-medium">Komisi Anda</p>
+                <p class="text-3xl font-bold text-gray-900 mt-2">Rp <%= (typeof totalCommission !== 'undefined' && !isNaN(Number(totalCommission))) ? Number(totalCommission).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0,00' %></p>
+                <p class="text-xs text-gray-500 mt-2">
+                  <i class="fas fa-info-circle mr-1"></i>
+                  Total semua status (pending + ready + paid)
+                </p>
+              </div>
+            </div>
           </div>
           <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <p class="text-gray-500 text-sm font-medium">Total Leads</p>

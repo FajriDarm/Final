@@ -58,6 +58,13 @@ exports.postVerifyStage3 = async (req, res) => {
             awardCommissionForTransaction,
           } = require("./commissionService");
           await awardCommissionForTransaction(id, 3);
+
+          // Update commission status to 'ready_for_withdraw' after stage 3 approval
+          await db.query(
+            `UPDATE commissions SET commission_status = 'ready_for_withdraw' 
+             WHERE transaction_id = ? AND stage = 3`,
+            [id],
+          );
         } catch (e) {
           console.error("Error awarding commission (stage 3)", e);
         }

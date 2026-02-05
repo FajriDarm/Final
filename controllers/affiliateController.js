@@ -464,9 +464,284 @@ const getUserStatus = async (req, res) => {
   }
 };
 
+// ============================================
+// COMMISSION & WITHDRAWAL ENDPOINTS
+// ============================================
+
+/**
+ * GET /api/affiliate/commissions
+ * List all commissions for logged-in affiliate
+ */
+const getMyCommissions = async (req, res) => {
+  try {
+    const userId = req.user?.id || req.query.user_id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - user id required",
+      });
+    }
+
+    const [commissions] = await db.query(
+      `
+      SELECT 
+        c.id,
+        c.transaction_id,
+        c.amount,
+        c.commission_status,
+        c.stage,
+        c.created_at,
+        t.event_id,
+        e.title as event_title,
+        t.total_amount as transaction_amount
+      FROM commissions c
+      JOIN transactions t ON c.transaction_id = t.id
+      LEFT JOIN events e ON t.event_id = e.id
+      WHERE c.affiliate_id = ?
+      ORDER BY c.created_at DESC
+    `,
+      [userId],
+    );
+
+    res.json({
+      success: true,
+      data: commissions,
+    });
+  } catch (error) {
+    console.error("Get commissions error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * GET /api/affiliate/commissions/ready
+ * List ready-for-withdraw commissions
+ */
+const getReadyCommissionsEndpoint = async (req, res) => {
+  try {
+    const userId = req.user?.id || req.query.user_id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - user id required",
+      });
+    }
+
+    const { getReadyCommissions } = require("./withdrawalService");
+
+    const commissions = await getReadyCommissions(userId);
+
+    res.json({
+      success: true,
+      data: commissions,
+      count: commissions.length,
+    });
+  } catch (error) {
+    console.error("Get ready commissions error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * GET /api/affiliate/commissions/summary
+ * Get commission summary (pending, ready, paid)
+ */
+const getCommissionSummaryEndpoint = async (req, res) => {
+  try {
+    const userId = req.user?.id || req.query.user_id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - user id required",
+      });
+    }
+
+    const { getCommissionSummary } = require("./withdrawalService");
+
+    const summary = await getCommissionSummary(userId);
+
+    res.json({
+      success: true,
+      data: summary,
+    });
+  } catch (error) {
+    console.error("Get commission summary error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * POST /api/affiliate/withdrawal/request
+ * Affiliate request withdrawal
+ * Body: { commission_ids?: [1, 2, 3] }
+ */
+const requestWithdrawal = async (req, res) => {
+  try {
+    const userId = req.user?.id || req.query.user_id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - user id required",
+      });
+    }
+
+    const { commission_ids } = req.body;
+
+    const { createWithdrawalRequest } = require("./withdrawalService");
+
+    const result = await createWithdrawalRequest(userId, commission_ids);
+
+    if (!result.success) {
+      return res.status(400).json({
+        success: false,
+        message: result.error,
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Withdrawal request created",
+      data: {
+        payout_id: result.payout_id,
+        total_amount: result.total_amount,
+        commission_count: result.commission_count,
+      },
+    });
+  } catch (error) {
+    console.error("Request withdrawal error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * GET /api/affiliate/withdrawal/requests
+ * List withdrawal requests for affiliate
+ */
+const getMyWithdrawalRequests = async (req, res) => {
+  try {
+    const userId = req.user?.id || req.query.user_id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - user id required",
+      });
+    }
+
+    const { getAffiliateWithdrawals } = require("./withdrawalService");
+
+    const withdrawals = await getAffiliateWithdrawals(userId);
+
+    res.json({
+      success: true,
+      data: withdrawals,
+      count: withdrawals.length,
+    });
+  } catch (error) {
+    console.error("Get withdrawal requests error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * GET /api/affiliate/withdrawal/requests/:id
+ * Get withdrawal request detail with commissions
+ */
+const getWithdrawalRequestDetail = async (req, res) => {
+  try {
+    const userId = req.user?.id || req.query.user_id;
+    const { id } = req.params;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - user id required",
+      });
+    }
+
+    const { getWithdrawalDetail } = require("./withdrawalService");
+
+    const withdrawal = await getWithdrawalDetail(id);
+
+    if (!withdrawal) {
+      return res.status(404).json({
+        success: false,
+        message: "Withdrawal request not found",
+      });
+    }
+
+    // Verify ownership
+    if (withdrawal.affiliate_id !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: "You don't have access to this withdrawal request",
+      });
+    }
+
+    res.json({
+      success: true,
+      data: withdrawal,
+    });
+  } catch (error) {
+    console.error("Get withdrawal detail error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+// Page: Commission Dashboard
+const commissionDashboard = async (req, res) => {
+  try {
+    const user = req.user || { id: req.query.user_id, name: "Affiliate" };
+
+    res.render("affiliate/commission_dashboard", {
+      name: user.name,
+      user_id: user.id,
+      role: user.role || "affiliate",
+    });
+  } catch (error) {
+    console.error("Commission dashboard error:", error);
+    res.status(500).send("Error loading commission dashboard");
+  }
+};
+
 module.exports = {
   dashboard,
+  commissionDashboard,
   getActiveEvents,
   generateLink,
   getUserStatus,
+  getMyCommissions,
+  getReadyCommissionsEndpoint,
+  getCommissionSummaryEndpoint,
+  requestWithdrawal,
+  getMyWithdrawalRequests,
+  getWithdrawalRequestDetail,
 };

@@ -3,3 +3,6 @@ node_modules/
 .DS_Store
 
 test-affiliate-api.js
+
+# Ignore uploaded payment proofs
+/public/uploads/payment_proofs/

@@ -157,9 +157,12 @@ CREATE TABLE transactions (
 CREATE TABLE payment_proofs (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     transaction_id BIGINT,
+    payout_id BIGINT,
     proof_file VARCHAR(255),
+    proof_type ENUM('customer_payment','payout_transfer') DEFAULT 'customer_payment',
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (transaction_id) REFERENCES transactions(id)
+    FOREIGN KEY (transaction_id) REFERENCES transactions(id),
+    FOREIGN KEY (payout_id) REFERENCES payouts(id)
 );
 
 -- =========================================
