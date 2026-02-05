@@ -118,6 +118,8 @@ const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
 
 const adminRoutes = require("./routes/adminRoutes");
+// Mount admin routes at /api/admin for API calls only
+// Page routes are handled separately below in app.js
 app.use("/api/admin", adminRoutes);
 
 // Public API routes (landing page usage)
@@ -170,25 +172,42 @@ app.get("/dashboard_sales", salesController.getSalesDashboard);
 const financeController = require("./controllers/financeController");
 app.get("/dashboard_finance", financeController.getFinanceDashboard);
 
+// Admin withdrawal approvals page (rendered view)
+const adminController = require("./controllers/adminController");
+app.get(
+  "/admin/withdrawals",
+  authMiddlewarePage,
+  adminController.getWithdrawalApprovalsPage,
+);
+
 // Admin Pages (Protected)
 app.get("/dashboard_admin", (req, res) => {
   res.render("admin/dashboard_admin");
 });
 
-app.get("/admin/users", (req, res) => {
-  res.render("admin/users");
+// Redirect /admin/dashboard to /dashboard_admin for consistency
+app.get("/admin/dashboard", (req, res) => {
+  res.redirect("/dashboard_admin");
 });
 
-app.get("/admin/events", (req, res) => {
-  res.render("admin/events");
-});
+app.get("/admin/users", authMiddlewarePage, adminController.getUsersPage);
 
-app.get("/admin/affiliates", (req, res) => {
-  res.render("admin/affiliates");
-});
+app.get("/admin/events", authMiddlewarePage, adminController.getEventsPage);
 
-app.get("/admin/activity-logs", (req, res) => {
-  res.render("admin/activity-logs");
+app.get(
+  "/admin/affiliates",
+  authMiddlewarePage,
+  adminController.getAffiliatesPage,
+);
+
+app.get(
+  "/admin/activity-logs",
+  authMiddlewarePage,
+  adminController.getActivityLogsPage,
+);
+
+app.get("/admin/commissions", authMiddlewarePage, (req, res) => {
+  res.render("admin/commissions");
 });
 
 // Commission Routes (Page and API)
