@@ -492,6 +492,176 @@ const getActivityLogs = async (req, res) => {
   }
 };
 
+// ============= WITHDRAWAL APPROVAL FUNCTIONS =============
+
+// Get withdrawal approvals page
+const getWithdrawalApprovalsPage = async (req, res) => {
+  try {
+    res.render("admin/withdrawal_approvals");
+  } catch (error) {
+    console.error("Get withdrawal approvals page error:", error);
+    res.status(500).render("error", { message: "Failed to load withdrawal approvals" });
+  }
+};
+
+// Get pending withdrawals for approval
+const getPendingWithdrawalsForApproval = async (req, res) => {
+  try {
+    const status = req.query.status || "pending";
+
+    const [withdrawals] = await db.query(
+      `SELECT p.id, p.affiliate_id, u.name as affiliate_name, u.email as affiliate_email,
+              p.total_amount, p.status, p.created_at, COUNT(pd.commission_id) as commission_count
+       FROM payouts p
+       JOIN users u ON p.affiliate_id = u.id
+       LEFT JOIN payout_details pd ON p.id = pd.payout_id
+       WHERE p.status = ?
+       GROUP BY p.id
+       ORDER BY p.created_at DESC`,
+      [status],
+    );
+
+    res.json({
+      success: true,
+      data: withdrawals,
+    });
+  } catch (error) {
+    console.error("Get pending withdrawals error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to load withdrawals",
+      error: error.message,
+    });
+  }
+};
+
+// Get withdrawal detail for approval
+const getWithdrawalDetailForApproval = async (req, res) => {
+  try {
+    const payoutId = req.params.id;
+
+    const [payouts] = await db.query(
+      `SELECT p.*, 
+              u.name as affiliate_name, 
+              u.email as affiliate_email,
+              u.bank_name,
+              u.bank_account_number,
+              u.bank_account_name
+       FROM payouts p
+       JOIN users u ON p.affiliate_id = u.id
+       WHERE p.id = ?`,
+      [payoutId],
+    );
+
+    if (payouts.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Withdrawal not found",
+      });
+    }
+
+    const payout = payouts[0];
+
+    const [commissions] = await db.query(
+      `SELECT pd.commission_id as id,
+              c.amount,
+              c.commission_status,
+              c.created_at,
+              COALESCE(e.title, CONCAT('Transaction #', t.id)) as description
+       FROM payout_details pd
+       JOIN commissions c ON pd.commission_id = c.id
+       LEFT JOIN transactions t ON c.transaction_id = t.id
+       LEFT JOIN events e ON t.event_id = e.id
+       WHERE pd.payout_id = ?`,
+      [payoutId],
+    );
+
+    const payoutData = {
+      ...payout,
+      commissions,
+      commission_count: commissions.length,
+    };
+
+    res.json({
+      success: true,
+      data: payoutData,
+    });
+  } catch (error) {
+    console.error("Get withdrawal detail error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to load withdrawal detail",
+      error: error.message,
+    });
+  }
+};
+
+// Approve withdrawal
+const approveWithdrawal = async (req, res) => {
+  try {
+    const payoutId = req.params.id;
+    const { note } = req.body;
+    const adminId = req.user.id;
+
+    await db.query(
+      `UPDATE payouts SET status = ?, approved_by = ?, processed_at = NOW() WHERE id = ?`,
+      ["approved", adminId, payoutId],
+    );
+
+    // Log activity
+    await db.query(
+      `INSERT INTO activity_logs (approved_by, target_type, target_id, action, old_status, new_status, description, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, NOW())`,
+      [adminId, "payout", payoutId, "APPROVE_WITHDRAWAL", "pending", "approved", note || ""],
+    );
+
+    res.json({
+      success: true,
+      message: "Withdrawal approved successfully",
+    });
+  } catch (error) {
+    console.error("Approve withdrawal error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to approve withdrawal",
+      error: error.message,
+    });
+  }
+};
+
+// Reject withdrawal
+const rejectWithdrawal = async (req, res) => {
+  try {
+    const payoutId = req.params.id;
+    const { reason } = req.body;
+    const adminId = req.user.id;
+
+    await db.query(
+      `UPDATE payouts SET status = ? WHERE id = ?`,
+      ["rejected", payoutId],
+    );
+
+    // Log activity
+    await db.query(
+      `INSERT INTO activity_logs (approved_by, target_type, target_id, action, old_status, new_status, description, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, NOW())`,
+      [adminId, "payout", payoutId, "REJECT_WITHDRAWAL", "pending", "rejected", reason || ""],
+    );
+
+    res.json({
+      success: true,
+      message: "Withdrawal rejected successfully",
+    });
+  } catch (error) {
+    console.error("Reject withdrawal error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to reject withdrawal",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getActiveEvents,
   getDashboardStats,
@@ -505,4 +675,9 @@ module.exports = {
   rejectAffiliate,
   generateTokenForUser,
   getActivityLogs,
+  getWithdrawalApprovalsPage,
+  getPendingWithdrawalsForApproval,
+  getWithdrawalDetailForApproval,
+  approveWithdrawal,
+  rejectWithdrawal,
 };

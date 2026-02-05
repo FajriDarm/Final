@@ -29,4 +29,11 @@ router.put('/affiliates/:userId/reject', adminController.rejectAffiliate);
 // Activity Logs - Remove auth temporarily for development
 router.get('/activity-logs', adminController.getActivityLogs);
 
+// Withdrawal Approvals
+router.get('/withdrawals', authMiddleware, adminController.getWithdrawalApprovalsPage);
+router.get('/withdrawals/approval', authMiddleware, adminController.getPendingWithdrawalsForApproval);
+router.get('/withdrawals/approval/:id', authMiddleware, adminController.getWithdrawalDetailForApproval);
+router.post('/withdrawals/approval/:id/approve', authMiddleware, adminController.approveWithdrawal);
+router.post('/withdrawals/approval/:id/reject', authMiddleware, adminController.rejectWithdrawal);
+
 module.exports = router;

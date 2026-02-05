@@ -191,6 +191,10 @@ app.get("/admin/activity-logs", (req, res) => {
   res.render("admin/activity-logs");
 });
 
+app.get("/admin/withdrawals", (req, res) => {
+  res.render("admin/withdrawal_approvals");
+});
+
 // Commission Routes (Page and API)
 const commissionRoutes = require("./routes/commissionRoutes");
 app.use("/", commissionRoutes);
