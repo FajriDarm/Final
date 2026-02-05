@@ -397,36 +397,6 @@
                             </div>
                         </div>
 
-                        <!-- Finance Note (if exists) -->
-                        ${
-                          payout.finance_note
-                            ? `
-                            <div class="border-b pb-4 bg-blue-50 rounded p-4">
-                                <h4 class="font-semibold text-blue-900 mb-2">
-                                    <i class="fas fa-sticky-note mr-2"></i>
-                                    Catatan dari Finance
-                                </h4>
-                                <p class="text-sm text-blue-800">${payout.finance_note}</p>
-                            </div>
-                        `
-                            : ""
-                        }
-
-                        <!-- Admin Approval Note (if exists) -->
-                        ${
-                          payout.admin_note
-                            ? `
-                            <div class="border-b pb-4 bg-green-50 rounded p-4">
-                                <h4 class="font-semibold text-green-900 mb-2">
-                                    <i class="fas fa-check-circle mr-2"></i>
-                                    Catatan Admin Approval
-                                </h4>
-                                <p class="text-sm text-green-800">${payout.admin_note}</p>
-                            </div>
-                        `
-                            : ""
-                        }
-
                         <!-- Commissions -->
                         <div>
                             <h4 class="font-semibold text-gray-900 mb-3">Komisi yang Ditarik</h4>
@@ -537,7 +507,7 @@
 
         try {
           const response = await fetch(
-            `/admin/withdrawals/approval/${currentPayoutId}/reject`,
+            `/api/admin/withdrawals/approval/${currentPayoutId}/reject`,
             {
               method: "POST",
               headers: {

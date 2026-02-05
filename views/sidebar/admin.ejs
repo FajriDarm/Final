@@ -1,183 +1,216 @@
 <!DOCTYPE html>
 <html lang="id">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Super Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
-        .sidebar {
-            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-            border-right: 1px solid #e2e8f0;
-        }
-        .nav-item {
-            position: relative;
-            transition: all 0.3s ease;
-            border-radius: 8px;
-        }
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 4px;
-            background: linear-gradient(to bottom, #10b981, #059669);
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-            border-radius: 0 4px 4px 0;
-        }
-        .nav-item:hover::before {
-            transform: scaleY(1);
-        }
-        .nav-item:hover {
-            background-color: #f0fdf4;
-            transform: translateX(4px);
-        }
-        .nav-item.active {
-            background: linear-gradient(90deg, #f0fdf4 0%, #dcfce7 100%);
-        }
-        .nav-item.active::before {
-            transform: scaleY(1);
-        }
-        .nav-icon {
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            background: #f0fdf4;
-            color: #10b981;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-        .nav-item:hover .nav-icon {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            transform: scale(1.05);
-        }
-        .nav-item.active .nav-icon {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-        }
-        .nav-text {
-            color: #334155;
-            font-weight: 500;
-            font-size: 14px;
-            letter-spacing: 0.01em;
-        }
-        .nav-item:hover .nav-text {
-            color: #065f46;
-        }
-        .nav-item.active .nav-text {
-            color: #065f46;
-            font-weight: 600;
-        }
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
-            margin: 12px 0;
-        }
+      .sidebar {
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border-right: 1px solid #e2e8f0;
+      }
+      .nav-item {
+        position: relative;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+      }
+      .nav-item::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 4px;
+        background: linear-gradient(to bottom, #10b981, #059669);
+        transform: scaleY(0);
+        transition: transform 0.3s ease;
+        border-radius: 0 4px 4px 0;
+      }
+      .nav-item:hover::before {
+        transform: scaleY(1);
+      }
+      .nav-item:hover {
+        background-color: #f0fdf4;
+        transform: translateX(4px);
+      }
+      .nav-item.active {
+        background: linear-gradient(90deg, #f0fdf4 0%, #dcfce7 100%);
+      }
+      .nav-item.active::before {
+        transform: scaleY(1);
+      }
+      .nav-icon {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: #f0fdf4;
+        color: #10b981;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+      .nav-item:hover .nav-icon {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        transform: scale(1.05);
+      }
+      .nav-item.active .nav-icon {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+      }
+      .nav-text {
+        color: #334155;
+        font-weight: 500;
+        font-size: 14px;
+        letter-spacing: 0.01em;
+      }
+      .nav-item:hover .nav-text {
+        color: #065f46;
+      }
+      .nav-item.active .nav-text {
+        color: #065f46;
+        font-weight: 600;
+      }
+      .divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+        margin: 12px 0;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- Sidebar -->
-    <aside class="sidebar fixed left-0 top-16 z-40 w-64" style="height:calc(100vh - 4rem);overflow:auto;">
-        <!-- Navigation -->
-        <nav class="flex-1 p-6 overflow-y-auto">
-            <div class="space-y-1">
-                <!-- Dashboard -->
-                <a href="/dashboard_admin" class="nav-item flex items-center gap-3 p-3" data-page="dashboard">
-                    <div class="nav-icon">
-                        <i class="fas fa-tachometer-alt"></i>
-                    </div>
-                    <span class="nav-text">Dashboard</span>
-                </a>
-
-                <div class="divider"></div>
-
-                <!-- Users Management -->
-                <a href="/admin/users" class="nav-item flex items-center gap-3 p-3" data-page="users">
-                    <div class="nav-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <span class="nav-text">Users</span>
-                </a>
-
-                <!-- Events Management -->
-                <a href="/admin/events" class="nav-item flex items-center gap-3 p-3" data-page="events">
-                    <div class="nav-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <span class="nav-text">Events</span>
-                </a>
-
-                <!-- Affiliates -->
-                <a href="/admin/affiliates" class="nav-item flex items-center gap-3 p-3" data-page="affiliates">
-                    <div class="nav-icon">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <span class="nav-text">Affiliates</span>
-                </a>
-
-                <!-- Commission -->
-                <a href="/admin/commissions" class="nav-item flex items-center gap-3 p-3" data-page="commissions">
-                    <div class="nav-icon">
-                        <i class="fas fa-percentage"></i>
-                    </div>
-                    <span class="nav-text">Commission</span>
-                </a>
-
-                <!-- Activity Logs -->
-                <a href="/admin/activity-logs" class="nav-item flex items-center gap-3 p-3" data-page="activity-logs">
-                    <div class="nav-icon">
-                        <i class="fas fa-history"></i>
-                    </div>
-                    <span class="nav-text">Activity Logs</span>
-                </a>
-
-                <div class="divider"></div>
-
-                <!-- Withdrawal Approvals -->
-                <a href="/admin/withdrawals" class="nav-item flex items-center gap-3 p-3" data-page="withdrawals">
-                    <div class="nav-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <span class="nav-text">Withdrawal Approvals</span>
-                </a>
+    <aside
+      class="sidebar fixed left-0 top-16 z-40 w-64"
+      style="height: calc(100vh - 4rem); overflow: auto"
+    >
+      <!-- Navigation -->
+      <nav class="flex-1 p-6 overflow-y-auto">
+        <div class="space-y-1">
+          <!-- Dashboard -->
+          <a
+            href="/admin/dashboard"
+            class="nav-item flex items-center gap-3 p-3"
+            data-page="dashboard"
+          >
+            <div class="nav-icon">
+              <i class="fas fa-tachometer-alt"></i>
             </div>
-        </nav>
-        <!-- Footer -->
-        <div class="p-5 border-t border-gray-200">
-            <div class="text-center">
-                <div class="text-xs text-gray-400">Superadmin System v1.0</div>
+            <span class="nav-text">Dashboard</span>
+          </a>
+
+          <div class="divider"></div>
+
+          <!-- Users Management -->
+          <a
+            href="/admin/users"
+            class="nav-item flex items-center gap-3 p-3"
+            data-page="users"
+          >
+            <div class="nav-icon">
+              <i class="fas fa-users"></i>
             </div>
+            <span class="nav-text">Users</span>
+          </a>
+
+          <!-- Events Management -->
+          <a
+            href="/admin/events"
+            class="nav-item flex items-center gap-3 p-3"
+            data-page="events"
+          >
+            <div class="nav-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <span class="nav-text">Events</span>
+          </a>
+
+          <!-- Affiliates -->
+          <a
+            href="/admin/affiliates"
+            class="nav-item flex items-center gap-3 p-3"
+            data-page="affiliates"
+          >
+            <div class="nav-icon">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <span class="nav-text">Affiliates</span>
+          </a>
+
+          <!-- Withdrawal Approvals -->
+          <a
+            href="/admin/withdrawals"
+            class="nav-item flex items-center gap-3 p-3"
+            data-page="withdrawals"
+          >
+            <div class="nav-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <span class="nav-text">Withdrawal Approvals</span>
+          </a>
+
+          <!-- Commission -->
+          <a
+            href="/admin/commissions"
+            class="nav-item flex items-center gap-3 p-3"
+            data-page="commissions"
+          >
+            <div class="nav-icon">
+              <i class="fas fa-percentage"></i>
+            </div>
+            <span class="nav-text">Commission</span>
+          </a>
+
+          <!-- Activity Logs -->
+          <a
+            href="/admin/activity-logs"
+            class="nav-item flex items-center gap-3 p-3"
+            data-page="activity-logs"
+          >
+            <div class="nav-icon">
+              <i class="fas fa-history"></i>
+            </div>
+            <span class="nav-text">Activity Logs</span>
+          </a>
         </div>
+      </nav>
+      <!-- Footer -->
+      <div class="p-5 border-t border-gray-200">
+        <div class="text-center">
+          <div class="text-xs text-gray-400">Superadmin System v1.0</div>
+        </div>
+      </div>
     </aside>
     <script>
-        // Highlight active menu based on current path
-        (function() {
-            const currentPath = window.location.pathname.replace(/\/$/, '');
-            document.querySelectorAll('.nav-item').forEach(item => {
-                const href = item.getAttribute('href');
-                // Mark active if href equals current path
-                if (href && href.replace(/\/$/, '') === currentPath) {
-                    item.classList.add('active');
-                }
+      // Highlight active menu based on current path
+      (function () {
+        const currentPath = window.location.pathname.replace(/\/$/, "");
+        document.querySelectorAll(".nav-item").forEach((item) => {
+          const href = item.getAttribute("href");
+          // Mark active if href equals current path
+          if (href && href.replace(/\/$/, "") === currentPath) {
+            item.classList.add("active");
+          }
 
-                // Add click interaction: keep visuals then follow link (no preventDefault)
-                item.addEventListener('click', function () {
-                    // Add active class immediately for visual feedback
-                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                    // Let the link navigate normally
-                });
-            });
-        })();
+          // Add click interaction: keep visuals then follow link (no preventDefault)
+          item.addEventListener("click", function () {
+            // Add active class immediately for visual feedback
+            document
+              .querySelectorAll(".nav-item")
+              .forEach((i) => i.classList.remove("active"));
+            this.classList.add("active");
+            // Let the link navigate normally
+          });
+        });
+      })();
     </script>
-</body>
+  </body>
 </html>
