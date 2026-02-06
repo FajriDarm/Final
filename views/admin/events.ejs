@@ -2,9 +2,93 @@
 <html lang="id">
 
 <head>
+  <!-- Style untuk modal notifikasi -->
+  <style>
+    .modal-notification {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-notification .modal-box {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      max-width: 400px;
+      width: 100%;
+      padding: 2rem;
+      text-align: center;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-notification .notification-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.15);
+      margin-bottom: 1rem;
+    }
+
+    .modal-notification .notification-icon.success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .modal-notification .notification-icon.error {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    }
+
+    .modal-notification .notification-icon.warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    .modal-notification .notification-icon.info {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    }
+
+    .modal-notification .notification-icon i {
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .modal-notification .notification-checkmark-svg {
+      display: block;
+    }
+
+    .modal-notification .notification-checkmark-path {
+      stroke-dasharray: 40;
+      stroke-dashoffset: 40;
+      animation: checkmark-draw 1.1s cubic-bezier(.28, .84, .42, 1) 0.15s forwards;
+    }
+
+    @keyframes checkmark-draw {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Events Management - Affillink Admin</title>
+  <title>Manajemen Event - Affillink Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -98,27 +182,27 @@
       background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
     }
 
-    .success-badge {
-      animation: slideIn 0.3s ease-out;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateY(-20px);
-        opacity: 0;
-      }
-
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
     .line-clamp-2 {
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .animate-fadeIn {
+      animation: fadeIn 0.2s ease;
     }
   </style>
 </head>
@@ -137,7 +221,7 @@
                   <i class="fas fa-calendar-alt text-white text-xl"></i>
                 </div>
                 <div>
-                  <h1 class="text-3xl font-bold text-gray-900">Events Management</h1>
+                  <h1 class="text-3xl font-bold text-gray-900">Manajemen Event</h1>
                   <p class="text-gray-600 mt-1">Kelola event promo dan penawaran khusus</p>
                 </div>
               </div>
@@ -161,7 +245,7 @@
               <button onclick="showCreateModal()"
                 class="px-6 py-3 gradient-primary text-white rounded-xl hover:opacity-90 transition-all shadow-lg hover:shadow-xl flex items-center gap-2">
                 <i class="fas fa-plus"></i>
-                <span>Create Event</span>
+                <span>Buat Event</span>
               </button>
             </div>
           </div>
@@ -171,7 +255,7 @@
             <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
               <div class="flex items-center justify-between">
                 <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Total Events</p>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Total Event</p>
                   <p class="text-3xl font-bold text-gray-900 mb-2" id="totalEvents">-</p>
                 </div>
                 <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
@@ -184,7 +268,7 @@
                     <i class="fas fa-chart-line mr-1"></i>
                     <span id="monthGrowth">+12%</span>
                   </span>
-                  <span class="text-gray-500">this month</span>
+                  <span class="text-gray-500">bulan ini</span>
                 </div>
               </div>
             </div>
@@ -192,7 +276,7 @@
             <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
               <div class="flex items-center justify-between">
                 <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Active Events</p>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Event Aktif</p>
                   <p class="text-3xl font-bold text-green-600 mb-2" id="activeEvents">-</p>
                 </div>
                 <div class="w-14 h-14 gradient-secondary rounded-xl flex items-center justify-center shadow-lg">
@@ -201,7 +285,7 @@
               </div>
               <div class="mt-4 pt-4 border-t border-green-50">
                 <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-600">Running now</span>
+                  <span class="text-gray-600">Berjalan sekarang</span>
                   <span class="font-medium text-green-700" id="activeNow">-</span>
                 </div>
               </div>
@@ -210,7 +294,7 @@
             <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
               <div class="flex items-center justify-between">
                 <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Draft Events</p>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Event Draft</p>
                   <p class="text-3xl font-bold text-amber-600 mb-2" id="draftEvents">-</p>
                 </div>
                 <div
@@ -220,7 +304,7 @@
               </div>
               <div class="mt-4 pt-4 border-t border-green-50">
                 <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-600">To publish</span>
+                  <span class="text-gray-600">Untuk dipublikasikan</span>
                   <span class="font-medium text-amber-700" id="draftCount">-</span>
                 </div>
               </div>
@@ -229,7 +313,7 @@
             <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
               <div class="flex items-center justify-between">
                 <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Free Events</p>
+                  <p class="text-gray-600 text-sm font-medium mb-1">Event Gratis</p>
                   <p class="text-3xl font-bold text-blue-600 mb-2" id="freeEvents">-</p>
                 </div>
                 <div
@@ -239,7 +323,7 @@
               </div>
               <div class="mt-4 pt-4 border-t border-green-50">
                 <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-600">Free access</span>
+                  <span class="text-gray-600">Akses gratis</span>
                   <span class="font-medium text-blue-700" id="freeCount">-</span>
                 </div>
               </div>
@@ -252,7 +336,7 @@
               <div class="flex-1">
                 <div class="relative">
                   <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                  <input type="text" id="searchInput" placeholder="Search events by title, description..."
+                  <input type="text" id="searchInput" placeholder="Cari event berdasarkan judul, deskripsi..."
                     class="w-full pl-12 pr-4 py-3 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm transition-all">
                 </div>
               </div>
@@ -262,10 +346,10 @@
                   <i class="fas fa-filter absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                   <select id="statusFilter"
                     class="pl-12 pr-4 py-3 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm appearance-none min-w-[180px]">
-                    <option value="">All Status</option>
+                    <option value="">Semua Status</option>
                     <option value="draft">📝 Draft</option>
-                    <option value="active">✅ Active</option>
-                    <option value="inactive">❌ Inactive</option>
+                    <option value="active">✅ Aktif</option>
+                    <option value="inactive">❌ Tidak Aktif</option>
                   </select>
                 </div>
 
@@ -273,16 +357,16 @@
                   <i class="fas fa-tag absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                   <select id="typeFilter"
                     class="pl-12 pr-4 py-3 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm appearance-none min-w-[180px]">
-                    <option value="">All Types</option>
-                    <option value="gratis">🎁 Free</option>
-                    <option value="berbayar">💎 Paid</option>
+                    <option value="">Semua Tipe</option>
+                    <option value="gratis">🎁 Gratis</option>
+                    <option value="berbayar">💎 Berbayar</option>
                   </select>
                 </div>
 
                 <button onclick="clearFilters()"
                   class="px-4 py-3 border border-green-200 text-green-700 hover:bg-green-50 rounded-xl transition-colors flex items-center gap-2">
                   <i class="fas fa-redo"></i>
-                  <span class="font-medium">Clear</span>
+                  <span class="font-medium">Hapus Filter</span>
                 </button>
               </div>
             </div>
@@ -296,7 +380,7 @@
                   class="w-16 h-16 gradient-primary rounded-full flex items-center justify-center mb-4 animate-pulse">
                   <i class="fas fa-spinner fa-spin text-2xl text-white"></i>
                 </div>
-                <p class="text-lg font-medium">Loading events...</p>
+                <p class="text-lg font-medium">Memuat event...</p>
               </div>
             </div>
           </div>
@@ -306,13 +390,13 @@
       <!-- View Event Modal -->
       <div id="viewModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-          <!-- Modal Header (rapi) -->
+          <!-- Modal Header -->
           <div class="gradient-primary px-6 py-3 flex items-center justify-between rounded-t-2xl">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                 <i class="fas fa-calendar-alt text-white text-lg"></i>
               </div>
-              <h3 class="text-xl font-bold text-white">Event Details</h3>
+              <h3 class="text-xl font-bold text-white">Detail Event</h3>
             </div>
             <button onclick="closeViewModal()"
               class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-colors">
@@ -320,7 +404,7 @@
             </button>
           </div>
 
-          <!-- Modal Body (kembali ke semula) -->
+          <!-- Modal Body -->
           <div class="p-6 overflow-y-auto flex-1 scrollbar-hide">
             <!-- Event Header -->
             <div class="flex flex-col md:flex-row md:items-start gap-6 mb-6">
@@ -342,11 +426,11 @@
                 <div class="bg-gray-50 p-5 rounded-xl">
                   <h4 class="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
                     <i class="fas fa-info-circle text-green-600"></i>
-                    Event Information
+                    Informasi Event
                   </h4>
                   <div class="space-y-3">
                     <div class="flex items-center justify-between">
-                      <span class="text-sm text-gray-500">Event ID</span>
+                      <span class="text-sm text-gray-500">ID Event</span>
                       <span id="viewEventId" class="font-semibold text-gray-900"></span>
                     </div>
                     <div class="flex items-center justify-between">
@@ -354,7 +438,7 @@
                       <span id="viewEventSlug" class="font-medium text-green-700"></span>
                     </div>
                     <div class="flex items-center justify-between">
-                      <span class="text-sm text-gray-500">Event Type</span>
+                      <span class="text-sm text-gray-500">Tipe Event</span>
                       <span id="viewEventType" class="font-semibold text-gray-900"></span>
                     </div>
                     <div class="flex items-center justify-between">
@@ -368,15 +452,15 @@
                 <div class="bg-blue-50 p-5 rounded-xl">
                   <h4 class="text-sm font-semibold text-blue-700 mb-4 flex items-center gap-2">
                     <i class="fas fa-calendar-alt text-blue-600"></i>
-                    Date Information
+                    Informasi Tanggal
                   </h4>
                   <div class="space-y-3">
                     <div class="flex items-center justify-between">
-                      <span class="text-sm text-blue-600">Start Date</span>
+                      <span class="text-sm text-blue-600">Tanggal Mulai</span>
                       <span id="viewStartDate" class="font-semibold text-blue-900"></span>
                     </div>
                     <div class="flex items-center justify-between">
-                      <span class="text-sm text-blue-600">End Date</span>
+                      <span class="text-sm text-blue-600">Tanggal Berakhir</span>
                       <span id="viewEndDate" class="font-semibold text-blue-900"></span>
                     </div>
                   </div>
@@ -389,19 +473,19 @@
                 <div id="viewPricingSection" class="bg-green-50 p-5 rounded-xl">
                   <h4 class="text-sm font-semibold text-green-700 mb-4 flex items-center gap-2">
                     <i class="fas fa-tags text-green-600"></i>
-                    Pricing Information
+                    Informasi Harga
                   </h4>
                   <div class="space-y-3">
                     <div class="flex items-center justify-between">
-                      <span class="text-sm text-green-600">Original Price</span>
+                      <span class="text-sm text-green-600">Harga Asli</span>
                       <span id="viewPriceOriginal" class="font-semibold text-green-900"></span>
                     </div>
                     <div class="flex items-center justify-between">
-                      <span class="text-sm text-green-600">Promo Price</span>
+                      <span class="text-sm text-green-600">Harga Promo</span>
                       <span id="viewPricePromo" class="font-bold text-green-700 text-lg"></span>
                     </div>
                     <div class="pt-3 border-t border-green-200">
-                      <span class="text-sm text-green-600">Payment Methods</span>
+                      <span class="text-sm text-green-600">Metode Pembayaran</span>
                       <div id="viewPaymentMethods" class="mt-2 space-y-2"></div>
                     </div>
                   </div>
@@ -414,30 +498,30 @@
                       <i class="fas fa-gift text-blue-600 text-xl"></i>
                     </div>
                     <div>
-                      <h4 class="text-lg font-bold text-blue-900">Free Event</h4>
-                      <p class="text-sm text-blue-700">No payment required</p>
+                      <h4 class="text-lg font-bold text-blue-900">Event Gratis</h4>
+                      <p class="text-sm text-blue-700">Tidak perlu pembayaran</p>
                     </div>
                   </div>
-                  <p class="text-sm text-blue-600">Participants can register for free without any payment process.</p>
+                  <p class="text-sm text-blue-600">Peserta bisa mendaftar secara gratis tanpa proses pembayaran.</p>
                 </div>
 
                 <!-- Bank Information -->
                 <div id="viewBankSection" class="bg-indigo-50 p-5 rounded-xl">
                   <h4 class="text-sm font-semibold text-indigo-700 mb-4 flex items-center gap-2">
                     <i class="fas fa-university text-indigo-600"></i>
-                    Bank Information
+                    Informasi Bank
                   </h4>
                   <div class="space-y-3">
                     <div class="flex items-center justify-between">
-                      <span class="text-sm text-indigo-600">Bank Name</span>
+                      <span class="text-sm text-indigo-600">Nama Bank</span>
                       <span id="viewBankName" class="font-medium text-indigo-900">-</span>
                     </div>
                     <div class="flex items-center justify-between">
-                      <span class="text-sm text-indigo-600">Account Name</span>
+                      <span class="text-sm text-indigo-600">Nama Akun</span>
                       <span id="viewAccountName" class="font-medium text-indigo-900">-</span>
                     </div>
                     <div class="flex items-center justify-between">
-                      <span class="text-sm text-indigo-600">Account Number</span>
+                      <span class="text-sm text-indigo-600">Nomor Rekening</span>
                       <span id="viewAccountNumber" class="font-medium text-indigo-900">-</span>
                     </div>
                   </div>
@@ -452,8 +536,8 @@
                   <i class="fab fa-whatsapp text-green-600"></i>
                 </div>
                 <div>
-                  <h5 class="font-semibold text-green-900 text-lg">Admin Contact</h5>
-                  <p class="text-sm text-green-700">For payment confirmation and participant communication</p>
+                  <h5 class="font-semibold text-green-900 text-lg">Kontak Admin</h5>
+                  <p class="text-sm text-green-700">Untuk konfirmasi pembayaran dan komunikasi dengan peserta</p>
                 </div>
               </div>
               <div class="flex items-center gap-3">
@@ -461,12 +545,11 @@
                   <i class="fas fa-phone text-green-600"></i>
                 </div>
                 <div>
-                  <p class="text-sm text-gray-500">WhatsApp Number</p>
+                  <p class="text-sm text-gray-500">Nomor WhatsApp</p>
                   <p id="viewAdminWhatsApp" class="font-semibold text-gray-900">-</p>
                 </div>
               </div>
             </div>
-
           </div>
 
           <!-- Modal Footer -->
@@ -474,7 +557,7 @@
             <button onclick="closeViewModal()"
               class="flex-1 bg-gray-200 text-gray-700 py-3.5 rounded-xl hover:bg-gray-300 transition-all font-semibold flex items-center justify-center gap-2">
               <i class="fas fa-times"></i>
-              Close
+              Tutup
             </button>
             <button onclick="editFromView()" id="editFromViewBtn"
               class="flex-1 gradient-primary text-white py-3.5 rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg flex items-center justify-center gap-2">
@@ -496,9 +579,9 @@
               </div>
               <div>
                 <h3 class="text-xl font-bold text-white" id="modalTitle">
-                  <span id="modalTitleText">Create Event</span>
+                  <span id="modalTitleText">Buat Event</span>
                 </h3>
-                <p class="text-green-100 text-sm mt-1">Fill in the event details below</p>
+                <p class="text-green-100 text-sm mt-1">Isi detail event di bawah ini</p>
               </div>
             </div>
             <button onclick="closeModal()"
@@ -533,7 +616,7 @@
                         <p class="text-sm text-gray-600 mt-2">Event tanpa biaya pendaftaran</p>
                         <div class="mt-4 text-xs text-green-700 bg-green-50 px-3 py-1.5 rounded-full">
                           <i class="fas fa-check-circle mr-1"></i>
-                          No payment required
+                          Tidak perlu pembayaran
                         </div>
                       </div>
                     </div>
@@ -550,7 +633,7 @@
                         <p class="text-sm text-gray-600 mt-2">Event dengan sistem pembayaran</p>
                         <div class="mt-4 text-xs text-purple-700 bg-purple-50 px-3 py-1.5 rounded-full">
                           <i class="fas fa-credit-card mr-1"></i>
-                          Payment & bank info required
+                          Butuh info pembayaran & bank
                         </div>
                       </div>
                     </div>
@@ -570,12 +653,12 @@
                 <div class="text-xs text-gray-600 space-y-1 ml-6">
                   <p>• Tidak perlu harga & pembayaran</p>
                   <p>• User langsung bisa daftar</p>
-                  <p>• Bank info tidak diperlukan</p>
+                  <p>• Info bank tidak diperlukan</p>
                 </div>
 
                 <div class="mt-4 space-y-4">
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Judul</label>
                     <input type="text" id="title_gratis" required
                       class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white">
                   </div>
@@ -583,10 +666,10 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Slug</label>
                     <input type="text" id="slug_gratis"
                       class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white"
-                      placeholder="URL-friendly event name">
+                      placeholder="Nama event yang ramah-URL">
                   </div>
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
                     <textarea id="description_gratis" rows="3"
                       class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white"></textarea>
                   </div>
@@ -597,24 +680,24 @@
               <div id="berbayarFields" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Title</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Judul</label>
                     <input type="text" id="title" required
                       class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white"
-                      placeholder="Event title">
+                      placeholder="Judul event">
                   </div>
                   <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Slug</label>
                     <input type="text" id="slug"
                       class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white"
-                      placeholder="url-friendly-event-name">
+                      placeholder="nama-event-ramah-url">
                   </div>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi</label>
                   <textarea id="description" rows="3"
                     class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white"
-                    placeholder="Event description..."></textarea>
+                    placeholder="Deskripsi event..."></textarea>
                 </div>
 
                 <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl border border-green-200">
@@ -622,14 +705,14 @@
                     <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                       <i class="fas fa-tags text-green-600"></i>
                     </div>
-                    <h5 class="font-semibold text-green-900 text-lg">Pricing Information</h5>
+                    <h5 class="font-semibold text-green-900 text-lg">Informasi Harga</h5>
                   </div>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label class="block text-sm font-semibold text-gray-700 mb-2">
                         <i class="fas fa-tag mr-2 text-gray-600"></i>
-                        Price Original (Rp)
+                        Harga Asli (Rp)
                       </label>
                       <div class="relative">
                         <span
@@ -642,7 +725,7 @@
                     <div>
                       <label class="block text-sm font-semibold text-gray-700 mb-2">
                         <i class="fas fa-tags mr-2 text-green-600"></i>
-                        Price Promo (Rp)
+                        Harga Promo (Rp)
                       </label>
                       <div class="relative">
                         <span
@@ -660,7 +743,7 @@
                     <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
                       <i class="fas fa-credit-card text-purple-600"></i>
                     </div>
-                    <h5 class="font-semibold text-gray-900 text-lg">Payment Methods</h5>
+                    <h5 class="font-semibold text-gray-900 text-lg">Metode Pembayaran</h5>
                   </div>
                   <div class="flex flex-wrap gap-4">
                     <label class="cursor-pointer">
@@ -672,7 +755,7 @@
                             <i class="fas fa-money-bill-wave text-green-600"></i>
                           </div>
                           <div>
-                            <p class="font-medium text-gray-900">Cash</p>
+                            <p class="font-medium text-gray-900">Tunai</p>
                             <p class="text-sm text-gray-500">Bayar di tempat</p>
                           </div>
                         </div>
@@ -701,21 +784,21 @@
                     <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
                       <i class="fas fa-university text-indigo-600"></i>
                     </div>
-                    <h5 class="font-semibold text-indigo-900 text-lg">Bank Information</h5>
+                    <h5 class="font-semibold text-indigo-900 text-lg">Informasi Bank</h5>
                   </div>
                   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                      <label class="block text-xs font-medium text-gray-600 mb-2">Bank Name</label>
+                      <label class="block text-xs font-medium text-gray-600 mb-2">Nama Bank</label>
                       <input type="text" id="bank_name"
                         class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm bg-white">
                     </div>
                     <div>
-                      <label class="block text-xs font-medium text-gray-600 mb-2">Account Name</label>
+                      <label class="block text-xs font-medium text-gray-600 mb-2">Nama Akun</label>
                       <input type="text" id="bank_account_name"
                         class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm bg-white">
                     </div>
                     <div>
-                      <label class="block text-xs font-medium text-gray-600 mb-2">Account Number</label>
+                      <label class="block text-xs font-medium text-gray-600 mb-2">Nomor Rekening</label>
                       <input type="text" id="bank_account_number"
                         class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm bg-white">
                     </div>
@@ -726,7 +809,7 @@
                   <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                       <i class="fas fa-calendar mr-1 text-purple-600"></i>
-                      Start Date
+                      Tanggal Mulai
                     </label>
                     <input type="date" id="start_date" required
                       class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white">
@@ -734,7 +817,7 @@
                   <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                       <i class="fas fa-calendar-check mr-1 text-purple-600"></i>
-                      End Date
+                      Tanggal Berakhir
                     </label>
                     <input type="date" id="end_date" required
                       class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white">
@@ -777,7 +860,7 @@
                         <i class="fas fa-file-alt text-yellow-600"></i>
                       </div>
                       <p class="font-medium text-gray-900">Draft</p>
-                      <p class="text-xs text-gray-500 mt-1">Save as draft</p>
+                      <p class="text-xs text-gray-500 mt-1">Simpan sebagai draft</p>
                     </div>
                   </label>
                   <label class="cursor-pointer">
@@ -787,8 +870,8 @@
                       <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-2">
                         <i class="fas fa-check-circle text-green-600"></i>
                       </div>
-                      <p class="font-medium text-gray-900">Active</p>
-                      <p class="text-xs text-gray-500 mt-1">Publish now</p>
+                      <p class="font-medium text-gray-900">Aktif</p>
+                      <p class="text-xs text-gray-500 mt-1">Publikasikan sekarang</p>
                     </div>
                   </label>
                   <label class="cursor-pointer">
@@ -798,8 +881,8 @@
                       <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-2">
                         <i class="fas fa-times-circle text-red-600"></i>
                       </div>
-                      <p class="font-medium text-gray-900">Inactive</p>
-                      <p class="text-xs text-gray-500 mt-1">Archive event</p>
+                      <p class="font-medium text-gray-900">Tidak Aktif</p>
+                      <p class="text-xs text-gray-500 mt-1">Arsipkan event</p>
                     </div>
                   </label>
                 </div>
@@ -812,47 +895,277 @@
             <button type="button" onclick="closeModal()"
               class="flex-1 bg-gray-200 text-gray-700 py-3.5 rounded-xl hover:bg-gray-300 transition-all font-semibold flex items-center justify-center gap-2">
               <i class="fas fa-times"></i>
-              Cancel
+              Batal
             </button>
             <button type="submit" form="eventForm"
               class="flex-1 gradient-primary text-white py-3.5 rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg flex items-center justify-center gap-2">
               <i class="fas fa-save"></i>
-              <span id="submitButtonText">Save Event</span>
+              <span id="submitButtonText">Simpan Event</span>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Success Notification -->
-      <div id="successNotification"
-        class="fixed top-6 right-6 bg-green-500 text-white px-6 py-4 rounded-xl shadow-lg z-50 hidden success-badge">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-            <i class="fas fa-check"></i>
-          </div>
-          <div>
-            <p class="font-semibold" id="successMessage"></p>
-            <p class="text-green-100 text-sm mt-1">Action completed successfully</p>
-          </div>
+      <!-- Modal Notifikasi -->
+      <div id="notificationModal" class="modal-notification">
+        <div class="modal-box">
+          <span class="notification-icon success" id="notificationIcon">
+            <svg class="notification-checkmark-svg" width="48" height="48" viewBox="0 0 48 48">
+              <circle cx="24" cy="24" r="22" fill="none" stroke="#fff" stroke-width="4" opacity="0.15" />
+              <path class="notification-checkmark-path" d="M14 25.5L22 33L34 17" fill="none" stroke="#fff"
+                stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <h2 class="text-xl font-bold text-gray-900 mb-2" id="notificationTitle">Sukses</h2>
+          <p class="text-gray-600 mb-6" id="notificationMessage">Operasi berhasil dilakukan</p>
+          <button id="closeNotificationModalBtn" type="button"
+            class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3.5 px-6 rounded-xl font-medium hover:from-green-700 hover:to-emerald-700 transition-all duration-200">
+            Tutup
+          </button>
         </div>
       </div>
 
-      <!-- Error Notification -->
-      <div id="errorNotification"
-        class="fixed top-6 right-6 bg-red-500 text-white px-6 py-4 rounded-xl shadow-lg z-50 hidden success-badge">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-            <i class="fas fa-exclamation-triangle"></i>
+      <!-- Modal Konfirmasi Hapus -->
+      <div id="deleteConfirmModal" style="display:none;"
+        class="fixed inset-0 flex items-center justify-center z-50 p-4">
+        <div
+          class="bg-white rounded-2xl shadow-2xl p-8 flex flex-col items-center text-center max-w-md w-full animate-fadeIn">
+          <div class="mb-4">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+            </div>
           </div>
-          <div>
-            <p class="font-semibold" id="errorMessage"></p>
-            <p class="text-red-100 text-sm mt-1">Please try again</p>
+          <h2 class="text-xl font-bold text-gray-900 mb-2">Konfirmasi Hapus</h2>
+          <p class="text-gray-600 mb-4" id="deleteConfirmMessage">Apakah Anda yakin ingin menghapus item ini?</p>
+          <p class="text-xs text-gray-400 mb-6">Aksi ini tidak dapat dibatalkan.</p>
+          <div class="flex gap-4 w-full">
+            <button id="deleteModalNo"
+              class="flex-1 bg-gray-200 text-gray-700 py-3.5 px-6 rounded-xl font-medium hover:bg-gray-300 transition-all duration-200">
+              Batal
+            </button>
+            <button id="deleteModalYes"
+              class="flex-1 bg-gradient-to-r from-red-600 to-rose-600 text-white py-3.5 px-6 rounded-xl font-medium hover:from-red-700 hover:to-rose-700 transition-all duration-200">
+              Ya, Hapus
+            </button>
           </div>
         </div>
       </div>
 
       <script>
         let allEvents = [];
+        let currentItemToDelete = null;
+        let deleteCallback = null;
+
+        // ============================================================
+        // FUNGSI NOTIFIKASI MODAL
+        // ============================================================
+
+        /**
+         * Tampilkan modal notifikasi
+         */
+        function showNotification(type, title, message, autoClose = true) {
+          const modal = document.getElementById('notificationModal');
+          const icon = document.getElementById('notificationIcon');
+          const titleEl = document.getElementById('notificationTitle');
+          const messageEl = document.getElementById('notificationMessage');
+
+          icon.className = 'notification-icon';
+
+          switch (type) {
+            case 'success':
+              icon.classList.add('success');
+              icon.innerHTML = `
+            <svg class="notification-checkmark-svg" width="48" height="48" viewBox="0 0 48 48">
+              <circle cx="24" cy="24" r="22" fill="none" stroke="#fff" stroke-width="4" opacity="0.15" />
+              <path class="notification-checkmark-path" d="M14 25.5L22 33L34 17" fill="none" stroke="#fff" stroke-width="4"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          `;
+              break;
+            case 'error':
+              icon.classList.add('error');
+              icon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+              break;
+            case 'warning':
+              icon.classList.add('warning');
+              icon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+              break;
+            case 'info':
+              icon.classList.add('info');
+              icon.innerHTML = '<i class="fas fa-info-circle"></i>';
+              break;
+            default:
+              icon.classList.add('info');
+              icon.innerHTML = '<i class="fas fa-info-circle"></i>';
+          }
+
+          titleEl.textContent = title;
+          messageEl.textContent = message;
+          modal.style.display = 'flex';
+
+          if (autoClose) {
+            setTimeout(() => {
+              closeNotification();
+            }, 4000);
+          }
+        }
+
+        /**
+         * Tutup modal notifikasi
+         */
+        function closeNotification() {
+          document.getElementById('notificationModal').style.display = 'none';
+        }
+
+        /**
+         * Tampilkan notifikasi sukses
+         */
+        function showSuccess(message) {
+          showNotification('success', 'Sukses', message);
+        }
+
+        /**
+         * Tampilkan notifikasi error
+         */
+        function showError(message) {
+          showNotification('error', 'Error', message);
+        }
+
+        /**
+         * Tampilkan modal konfirmasi hapus
+         */
+        function showDeleteConfirm(message, callback, itemData = null) {
+          currentItemToDelete = itemData;
+          deleteCallback = callback;
+
+          // Set pesan konfirmasi
+          const messageElement = document.getElementById('deleteConfirmMessage');
+          if (messageElement) {
+            messageElement.textContent = message;
+          }
+
+          // Tampilkan modal
+          const modal = document.getElementById('deleteConfirmModal');
+          modal.style.display = 'flex';
+
+          // Setup event listener untuk tombol
+          setupDeleteModalButtons();
+        }
+
+        /**
+         * Setup tombol-tombol modal hapus
+         */
+        function setupDeleteModalButtons() {
+          const yesBtn = document.getElementById('deleteModalYes');
+          const noBtn = document.getElementById('deleteModalNo');
+
+          // Clone tombol untuk menghapus event listener lama
+          const newYesBtn = yesBtn.cloneNode(true);
+          const newNoBtn = noBtn.cloneNode(true);
+
+          // Ganti dengan yang baru
+          yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
+          noBtn.parentNode.replaceChild(newNoBtn, noBtn);
+
+          // Tambahkan event listener baru
+          newYesBtn.addEventListener('click', handleDeleteConfirm);
+          newNoBtn.addEventListener('click', handleDeleteCancel);
+        }
+
+        /**
+         * Handle konfirmasi hapus
+         */
+        function handleDeleteConfirm(e) {
+          e.preventDefault();
+          closeDeleteModal();
+
+          if (deleteCallback) {
+            // Panggil callback dengan data item jika ada
+            if (currentItemToDelete) {
+              deleteCallback(currentItemToDelete);
+            } else {
+              deleteCallback();
+            }
+          }
+
+          // Reset
+          currentItemToDelete = null;
+          deleteCallback = null;
+        }
+
+        /**
+         * Handle pembatalan hapus
+         */
+        function handleDeleteCancel(e) {
+          e.preventDefault();
+          closeDeleteModal();
+
+          // Reset
+          currentItemToDelete = null;
+          deleteCallback = null;
+        }
+
+        /**
+         * Tutup modal konfirmasi hapus
+         */
+        function closeDeleteModal() {
+          const modal = document.getElementById('deleteConfirmModal');
+          modal.style.display = 'none';
+        }
+
+        // Event listener untuk modal notifikasi
+        document.addEventListener('DOMContentLoaded', function () {
+          const closeBtn = document.getElementById('closeNotificationModalBtn');
+          if (closeBtn) {
+            closeBtn.addEventListener('click', function (e) {
+              e.preventDefault();
+              closeNotification();
+            });
+          }
+
+          // Tutup modal ketika klik di luar
+          const modal = document.getElementById('notificationModal');
+          if (modal) {
+            modal.addEventListener('click', function (e) {
+              if (e.target === modal) {
+                closeNotification();
+              }
+            });
+          }
+
+          // Tutup modal konfirmasi hapus saat klik di luar
+          const deleteModal = document.getElementById('deleteConfirmModal');
+          if (deleteModal) {
+            deleteModal.addEventListener('click', function (e) {
+              if (e.target === deleteModal) {
+                closeDeleteModal();
+                currentItemToDelete = null;
+                deleteCallback = null;
+              }
+            });
+          }
+
+          // Tutup modal dengan ESC key
+          document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+              closeNotification();
+              closeViewModal();
+              closeModal();
+
+              // Tutup modal konfirmasi hapus jika terbuka
+              const deleteModal = document.getElementById('deleteConfirmModal');
+              if (deleteModal.style.display === 'flex') {
+                closeDeleteModal();
+                currentItemToDelete = null;
+                deleteCallback = null;
+              }
+            }
+          });
+        });
+
+        // ============================================================
+        // FUNGSI UTAMA EVENT
+        // ============================================================
 
         async function loadEvents() {
           try {
@@ -863,10 +1176,12 @@
               allEvents = data.data;
               updateStats(data.data);
               displayEvents(data.data);
+            } else {
+              showError(data.message || 'Gagal memuat event');
             }
           } catch (error) {
             console.error('Error loading events:', error);
-            showError('Failed to load events');
+            showError('Gagal memuat event');
           }
         }
 
@@ -895,11 +1210,11 @@
               <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
                 <i class="fas fa-calendar-times text-4xl text-gray-300"></i>
               </div>
-              <h3 class="text-xl font-semibold text-gray-700 mb-2">No Events Found</h3>
-              <p class="text-gray-500 max-w-md mx-auto">Create your first event to get started.</p>
+              <h3 class="text-xl font-semibold text-gray-700 mb-2">Tidak Ada Event Ditemukan</h3>
+              <p class="text-gray-500 max-w-md mx-auto">Buat event pertama Anda untuk memulai.</p>
               <button onclick="showCreateModal()" class="mt-6 px-6 py-3 gradient-primary text-white rounded-xl hover:opacity-90 transition-all font-semibold flex items-center gap-2">
                 <i class="fas fa-plus"></i>
-                Create Your First Event
+                Buat Event Pertama Anda
               </button>
             </div>
           </div>
@@ -910,14 +1225,14 @@
           container.innerHTML = events.map(event => {
             const statusConfig = {
               'draft': { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: 'fas fa-file-alt', badge: 'Draft' },
-              'active': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fas fa-check-circle', badge: 'Active' },
-              'inactive': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle', badge: 'Inactive' }
-            }[event.status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-file', badge: 'Unknown' };
+              'active': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fas fa-check-circle', badge: 'Aktif' },
+              'inactive': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle', badge: 'Tidak Aktif' }
+            }[event.status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-file', badge: 'Tidak Diketahui' };
 
             const typeConfig = {
-              'gratis': { bg: 'bg-blue-500', text: 'text-blue-100', icon: 'fas fa-gift', badge: 'Free' },
-              'berbayar': { bg: 'bg-purple-500', text: 'text-purple-100', icon: 'fas fa-gem', badge: 'Paid' }
-            }[event.event_type] || { bg: 'bg-gray-500', text: 'text-gray-100', icon: 'fas fa-calendar', badge: 'Unknown' };
+              'gratis': { bg: 'bg-blue-500', text: 'text-blue-100', icon: 'fas fa-gift', badge: 'Gratis' },
+              'berbayar': { bg: 'bg-purple-500', text: 'text-purple-100', icon: 'fas fa-gem', badge: 'Berbayar' }
+            }[event.event_type] || { bg: 'bg-gray-500', text: 'text-gray-100', icon: 'fas fa-calendar', badge: 'Tidak Diketahui' };
 
             const startDate = event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
             const endDate = event.end_date ? new Date(event.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
@@ -953,7 +1268,7 @@
                   <div class="flex items-center justify-between text-sm">
                     <span class="text-gray-500 flex items-center gap-1">
                       <i class="fas fa-tag text-gray-400"></i>
-                      Original
+                      Asli
                     </span>
                     <span class="font-semibold text-gray-900">Rp ${parseInt(event.price_original || 0).toLocaleString('id-ID')}</span>
                   </div>
@@ -970,7 +1285,7 @@
                       <i class="fas fa-gift"></i>
                       Event Gratis
                     </span>
-                    <span class="text-blue-600 font-bold">No Payment Required</span>
+                    <span class="text-blue-600 font-bold">Tidak Perlu Pembayaran</span>
                   </div>
                 `}
                 <div class="flex items-center justify-between text-sm pt-2 border-t border-gray-100">
@@ -989,9 +1304,9 @@
                 <i class="fas fa-edit"></i>
                 Edit
               </button>
-              <button onclick="deleteEvent(${event.id})" class="flex-1 text-sm font-semibold bg-red-50 text-red-600 hover:bg-red-100 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+              <button onclick="confirmDeleteEvent(${event.id})" class="flex-1 text-sm font-semibold bg-red-50 text-red-600 hover:bg-red-100 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
                 <i class="fas fa-trash"></i>
-                Delete
+                Hapus
               </button>
             </div>
           </div>
@@ -999,36 +1314,71 @@
           }).join('');
         }
 
+        function confirmDeleteEvent(eventId) {
+          const event = allEvents.find(e => e.id === eventId);
+          const eventName = event ? event.title : 'event ini';
+
+          showDeleteConfirm(
+            `Apakah Anda yakin ingin menghapus "${eventName}"?`,
+            async () => {
+              await deleteEvent(eventId);
+            },
+            { id: eventId, name: eventName }
+          );
+        }
+
+        async function deleteEvent(eventId) {
+          const event = allEvents.find(e => e.id === eventId);
+          const eventName = event ? event.title : 'event ini';
+
+          try {
+            const response = await fetch(`/api/admin/events/${eventId}`, {
+              method: 'DELETE'
+            });
+            const data = await response.json();
+
+            if (data.success) {
+              showSuccess('Event berhasil dihapus');
+              loadEvents();
+            } else {
+              showError('Gagal menghapus event: ' + (data.message || 'Error tidak diketahui'));
+            }
+          } catch (error) {
+            console.error('Error deleting event:', error);
+            showError('Gagal menghapus event: ' + error.message);
+          }
+        }
+
         function viewEvent(eventId) {
           const event = allEvents.find(e => e.id === eventId);
           if (!event) {
-            showError('Event not found');
+            showError('Event tidak ditemukan');
             return;
           }
 
-          // Set event information
+          // Set informasi event
           document.getElementById('viewEventId').textContent = event.id;
           document.getElementById('viewEventTitle').textContent = event.title;
-          document.getElementById('viewEventDescription').textContent = event.description || 'No description';
+          document.getElementById('viewEventDescription').textContent = event.description || 'Tidak ada deskripsi';
           document.getElementById('viewEventSlug').textContent = event.slug || '-';
-          document.getElementById('viewEventType').textContent = event.event_type === 'gratis' ? 'Free' : 'Paid';
+          document.getElementById('viewEventType').textContent = event.event_type === 'gratis' ? 'Gratis' : 'Berbayar';
           document.getElementById('viewEventStatus').textContent = event.status.charAt(0).toUpperCase() + event.status.slice(1);
 
           // Set badges
           const statusConfig = {
             'draft': { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: 'fas fa-file-alt', badge: 'Draft' },
-            'active': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fas fa-check-circle', badge: 'Active' },
-            'inactive': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle', badge: 'Inactive' }
-          }[event.status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-file', badge: 'Unknown' };
+            'active': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fas fa-check-circle', badge: 'Aktif' },
+            'inactive': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle', badge: 'Tidak Aktif' }
+          }[event.status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-file', badge: 'Tidak Diketahui' };
 
           const statusBadge = document.getElementById('viewEventStatusBadge');
           statusBadge.className = `px-3 py-1.5 rounded-full text-xs font-semibold ${statusConfig.bg} ${statusConfig.text} flex items-center gap-2`;
           statusBadge.innerHTML = `<i class="${statusConfig.icon}"></i>${statusConfig.badge}`;
 
           const typeConfig = {
-            'gratis': { bg: 'bg-blue-100', text: 'text-blue-800', icon: 'fas fa-gift', badge: 'Free Event' },
-            'berbayar': { bg: 'bg-purple-100', text: 'text-purple-800', icon: 'fas fa-gem', badge: 'Paid Event' }
-          }[event.event_type] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-calendar', badge: 'Unknown' };
+            'gratis': { bg: 'bg-blue-100', text: 'text-blue-800', icon: 'fas fa-gift', badge: 'Event Gratis' },
+            'berbayar': { bg: 'bg-purple-100', text: 'text-purple-800', icon: 'fas fa-gem', badge: 'Event Berbayar' }
+          }[event.event_type] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-calendar', badge: 'Tidak Diketahui' };
 
           const typeBadge = document.getElementById('viewEventTypeBadge');
           typeBadge.className = `px-3 py-1.5 rounded-full text-xs font-semibold ${typeConfig.bg} ${typeConfig.text} flex items-center gap-2`;
@@ -1038,14 +1388,14 @@
           const priceBadge = document.getElementById('viewEventPriceBadge');
           if (event.event_type === 'gratis') {
             priceBadge.className = 'px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 flex items-center gap-2';
-            priceBadge.innerHTML = '<i class="fas fa-gift"></i>FREE';
+            priceBadge.innerHTML = '<i class="fas fa-gift"></i>GRATIS';
           } else {
             const promoPrice = parseInt(event.price_promo || 0);
             priceBadge.className = 'px-3 py-1.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 flex items-center gap-2';
             priceBadge.innerHTML = `<i class="fas fa-tags"></i>Rp ${promoPrice.toLocaleString('id-ID')}`;
           }
 
-          // Set dates
+          // Set tanggal
           const startDate = event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', {
             weekday: 'long',
             day: 'numeric',
@@ -1062,7 +1412,7 @@
           document.getElementById('viewStartDate').textContent = startDate;
           document.getElementById('viewEndDate').textContent = endDate;
 
-          // Set pricing information
+          // Set informasi harga
           if (event.event_type === 'berbayar') {
             document.getElementById('viewPricingSection').classList.remove('hidden');
             document.getElementById('viewFreeEventSection').classList.add('hidden');
@@ -1070,7 +1420,7 @@
             document.getElementById('viewPriceOriginal').textContent = `Rp ${parseInt(event.price_original || 0).toLocaleString('id-ID')}`;
             document.getElementById('viewPricePromo').textContent = `Rp ${parseInt(event.price_promo || 0).toLocaleString('id-ID')}`;
 
-            // Set payment methods
+            // Set metode pembayaran
             const paymentMethodsContainer = document.getElementById('viewPaymentMethods');
             paymentMethodsContainer.innerHTML = '';
 
@@ -1078,21 +1428,21 @@
               const methods = event.payment_methods.split(',');
               methods.forEach(method => {
                 const methodConfig = {
-                  'cash': { icon: 'fas fa-money-bill-wave', text: 'Cash', color: 'green' },
-                  'transfer': { icon: 'fas fa-university', text: 'Bank Transfer', color: 'blue' }
+                  'cash': { icon: 'fas fa-money-bill-wave', text: 'Tunai', color: 'green' },
+                  'transfer': { icon: 'fas fa-university', text: 'Transfer Bank', color: 'blue' }
                 }[method] || { icon: 'fas fa-money-bill', text: method, color: 'gray' };
 
                 const methodElement = document.createElement('div');
                 methodElement.className = `flex items-center gap-2 text-sm text-${methodConfig.color}-600`;
                 methodElement.innerHTML = `
-                  <i class="${methodConfig.icon}"></i>
-                  <span>${methodConfig.text}</span>
-                `;
+              <i class="${methodConfig.icon}"></i>
+              <span>${methodConfig.text}</span>
+            `;
                 paymentMethodsContainer.appendChild(methodElement);
               });
             }
 
-            // Set bank information
+            // Set informasi bank
             document.getElementById('viewBankName').textContent = event.bank_name || '-';
             document.getElementById('viewAccountName').textContent = event.bank_account_name || '-';
             document.getElementById('viewAccountNumber').textContent = event.bank_account_number || '-';
@@ -1106,10 +1456,10 @@
           // Set admin WhatsApp
           document.getElementById('viewAdminWhatsApp').textContent = event.admin_whatsapp ? `+62 ${event.admin_whatsapp}` : '-';
 
-          // Set edit button to current event
+          // Set tombol edit ke event saat ini
           document.getElementById('editFromViewBtn').setAttribute('onclick', `closeViewModal(); editEvent(${event.id})`);
 
-          // Show modal
+          // Tampilkan modal
           document.getElementById('viewModal').classList.remove('hidden');
           document.getElementById('viewModal').classList.add('flex');
           document.body.style.overflow = 'hidden';
@@ -1123,7 +1473,7 @@
 
         function editFromView() {
           closeViewModal();
-          // Wait a bit before opening edit modal for smooth animation
+          // Tunggu sebentar sebelum membuka modal edit untuk animasi yang halus
           setTimeout(() => {
             const eventId = document.getElementById('viewEventId').textContent;
             editEvent(parseInt(eventId));
@@ -1131,11 +1481,11 @@
         }
 
         function showCreateModal() {
-          document.getElementById('modalTitleText').textContent = 'Create Event';
-          document.getElementById('submitButtonText').textContent = 'Create Event';
+          document.getElementById('modalTitleText').textContent = 'Buat Event';
+          document.getElementById('submitButtonText').textContent = 'Buat Event';
           document.getElementById('eventForm').reset();
           document.getElementById('eventId').value = '';
-          // Ensure fields match selected type after reset
+          // Pastikan field sesuai dengan tipe yang dipilih setelah reset
           toggleEventFields();
           document.getElementById('eventModal').classList.remove('hidden');
           document.getElementById('eventModal').classList.add('flex');
@@ -1145,22 +1495,22 @@
         async function editEvent(eventId) {
           const event = allEvents.find(e => e.id === eventId);
           if (!event) {
-            showError('Event not found');
+            showError('Event tidak ditemukan');
             return;
           }
 
           document.getElementById('modalTitleText').textContent = 'Edit Event';
-          document.getElementById('submitButtonText').textContent = 'Update Event';
+          document.getElementById('submitButtonText').textContent = 'Perbarui Event';
           document.getElementById('eventId').value = event.id;
 
-          // Set event type
+          // Set tipe event
           const eventTypeRadio = document.querySelector(`input[name="event_type"][value="${event.event_type}"]`);
           if (eventTypeRadio) {
             eventTypeRadio.checked = true;
             toggleEventFields();
           }
 
-          // Fill form based on event type
+          // Isi form berdasarkan tipe event
           if (event.event_type === 'gratis') {
             document.getElementById('title_gratis').value = event.title || '';
             document.getElementById('slug_gratis').value = event.slug || '';
@@ -1177,7 +1527,7 @@
             document.getElementById('bank_account_name').value = event.bank_account_name || '';
             document.getElementById('bank_account_number').value = event.bank_account_number || '';
 
-            // Set payment methods
+            // Set metode pembayaran
             document.querySelectorAll('.payment-method-checkbox').forEach(cb => {
               cb.checked = event.payment_methods && event.payment_methods.includes(cb.value);
             });
@@ -1196,30 +1546,6 @@
           document.body.style.overflow = 'hidden';
         }
 
-        async function deleteEvent(eventId) {
-          const event = allEvents.find(e => e.id === eventId);
-          const eventName = event ? event.title : 'this event';
-
-          if (!confirm(`Are you sure you want to delete "${eventName}"?`)) return;
-
-          try {
-            const response = await fetch(`/api/admin/events/${eventId}`, {
-              method: 'DELETE'
-            });
-            const data = await response.json();
-
-            if (data.success) {
-              showSuccess('Event deleted successfully');
-              loadEvents();
-            } else {
-              showError('Failed to delete event: ' + (data.message || 'Unknown error'));
-            }
-          } catch (error) {
-            console.error('Error deleting event:', error);
-            showError('Failed to delete event: ' + error.message);
-          }
-        }
-
         function closeModal() {
           document.getElementById('eventModal').classList.add('hidden');
           document.getElementById('eventModal').classList.remove('flex');
@@ -1232,7 +1558,7 @@
           const berbayarFields = document.getElementById('berbayarFields');
 
           if (eventType === 'gratis') {
-            // Show gratis fields and set required attributes
+            // Tampilkan field gratis dan set atribut required
             gratisFields.classList.remove('hidden');
             berbayarFields.classList.add('hidden');
 
@@ -1248,7 +1574,7 @@
             document.getElementById('start_date').required = false;
             document.getElementById('end_date').required = false;
           } else {
-            // Show berbayar fields and set required attributes
+            // Tampilkan field berbayar dan set atribut required
             gratisFields.classList.add('hidden');
             berbayarFields.classList.remove('hidden');
 
@@ -1275,26 +1601,6 @@
             .replace(/^-+|-+$/g, '');
         }
 
-        function showSuccess(message) {
-          const notification = document.getElementById('successNotification');
-          document.getElementById('successMessage').textContent = message;
-          notification.classList.remove('hidden');
-
-          setTimeout(() => {
-            notification.classList.add('hidden');
-          }, 3000);
-        }
-
-        function showError(message) {
-          const notification = document.getElementById('errorNotification');
-          document.getElementById('errorMessage').textContent = message;
-          notification.classList.remove('hidden');
-
-          setTimeout(() => {
-            notification.classList.add('hidden');
-          }, 3000);
-        }
-
         // Form submission
         document.getElementById('eventForm').addEventListener('submit', async (e) => {
           e.preventDefault();
@@ -1317,7 +1623,7 @@
             formData.price_promo = 0;
             formData.payment_methods = '';
           } else {
-            // Get selected payment methods
+            // Ambil metode pembayaran yang dipilih
             const paymentMethods = [];
             document.querySelectorAll('.payment-method-checkbox:checked').forEach(checkbox => {
               paymentMethods.push(checkbox.value);
@@ -1349,15 +1655,15 @@
             const data = await response.json();
 
             if (data.success) {
-              showSuccess(eventId ? 'Event updated successfully' : 'Event created successfully');
+              showSuccess(eventId ? 'Event berhasil diperbarui' : 'Event berhasil dibuat');
               closeModal();
               loadEvents();
             } else {
-              showError('Failed to save event: ' + (data.message || 'Unknown error'));
+              showError('Gagal menyimpan event: ' + (data.message || 'Error tidak diketahui'));
             }
           } catch (error) {
             console.error('Error saving event:', error);
-            showError('Failed to save event: ' + error.message);
+            showError('Gagal menyimpan event: ' + error.message);
           }
         });
 
@@ -1404,18 +1710,7 @@
           filterEvents();
         }
 
-        // Close modal on escape key
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') {
-            if (!document.getElementById('viewModal').classList.contains('hidden')) {
-              closeViewModal();
-            } else if (!document.getElementById('eventModal').classList.contains('hidden')) {
-              closeModal();
-            }
-          }
-        });
-
-        // Close modal on backdrop click
+        // Tutup modal pada backdrop click
         document.getElementById('viewModal').addEventListener('click', (e) => {
           if (e.target === document.getElementById('viewModal')) {
             closeViewModal();
@@ -1431,7 +1726,7 @@
         // Load events on page load
         document.addEventListener('DOMContentLoaded', loadEvents);
 
-        // Auto-refresh every 60 seconds
+        // Auto-refresh setiap 60 detik
         setInterval(loadEvents, 60000);
       </script>
 </body>

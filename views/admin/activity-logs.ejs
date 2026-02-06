@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Activity Logs - Affillink Admin</title>
+  <title>Log Aktivitas - Affillink Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -132,7 +132,7 @@
                   <i class="fas fa-history text-white text-xl"></i>
                 </div>
                 <div>
-                  <h1 class="text-3xl font-bold text-gray-900">Activity Logs</h1>
+                  <h1 class="text-3xl font-bold text-gray-900">Log Aktivitas</h1>
                   <p class="text-gray-600 mt-1">Riwayat aktivitas sistem Affillink</p>
                 </div>
               </div>
@@ -150,87 +150,7 @@
               <div class="px-4 py-2 gradient-primary rounded-lg shadow-lg text-white pulse-animation">
                 <div class="flex items-center gap-2">
                   <i class="fas fa-bell"></i>
-                  <span class="text-sm font-medium">Real-time Activity</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Stats Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Total Activities</p>
-                  <p class="text-3xl font-bold text-gray-900 mb-2" id="totalActivities">-</p>
-                </div>
-                <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-history text-white text-2xl"></i>
-                </div>
-              </div>
-              <div class="mt-4 pt-4 border-t border-green-50">
-                <div class="flex items-center gap-2 text-sm">
-                  <span class="text-green-600 font-medium flex items-center">
-                    <i class="fas fa-chart-line mr-1"></i>
-                    <span id="todayActivities">+24</span>
-                  </span>
-                  <span class="text-gray-500">today</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">System Events</p>
-                  <p class="text-3xl font-bold text-green-600 mb-2" id="systemActivities">-</p>
-                </div>
-                <div class="w-14 h-14 gradient-secondary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-server text-white text-2xl"></i>
-                </div>
-              </div>
-              <div class="mt-4 pt-4 border-t border-green-50">
-                <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-600">Critical events</span>
-                  <span class="font-medium text-green-700" id="criticalEvents">-</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">User Actions</p>
-                  <p class="text-3xl font-bold text-blue-600 mb-2" id="userActivities">-</p>
-                </div>
-                <div
-                  class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-users text-white text-2xl"></i>
-                </div>
-              </div>
-              <div class="mt-4 pt-4 border-t border-green-50">
-                <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-600">Active users</span>
-                  <span class="font-medium text-blue-700" id="activeUsers">-</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Error Logs</p>
-                  <p class="text-3xl font-bold text-red-600 mb-2" id="errorLogs">-</p>
-                </div>
-                <div
-                  class="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-exclamation-triangle text-white text-2xl"></i>
-                </div>
-              </div>
-              <div class="mt-4 pt-4 border-t border-green-50">
-                <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-600">Last 24h</span>
-                  <span class="font-medium text-red-700" id="recentErrors">-</span>
+                  <span class="text-sm font-medium">Aktivitas Real-time</span>
                 </div>
               </div>
             </div>
@@ -238,52 +158,60 @@
 
           <!-- Filters and Controls -->
           <div class="glass-card rounded-2xl p-6 border border-green-100 mb-8">
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 flex-wrap">
-              <!-- Type Filters -->
-              <div class="flex flex-wrap gap-3 items-center">
-                <button onclick="filterByType('all')" id="filterAll"
-                  class="px-4 py-2 rounded-xl font-medium gradient-primary text-white flex items-center gap-2 type-badge">
-                  <i class="fas fa-layer-group"></i>
-                  <span>All Activities</span>
-                </button>
-                <button onclick="filterByType('user')" id="filterUser"
-                  class="px-4 py-2 rounded-xl font-medium bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center gap-2 type-badge">
-                  <i class="fas fa-user"></i>
-                  <span>User Actions</span>
-                </button>
-                <button onclick="filterByType('system')" id="filterSystem"
-                  class="px-4 py-2 rounded-xl font-medium bg-purple-50 text-purple-600 hover:bg-purple-100 flex items-center gap-2 type-badge">
-                  <i class="fas fa-server"></i>
-                  <span>System Events</span>
-                </button>
-                <button onclick="filterByType('affiliate')" id="filterAffiliate"
-                  class="px-4 py-2 rounded-xl font-medium bg-green-50 text-green-600 hover:bg-green-100 flex items-center gap-2 type-badge">
-                  <i class="fas fa-user-tie"></i>
-                  <span>Affiliate</span>
-                </button>
-                <button onclick="filterByType('event')" id="filterEvent"
-                  class="px-4 py-2 rounded-xl font-medium bg-amber-50 text-amber-600 hover:bg-amber-100 flex items-center gap-2 type-badge">
-                  <i class="fas fa-calendar-alt"></i>
-                  <span>Events</span>
-                </button>
+            <div class="space-y-4">
+              <!-- First Row: Type Filters -->
+              <div>
+                <div class="flex flex-wrap gap-2 items-center">
+                  <button onclick="filterByType('all')" id="filterAll"
+                    class="px-4 py-2 rounded-xl font-medium gradient-primary text-white flex items-center gap-2 type-badge whitespace-nowrap">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Semua Aktivitas</span>
+                  </button>
+                  <button onclick="filterByType('user')" id="filterUser"
+                    class="px-4 py-2 rounded-xl font-medium bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center gap-2 type-badge whitespace-nowrap">
+                    <i class="fas fa-user"></i>
+                    <span>Aksi Pengguna</span>
+                  </button>
+                  <button onclick="filterByType('system')" id="filterSystem"
+                    class="px-4 py-2 rounded-xl font-medium bg-purple-50 text-purple-600 hover:bg-purple-100 flex items-center gap-2 type-badge whitespace-nowrap">
+                    <i class="fas fa-server"></i>
+                    <span>Event Sistem</span>
+                  </button>
+                  <button onclick="filterByType('affiliate')" id="filterAffiliate"
+                    class="px-4 py-2 rounded-xl font-medium bg-green-50 text-green-600 hover:bg-green-100 flex items-center gap-2 type-badge whitespace-nowrap">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Afiliasi</span>
+                  </button>
+                  <button onclick="filterByType('event')" id="filterEvent"
+                    class="px-4 py-2 rounded-xl font-medium bg-amber-50 text-amber-600 hover:bg-amber-100 flex items-center gap-2 type-badge whitespace-nowrap">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Event</span>
+                  </button>
+                </div>
               </div>
 
-              <!-- Date Filter, Search, and Clear in a row -->
-              <div class="flex flex-wrap items-center gap-3 min-w-[320px]">
+              <!-- Second Row: Search, Date Filter, and Clear Button -->
+              <div class="flex flex-col sm:flex-row gap-4">
+                <!-- Search Input -->
+                <div class="relative flex-1">
+                  <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                  <input type="text" id="searchInput"
+                    placeholder="Cari aktivitas berdasarkan deskripsi atau pengguna..."
+                    class="w-full pl-10 pr-3 py-2.5 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm" />
+                </div>
+
+                <!-- Date Filter -->
                 <div class="relative">
                   <i class="fas fa-calendar-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                   <input type="date" id="dateFilter"
-                    class="pl-10 pr-3 py-2 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm min-w-[140px]" />
+                    class="pl-10 pr-3 py-2.5 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm w-full sm:w-auto min-w-[160px]" />
                 </div>
-                <div class="relative flex-1 min-w-[180px]">
-                  <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                  <input type="text" id="searchInput" placeholder="Search activities..."
-                    class="pl-10 pr-3 py-2 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm w-full" />
-                </div>
+
+                <!-- Clear Button -->
                 <button onclick="clearFilters()"
-                  class="px-4 py-2 border border-green-200 text-green-700 hover:bg-green-50 rounded-xl transition-colors flex items-center gap-2 h-[40px]">
+                  class="px-4 py-2.5 border border-green-200 text-green-700 hover:bg-green-50 rounded-xl transition-colors flex items-center gap-2 whitespace-nowrap h-[44px]">
                   <i class="fas fa-redo"></i>
-                  <span class="font-medium">Clear</span>
+                  <span class="font-medium">Hapus Filter</span>
                 </button>
               </div>
             </div>
@@ -291,16 +219,6 @@
 
           <!-- Activity Timeline -->
           <div class="glass-card rounded-2xl border border-green-100 overflow-hidden">
-            <!-- Timeline Header -->
-            <div class="px-6 py-4 gradient-primary">
-              <div class="flex items-center justify-between">
-                <div>
-                  <h2 class="text-lg font-semibold text-white">Activity Timeline</h2>
-                  <p class="text-green-100 text-sm mt-1" id="timelineCount">Loading activities...</p>
-                </div>
-              </div>
-            </div>
-
             <!-- Timeline Content -->
             <div class="p-6">
               <div class="relative activity-timeline">
@@ -311,7 +229,7 @@
                         class="w-16 h-16 gradient-primary rounded-full flex items-center justify-center mb-4 animate-pulse">
                         <i class="fas fa-spinner fa-spin text-2xl text-white"></i>
                       </div>
-                      <p class="text-lg font-medium">Loading activities...</p>
+                      <p class="text-lg font-medium">Memuat aktivitas...</p>
                     </div>
                   </div>
                 </div>
@@ -320,15 +238,15 @@
 
             <!-- Timeline Footer -->
             <div class="px-6 py-4 bg-green-50 border-t border-green-100">
-              <div class="flex items-center justify-between text-sm">
-                <div class="text-gray-600">
-                  Showing <span id="showingCount">0</span> of <span id="totalCount">0</span> activities
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="text-sm text-gray-600">
+                  <span id="currentInfo">Tidak ada aktivitas ditemukan</span>
                 </div>
                 <div class="flex items-center gap-4">
                   <button onclick="loadMore()" id="loadMoreBtn"
-                    class="text-green-700 hover:text-green-800 font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    class="text-green-700 hover:text-green-800 font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap">
                     <i class="fas fa-arrow-down"></i>
-                    Load More
+                    Muat Aktivitas Lainnya
                   </button>
                 </div>
               </div>
@@ -347,8 +265,8 @@
                 <i class="fas fa-info-circle text-white"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-white">Activity Details</h3>
-                <p class="text-green-100 text-sm mt-1">Complete activity information</p>
+                <h3 class="text-xl font-bold text-white">Detail Aktivitas</h3>
+                <p class="text-green-100 text-sm mt-1">Informasi lengkap aktivitas</p>
               </div>
             </div>
             <button onclick="closeDetailModal()"
@@ -369,7 +287,7 @@
             <button onclick="closeDetailModal()"
               class="flex-1 bg-gray-200 text-gray-700 py-3.5 rounded-xl hover:bg-gray-300 transition-all font-semibold flex items-center justify-center gap-2">
               <i class="fas fa-times"></i>
-              Close
+              Tutup
             </button>
           </div>
         </div>
@@ -395,45 +313,12 @@
               }
 
               hasMore = data.data.length === pageSize;
-              updateStats(allActivities);
               filterActivities();
-              updateActivityCounts();
             }
           } catch (error) {
             console.error('Error loading activity logs:', error);
-            showError('Failed to load activity logs');
+            showError('Gagal memuat log aktivitas');
           }
-        }
-
-        function updateStats(activities) {
-          const total = activities.length;
-          const today = activities.filter(a => {
-            const today = new Date().toDateString();
-            const activityDate = new Date(a.created_at).toDateString();
-            return today === activityDate;
-          }).length;
-
-          const systemActivities = activities.filter(a =>
-            a.action.includes('system') || a.action.includes('cron') || a.action.includes('backup')
-          ).length;
-
-          const userActivities = activities.filter(a =>
-            a.action.includes('login') || a.action.includes('logout') || a.action.includes('profile')
-          ).length;
-
-          const errorLogs = activities.filter(a =>
-            a.action.includes('error') || a.action.includes('failed') || a.action.includes('rejected')
-          ).length;
-
-          document.getElementById('totalActivities').textContent = total;
-          document.getElementById('todayActivities').textContent = `+${today}`;
-          document.getElementById('systemActivities').textContent = systemActivities;
-          document.getElementById('userActivities').textContent = userActivities;
-          document.getElementById('errorLogs').textContent = errorLogs;
-
-          document.getElementById('criticalEvents').textContent = Math.floor(systemActivities * 0.1);
-          document.getElementById('activeUsers').textContent = Math.floor(userActivities * 0.5);
-          document.getElementById('recentErrors').textContent = errorLogs;
         }
 
         function filterActivities() {
@@ -486,7 +371,22 @@
           displayActivitiesList(displayActivities);
 
           // Update pagination
-          document.getElementById('loadMoreBtn').disabled = !hasMore || displayActivities.length >= filtered.length;
+          const loadMoreBtn = document.getElementById('loadMoreBtn');
+          loadMoreBtn.disabled = !hasMore || displayActivities.length >= filtered.length;
+
+          // Update info text
+          updateInfoText(filtered, displayActivities);
+        }
+
+        function updateInfoText(filtered, displayActivities) {
+          const showing = displayActivities.length;
+          const total = filtered.length;
+
+          if (total === 0) {
+            document.getElementById('currentInfo').textContent = 'Tidak ada aktivitas ditemukan';
+          } else {
+            document.getElementById('currentInfo').textContent = `Menampilkan ${showing} dari ${total} aktivitas`;
+          }
         }
 
         function displayActivitiesList(activities) {
@@ -499,11 +399,11 @@
               <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
                 <i class="fas fa-history text-4xl text-gray-300"></i>
               </div>
-              <h3 class="text-xl font-semibold text-gray-700 mb-2">No Activities Found</h3>
-              <p class="text-gray-500 max-w-md mx-auto">No activities match your current filter.</p>
+              <h3 class="text-xl font-semibold text-gray-700 mb-2">Tidak Ada Aktivitas Ditemukan</h3>
+              <p class="text-gray-500 max-w-md mx-auto">Tidak ada aktivitas yang sesuai dengan filter Anda.</p>
               <button onclick="clearFilters()" class="mt-6 px-6 py-3 gradient-primary text-white rounded-xl hover:opacity-90 transition-all font-semibold flex items-center gap-2">
                 <i class="fas fa-redo"></i>
-                Clear Filters
+                Hapus Filter
               </button>
             </div>
           </div>
@@ -512,17 +412,17 @@
           }
 
           const actionConfig = {
-            'affiliate_approved': { icon: 'fa-user-check', color: 'text-green-500', bg: 'bg-green-100', type: 'affiliate', label: 'Affiliate Approved' },
-            'affiliate_rejected': { icon: 'fa-user-times', color: 'text-red-500', bg: 'bg-red-100', type: 'affiliate', label: 'Affiliate Rejected' },
-            'affiliate_registration': { icon: 'fa-user-plus', color: 'text-blue-500', bg: 'bg-blue-100', type: 'affiliate', label: 'Affiliate Registration' },
-            'event_created': { icon: 'fa-calendar-plus', color: 'text-purple-500', bg: 'bg-purple-100', type: 'event', label: 'Event Created' },
-            'event_updated': { icon: 'fa-calendar-check', color: 'text-indigo-500', bg: 'bg-indigo-100', type: 'event', label: 'Event Updated' },
-            'login': { icon: 'fa-sign-in-alt', color: 'text-green-500', bg: 'bg-green-100', type: 'user', label: 'User Login' },
-            'logout': { icon: 'fa-sign-out-alt', color: 'text-gray-500', bg: 'bg-gray-100', type: 'user', label: 'User Logout' },
-            'transaction': { icon: 'fa-dollar-sign', color: 'text-amber-500', bg: 'bg-amber-100', type: 'system', label: 'Transaction' },
-            'update': { icon: 'fa-sync-alt', color: 'text-indigo-500', bg: 'bg-indigo-100', type: 'system', label: 'System Update' },
-            'system_backup': { icon: 'fa-database', color: 'text-blue-500', bg: 'bg-blue-100', type: 'system', label: 'System Backup' },
-            'error': { icon: 'fa-exclamation-triangle', color: 'text-red-500', bg: 'bg-red-100', type: 'system', label: 'System Error' }
+            'affiliate_approved': { icon: 'fa-user-check', color: 'text-green-500', bg: 'bg-green-100', type: 'affiliate', label: 'Afiliasi Disetujui' },
+            'affiliate_rejected': { icon: 'fa-user-times', color: 'text-red-500', bg: 'bg-red-100', type: 'affiliate', label: 'Afiliasi Ditolak' },
+            'affiliate_registration': { icon: 'fa-user-plus', color: 'text-blue-500', bg: 'bg-blue-100', type: 'affiliate', label: 'Pendaftaran Afiliasi' },
+            'event_created': { icon: 'fa-calendar-plus', color: 'text-purple-500', bg: 'bg-purple-100', type: 'event', label: 'Event Dibuat' },
+            'event_updated': { icon: 'fa-calendar-check', color: 'text-indigo-500', bg: 'bg-indigo-100', type: 'event', label: 'Event Diperbarui' },
+            'login': { icon: 'fa-sign-in-alt', color: 'text-green-500', bg: 'bg-green-100', type: 'user', label: 'Login Pengguna' },
+            'logout': { icon: 'fa-sign-out-alt', color: 'text-gray-500', bg: 'bg-gray-100', type: 'user', label: 'Logout Pengguna' },
+            'transaction': { icon: 'fa-dollar-sign', color: 'text-amber-500', bg: 'bg-amber-100', type: 'system', label: 'Transaksi' },
+            'update': { icon: 'fa-sync-alt', color: 'text-indigo-500', bg: 'bg-indigo-100', type: 'system', label: 'Update Sistem' },
+            'system_backup': { icon: 'fa-database', color: 'text-blue-500', bg: 'bg-blue-100', type: 'system', label: 'Backup Sistem' },
+            'error': { icon: 'fa-exclamation-triangle', color: 'text-red-500', bg: 'bg-red-100', type: 'system', label: 'Error Sistem' }
           };
 
           container.innerHTML = activities.map((activity, index) => {
@@ -531,7 +431,7 @@
               color: 'text-gray-500',
               bg: 'bg-gray-100',
               type: 'system',
-              label: 'Activity'
+              label: 'Aktivitas'
             };
 
             const timeAgo = getTimeAgo(activity.created_at);
@@ -563,7 +463,7 @@
                   <span class="text-xs text-gray-500">${timeAgo}</span>
                 </div>
                 <button onclick="viewActivityDetail(${activity.id})" 
-                  class="text-gray-400 hover:text-gray-600 transition-colors" title="View details">
+                  class="text-gray-400 hover:text-gray-600 transition-colors" title="Lihat detail">
                   <i class="fas fa-ellipsis-h"></i>
                 </button>
               </div>
@@ -572,18 +472,18 @@
               <div class="p-4">
                 <p class="text-gray-900 font-medium mb-2">${activity.description}</p>
                 
-                <div class="flex items-center justify-between text-sm">
-                  <div class="flex items-center gap-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
+                  <div class="flex flex-wrap items-center gap-3">
                     <span class="text-gray-600 flex items-center gap-1">
                       <i class="fas fa-user ${activity.user_name ? 'text-green-500' : 'text-gray-400'}"></i>
-                      ${activity.user_name || 'System'}
+                      ${activity.user_name || 'Sistem'}
                     </span>
                     <span class="text-gray-600 flex items-center gap-1">
                       <i class="fas fa-clock text-gray-400"></i>
                       ${time}
                     </span>
                   </div>
-                  <span class="text-xs text-gray-500">${fullDate}</span>
+                  <span class="text-xs text-gray-500 sm:text-right">${fullDate}</span>
                 </div>
               </div>
             </div>
@@ -600,10 +500,10 @@
           const diffHours = Math.floor(diffMins / 60);
           const diffDays = Math.floor(diffHours / 24);
 
-          if (diffMins < 1) return 'Just now';
-          if (diffMins < 60) return `${diffMins}m ago`;
-          if (diffHours < 24) return `${diffHours}h ago`;
-          if (diffDays < 7) return `${diffDays}d ago`;
+          if (diffMins < 1) return 'Baru saja';
+          if (diffMins < 60) return `${diffMins}m yang lalu`;
+          if (diffHours < 24) return `${diffHours}j yang lalu`;
+          if (diffDays < 7) return `${diffDays}h yang lalu`;
 
           return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
         }
@@ -616,9 +516,9 @@
           filters.forEach(filter => {
             const btn = document.getElementById(`filter${filter.charAt(0).toUpperCase() + filter.slice(1)}`);
             if (filter === type) {
-              btn.className = 'px-4 py-2 rounded-xl font-medium gradient-primary text-white flex items-center gap-2 type-badge';
+              btn.className = 'px-4 py-2 rounded-xl font-medium gradient-primary text-white flex items-center gap-2 type-badge whitespace-nowrap';
             } else {
-              btn.className = `px-4 py-2 rounded-xl font-medium ${getFilterColor(filter)} flex items-center gap-2 type-badge`;
+              btn.className = `px-4 py-2 rounded-xl font-medium ${getFilterColor(filter)} flex items-center gap-2 type-badge whitespace-nowrap`;
             }
           });
 
@@ -636,70 +536,17 @@
           }
         }
 
-        function updateActivityCounts() {
-          const filtered = getFilteredActivities();
-          const showing = Math.min(filtered.length, currentPage * pageSize);
-          const total = filtered.length;
-
-          document.getElementById('timelineCount').textContent = `Showing ${showing} activities`;
-          document.getElementById('showingCount').textContent = showing;
-          document.getElementById('totalCount').textContent = total;
-        }
-
-        function getFilteredActivities() {
-          let filtered = [...allActivities];
-
-          if (currentFilter !== 'all') {
-            filtered = filtered.filter(activity => {
-              switch (currentFilter) {
-                case 'user':
-                  return activity.action.includes('login') ||
-                    activity.action.includes('logout') ||
-                    activity.action.includes('profile');
-                case 'system':
-                  return activity.action.includes('system') ||
-                    activity.action.includes('cron') ||
-                    activity.action.includes('backup');
-                case 'affiliate':
-                  return activity.action.includes('affiliate');
-                case 'event':
-                  return activity.action.includes('event');
-                default:
-                  return true;
-              }
-            });
-          }
-
-          const dateFilter = document.getElementById('dateFilter').value;
-          if (dateFilter) {
-            filtered = filtered.filter(activity => {
-              const activityDate = new Date(activity.created_at).toISOString().split('T')[0];
-              return activityDate === dateFilter;
-            });
-          }
-
-          const search = document.getElementById('searchInput').value.toLowerCase();
-          if (search) {
-            filtered = filtered.filter(activity =>
-              activity.description.toLowerCase().includes(search) ||
-              (activity.user_name && activity.user_name.toLowerCase().includes(search))
-            );
-          }
-
-          return filtered;
-        }
-
         async function viewActivityDetail(activityId) {
           const activity = allActivities.find(a => a.id === activityId);
           if (activity) {
             const config = {
-              'affiliate_approved': { icon: 'fa-user-check', color: 'text-green-500', bg: 'bg-green-100', label: 'Affiliate Approved' },
-              'affiliate_rejected': { icon: 'fa-user-times', color: 'text-red-500', bg: 'bg-red-100', label: 'Affiliate Rejected' },
-              'affiliate_registration': { icon: 'fa-user-plus', color: 'text-blue-500', bg: 'bg-blue-100', label: 'Affiliate Registration' },
-              'event_created': { icon: 'fa-calendar-plus', color: 'text-purple-500', bg: 'bg-purple-100', label: 'Event Created' },
-              'login': { icon: 'fa-sign-in-alt', color: 'text-green-500', bg: 'bg-green-100', label: 'User Login' },
-              'logout': { icon: 'fa-sign-out-alt', color: 'text-gray-500', bg: 'bg-gray-100', label: 'User Logout' }
-            }[activity.action] || { icon: 'fa-bell', color: 'text-gray-500', bg: 'bg-gray-100', label: 'Activity' };
+              'affiliate_approved': { icon: 'fa-user-check', color: 'text-green-500', bg: 'bg-green-100', label: 'Afiliasi Disetujui' },
+              'affiliate_rejected': { icon: 'fa-user-times', color: 'text-red-500', bg: 'bg-red-100', label: 'Afiliasi Ditolak' },
+              'affiliate_registration': { icon: 'fa-user-plus', color: 'text-blue-500', bg: 'bg-blue-100', label: 'Pendaftaran Afiliasi' },
+              'event_created': { icon: 'fa-calendar-plus', color: 'text-purple-500', bg: 'bg-purple-100', label: 'Event Dibuat' },
+              'login': { icon: 'fa-sign-in-alt', color: 'text-green-500', bg: 'bg-green-100', label: 'Login Pengguna' },
+              'logout': { icon: 'fa-sign-out-alt', color: 'text-gray-500', bg: 'bg-gray-100', label: 'Logout Pengguna' }
+            }[activity.action] || { icon: 'fa-bell', color: 'text-gray-500', bg: 'bg-gray-100', label: 'Aktivitas' };
 
             const date = new Date(activity.created_at);
             const formattedDate = date.toLocaleDateString('id-ID', {
@@ -720,7 +567,7 @@
               </div>
               <div>
                 <h4 class="font-bold text-lg text-gray-900">${config.label}</h4>
-                <p class="text-gray-600">Activity ID: #${activity.id}</p>
+                <p class="text-gray-600">ID Aktivitas: #${activity.id}</p>
                 <p class="text-sm text-gray-500 mt-1">${formattedDate}</p>
               </div>
             </div>
@@ -730,7 +577,7 @@
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   <i class="fas fa-align-left mr-2 text-green-600"></i>
-                  Description
+                  Deskripsi
                 </label>
                 <div class="bg-gray-50 p-4 rounded-xl">
                   <p class="text-gray-900">${activity.description}</p>
@@ -741,17 +588,17 @@
                 <div>
                   <label class="block text-sm font-semibold text-gray-700 mb-2">
                     <i class="fas fa-user mr-2 text-green-600"></i>
-                    User
+                    Pengguna
                   </label>
                   <div class="bg-gray-50 p-3 rounded-xl">
-                    <p class="text-gray-900">${activity.user_name || 'System'}</p>
+                    <p class="text-gray-900">${activity.user_name || 'Sistem'}</p>
                   </div>
                 </div>
 
                 <div>
                   <label class="block text-sm font-semibold text-gray-700 mb-2">
                     <i class="fas fa-cog mr-2 text-green-600"></i>
-                    Action Type
+                    Tipe Aksi
                   </label>
                   <div class="bg-gray-50 p-3 rounded-xl">
                     <span class="px-3 py-1 rounded-full text-xs font-medium ${config.bg} ${config.color}">
@@ -764,7 +611,7 @@
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   <i class="fas fa-database mr-2 text-green-600"></i>
-                  Additional Data
+                  Data Tambahan
                 </label>
                 <div class="bg-gray-50 p-4 rounded-xl">
                   <pre class="text-sm text-gray-600 whitespace-pre-wrap">${JSON.stringify(activity, null, 2)}</pre>
@@ -812,9 +659,9 @@
           filters.forEach(filter => {
             const btn = document.getElementById(`filter${filter.charAt(0).toUpperCase() + filter.slice(1)}`);
             if (filter === 'all') {
-              btn.className = 'px-4 py-2 rounded-xl font-medium gradient-primary text-white flex items-center gap-2 type-badge';
+              btn.className = 'px-4 py-2 rounded-xl font-medium gradient-primary text-white flex items-center gap-2 type-badge whitespace-nowrap';
             } else {
-              btn.className = `px-4 py-2 rounded-xl font-medium ${getFilterColor(filter)} flex items-center gap-2 type-badge`;
+              btn.className = `px-4 py-2 rounded-xl font-medium ${getFilterColor(filter)} flex items-center gap-2 type-badge whitespace-nowrap`;
             }
           });
 
@@ -838,7 +685,7 @@
           </div>
           <div>
             <p class="font-semibold">${message}</p>
-            <p class="text-green-100 text-sm mt-1">Action completed successfully</p>
+            <p class="text-green-100 text-sm mt-1">Aksi berhasil diselesaikan</p>
           </div>
         </div>
       `;
@@ -860,7 +707,7 @@
           </div>
           <div>
             <p class="font-semibold">${message}</p>
-            <p class="text-red-100 text-sm mt-1">Please try again</p>
+            <p class="text-red-100 text-sm mt-1">Silakan coba lagi</p>
           </div>
         </div>
       `;
