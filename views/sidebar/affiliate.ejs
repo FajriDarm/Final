@@ -1,9 +1,9 @@
 <style>
-  .affiliate-sidebar {
+  .sidebar {
     background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
     border-right: 1px solid #e2e8f0;
   }
-  .affiliate-nav-item {
+  .nav-item {
     position: relative;
     transition: all 0.3s ease;
     border-radius: 8px;
@@ -12,7 +12,7 @@
     gap: 0.75rem;
     padding: 0.75rem;
   }
-  .affiliate-nav-item::before {
+  .nav-item::before {
     content: "";
     position: absolute;
     left: 0;
@@ -24,20 +24,20 @@
     transition: transform 0.3s ease;
     border-radius: 0 4px 4px 0;
   }
-  .affiliate-nav-item:hover::before {
+  .nav-item:hover::before {
     transform: scaleY(1);
   }
-  .affiliate-nav-item:hover {
+  .nav-item:hover {
     background-color: #f0fdf4;
     transform: translateX(4px);
   }
-  .affiliate-nav-item.active {
+  .nav-item.active {
     background: linear-gradient(90deg, #f0fdf4 0%, #dcfce7 100%);
   }
-  .affiliate-nav-item.active::before {
+  .nav-item.active::before {
     transform: scaleY(1);
   }
-  .affiliate-nav-icon {
+  .nav-icon {
     width: 36px;
     height: 36px;
     display: flex;
@@ -49,28 +49,28 @@
     font-size: 16px;
     transition: all 0.3s ease;
   }
-  .affiliate-nav-item:hover .affiliate-nav-icon {
+  .nav-item:hover .nav-icon {
     background: linear-gradient(135deg, #10b981, #059669);
     color: white;
     transform: scale(1.05);
   }
-  .affiliate-nav-item.active .affiliate-nav-icon {
+  .nav-item.active .nav-icon {
     background: linear-gradient(135deg, #10b981, #059669);
     color: white;
   }
-  .affiliate-nav-text {
+  .nav-text {
     color: #334155;
     font-weight: 500;
     font-size: 14px;
   }
-  .affiliate-nav-item:hover .affiliate-nav-text {
+  .nav-item:hover .nav-text {
     color: #065f46;
   }
-  .affiliate-nav-item.active .affiliate-nav-text {
+  .nav-item.active .nav-text {
     color: #065f46;
     font-weight: 600;
   }
-  .affiliate-divider {
+  .divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
     margin: 12px 0;
@@ -78,14 +78,15 @@
 </style>
 
 <aside
-  class="affiliate-sidebar w-64 h-screen flex flex-col fixed top-0 left-0 z-40"
-  style="padding-top: 6rem"
+  class="sidebar fixed left-0 top-16 z-40 w-64"
+  style="height: calc(100vh - 4rem); overflow: auto"
 >
   <nav class="flex-1 p-6 overflow-y-auto">
     <div class="space-y-1">
+      <!-- User Info (kept as requested) -->
       <div class="flex items-center gap-3 mb-4">
         <div
-          class="affiliate-nav-icon"
+          class="nav-icon"
           style="width: 44px; height: 44px; border-radius: 9999px"
         >
           <i class="fas fa-user"></i>
@@ -100,22 +101,24 @@
         </div>
       </div>
 
+      <div class="divider"></div>
+
       <a
         href="/affiliate/dashboard"
-        class="affiliate-nav-item"
+        class="nav-item flex items-center gap-3 p-3"
         data-page="dashboard"
       >
-        <div class="affiliate-nav-icon"><i class="fas fa-chart-line"></i></div>
-        <span class="affiliate-nav-text">Dashboard</span>
+        <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+        <span class="nav-text">Dashboard</span>
       </a>
 
       <a
         href="/affiliate/commissions"
-        class="affiliate-nav-item"
+        class="nav-item flex items-center gap-3 p-3"
         data-page="commissions"
       >
-        <div class="affiliate-nav-icon"><i class="fas fa-coins"></i></div>
-        <span class="affiliate-nav-text">Komisi & Penarikan</span>
+        <div class="nav-icon"><i class="fas fa-coins"></i></div>
+        <span class="nav-text">Komisi & Penarikan</span>
       </a>
     </div>
   </nav>
@@ -127,18 +130,35 @@
   <script>
     (function () {
       const currentPath = window.location.pathname.replace(/\/$/, "");
-      document.querySelectorAll(".affiliate-nav-item").forEach((item) => {
-        const href = item.getAttribute("href");
-        if (href && href.replace(/\/$/, "") === currentPath) {
-          item.classList.add("active");
+
+      document.querySelectorAll('.nav-item').forEach((item) => {
+        // Remove any pre-existing active class
+        item.classList.remove('active');
+
+        const href = item.getAttribute('href');
+        if (href && href.replace(/\/$/, '') === currentPath) {
+          item.classList.add('active');
         }
-        item.addEventListener("click", function () {
-          document
-            .querySelectorAll(".affiliate-nav-item")
-            .forEach((i) => i.classList.remove("active"));
-          this.classList.add("active");
+        // Also support nested routes
+        if (currentPath === href || currentPath.startsWith(href + '/')) {
+          item.classList.add('active');
+        }
+      });
+
+      document.querySelectorAll('.nav-item').forEach((item) => {
+        item.addEventListener('click', function () {
+          document.querySelectorAll('.nav-item').forEach((i) => i.classList.remove('active'));
+          this.classList.add('active');
+          sessionStorage.setItem('activeNav', this.getAttribute('href'));
         });
       });
+
+      // restore from session
+      const savedNav = sessionStorage.getItem('activeNav');
+      if (savedNav) {
+        const savedItem = document.querySelector(`.nav-item[href="${savedNav}"]`);
+        if (savedItem) savedItem.classList.add('active');
+      }
     })();
   </script>
 </aside>
