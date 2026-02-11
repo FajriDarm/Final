@@ -561,12 +561,12 @@
                             </div>
                         </div>
 
-                        <button type="button" data-action="get-deal" data-event-id="${event.id}" data-ref="${event.affiliate_link ? event.affiliate_link.code : ""}"
+                        <button aria-label="Get This Deal" role="button" type="button" data-action="get-deal" data-event-id="${event.id}" data-ref="${event.affiliate_link ? event.affiliate_link.code : ""}"
                            data-bank-name="${event.bank_name || ""}"
                            data-bank-account-name="${event.bank_account_name || ""}"
                            data-bank-account-number="${event.bank_account_number || ""}"
                            data-payment-methods="${event.payment_methods || ""}"
-                           class="block w-full py-3 bg-gradient-to-br from-primary to-primary-light text-white font-semibold rounded-xl text-center shadow-primary hover:shadow-xl transition-all duration-300">
+                           class="block w-full py-3 bg-gradient-to-br from-primary to-primary-light text-white font-semibold rounded-xl text-center shadow-primary hover:shadow-xl transition-all duration-300 cursor-pointer">
                           Get This Deal
                         </button>
                     </div>
@@ -575,6 +575,20 @@
           container.innerHTML += eventCard;
         });
       }
+
+      // Add delegated click handler specifically for 'Get This Deal' buttons (more reliable than global delegation)
+      document.getElementById('eventsContainer')?.addEventListener('click', function (e) {
+        const btn = e.target.closest('button[data-action="get-deal"], a[data-action="get-deal"]');
+        if (!btn) return;
+        e.preventDefault();
+        const eventId = btn.dataset.eventId || btn.getAttribute('data-event-id') || '';
+        const ref = btn.dataset.ref || btn.getAttribute('data-ref') || '';
+        console.debug('Get This Deal clicked', { eventId, ref });
+        const params = new URLSearchParams();
+        if (eventId) params.set('event_id', eventId);
+        if (ref) params.set('ref', ref);
+        window.location.href = '/checkout' + (params.toString() ? '?' + params.toString() : '');
+      });
 
       // Refresh events when user returns to the tab (helps see new events created in admin)
       window.addEventListener("focus", function () {
@@ -1276,102 +1290,7 @@
       });
     </script>
 
-    <!-- Modal: Get This Deal (Customer Form) -->
-    <div
-      id="dealModal"
-      class="fixed inset-0 z-50 hidden items-center justify-center"
-    >
-      <div
-        class="absolute inset-0 bg-black bg-opacity-50"
-        id="dealModalOverlay"
-      ></div>
-      <div
-        class="relative w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-6 z-50"
-      >
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-semibold">Get This Deal</h3>
-          <button id="dealModalClose" class="text-gray-500 hover:text-gray-700">
-            &times;
-          </button>
-        </div>
-
-        <form
-          id="dealForm"
-          action="/transactions"
-          method="POST"
-          class="space-y-4"
-        >
-          <input type="hidden" name="event_id" id="deal_event_id" value="" />
-          <input
-            type="hidden"
-            name="affiliate_ref"
-            id="deal_affiliate_ref"
-            value=""
-          />
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Nama</label>
-            <input
-              name="customer_name"
-              required
-              class="mt-1 block w-full border border-gray-200 rounded-lg p-2"
-              placeholder="Nama lengkap"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              name="customer_email"
-              type="email"
-              required
-              class="mt-1 block w-full border border-gray-200 rounded-lg p-2"
-              placeholder="email@contoh.com"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700">No HP</label>
-            <input
-              name="customer_phone"
-              required
-              class="mt-1 block w-full border border-gray-200 rounded-lg p-2"
-              placeholder="0812xxxx"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700"
-              >Pilih Metode Pembayaran</label
-            >
-            <select
-              name="payment_method"
-              required
-              class="mt-1 block w-full border border-gray-200 rounded-lg p-2"
-            >
-              <option value="transfer">Transfer</option>
-              <option value="cash">Cash</option>
-            </select>
-          </div>
-
-          <div class="flex justify-end gap-3 pt-2">
-            <button
-              type="button"
-              id="dealCancel"
-              class="px-4 py-2 border rounded-lg bg-white"
-            >
-              Batal
-            </button>
-            <button
-              type="submit"
-              class="px-4 py-2 bg-primary text-white rounded-lg"
-            >
-              Kirim
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    
 
     <script>
       // Utility: parse ?ref= from URL
@@ -1384,34 +1303,7 @@
         }
       }
 
-      // Open modal and optionally prefill event/affiliate info
-      function openDealModal(opts = {}) {
-        const modal = document.getElementById("dealModal");
-        document.getElementById("deal_event_id").value = opts.eventId || "";
-        // prefer explicit opt, fallback to URL ref
-        document.getElementById("deal_affiliate_ref").value =
-          opts.ref || getAffiliateRefFromUrl();
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-        document.getElementById("dealModalOverlay").focus();
-      }
-
-      function closeDealModal() {
-        const modal = document.getElementById("dealModal");
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-      }
-
-      // Close handlers
-      document
-        .getElementById("dealModalClose")
-        .addEventListener("click", closeDealModal);
-      document
-        .getElementById("dealCancel")
-        .addEventListener("click", closeDealModal);
-      document
-        .getElementById("dealModalOverlay")
-        .addEventListener("click", closeDealModal);
+      // Modal was removed; no client-side modal functions are needed.
 
       // Delegate clicks for any "Get this deal" button/link
       document.addEventListener("click", function (e) {
@@ -1429,7 +1321,12 @@
           const eventId =
             btn.dataset.eventId || btn.getAttribute("data-event-id") || "";
           const ref = btn.dataset.ref || btn.getAttribute("data-ref") || "";
-          openDealModal({ eventId, ref });
+
+          // Redirect to the new checkout page with query params (separated flow)
+          const params = new URLSearchParams();
+          if (eventId) params.set("event_id", eventId);
+          if (ref) params.set("ref", ref);
+          window.location.href = "/checkout" + (params.toString() ? "?" + params.toString() : "");
         }
       });
 
@@ -1594,78 +1491,8 @@
             });
         });
 
-      // Intercept deal form submit to use AJAX and show bank modal
-      document
-        .getElementById("dealForm")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
-
-          const form = e.target;
-          const data = {
-            customer_name: form.customer_name.value,
-            customer_email: form.customer_email.value,
-            customer_phone: form.customer_phone.value,
-            payment_method: form.payment_method.value,
-            event_id: form.event_id
-              ? form.event_id.value
-              : document.getElementById("deal_event_id").value,
-            affiliate_ref: form.affiliate_ref
-              ? form.affiliate_ref.value
-              : document.getElementById("deal_affiliate_ref").value,
-          };
-
-          try {
-            const res = await fetch("/transactions", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(data),
-            });
-
-            const json = await res.json();
-            if (!json || !json.success) {
-              alert(
-                "Terjadi kesalahan saat menyimpan transaksi. Silakan coba lagi.",
-              );
-              return;
-            }
-
-            // Close deal modal
-            closeDealModal();
-
-            // Show bank info from response if available, otherwise use button data
-            const bank = json.bankInfo || {
-              bank_name:
-                form.datasetBankName ||
-                document
-                  .querySelector('[data-event-id="' + data.event_id + '"]')
-                  ?.getAttribute("data-bank-name") ||
-                "",
-              bank_account_name:
-                form.datasetBankAccountName ||
-                document
-                  .querySelector('[data-event-id="' + data.event_id + '"]')
-                  ?.getAttribute("data-bank-account-name") ||
-                "",
-              bank_account_number:
-                form.datasetBankAccountNumber ||
-                document
-                  .querySelector('[data-event-id="' + data.event_id + '"]')
-                  ?.getAttribute("data-bank-account-number") ||
-                "",
-              payment_methods:
-                form.datasetPaymentMethods ||
-                document
-                  .querySelector('[data-event-id="' + data.event_id + '"]')
-                  ?.getAttribute("data-payment-methods") ||
-                "",
-            };
-
-            openBankModal(bank);
-          } catch (err) {
-            console.error("submit transaction error", err);
-            alert("Terjadi kesalahan, coba lagi.");
-          }
-        });
+      // Removed modal form handling since checkout flow is moved to /checkout
+      // Legacy handler removed to avoid errors when modal is absent.
     </script>
   </body>
 </html>

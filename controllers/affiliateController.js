@@ -262,20 +262,26 @@ const getActiveEvents = async (req, res) => {
       [userId],
     );
 
-    // Create a map of existing links by event_id with full URL
+    // Create a map of existing links by event_id with full URL (direct to checkout form)
     const linksMap = {};
     const siteUrl =
       process.env.SITE_URL || req.protocol + "://" + req.get("host");
 
     existingLinks.forEach((link) => {
-      // Generate full URL for existing links
-      const fullUrl = link.slug
+      // Generate both URLs: checkout (form) and landing page (LP)
+      const checkoutUrl = link.slug
+        ? `${siteUrl}/checkout?event=${link.slug}&ref=${link.code}`
+        : `${siteUrl}/checkout?ref=${link.code}`;
+      const landingUrl = link.slug
         ? `${siteUrl}/?event=${link.slug}&ref=${link.code}`
         : `${siteUrl}/?ref=${link.code}`;
 
       linksMap[link.event_id] = {
         ...link,
-        url: fullUrl,
+        url_checkout: checkoutUrl,
+        url_lp: landingUrl,
+        // keep legacy `url` pointing to checkout for backward compatibility
+        url: checkoutUrl,
       };
     });
 
@@ -389,17 +395,20 @@ const generateLink = async (req, res) => {
       );
     }
 
-    // Generate full URL - mengarah ke landing page dengan parameter event dan ref
+    // Generate full URL - mengarah langsung ke halaman checkout/form dengan event + ref
     const siteUrl =
       process.env.SITE_URL || req.protocol + "://" + req.get("host");
-    const fullUrl = `${siteUrl}/?event=${event.slug}&ref=${code}`;
+    const checkoutUrl = `${siteUrl}/checkout?event=${event.slug}&ref=${code}`;
+    const landingUrl = `${siteUrl}/?event=${event.slug}&ref=${code}`;
 
     res.json({
       success: true,
       message: "Affiliate link generated successfully",
       data: {
         code,
-        url: fullUrl,
+        url_checkout: checkoutUrl,
+        url_lp: landingUrl,
+        url: checkoutUrl, // legacy
         event_id: event.id,
         event_title: event.title,
         event_slug: event.slug,

@@ -69,6 +69,10 @@ app.get("/register", checkAlreadyLoggedIn, (req, res) => {
   });
 });
 
+// Checkout page (separate customer form page)
+const publicController = require("./controllers/publicController");
+app.get("/checkout", publicController.checkoutPage);
+
 app.get("/profile", authMiddlewarePage, (req, res) => {
   res.render("profile", {
     user: req.user,

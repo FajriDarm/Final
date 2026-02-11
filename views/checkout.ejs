@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout - Affillink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-light text-dark font-sans">
+    <nav class="bg-white shadow p-4">
+      <div class="container mx-auto px-4">
+        <a href="/" class="font-bold text-lg text-primary">Affillink</a>
+      </div>
+    </nav>
+
+    <main class="container mx-auto p-6 max-w-3xl">
+      <h1 class="text-2xl font-bold mb-4">Checkout</h1>
+
+      <% if (!event) { %>
+      <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded mb-6">
+        <p class="font-medium">Event tidak ditemukan.</p>
+        <p class="text-sm text-gray">Silakan kembali ke halaman utama dan pilih event lagi.</p>
+      </div>
+      <a href="/" class="inline-block px-4 py-2 bg-primary text-white rounded">Kembali ke Landing Page</a>
+      <% } else { %>
+
+      <div class="bg-white rounded-2xl shadow p-6 mb-6">
+        <div class="mb-4">
+          <h2 class="text-xl font-semibold"><%= event.name %></h2>
+          <div class="text-sm text-gray mt-1">
+            <% if (event.price_original && Number(event.price_original) > 0) { %>
+              <% if (event.price_promo && Number(event.price_promo) < Number(event.price_original)) { %>
+                <div class="line-through text-gray-400">Rp <%= parseInt(event.price_original).toLocaleString('id-ID') %></div>
+                <div class="text-2xl font-bold">Rp <%= parseInt(event.price_promo).toLocaleString('id-ID') %></div>
+              <% } else { %>
+                <div class="text-2xl font-bold">Rp <%= parseInt(event.price_original).toLocaleString('id-ID') %></div>
+              <% } %>
+            <% } else { %>
+              <div class="text-2xl font-bold">Gratis</div>
+            <% } %>
+          </div>
+        </div>
+
+        <form id="checkoutForm" class="space-y-4">
+          <input type="hidden" name="event_id" value="<%= event.id %>" />
+          <input type="hidden" name="affiliate_ref" value="<%= ref || '' %>" />
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Nama</label>
+            <input name="customer_name" required class="mt-1 block w-full border border-gray-200 rounded-lg p-2" placeholder="Nama lengkap" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Email</label>
+            <input name="customer_email" type="email" class="mt-1 block w-full border border-gray-200 rounded-lg p-2" placeholder="email@contoh.com" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">No HP</label>
+            <input name="customer_phone" required class="mt-1 block w-full border border-gray-200 rounded-lg p-2" placeholder="0812xxxx" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Pilih Metode Pembayaran</label>
+            <select name="payment_method" required class="mt-1 block w-full border border-gray-200 rounded-lg p-2">
+              <option value="transfer">Transfer</option>
+              <option value="cash">Cash</option>
+            </select>
+          </div>
+
+          <div class="flex justify-end gap-3 pt-2">
+            <a href="/" class="px-4 py-2 border rounded-lg bg-white">Batal</a>
+            <button type="submit" aria-label="Kirim Pesanan" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg">Kirim</button>
+          </div>
+        </form>
+
+        <!-- Bank info result -->
+        <div id="bankResult" class="hidden mt-6 bg-green-50 border-l-4 border-green-400 p-4 rounded">
+          <h3 class="font-semibold mb-2">Instruksi Pembayaran</h3>
+          <div class="text-sm text-gray mb-2" id="bank_name">-</div>
+          <div class="text-sm text-gray mb-2"><span class="font-medium">Atas nama: </span><span id="bank_account_name">-</span></div>
+          <div class="text-sm text-gray mb-2"><span class="font-medium">No Rekening: </span><span id="bank_account_number">-</span></div>
+          <div class="text-sm text-gray mt-2">Silakan transfer sesuai nominal, lalu upload bukti pada halaman konfirmasi.</div>
+          <div class="mt-4">
+            <a id="uploadProofBtn" href="#" class="px-4 py-2 bg-white border rounded">Upload Bukti Pembayaran</a>
+          </div>
+        </div>
+
+      </div>
+
+      <% } %>
+    </main>
+
+    <script>
+      document.getElementById('checkoutForm')?.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const form = e.target;
+        const data = {
+          customer_name: form.customer_name.value,
+          customer_email: form.customer_email?.value || null,
+          customer_phone: form.customer_phone.value,
+          payment_method: form.payment_method.value,
+          event_id: form.event_id.value,
+          affiliate_ref: form.affiliate_ref?.value || null,
+        };
+
+        try {
+          const res = await fetch('/transactions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          const json = await res.json();
+          if (!json || !json.success) {
+            alert('Terjadi kesalahan saat menyimpan transaksi. Silakan coba lagi.');
+            return;
+          }
+
+          // Show bank info block
+          const bank = json.bankInfo || {};
+          document.getElementById('bank_name').textContent = bank.bank_name || '-';
+          document.getElementById('bank_account_name').textContent = bank.bank_account_name || '-';
+          document.getElementById('bank_account_number').textContent = bank.bank_account_number || '-';
+
+          document.getElementById('bankResult').classList.remove('hidden');
+
+          // Set upload link to transaction-specific page if you have one
+          const uploadBtn = document.getElementById('uploadProofBtn');
+          if (uploadBtn && json.transactionId) {
+            uploadBtn.href = '/transactions/' + json.transactionId + '/upload-proof';
+          }
+
+          // Optionally scroll to bank result
+          bankResult = document.getElementById('bankResult');
+          bankResult.scrollIntoView({ behavior: 'smooth' });
+        } catch (err) {
+          console.error('submit checkout error', err);
+          alert('Terjadi kesalahan, coba lagi.');
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -34,6 +34,39 @@ async function trackAffiliateClick(req, res) {
   }
 }
 
+async function checkoutPage(req, res) {
+  try {
+    const eventId = req.query.event_id || null;
+    const eventSlug = req.query.event || null;
+    const ref = req.query.ref || null;
+    let event = null;
+
+    if (eventId) {
+      const [rows] = await db.query(
+        "SELECT id, title AS name, slug, status, price_promo, price_original, bank_name, bank_account_name, bank_account_number, payment_methods FROM events WHERE id = ? LIMIT 1",
+        [eventId],
+      );
+      if (rows.length > 0) event = rows[0];
+    } else if (eventSlug) {
+      const [rows] = await db.query(
+        "SELECT id, title AS name, slug, status, price_promo, price_original, bank_name, bank_account_name, bank_account_number, payment_methods FROM events WHERE slug = ? LIMIT 1",
+        [eventSlug],
+      );
+      if (rows.length > 0) event = rows[0];
+    }
+
+    // set cookies for fallback tracking (30 days)
+    if (ref) res.cookie("affiliate_ref", ref, { maxAge: 1000 * 60 * 60 * 24 * 30 });
+    if (event && event.slug) res.cookie("event_slug", event.slug, { maxAge: 1000 * 60 * 60 * 24 * 30 });
+
+    return res.render("checkout", { event, ref });
+  } catch (err) {
+    console.error("checkoutPage error", err);
+    return res.status(500).send("Internal server error");
+  }
+}
+
 module.exports = {
   trackAffiliateClick,
+  checkoutPage,
 };
