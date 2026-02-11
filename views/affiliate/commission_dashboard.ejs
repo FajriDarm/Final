@@ -1,131 +1,261 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Komisi - Affiliate</title>
+  <title>Dashboard Komisi - Affillink Affiliate</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .gradient-primary {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    }
+
+    .gradient-secondary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .gradient-accent {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    }
+
+    .gradient-warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    .gradient-info {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    }
+
+    .gradient-yellow {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    .gradient-blue {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(5, 150, 105, 0.1), 0 10px 10px -5px rgba(5, 150, 105, 0.04);
+    }
+
+    .status-badge {
+      transition: all 0.2s ease;
+    }
+
+    .status-badge:hover {
+      transform: scale(1.05);
+    }
+
+    .data-cell {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .data-cell::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
+    }
+
+    .gradient-primary:hover {
+      box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.2);
+    }
+
+    .gradient-secondary:hover {
+      box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+    }
+
+    .gradient-warning:hover {
+      box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.2);
+    }
+
+    .gradient-info:hover {
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2);
+    }
+
+    .gradient-yellow:hover {
+      box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.2);
+    }
+
+    .gradient-blue:hover {
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2);
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
+
+<body class="bg-gradient-to-br from-emerald-50 to-green-50">
   <!-- Navbar -->
-  <%- include('../navbar/navbar.ejs', { name: typeof name !== 'undefined' ? name : '' }) %>
+  <%- include('../navbar/navbar.ejs', { name: typeof name !=='undefined' ? name : '' }) %>
 
-  <!-- Sidebar -->
-  <%- include('../sidebar/affiliate.ejs') %>
-
-  <!-- Main Content -->
-  <main class="ml-64 pt-16 min-h-screen">
-    <div class="p-6">
-      <div class="space-y-6">
-
+    <!-- Main Content -->
+    <main class="ml-64 pt-16 min-h-screen">
+      <div class="p-6">
         <!-- Page Header -->
-        <div class="flex items-center justify-between">
-          <div>
-            <h1 class="text-3xl font-bold text-gray-900">Dashboard Komisi</h1>
-            <p class="text-gray-600 mt-1">Kelola & tarik komisi Anda</p>
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+          <div class="mb-4 md:mb-0">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-coins text-white text-xl"></i>
+              </div>
+              <div>
+                <h1 class="text-3xl font-bold text-gray-900">Dashboard Komisi</h1>
+                <p class="text-gray-600 mt-1">Kelola dan tarik komisi Anda</p>
+              </div>
+            </div>
           </div>
-          <button onclick="openWithdrawalModal()" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition flex items-center gap-2">
+          <button onclick="openWithdrawalModal()"
+            class="px-6 py-3 gradient-primary text-white rounded-lg font-medium hover:shadow-lg transition inline-flex items-center gap-2">
             <i class="fas fa-money-bill-wave"></i>
             Ajukan Penarikan
           </button>
         </div>
 
-        <!-- Commission Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Pending -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <!-- Pending Card -->
+          <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-gray-500 text-sm font-medium">Komisi Pending</p>
-                <p class="text-3xl font-bold text-gray-900 mt-2" id="pendingAmount">Rp 0</p>
-                <p class="text-xs text-gray-500 mt-1"><span id="pendingCount">0</span> transaksi</p>
-                <p class="text-xs text-gray-400 mt-2">
-                  <i class="fas fa-hourglass-half mr-1"></i>
-                  Belum verified Stage 3
-                </p>
+                <p class="text-2xl font-bold text-gray-900 mt-2" id="pendingAmount">Rp 0</p>
+                <div class="flex items-center gap-2 mt-2">
+                  <span class="text-xs text-gray-500" id="pendingCount">0 transaksi</span>
+                  <span
+                    class="px-2 py-0.5 rounded-full text-xs font-medium border border-yellow-200 bg-yellow-100 text-yellow-800">
+                    <i class="fas fa-hourglass-half mr-1"></i>
+                    Belum verified
+                  </span>
+                </div>
               </div>
-              <div class="text-4xl text-yellow-500 opacity-20">
-                <i class="fas fa-clock"></i>
+              <div class="w-12 h-12 gradient-warning rounded-lg flex items-center justify-center shadow-lg">
+                <i class="fas fa-clock text-white text-xl"></i>
               </div>
             </div>
           </div>
 
-          <!-- Ready for Withdraw -->
-          <div class="bg-white rounded-xl shadow-sm border border-green-200 p-6 ring-1 ring-green-100">
+          <!-- Ready for Withdraw Card -->
+          <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-200 card-hover ring-1 ring-green-100">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-gray-500 text-sm font-medium">Siap Ditarik</p>
-                <p class="text-3xl font-bold text-green-600 mt-2" id="readyAmount">Rp 0</p>
-                <p class="text-xs text-gray-500 mt-1"><span id="readyCount">0</span> transaksi</p>
-                <p class="text-xs text-green-600 mt-2 font-medium">
-                  <i class="fas fa-check mr-1"></i>
-                  Sudah verified Stage 3 ✓
-                </p>
+                <p class="text-2xl font-bold text-green-700 mt-2" id="readyAmount">Rp 0</p>
+                <div class="flex items-center gap-2 mt-2">
+                  <span class="text-xs text-gray-500" id="readyCount">0 transaksi</span>
+                  <span
+                    class="px-2 py-0.5 rounded-full text-xs font-medium border border-green-200 bg-green-100 text-green-800">
+                    <i class="fas fa-check mr-1"></i>
+                    Verified ✓
+                  </span>
+                </div>
               </div>
-              <div class="text-4xl text-green-500 opacity-20">
-                <i class="fas fa-check-circle"></i>
+              <div class="w-12 h-12 gradient-secondary rounded-lg flex items-center justify-center shadow-lg">
+                <i class="fas fa-check-circle text-white text-xl"></i>
               </div>
             </div>
-            <button onclick="openWithdrawalModal()" class="mt-4 w-full bg-green-50 hover:bg-green-100 text-green-700 font-semibold py-2 rounded transition text-sm">
+            <button onclick="openWithdrawalModal()"
+              class="mt-4 w-full px-4 py-2 gradient-secondary text-white rounded-lg font-medium hover:shadow-lg transition text-sm">
               Ajukan Penarikan
             </button>
           </div>
 
-          <!-- Paid -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <!-- Paid Card -->
+          <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-gray-500 text-sm font-medium">Komisi Diterima</p>
-                <p class="text-3xl font-bold text-blue-600 mt-2" id="paidAmount">Rp 0</p>
-                <p class="text-xs text-gray-500 mt-1"><span id="paidCount">0</span> transaksi</p>
-                <p class="text-xs text-gray-400 mt-2">
-                  <i class="fas fa-check-double mr-1"></i>
-                  Sudah ditransfer
-                </p>
+                <p class="text-2xl font-bold text-blue-700 mt-2" id="paidAmount">Rp 0</p>
+                <div class="flex items-center gap-2 mt-2">
+                  <span class="text-xs text-gray-500" id="paidCount">0 transaksi</span>
+                  <span
+                    class="px-2 py-0.5 rounded-full text-xs font-medium border border-blue-200 bg-blue-100 text-blue-800">
+                    <i class="fas fa-check-double mr-1"></i>
+                    Sudah ditransfer
+                  </span>
+                </div>
               </div>
-              <div class="text-4xl text-blue-500 opacity-20">
-                <i class="fas fa-coins"></i>
+              <div class="w-12 h-12 gradient-blue rounded-lg flex items-center justify-center shadow-lg">
+                <i class="fas fa-coins text-white text-xl"></i>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Tabs -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div class="border-b border-gray-100">
-            <div class="flex gap-0">
-              <button onclick="switchTab('ready')" class="tab-button flex-1 py-4 font-semibold text-gray-600 hover:text-gray-900 border-b-2 border-transparent active" data-tab="ready">
+        <!-- Main Content Container -->
+        <div class="glass-card rounded-2xl shadow-lg border border-green-100 overflow-hidden">
+          <!-- Tabs Header -->
+          <div class="px-6 py-4 gradient-primary">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="text-lg font-semibold text-white">Kelola Komisi</h2>
+                <p class="text-green-100 text-sm mt-1">Review dan tarik komisi yang sudah tersedia</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabs Navigation -->
+          <div class="px-6 py-3 bg-green-50 border-b border-green-100">
+            <div class="flex space-x-2">
+              <button onclick="switchTab('ready')"
+                class="tab-button active flex-none px-4 py-2 rounded-lg font-medium bg-emerald-600 text-white shadow-sm transition transform hover:scale-105">
+                <i class="fas fa-check-circle mr-2"></i>
                 Siap Ditarik
               </button>
-              <button onclick="switchTab('history')" class="tab-button flex-1 py-4 font-semibold text-gray-600 hover:text-gray-900 border-b-2 border-transparent" data-tab="history">
+              <button onclick="switchTab('history')"
+                class="tab-button flex-none px-4 py-2 rounded-lg font-medium bg-transparent text-gray-700 hover:bg-green-100 transition">
+                <i class="fas fa-history mr-2"></i>
                 Riwayat Penarikan
               </button>
             </div>
           </div>
 
+          <!-- Content -->
           <div class="p-6">
             <!-- Ready Tab -->
             <div id="tab-ready" class="tab-content">
               <div class="space-y-4">
                 <!-- Info Banner -->
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 mb-6">
                   <p class="text-sm text-blue-900">
-                    <strong>ℹ️ Catatan:</strong> Hanya menampilkan komisi yang sudah diverifikasi Stage 3 dan siap diambil. 
-                    Lihat <a href="/affiliate/dashboard" class="font-semibold underline">Dashboard Affiliate</a> untuk melihat TOTAL semua komisi (pending + ready + paid).
+                    <strong><i class="fas fa-info-circle mr-2"></i>Catatan:</strong> Hanya menampilkan komisi yang sudah
+                    diverifikasi Stage 3 dan siap diambil.
+                    Lihat <a href="/affiliate/dashboard" class="font-semibold underline text-blue-700">Dashboard
+                      Affiliate</a> untuk melihat TOTAL semua komisi (pending + ready + paid).
                   </p>
                 </div>
 
                 <div class="flex items-center justify-between mb-4">
                   <h3 class="text-lg font-semibold text-gray-900">Komisi Siap Ditarik</h3>
-                  <div class="text-sm text-gray-500">
-                    Total: <span class="font-semibold" id="readyTotal">0</span> transaksi
+                  <div class="text-sm text-gray-700">
+                    Total: <span class="font-semibold text-green-700" id="readyTotal">0</span> transaksi
                   </div>
                 </div>
 
                 <div id="readyCommissionsContainer" class="space-y-3">
-                  <div class="text-center py-8 text-gray-500">
-                    <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
+                  <div class="text-center py-12 text-gray-500">
+                    <i class="fas fa-spinner fa-spin text-2xl mb-4 text-emerald-600"></i>
                     <p>Memuat komisi...</p>
                   </div>
                 </div>
@@ -137,414 +267,513 @@
               <div class="space-y-4">
                 <div class="flex items-center justify-between mb-4">
                   <h3 class="text-lg font-semibold text-gray-900">Riwayat Penarikan</h3>
-                  <div class="text-sm text-gray-500">
-                    Total: <span class="font-semibold" id="historyTotal">0</span> permintaan
+                  <div class="text-sm text-gray-700">
+                    Total: <span class="font-semibold text-green-700" id="historyTotal">0</span> permintaan
                   </div>
                 </div>
 
                 <div id="withdrawalHistoryContainer" class="space-y-3">
-                  <div class="text-center py-8 text-gray-500">
-                    <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
+                  <div class="text-center py-12 text-gray-500">
+                    <i class="fas fa-spinner fa-spin text-2xl mb-4 text-emerald-600"></i>
                     <p>Memuat riwayat...</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-      </div>
-    </div>
-  </main>
-
-  <!-- Proof Modal -->
-  <div id="proofModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl max-w-2xl w-full max-h-screen overflow-y-auto">
-      <div class="p-6 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white">
-        <h2 class="text-2xl font-bold text-gray-900">Bukti Transfer</h2>
-        <button onclick="closeProofModal()" class="text-gray-500 hover:text-gray-700">
-          <i class="fas fa-times text-2xl"></i>
-        </button>
-      </div>
-
-      <div class="p-6 space-y-4">
-        <div id="proof-content" class="text-center py-8">
-          <i class="fas fa-spinner fa-spin text-3xl text-gray-400 mb-4"></i>
-          <p class="text-gray-500">Memuat bukti...</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Withdrawal Detail Modal -->
-  <div id="withdrawalDetailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl max-w-2xl w-full max-h-screen overflow-y-auto">
-      <div class="p-6 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white">
-        <h2 id="detailModalTitle" class="text-2xl font-bold text-gray-900">Detail Penarikan</h2>
-        <button onclick="closeWithdrawalDetailModal()" class="text-gray-500 hover:text-gray-700">
-          <i class="fas fa-times text-2xl"></i>
-        </button>
-      </div>
-
-      <div id="withdrawalDetailContent" class="p-6 space-y-4">
-        <div class="text-center py-8 text-gray-500">
-          <i class="fas fa-spinner fa-spin text-3xl mb-4"></i>
-          <p>Memuat detail...</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Withdrawal Modal -->
-  <div id="withdrawalModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl max-w-md w-full max-h-screen overflow-y-auto">
-      <div class="p-6 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white">
-        <h2 class="text-2xl font-bold text-gray-900">Ajukan Penarikan</h2>
-        <button onclick="closeWithdrawalModal()" class="text-gray-500 hover:text-gray-700">
-          <i class="fas fa-times text-2xl"></i>
-        </button>
-      </div>
-
-      <div class="p-6 space-y-4">
-        <!-- Info Box -->
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <p class="text-sm text-blue-900">
-            <strong>Total Siap Ditarik:</strong> <br>
-            <span class="text-2xl font-bold text-blue-600" id="modalReadyAmount">Rp 0</span>
-          </p>
-        </div>
-
-        <!-- Selection Mode -->
-        <div class="space-y-2">
-          <label class="text-sm font-semibold text-gray-900">Pilih Komisi</label>
-          <div class="space-y-2">
-            <label class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-              <input type="radio" name="selectionMode" value="all" checked onchange="updateSelectionMode()">
-              <span class="text-sm">Tarik Semua (<span id="allCount">0</span> komisi)</span>
-            </label>
-            <label class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-              <input type="radio" name="selectionMode" value="select" onchange="updateSelectionMode()">
-              <span class="text-sm">Pilih Komisi Tertentu</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Selected Commissions (shown when select mode) -->
-        <div id="selectCommissionsContainer" class="hidden space-y-2">
-          <label class="text-sm font-semibold text-gray-900">Pilih Komisi yang Ingin Ditarik</label>
-          <div id="selectCheckboxes" class="space-y-2 max-h-40 overflow-y-auto border rounded-lg p-3">
-            <div class="text-center py-4 text-gray-500">
-              <i class="fas fa-spinner fa-spin mb-2"></i>
-              <p>Memuat komisi...</p>
+          <!-- Footer Stats -->
+          <div class="px-6 py-4 bg-green-50 border-t border-green-100 rounded-b-2xl">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 text-sm">
+              <div class="text-green-700 font-medium">
+                Total komisi tersedia: <span class="font-semibold text-green-700" id="totalReady">0</span> transaksi
+              </div>
+              <span class="text-gray-600">Terakhir diperbarui: Sekarang</span>
             </div>
           </div>
         </div>
-
-        <!-- Submit Button -->
-        <button onclick="submitWithdrawal()" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition mt-6">
-          <i class="fas fa-check-circle mr-2"></i>
-          Ajukan Penarikan
-        </button>
-
-        <button onclick="closeWithdrawalModal()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold py-3 rounded-lg transition">
-          Batal
-        </button>
       </div>
-    </div>
-  </div>
+    </main>
 
-  <script>
-    let userId = '<%= typeof user_id !== "undefined" ? user_id : "" %>';
-    let selectedCommissionIds = [];
-    let token = '';
+    <!-- Sidebar -->
+    <%- include('../sidebar/affiliate.ejs') %>
 
-    // Get token from localStorage (set by login/session)
-    function getToken() {
-      const stored = localStorage.getItem('authToken');
-      if (stored) {
-        token = stored;
-        return token;
-      }
-      // Fallback: try to get from cookie
-      const cookies = document.cookie.split(';');
-      for (let cookie of cookies) {
-        const [name, value] = cookie.trim().split('=');
-        if (name === 'token' || name === 'authToken') {
-          token = value;
-          return token;
-        }
-      }
-      return '';
-    }
+      <!-- Modals -->
+      <!-- Proof Modal -->
+      <div id="proofModal"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+            <h3 class="text-xl font-bold text-gray-900">Bukti Transfer</h3>
+            <button onclick="closeProofModal()" class="text-gray-500 hover:text-gray-700">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <div class="p-6">
+            <div id="proof-content" class="text-center py-8">
+              <i class="fas fa-spinner fa-spin text-2xl mb-4 text-emerald-600"></i>
+              <p class="text-gray-500">Memuat bukti...</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    // Get initial token
-    getToken();
+      <!-- Withdrawal Detail Modal -->
+      <div id="withdrawalDetailModal"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+            <h3 id="detailModalTitle" class="text-xl font-bold text-gray-900">Detail Penarikan</h3>
+            <button onclick="closeWithdrawalDetailModal()" class="text-gray-500 hover:text-gray-700">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <div id="withdrawalDetailContent" class="p-6">
+            <div class="text-center py-8 text-gray-500">
+              <i class="fas fa-spinner fa-spin text-2xl mb-4 text-emerald-600"></i>
+              <p>Memuat detail...</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    // Load commission summary on page load
-    document.addEventListener('DOMContentLoaded', async function() {
-      await loadCommissionSummary();
-      await loadReadyCommissions();
-      await loadWithdrawalHistory();
-    });
+      <!-- Withdrawal Modal -->
+      <div id="withdrawalModal"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full">
+          <div class="bg-gradient-primary text-white rounded-t-2xl px-6 py-4">
+            <h3 class="text-lg font-bold">
+              <i class="fas fa-money-bill-wave mr-2"></i>
+              Ajukan Penarikan
+            </h3>
+          </div>
+          <div class="p-6 space-y-4">
+            <!-- Info Box -->
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
+              <p class="text-sm text-blue-900">
+                <strong>Total Siap Ditarik:</strong> <br>
+                <span class="text-2xl font-bold text-blue-600" id="modalReadyAmount">Rp 0</span>
+              </p>
+            </div>
 
-    // Load commission summary
-    async function loadCommissionSummary() {
-      try {
-        const response = await fetch(`/affiliate/api/commissions/summary?user_id=${userId}`);
-        const data = await response.json();
-        
-        if (data.success) {
-          const summary = data.data;
-          
-          // Update UI
-          document.getElementById('pendingAmount').textContent = 'Rp ' + (summary.pending.total || 0).toLocaleString('id-ID');
-          document.getElementById('pendingCount').textContent = summary.pending.count || 0;
-          
-          document.getElementById('readyAmount').textContent = 'Rp ' + (summary.ready.total || 0).toLocaleString('id-ID');
-          document.getElementById('readyCount').textContent = summary.ready.count || 0;
-          document.getElementById('modalReadyAmount').textContent = 'Rp ' + (summary.ready.total || 0).toLocaleString('id-ID');
-          document.getElementById('allCount').textContent = summary.ready.count || 0;
-          
-          document.getElementById('paidAmount').textContent = 'Rp ' + (summary.paid.total || 0).toLocaleString('id-ID');
-          document.getElementById('paidCount').textContent = summary.paid.count || 0;
-        }
-      } catch (error) {
-        console.error('Error loading summary:', error);
-        alert('Gagal memuat ringkasan komisi');
-      }
-    }
+            <!-- Selection Mode -->
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Komisi</label>
+              <div class="space-y-2">
+                <label
+                  class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-green-50 transition">
+                  <input type="radio" name="selectionMode" value="all" checked onchange="updateSelectionMode()"
+                    class="w-4 h-4 text-emerald-600">
+                  <span class="text-sm">Tarik Semua (<span id="allCount">0</span> komisi)</span>
+                </label>
+                <label
+                  class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-green-50 transition">
+                  <input type="radio" name="selectionMode" value="select" onchange="updateSelectionMode()"
+                    class="w-4 h-4 text-emerald-600">
+                  <span class="text-sm">Pilih Komisi Tertentu</span>
+                </label>
+              </div>
+            </div>
 
-    // Load ready commissions
-    async function loadReadyCommissions() {
-      try {
-        const response = await fetch(`/affiliate/api/commissions/ready?user_id=${userId}`);
-        const data = await response.json();
-        
-        if (data.success && data.data) {
-          const container = document.getElementById('readyCommissionsContainer');
-          document.getElementById('readyTotal').textContent = data.data.length;
-
-          if (data.data.length === 0) {
-            container.innerHTML = '<div class="text-center py-8 text-gray-500"><p>Tidak ada komisi yang siap ditarik</p></div>';
-            return;
-          }
-
-          let html = '';
-          data.data.forEach(comm => {
-            html += `
-              <div class="border rounded-lg p-4 hover:bg-gray-50 transition">
-                <div class="flex items-start justify-between">
-                  <div class="flex-1">
-                    <p class="font-semibold text-gray-900">${comm.event_title || 'Event'}</p>
-                    <p class="text-sm text-gray-600 mt-1">
-                      <strong>Jumlah:</strong> Rp ${(comm.amount || 0).toLocaleString('id-ID')}
-                    </p>
-                    <p class="text-xs text-gray-500 mt-1">
-                      Transaksi #${comm.transaction_id} • ${new Date(comm.created_at).toLocaleDateString('id-ID')}
-                    </p>
-                  </div>
-                  <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                    Siap
-                  </span>
+            <!-- Selected Commissions -->
+            <div id="selectCommissionsContainer" class="hidden space-y-2">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Komisi yang Ingin Ditarik</label>
+              <div id="selectCheckboxes"
+                class="space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-3">
+                <div class="text-center py-4 text-gray-500">
+                  <i class="fas fa-spinner fa-spin mb-2 text-emerald-600"></i>
+                  <p>Memuat komisi...</p>
                 </div>
               </div>
-            `;
-          });
+            </div>
 
-          container.innerHTML = html;
+            <!-- Submit Buttons -->
+            <div class="flex gap-3 pt-4">
+              <button onclick="closeWithdrawalModal()"
+                class="flex-1 px-4 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition">
+                Batal
+              </button>
+              <button onclick="submitWithdrawal()"
+                class="flex-1 px-4 py-3 gradient-primary text-white rounded-lg font-medium hover:shadow-lg transition">
+                <i class="fas fa-check-circle mr-2"></i>
+                Ajukan
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          // Load checkboxes for selection mode
-          loadSelectCheckboxes(data.data);
-        }
-      } catch (error) {
-        console.error('Error loading ready commissions:', error);
-        document.getElementById('readyCommissionsContainer').innerHTML = '<div class="text-center py-8 text-red-500"><p>Gagal memuat komisi</p></div>';
-      }
-    }
+      <script>
+        let userId = '<%= typeof user_id !== "undefined" ? user_id : "" %>';
+        let selectedCommissionIds = [];
+        let token = '';
 
-    // Load checkboxes for selection
-    function loadSelectCheckboxes(commissions) {
-      const container = document.getElementById('selectCheckboxes');
-      
-      let html = '';
-      commissions.forEach(comm => {
-        html += `
-          <label class="flex items-center gap-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
-            <input type="checkbox" value="${comm.id}" onchange="updateSelectedCommissions()" class="commission-checkbox w-4 h-4">
-            <span class="text-sm">${comm.event_title || 'Event'} - Rp ${(comm.amount || 0).toLocaleString('id-ID')}</span>
-          </label>
-        `;
-      });
-      
-      container.innerHTML = html;
-    }
-
-    // Load withdrawal history
-    async function loadWithdrawalHistory() {
-      try {
-        const headers = {};
-        if (token) {
-          headers['Authorization'] = `Bearer ${token}`;
-        }
-        
-        const response = await fetch(`/affiliate/api/withdrawal/requests?user_id=${userId}`, {
-          method: 'GET',
-          headers: headers
-        });
-        const data = await response.json();
-        
-        if (data.success && data.data) {
-          const container = document.getElementById('withdrawalHistoryContainer');
-          document.getElementById('historyTotal').textContent = data.data.length;
-
-          if (data.data.length === 0) {
-            container.innerHTML = '<div class="text-center py-8 text-gray-500"><p>Belum ada riwayat penarikan</p></div>';
-            return;
+        // Get token from localStorage (set by login/session)
+        function getToken() {
+          const stored = localStorage.getItem('authToken');
+          if (stored) {
+            token = stored;
+            return token;
           }
-
-          let html = '';
-          data.data.forEach(withdraw => {
-            let statusColor = 'bg-yellow-100 text-yellow-700';
-            let statusIcon = 'fa-clock';
-            
-            if (withdraw.status === 'approved') {
-              statusColor = 'bg-blue-100 text-blue-700';
-              statusIcon = 'fa-check-circle';
-            } else if (withdraw.status === 'paid') {
-              statusColor = 'bg-green-100 text-green-700';
-              statusIcon = 'fa-check-double';
-            } else if (withdraw.status === 'rejected') {
-              statusColor = 'bg-red-100 text-red-700';
-              statusIcon = 'fa-times-circle';
+          // Fallback: try to get from cookie
+          const cookies = document.cookie.split(';');
+          for (let cookie of cookies) {
+            const [name, value] = cookie.trim().split('=');
+            if (name === 'token' || name === 'authToken') {
+              token = value;
+              return token;
             }
+          }
+          return '';
+        }
 
-            // Check if proof exists
-            const hasProof = withdraw.proof_file ? true : false;
+        // Get initial token
+        getToken();
 
-            html += `
-              <div class="border rounded-lg p-4 hover:bg-gray-50 transition">
-                <div class="flex items-start justify-between mb-3">
+        // Load commission summary on page load
+        document.addEventListener('DOMContentLoaded', async function () {
+          await loadCommissionSummary();
+          await loadReadyCommissions();
+          await loadWithdrawalHistory();
+        });
+
+        // Load commission summary
+        async function loadCommissionSummary() {
+          try {
+            const response = await fetch(`/affiliate/api/commissions/summary?user_id=${userId}`);
+            const data = await response.json();
+
+            if (data.success) {
+              const summary = data.data;
+
+              // Update UI
+              document.getElementById('pendingAmount').textContent = 'Rp ' + (summary.pending.total || 0).toLocaleString('id-ID');
+              document.getElementById('pendingCount').textContent = summary.pending.count || 0 + ' transaksi';
+
+              document.getElementById('readyAmount').textContent = 'Rp ' + (summary.ready.total || 0).toLocaleString('id-ID');
+              document.getElementById('readyCount').textContent = summary.ready.count || 0 + ' transaksi';
+              document.getElementById('modalReadyAmount').textContent = 'Rp ' + (summary.ready.total || 0).toLocaleString('id-ID');
+              document.getElementById('allCount').textContent = summary.ready.count || 0;
+              document.getElementById('totalReady').textContent = summary.ready.count || 0;
+
+              document.getElementById('paidAmount').textContent = 'Rp ' + (summary.paid.total || 0).toLocaleString('id-ID');
+              document.getElementById('paidCount').textContent = summary.paid.count || 0 + ' transaksi';
+            }
+          } catch (error) {
+            console.error('Error loading summary:', error);
+            alert('Gagal memuat ringkasan komisi');
+          }
+        }
+
+        // Load ready commissions
+        async function loadReadyCommissions() {
+          try {
+            const response = await fetch(`/affiliate/api/commissions/ready?user_id=${userId}`);
+            const data = await response.json();
+
+            if (data.success && data.data) {
+              const container = document.getElementById('readyCommissionsContainer');
+              document.getElementById('readyTotal').textContent = data.data.length;
+
+              if (data.data.length === 0) {
+                container.innerHTML = `
+              <div class="text-center py-16">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i class="fas fa-inbox text-green-600 text-xl"></i>
+                </div>
+                <p class="text-gray-600 font-medium">Tidak ada komisi yang siap ditarik</p>
+                <p class="text-sm text-gray-500 mt-2">Semua komisi sudah diproses atau belum tersedia</p>
+              </div>
+            `;
+                return;
+              }
+
+              let html = '';
+              data.data.forEach(comm => {
+                html += `
+              <div class="bg-white border border-green-100 rounded-xl p-5 card-hover">
+                <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
                   <div class="flex-1">
-                    <p class="font-semibold text-gray-900">Rp ${(withdraw.total_amount || 0).toLocaleString('id-ID')}</p>
-                    <p class="text-sm text-gray-600 mt-1">
-                      <i class="fas fa-file-invoice mr-1"></i>
-                      ${withdraw.commission_count} komisi
-                    </p>
-                    <p class="text-xs text-gray-500 mt-1">${new Date(withdraw.created_at).toLocaleDateString('id-ID')}</p>
+                    <div class="flex items-center gap-3 mb-3">
+                      <div class="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-check text-green-600"></i>
+                      </div>
+                      <div>
+                        <div class="font-semibold text-gray-900">${comm.event_title || 'Event'}</div>
+                        <div class="text-xs text-gray-500">Transaksi #${comm.transaction_id}</div>
+                      </div>
+                    </div>
+                    <div class="text-sm text-gray-600">
+                      <div class="flex items-center gap-4 flex-wrap">
+                        <span class="flex items-center gap-1">
+                          <i class="fas fa-coins"></i>
+                          Rp ${(comm.amount || 0).toLocaleString('id-ID')}
+                        </span>
+                        <span class="flex items-center gap-1">
+                          <i class="fas fa-calendar"></i>
+                          ${new Date(comm.created_at).toLocaleDateString('id-ID')}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="flex items-center gap-2">
-                    ${hasProof ? `<i class="fas fa-check-circle text-green-600 text-lg" title="Bukti transfer tersedia"></i>` : ''}
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold ${statusColor}">
-                      <i class="fas ${statusIcon} mr-1"></i>
-                      ${withdraw.status.charAt(0).toUpperCase() + withdraw.status.slice(1)}
+                  <div class="md:text-right">
+                    <span class="inline-block px-3 py-1.5 rounded-full text-xs font-medium border border-green-200 bg-green-100 text-green-800 status-badge">
+                      <i class="fas fa-check-circle mr-1.5"></i>
+                      Siap Ditarik
                     </span>
                   </div>
                 </div>
-                <div class="flex gap-2">
-                  <button class="flex-1 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm rounded font-medium transition" onclick="event.stopPropagation(); viewWithdrawalDetail(${withdraw.id})">
-                    <i class="fas fa-eye mr-1"></i>
-                    Detail
-                  </button>
-                  ${hasProof ? `
-                    <button class="flex-1 px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 text-sm rounded font-medium transition" onclick="event.stopPropagation(); viewProof(${withdraw.id})">
-                      <i class="fas fa-file-image mr-1"></i>
-                      Lihat Bukti
-                    </button>
-                  ` : ''}
-                </div>
               </div>
             `;
+              });
+
+              container.innerHTML = html;
+
+              // Load checkboxes for selection mode
+              loadSelectCheckboxes(data.data);
+            }
+          } catch (error) {
+            console.error('Error loading ready commissions:', error);
+            container.innerHTML = `
+          <div class="text-center py-16">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-exclamation-circle text-red-600 text-xl"></i>
+            </div>
+            <p class="text-gray-600 font-medium">Gagal memuat komisi</p>
+            <p class="text-sm text-gray-500 mt-2">${error.message}</p>
+          </div>
+        `;
+          }
+        }
+
+        // Load checkboxes for selection
+        function loadSelectCheckboxes(commissions) {
+          const container = document.getElementById('selectCheckboxes');
+
+          let html = '';
+          commissions.forEach(comm => {
+            html += `
+          <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" value="${comm.id}" onchange="updateSelectedCommissions()" class="w-4 h-4 text-emerald-600 commission-checkbox">
+            <span class="text-sm text-gray-700">
+              <span class="font-medium">${comm.event_title || 'Event'}</span>
+              <span class="text-green-700 font-semibold"> - Rp ${(comm.amount || 0).toLocaleString('id-ID')}</span>
+            </span>
+          </label>
+        `;
           });
 
           container.innerHTML = html;
         }
-      } catch (error) {
-        console.error('Error loading history:', error);
-        document.getElementById('withdrawalHistoryContainer').innerHTML = '<div class="text-center py-8 text-red-500"><p>Gagal memuat riwayat</p></div>';
-      }
-    }
 
-    // Tab switching
-    function switchTab(tab) {
-      document.querySelectorAll('.tab-button').forEach(btn => {
-        btn.classList.remove('border-green-500', 'text-green-600');
-        btn.classList.add('border-transparent', 'text-gray-600');
-      });
-      
-      document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.add('hidden');
-      });
+        // Load withdrawal history
+        async function loadWithdrawalHistory() {
+          try {
+            const headers = {};
+            if (token) {
+              headers['Authorization'] = `Bearer ${token}`;
+            }
 
-      document.querySelector(`[data-tab="${tab}"]`).classList.add('border-green-500', 'text-green-600');
-      document.getElementById(`tab-${tab}`).classList.remove('hidden');
-    }
+            const response = await fetch(`/affiliate/api/withdrawal/requests?user_id=${userId}`, {
+              method: 'GET',
+              headers: headers
+            });
+            const data = await response.json();
 
-    // Modal functions
-    function openWithdrawalModal() {
-      document.getElementById('withdrawalModal').classList.remove('hidden');
-    }
+            if (data.success && data.data) {
+              const container = document.getElementById('withdrawalHistoryContainer');
+              document.getElementById('historyTotal').textContent = data.data.length;
 
-    function closeWithdrawalModal() {
-      document.getElementById('withdrawalModal').classList.add('hidden');
-    }
+              if (data.data.length === 0) {
+                container.innerHTML = `
+              <div class="text-center py-16">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i class="fas fa-history text-green-600 text-xl"></i>
+                </div>
+                <p class="text-gray-600 font-medium">Belum ada riwayat penarikan</p>
+                <p class="text-sm text-gray-500 mt-2">Mulai ajukan penarikan komisi Anda</p>
+              </div>
+            `;
+                return;
+              }
 
-    function closeProofModal() {
-      document.getElementById('proofModal').classList.add('hidden');
-    }
+              let html = '';
+              data.data.forEach(withdraw => {
+                let statusColor = 'text-yellow-700 bg-yellow-100 border-yellow-200';
+                let statusIcon = 'fa-clock';
+                let statusLabel = 'Pending';
 
-    // Close withdrawal detail modal
-    function closeWithdrawalDetailModal() {
-      const modal = document.getElementById('withdrawalDetailModal');
-      if (modal) modal.classList.add('hidden');
-      // Reset content to loading state so the next open shows spinner while fetching
-      const content = document.getElementById('withdrawalDetailContent');
-      if (content) content.innerHTML = `<div class="text-center py-8 text-gray-500">
-          <i class="fas fa-spinner fa-spin text-3xl mb-4"></i>
-          <p>Memuat detail...</p>
-        </div>`;
-    }
+                if (withdraw.status === 'approved') {
+                  statusColor = 'text-blue-700 bg-blue-100 border-blue-200';
+                  statusIcon = 'fa-check-circle';
+                  statusLabel = 'Approved';
+                } else if (withdraw.status === 'paid') {
+                  statusColor = 'text-green-700 bg-green-100 border-green-200';
+                  statusIcon = 'fa-check-double';
+                  statusLabel = 'Paid';
+                } else if (withdraw.status === 'rejected') {
+                  statusColor = 'text-red-700 bg-red-100 border-red-200';
+                  statusIcon = 'fa-times-circle';
+                  statusLabel = 'Rejected';
+                }
 
-    // View proof transfer
-    async function viewProof(payoutId) {
-      try {
-        const headers = {};
-        if (token) {
-          headers['Authorization'] = `Bearer ${token}`;
+                const hasProof = withdraw.proof_file ? true : false;
+
+                html += `
+              <div class="bg-white border border-green-100 rounded-xl p-5 card-hover">
+                <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                  <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-3">
+                      <div class="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-file-invoice-dollar text-green-600"></i>
+                      </div>
+                      <div>
+                        <div class="font-bold text-lg text-green-700">Rp ${(withdraw.total_amount || 0).toLocaleString('id-ID')}</div>
+                        <div class="text-xs text-gray-500">ID: #${withdraw.id} • ${new Date(withdraw.created_at).toLocaleDateString('id-ID')}</div>
+                      </div>
+                    </div>
+                    <div class="text-sm text-gray-600">
+                      <div class="flex items-center gap-4 flex-wrap">
+                        <span class="flex items-center gap-1">
+                          <i class="fas fa-coins"></i>
+                          ${withdraw.commission_count} komisi
+                        </span>
+                        ${hasProof ? `
+                          <span class="flex items-center gap-1 text-blue-600">
+                            <i class="fas fa-file-image"></i>
+                            Bukti tersedia
+                          </span>
+                        ` : ''}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="md:text-right flex flex-col items-end gap-2">
+                    <span class="inline-block px-3 py-1.5 rounded-full text-xs font-medium border status-badge ${statusColor}">
+                      <i class="fas ${statusIcon} mr-1.5"></i>
+                      ${statusLabel}
+                    </span>
+                    <div class="flex gap-2">
+                      <button onclick="event.stopPropagation(); viewWithdrawalDetail(${withdraw.id})" class="px-3 py-1.5 border border-green-200 text-green-700 rounded-lg font-medium hover:bg-green-50 transition text-sm">
+                        <i class="fas fa-eye mr-1"></i>
+                        Detail
+                      </button>
+                      ${hasProof ? `
+                        <button onclick="event.stopPropagation(); viewProof(${withdraw.id})" class="px-3 py-1.5 bg-gradient-info text-white rounded-lg font-medium hover:shadow-lg transition text-sm">
+                          <i class="fas fa-file-image mr-1"></i>
+                          Bukti
+                        </button>
+                      ` : ''}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+              });
+
+              container.innerHTML = html;
+            }
+          } catch (error) {
+            console.error('Error loading history:', error);
+            container.innerHTML = `
+          <div class="text-center py-16">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-exclamation-circle text-red-600 text-xl"></i>
+            </div>
+            <p class="text-gray-600 font-medium">Gagal memuat riwayat</p>
+            <p class="text-sm text-gray-500 mt-2">${error.message}</p>
+          </div>
+        `;
+          }
         }
 
-        const response = await fetch(`/affiliate/api/withdrawal/requests/${payoutId}?user_id=${userId}`, {
-          method: 'GET',
-          headers: headers
+        // Tab switching
+        function switchTab(tab) {
+          document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.remove('bg-emerald-600', 'text-white', 'shadow-sm');
+            btn.classList.add('bg-transparent', 'text-gray-700');
+          });
+
+          document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.add('hidden');
+          });
+
+          const activeBtn = document.querySelector(`[data-tab="${tab}"]`);
+          if (activeBtn) {
+            activeBtn.classList.add('bg-emerald-600', 'text-white', 'shadow-sm');
+            activeBtn.classList.remove('bg-transparent', 'text-gray-700');
+          }
+
+          document.getElementById(`tab-${tab}`).classList.remove('hidden');
+        }
+
+        // Add data-tab attributes to buttons
+        document.addEventListener('DOMContentLoaded', function () {
+          document.querySelectorAll('.tab-button').forEach((btn, index) => {
+            const tab = index === 0 ? 'ready' : 'history';
+            btn.setAttribute('data-tab', tab);
+          });
         });
-        const data = await response.json();
 
-        if (data.success && data.data.proof_file) {
-          const proofFile = data.data.proof_file;
-          const proofContent = document.getElementById('proof-content');
+        // Modal functions
+        function openWithdrawalModal() {
+          document.getElementById('withdrawalModal').classList.remove('hidden');
+        }
 
-          // Check file type
-          if (proofFile.toLowerCase().endsWith('.pdf')) {
-            proofContent.innerHTML = `
+        function closeWithdrawalModal() {
+          document.getElementById('withdrawalModal').classList.add('hidden');
+          // Reset selection
+          document.querySelector('input[name="selectionMode"][value="all"]').checked = true;
+          document.getElementById('selectCommissionsContainer').classList.add('hidden');
+          selectedCommissionIds = [];
+        }
+
+        function closeProofModal() {
+          document.getElementById('proofModal').classList.add('hidden');
+        }
+
+        function closeWithdrawalDetailModal() {
+          document.getElementById('withdrawalDetailModal').classList.add('hidden');
+        }
+
+        // View proof transfer
+        async function viewProof(payoutId) {
+          try {
+            const headers = {};
+            if (token) {
+              headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            const response = await fetch(`/affiliate/api/withdrawal/requests/${payoutId}?user_id=${userId}`, {
+              method: 'GET',
+              headers: headers
+            });
+            const data = await response.json();
+
+            if (data.success && data.data.proof_file) {
+              const proofFile = data.data.proof_file;
+              const proofContent = document.getElementById('proof-content');
+
+              if (proofFile.toLowerCase().endsWith('.pdf')) {
+                proofContent.innerHTML = `
               <div class="space-y-4">
-                <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+                <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
                   <i class="fas fa-file-pdf text-red-600 text-4xl mb-3"></i>
                   <p class="text-gray-700 font-semibold">File PDF</p>
                 </div>
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
                   <p class="text-sm text-blue-900 mb-3"><strong>Nama File:</strong> ${proofFile.split('/').pop()}</p>
-                  <a href="${proofFile}" target="_blank" class="inline-block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded text-center transition">
+                  <a href="${proofFile}" target="_blank" class="w-full px-4 py-2 gradient-info text-white rounded-lg font-medium hover:shadow-lg transition text-center inline-block">
                     <i class="fas fa-external-link-alt mr-2"></i>
                     Buka File PDF
                   </a>
                 </div>
               </div>
             `;
-          } else {
-            // Image file
-            proofContent.innerHTML = `
+              } else {
+                proofContent.innerHTML = `
               <div class="space-y-4">
-                <img src="${proofFile}" alt="Bukti Transfer" class="w-full rounded-lg border border-gray-300">
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <img src="${proofFile}" alt="Bukti Transfer" class="w-full rounded-xl border border-gray-300 shadow-sm">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
                   <p class="text-sm text-blue-900">
                     <strong>Format:</strong> Gambar<br>
                     <strong>File:</strong> ${proofFile.split('/').pop()}
@@ -552,149 +781,154 @@
                 </div>
               </div>
             `;
+              }
+
+              document.getElementById('proofModal').classList.remove('hidden');
+            } else {
+              alert('Bukti transfer tidak ditemukan');
+            }
+          } catch (error) {
+            console.error('Error loading proof:', error);
+            alert('Gagal memuat bukti transfer');
+          }
+        }
+
+        function updateSelectionMode() {
+          const mode = document.querySelector('input[name="selectionMode"]:checked').value;
+          const container = document.getElementById('selectCommissionsContainer');
+
+          if (mode === 'select') {
+            container.classList.remove('hidden');
+          } else {
+            container.classList.add('hidden');
+            selectedCommissionIds = [];
+          }
+        }
+
+        function updateSelectedCommissions() {
+          const checkboxes = document.querySelectorAll('.commission-checkbox:checked');
+          selectedCommissionIds = Array.from(checkboxes).map(cb => parseInt(cb.value));
+        }
+
+        // Submit withdrawal
+        async function submitWithdrawal() {
+          const mode = document.querySelector('input[name="selectionMode"]:checked').value;
+          const commissionIds = mode === 'select' ? selectedCommissionIds : null;
+
+          if (mode === 'select' && commissionIds.length === 0) {
+            alert('Pilih minimal satu komisi');
+            return;
           }
 
-          document.getElementById('proofModal').classList.remove('hidden');
-        } else {
-          alert('Bukti transfer tidak ditemukan');
+          try {
+            const response = await fetch(`/affiliate/api/withdrawal/request?user_id=${userId}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ commission_ids: commissionIds })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              alert(`✅ Permintaan penarikan berhasil!\nID: ${data.data.payout_id}\nJumlah: Rp ${data.data.total_amount.toLocaleString('id-ID')}\n${data.data.commission_count} komisi`);
+              closeWithdrawalModal();
+
+              setTimeout(async () => {
+                await loadCommissionSummary();
+                await loadReadyCommissions();
+                await loadWithdrawalHistory();
+              }, 500);
+            } else {
+              alert(`❌ Error: ${data.message}`);
+            }
+          } catch (error) {
+            console.error('Error submitting withdrawal:', error);
+            alert('Gagal mengajukan penarikan');
+          }
         }
-      } catch (error) {
-        console.error('Error loading proof:', error);
-        alert('Gagal memuat bukti transfer');
-      }
-    }
 
-    function updateSelectionMode() {
-      const mode = document.querySelector('input[name="selectionMode"]:checked').value;
-      const container = document.getElementById('selectCommissionsContainer');
-      
-      if (mode === 'select') {
-        container.classList.remove('hidden');
-      } else {
-        container.classList.add('hidden');
-        selectedCommissionIds = [];
-      }
-    }
+        // View withdrawal detail
+        async function viewWithdrawalDetail(payoutId) {
+          try {
+            const headers = {};
+            if (token) {
+              headers['Authorization'] = `Bearer ${token}`;
+            }
 
-    function updateSelectedCommissions() {
-      const checkboxes = document.querySelectorAll('.commission-checkbox:checked');
-      selectedCommissionIds = Array.from(checkboxes).map(cb => parseInt(cb.value));
-    }
+            const response = await fetch(`/affiliate/api/withdrawal/requests/${payoutId}?user_id=${userId}`, {
+              method: 'GET',
+              headers: headers
+            });
+            const data = await response.json();
 
-    // Submit withdrawal
-    async function submitWithdrawal() {
-      const mode = document.querySelector('input[name="selectionMode"]:checked').value;
-      const commissionIds = mode === 'select' ? selectedCommissionIds : null;
+            if (data.success) {
+              const payout = data.data;
+              const commissions = payout.commissions || [];
 
-      if (mode === 'select' && commissionIds.length === 0) {
-        alert('Pilih minimal satu komisi');
-        return;
-      }
-
-      try {
-        const response = await fetch(`/affiliate/api/withdrawal/request?user_id=${userId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ commission_ids: commissionIds })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          alert(`✅ Permintaan penarikan berhasil!\nID: ${data.data.payout_id}\nJumlah: Rp ${data.data.total_amount.toLocaleString('id-ID')}\n${data.data.commission_count} komisi`);
-          closeWithdrawalModal();
-          
-          // Reset modal state
-          document.querySelector('input[name="selectionMode"][value="all"]').checked = true;
-          selectedCommissionIds = [];
-          document.getElementById('selectCommissionsContainer').classList.add('hidden');
-          
-          // Reload all data with a small delay to ensure database updates are complete
-          setTimeout(async () => {
-            await loadCommissionSummary();
-            await loadReadyCommissions();
-            await loadWithdrawalHistory();
-          }, 500);
-        } else {
-          alert(`❌ Error: ${data.message}`);
-        }
-      } catch (error) {
-        console.error('Error submitting withdrawal:', error);
-        alert('Gagal mengajukan penarikan');
-      }
-    }
-
-    // View withdrawal detail
-    async function viewWithdrawalDetail(payoutId) {
-      try {
-        const headers = {};
-        if (token) {
-          headers['Authorization'] = `Bearer ${token}`;
-        }
-        
-        const response = await fetch(`/affiliate/api/withdrawal/requests/${payoutId}?user_id=${userId}`, {
-          method: 'GET',
-          headers: headers
-        });
-        const data = await response.json();
-
-        if (data.success) {
-          const payout = data.data;
-          const commissions = payout.commissions || [];
-
-          let commissionsHtml = '';
-          // Build commission rows
-          const commissionRows = commissions.length > 0 ? commissions.map(comm => `
-            <div class="flex justify-between py-2 ${comm ? 'border-t' : ''}">
-              <span class="text-gray-700">${comm.description || comm.event_title || '-'}</span>
-              <span class="font-semibold text-gray-900">Rp ${parseFloat(comm.amount || 0).toLocaleString('id-ID')}</span>
+              let commissionsHtml = '';
+              const commissionRows = commissions.length > 0 ? commissions.map(comm => `
+            <div class="flex justify-between items-center py-2 border-t border-gray-200">
+              <div class="flex-1">
+                <div class="font-medium text-gray-900">${comm.event_title || 'Event'}</div>
+                <div class="text-xs text-gray-500">${new Date(comm.created_at).toLocaleDateString('id-ID')}</div>
+              </div>
+              <div class="font-semibold text-green-700">Rp ${parseFloat(comm.amount || 0).toLocaleString('id-ID')}</div>
             </div>
-          `).join('') : '<p class="text-sm text-gray-500">Tidak ada komisi</p>';
+          `).join('') : '<p class="text-gray-500 text-sm text-center py-4">Tidak ada data komisi</p>';
 
-          // Proof preview
-          let proofHtml = '';
-          if (payout.proof_file) {
-            const pf = payout.proof_file;
-            if (pf.toLowerCase().endsWith('.pdf')) {
-              proofHtml = `
-                <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+              let proofHtml = '';
+              if (payout.proof_file) {
+                const pf = payout.proof_file;
+                if (pf.toLowerCase().endsWith('.pdf')) {
+                  proofHtml = `
+                <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
                   <i class="fas fa-file-pdf text-red-600 text-4xl mb-3"></i>
                   <p class="text-gray-700 font-semibold mb-2">File PDF</p>
-                  <a href="${pf}" target="_blank" class="inline-block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded text-center transition">Buka File PDF</a>
+                  <a href="${pf}" target="_blank" class="w-full px-4 py-2 gradient-info text-white rounded-lg font-medium hover:shadow-lg transition text-center inline-block">Buka File PDF</a>
                 </div>
               `;
-            } else {
-              proofHtml = `
+                } else {
+                  proofHtml = `
                 <div class="text-center">
-                  <img src="${pf}" alt="Bukti Transfer" class="w-full rounded-lg border border-gray-300 mb-3">
-                  <button onclick="event.stopPropagation(); viewProof(${payout.id})" class="inline-block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded text-center transition">Lihat Bukti (Besar)</button>
+                  <img src="${pf}" alt="Bukti Transfer" class="w-full rounded-xl border border-gray-300 mb-3">
+                  <button onclick="event.stopPropagation(); viewProof(${payout.id})" class="w-full px-4 py-2 gradient-info text-white rounded-lg font-medium hover:shadow-lg transition text-center">Lihat Bukti (Besar)</button>
                 </div>
               `;
-            }
-          } else {
-            proofHtml = '<p class="text-sm text-gray-500">Tidak ada bukti transfer</p>';
-          }
+                }
+              } else {
+                proofHtml = '<p class="text-sm text-gray-500 text-center">Tidak ada bukti transfer</p>';
+              }
 
-          const financeNoteHtml = payout.finance_note ? `
-            <div class="border-b pb-4 bg-blue-50 rounded p-4">
-              <h4 class="font-semibold text-blue-900 mb-2"><i class="fas fa-sticky-note mr-2"></i>Catatan Finance</h4>
+              const financeNoteHtml = payout.finance_note ? `
+            <div class="border-b pb-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4">
+              <h4 class="font-semibold text-blue-900 mb-2 flex items-center gap-2">
+                <i class="fas fa-sticky-note"></i>
+                Catatan Finance
+              </h4>
               <p class="text-sm text-blue-800">${payout.finance_note}</p>
             </div>
           ` : '';
 
-          const adminNoteHtml = payout.admin_note ? `
-            <div class="border-b pb-4 bg-green-50 rounded p-4">
-              <h4 class="font-semibold text-green-900 mb-2"><i class="fas fa-check-circle mr-2"></i>Catatan Admin Approval</h4>
+              const adminNoteHtml = payout.admin_note ? `
+            <div class="border-b pb-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4">
+              <h4 class="font-semibold text-green-900 mb-2 flex items-center gap-2">
+                <i class="fas fa-check-circle"></i>
+                Catatan Admin Approval
+              </h4>
               <p class="text-sm text-green-800">${payout.admin_note}</p>
             </div>
           ` : '';
 
-          const detailHtml = `
+              const detailHtml = `
             <div class="space-y-6">
+              <!-- Affiliate Info -->
               <div class="border-b pb-4">
-                <h4 class="font-semibold text-gray-900 mb-3">Informasi Affiliate</h4>
+                <h4 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <i class="fas fa-user-tie text-green-600"></i>
+                  Informasi Affiliate
+                </h4>
                 <div class="grid grid-cols-2 gap-4">
                   <div>
                     <p class="text-sm text-gray-600">Nama</p>
@@ -707,8 +941,12 @@
                 </div>
               </div>
 
+              <!-- Bank Info -->
               <div class="border-b pb-4">
-                <h4 class="font-semibold text-gray-900 mb-3">Informasi Bank</h4>
+                <h4 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <i class="fas fa-university text-green-600"></i>
+                  Informasi Bank
+                </h4>
                 <div class="grid grid-cols-1 gap-4">
                   <div>
                     <p class="text-sm text-gray-600">Nama Bank</p>
@@ -728,36 +966,62 @@
               ${financeNoteHtml}
               ${adminNoteHtml}
 
+              <!-- Commissions -->
               <div>
-                <h4 class="font-semibold text-gray-900 mb-3">Komisi yang Ditarik</h4>
-                <div class="bg-gray-50 rounded p-4 max-h-48 overflow-y-auto">
+                <h4 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <i class="fas fa-coins text-green-600"></i>
+                  Komisi yang Ditarik
+                </h4>
+                <div class="bg-gray-50 rounded-xl p-4 max-h-48 overflow-y-auto">
                   ${commissionRows}
                 </div>
               </div>
 
+              <!-- Proof -->
               <div>
-                <h4 class="font-semibold text-gray-900 mb-3">Bukti Transfer</h4>
+                <h4 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <i class="fas fa-file-image text-green-600"></i>
+                  Bukti Transfer
+                </h4>
                 ${proofHtml}
               </div>
 
-              <div class="text-sm text-gray-500">
-                <p><strong>Status:</strong> ${payout.status}</p>
-                <p><strong>Total:</strong> Rp ${parseFloat(payout.total_amount || 0).toLocaleString('id-ID')}</p>
-                <p><strong>Dibuat:</strong> ${new Date(payout.created_at).toLocaleString('id-ID')}</p>
-                ${payout.paid_at ? `<p><strong>Dibayar:</strong> ${new Date(payout.paid_at).toLocaleString('id-ID')}</p>` : ''}
+              <!-- Status Info -->
+              <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4">
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p class="text-gray-600">Status</p>
+                    <p class="font-semibold text-gray-900 capitalize">${payout.status}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600">Total</p>
+                    <p class="font-bold text-lg text-green-700">Rp ${parseFloat(payout.total_amount || 0).toLocaleString('id-ID')}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600">Dibuat</p>
+                    <p class="font-medium text-gray-900">${new Date(payout.created_at).toLocaleString('id-ID')}</p>
+                  </div>
+                  ${payout.paid_at ? `
+                    <div>
+                      <p class="text-gray-600">Dibayar</p>
+                      <p class="font-medium text-gray-900">${new Date(payout.paid_at).toLocaleString('id-ID')}</p>
+                    </div>
+                  ` : ''}
+                </div>
               </div>
             </div>
           `;
 
-          document.getElementById('detailModalTitle').textContent = `Detail Penarikan #${payout.id}`;
-          document.getElementById('withdrawalDetailContent').innerHTML = detailHtml;
-          document.getElementById('withdrawalDetailModal').classList.remove('hidden');
+              document.getElementById('detailModalTitle').textContent = `Detail Penarikan #${payout.id}`;
+              document.getElementById('withdrawalDetailContent').innerHTML = detailHtml;
+              document.getElementById('withdrawalDetailModal').classList.remove('hidden');
+            }
+          } catch (error) {
+            console.error('Error loading detail:', error);
+            alert('Gagal memuat detail');
+          }
         }
-      } catch (error) {
-        console.error('Error loading detail:', error);
-        alert('Gagal memuat detail');
-      }
-    }
-  </script>
+      </script>
 </body>
+
 </html>
