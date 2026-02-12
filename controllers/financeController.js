@@ -65,9 +65,19 @@ exports.getPendingWithdrawalsAPI = async (req, res) => {
         u.bank_account_name AS bank_account_name,
         COUNT(DISTINCT pd.commission_id) as commission_count,
         p.created_at,
-        p.paid_at
+        p.paid_at,
+        p.finance_note,
+        p.admin_note,
+        p.submitted_by,
+        p.submitted_at,
+        p.admin_approved_by,
+        p.admin_approved_at,
+        su.name AS submitted_by_name,
+        au.name AS admin_approved_name
       FROM payouts p
       JOIN users u ON p.affiliate_id = u.id
+      LEFT JOIN users su ON p.submitted_by = su.id
+      LEFT JOIN users au ON p.admin_approved_by = au.id
       LEFT JOIN payout_details pd ON p.id = pd.payout_id
       WHERE 1=1
     `;
@@ -123,13 +133,11 @@ exports.getWithdrawalCountsAPI = async (req, res) => {
     res.json({ success: true, data: counts });
   } catch (error) {
     console.error("Get withdrawal counts error:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Internal server error",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 };
 
@@ -428,9 +436,13 @@ exports.getWithdrawalDetailAPI = async (req, res) => {
         u.email as affiliate_email,
         u.bank_name,
         u.bank_account_number,
-        u.bank_account_name
+        u.bank_account_name,
+        su.name as submitted_by_name,
+        au.name as admin_approved_name
       FROM payouts p
       JOIN users u ON p.affiliate_id = u.id
+      LEFT JOIN users su ON p.submitted_by = su.id
+      LEFT JOIN users au ON p.admin_approved_by = au.id
       WHERE p.id = ?
     `,
       [id],

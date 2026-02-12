@@ -134,13 +134,13 @@
         </div>
 
         <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <!-- Pending Card -->
           <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-gray-500 text-sm font-medium">Komisi Pending</p>
-                <p class="text-2xl font-bold text-gray-900 mt-2" id="pendingAmount">Rp 0</p>
+                <p class="text-2xl font-bold text-gray-900 mt-2 summary-value" id="pendingAmount">Rp 0,00</p>
                 <div class="flex items-center gap-2 mt-2">
                   <span class="text-xs text-gray-500" id="pendingCount">0 transaksi</span>
                   <span
@@ -156,12 +156,24 @@
             </div>
           </div>
 
+          <!-- Total Commission (matches "Komisi Anda" on Affiliate Dashboard) -->
+          <div class="glass-card rounded-2xl shadow-lg p-6 border border-gray-100 card-hover">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Total Komisi</p>
+              <p class="text-3xl font-bold text-gray-900 mt-2 summary-value" id="totalCommissionDisplay">Rp 0,00</p>
+              <p class="text-xs text-gray-500 mt-2">
+                <i class="fas fa-info-circle mr-1"></i>
+                Total semua status (pending + ready + paid)
+              </p>
+            </div>
+          </div>
+
           <!-- Ready for Withdraw Card -->
           <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-200 card-hover ring-1 ring-green-100">
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-gray-500 text-sm font-medium">Siap Ditarik</p>
-                <p class="text-2xl font-bold text-green-700 mt-2" id="readyAmount">Rp 0</p>
+                <p class="text-2xl font-bold text-green-700 mt-2 summary-value" id="readyAmount">Rp 0,00</p>
                 <div class="flex items-center gap-2 mt-2">
                   <span class="text-xs text-gray-500" id="readyCount">0 transaksi</span>
                   <span
@@ -186,7 +198,7 @@
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-gray-500 text-sm font-medium">Komisi Diterima</p>
-                <p class="text-2xl font-bold text-blue-700 mt-2" id="paidAmount">Rp 0</p>
+                <p class="text-2xl font-bold text-blue-700 mt-2 summary-value" id="paidAmount">Rp 0,00</p>
                 <div class="flex items-center gap-2 mt-2">
                   <span class="text-xs text-gray-500" id="paidCount">0 transaksi</span>
                   <span
@@ -435,6 +447,9 @@
           await loadCommissionSummary();
           await loadReadyCommissions();
           await loadWithdrawalHistory();
+
+          // Initialize SSE for real-time updates
+          initCommissionSSE();
         });
 
         // Load commission summary
@@ -447,17 +462,55 @@
               const summary = data.data;
 
               // Update UI
-              document.getElementById('pendingAmount').textContent = 'Rp ' + (summary.pending.total || 0).toLocaleString('id-ID');
-              document.getElementById('pendingCount').textContent = summary.pending.count || 0 + ' transaksi';
+              document.getElementById('pendingAmount').textContent = 'Rp ' + Number(summary.pending.total || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+              document.getElementById('pendingCount').textContent = (summary.pending.count || 0) + ' transaksi';
 
-              document.getElementById('readyAmount').textContent = 'Rp ' + (summary.ready.total || 0).toLocaleString('id-ID');
-              document.getElementById('readyCount').textContent = summary.ready.count || 0 + ' transaksi';
-              document.getElementById('modalReadyAmount').textContent = 'Rp ' + (summary.ready.total || 0).toLocaleString('id-ID');
-              document.getElementById('allCount').textContent = summary.ready.count || 0;
-              document.getElementById('totalReady').textContent = summary.ready.count || 0;
+              // Prefer "ready-by-lead" totals (lead_status = 'SEDANG BERANGKAT') for the UI "Siap Ditarik" display.
+              try {
+                const respLead = await fetch(`/affiliate/api/commissions/ready-by-lead?user_id=${userId}`);
+                const leadData = await respLead.json();
+                if (leadData && leadData.success && leadData.data) {
+                  const readyTotalVal = Number(leadData.data.total || 0);
+                  document.getElementById('readyAmount').textContent = 'Rp ' + readyTotalVal.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                  document.getElementById('readyCount').textContent = (leadData.data.count || 0) + ' transaksi';
+                  document.getElementById('modalReadyAmount').textContent = 'Rp ' + readyTotalVal.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                  document.getElementById('allCount').textContent = leadData.data.count || 0;
+                  document.getElementById('totalReady').textContent = leadData.data.count || 0;
+                } else {
+                  // fallback to original summary.ready
+                  const fallbackVal = Number(summary.ready.total || 0);
+                  document.getElementById('readyAmount').textContent = 'Rp ' + fallbackVal.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                  document.getElementById('readyCount').textContent = (summary.ready.count || 0) + ' transaksi';
+                  document.getElementById('modalReadyAmount').textContent = 'Rp ' + fallbackVal.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                  document.getElementById('allCount').textContent = summary.ready.count || 0;
+                  document.getElementById('totalReady').textContent = summary.ready.count || 0;
+                }
+              } catch (e) {
+                console.debug('ready-by-lead fetch failed, fallback to summary.ready', e);
+                document.getElementById('readyAmount').textContent = 'Rp ' + Number(summary.ready.total || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.getElementById('readyCount').textContent = (summary.ready.count || 0) + ' transaksi';
+                document.getElementById('modalReadyAmount').textContent = 'Rp ' + Number(summary.ready.total || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.getElementById('allCount').textContent = summary.ready.count || 0;
+                document.getElementById('totalReady').textContent = summary.ready.count || 0;
+              }
 
-              document.getElementById('paidAmount').textContent = 'Rp ' + (summary.paid.total || 0).toLocaleString('id-ID');
-              document.getElementById('paidCount').textContent = summary.paid.count || 0 + ' transaksi';
+              document.getElementById('paidAmount').textContent = 'Rp ' + Number(summary.paid.total || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+              document.getElementById('paidCount').textContent = (summary.paid.count || 0) + ' transaksi';
+
+              // Also fetch overall totalCommission (same source as Dashboard Affiliate)
+              try {
+                const respStatus = await fetch('/affiliate/api/status');
+                const st = await respStatus.json();
+                if (st && st.success && st.data && typeof st.data.totalCommission !== 'undefined') {
+                  const commissionValue = parseFloat(st.data.totalCommission) || 0;
+                  const el = document.getElementById('totalCommissionDisplay');
+                  if (el) el.textContent = 'Rp ' + commissionValue.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                  // Responsive: add .break-all to summary values for large numbers
+                  document.querySelectorAll('.summary-value').forEach(el => el.classList.add('break-all'));
+                }
+              } catch (e) {
+                console.debug('Could not fetch totalCommission from /affiliate/api/status', e);
+              }
             }
           } catch (error) {
             console.error('Error loading summary:', error);
@@ -507,7 +560,7 @@
                       <div class="flex items-center gap-4 flex-wrap">
                         <span class="flex items-center gap-1">
                           <i class="fas fa-coins"></i>
-                          Rp ${(comm.amount || 0).toLocaleString('id-ID')}
+                          Rp ${Number(comm.amount || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </span>
                         <span class="flex items-center gap-1">
                           <i class="fas fa-calendar"></i>
@@ -557,7 +610,7 @@
             <input type="checkbox" value="${comm.id}" onchange="updateSelectedCommissions()" class="w-4 h-4 text-emerald-600 commission-checkbox">
             <span class="text-sm text-gray-700">
               <span class="font-medium">${comm.event_title || 'Event'}</span>
-              <span class="text-green-700 font-semibold"> - Rp ${(comm.amount || 0).toLocaleString('id-ID')}</span>
+              <span class="text-green-700 font-semibold"> - Rp ${Number(comm.amount || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </span>
           </label>
         `;
@@ -686,6 +739,65 @@
           }
         }
 
+        // Initialize SSE (Server Sent Events) to update totals in real-time
+        function initCommissionSSE() {
+          if (!('EventSource' in window)) return;
+          const es = new EventSource('/affiliate/commission-events');
+          es.onopen = () => console.debug('Commission SSE connected');
+          es.onerror = (e) => console.error('Commission SSE error', e);
+
+          // commission_awarded broadcast includes commission info (affiliate_id, amount, transaction_id)
+          es.addEventListener('commission_awarded', async (e) => {
+            try {
+              const data = JSON.parse(e.data);
+              if (!data) return;
+              // if event is for current affiliate, refresh summaries
+              if (Number(data.affiliate_id) === Number(userId)) {
+                await loadCommissionSummary();
+                await loadReadyCommissions();
+                showCommissionToast(data.amount, data.transaction_id);
+              }
+            } catch (err) {
+              console.error('commission_awarded handler error', err);
+            }
+          });
+
+          // status_update broadcast from Sales (when lead_status changes)
+          es.addEventListener('status_update', async (e) => {
+            try {
+              const d = JSON.parse(e.data);
+              const s = (d.status || '').toString().toUpperCase();
+              if (s === 'SEDANG BERANGKAT') {
+                // A transaction moved to SEDANG BERANGKAT — refresh totals
+                await loadCommissionSummary();
+                await loadReadyCommissions();
+                // optional small notification
+                const msg = `Lead #${d.id} ditandai SEDANG BERANGKAT`;
+                const el = document.createElement('div');
+                el.className = 'fixed bottom-6 left-6 bg-blue-600 text-white px-4 py-2 rounded shadow-lg z-50';
+                el.textContent = msg;
+                document.body.appendChild(el);
+                setTimeout(()=> el.remove(), 4000);
+              }
+            } catch (err) {
+              console.error('status_update handler error', err);
+            }
+          });
+        }
+
+        // Small toast for commission awarded
+        function showCommissionToast(amount, transactionId) {
+          try {
+            const msg = `Komisi Rp ${Number(amount || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} telah ditambahkan (Tx #${transactionId})`;
+            const el = document.createElement('div');
+            el.className = 'fixed bottom-6 right-6 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-50';
+            el.textContent = msg;
+            document.body.appendChild(el);
+            setTimeout(() => el.classList.add('opacity-0'), 3500);
+            setTimeout(() => el.remove(), 4000);
+          } catch (e) { console.error(e); }
+        }
+
         // Tab switching
         function switchTab(tab) {
           document.querySelectorAll('.tab-button').forEach(btn => {
@@ -716,6 +828,8 @@
 
         // Modal functions
         function openWithdrawalModal() {
+          // Ensure the latest ready commissions (and checkboxes) are loaded so "Pilih Komisi Tertentu" doesn't hang on spinner
+          loadReadyCommissions().catch(() => {});
           document.getElementById('withdrawalModal').classList.remove('hidden');
         }
 
@@ -798,7 +912,13 @@
           const container = document.getElementById('selectCommissionsContainer');
 
           if (mode === 'select') {
+            // show container
             container.classList.remove('hidden');
+            // If the checkboxes area is still showing the loading spinner or empty, reload the ready commissions
+            const checkboxesEl = document.getElementById('selectCheckboxes');
+            if (!checkboxesEl || !checkboxesEl.children || checkboxesEl.children.length === 0 || checkboxesEl.querySelector('.fa-spinner')) {
+              loadReadyCommissions().catch(() => {});
+            }
           } else {
             container.classList.add('hidden');
             selectedCommissionIds = [];
@@ -821,19 +941,31 @@
           }
 
           try {
+            // Prepare headers and include Authorization if token is available
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
             const response = await fetch(`/affiliate/api/withdrawal/request?user_id=${userId}`, {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
+              headers: headers,
               body: JSON.stringify({ commission_ids: commissionIds })
             });
 
-            const data = await response.json();
+            // Try to parse JSON, but be resilient to non-JSON responses (e.g., HTML redirect)
+            let data = null;
+            try {
+              data = await response.json();
+            } catch (parseErr) {
+              const text = await response.text();
+              console.error('Non-JSON response from withdrawal request:', text);
+              alert('Gagal mengajukan penarikan: server merespon dengan teks tidak terduga');
+              return;
+            }
 
-            if (data.success) {
+            if (data && data.success) {
               alert(`✅ Permintaan penarikan berhasil!\nID: ${data.data.payout_id}\nJumlah: Rp ${data.data.total_amount.toLocaleString('id-ID')}\n${data.data.commission_count} komisi`);
               closeWithdrawalModal();
+
 
               setTimeout(async () => {
                 await loadCommissionSummary();

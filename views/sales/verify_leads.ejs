@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verifikasi Leads - Sales</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+
+    /* New lead badge/pulse */
+    .pulse-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+      font-weight: 600;
+      font-size: 11px;
+      box-shadow: 0 0 0 0 rgba(16,185,129,0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+      100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+    }
+
+    /* Undo toast */
+    #undoToast {
+      display: none;
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 60;
+      background: white;
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    #undoToast.show { display: flex; align-items: center; gap: 0.75rem; }
+    #undoToast button { cursor: pointer; }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <%- include('../navbar/navbar.ejs', { name: 'Sales' }) %>
+  <%- include('../sidebar/sales.ejs') %>
+
+  <main class="ml-64 pt-16 min-h-screen p-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-3">
+          <h1 class="text-2xl font-bold">Verifikasi & Manajemen Leads</h1>
+          <span id="newLeadsBadge" class="hidden px-2 py-0.5 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-700">NEW <span id="newLeadsCount" class="ml-2">0</span></span>
+        </div>
+        <div class="text-sm text-gray-500">Menampilkan <%= transactions.length || 0 %> transaksi</div>
+      </div> 
+
+      <div class="bg-white rounded-lg shadow overflow-x-auto">
+        <div class="px-4 py-3 border-b">
+          <div class="flex items-center gap-3">
+            <button class="tab-btn px-3 py-1 rounded bg-gray-100" data-tab="leads">Leads</button>
+            <button class="tab-btn px-3 py-1 rounded bg-transparent" data-tab="history">Riwayat SEDANG BERANGKAT (7 hari)</button>
+          </div>
+        </div>
+        <div id="tab-leads">
+          <table class="w-full text-left text-sm">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="p-3">ID</th>
+              <th class="p-3">Customer</th>
+              <th class="p-3">Affiliate</th>
+              <th class="p-3">Event</th>
+              <th class="p-3">Amount</th>
+              <th class="p-3">Komisi</th>
+              <th class="p-3">Lead Status</th>
+              <th class="p-3">Waktu</th>
+              <th class="p-3">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <% if (!transactions || transactions.length === 0) { %>
+              <tr><td colspan="7" class="p-10 text-center text-gray-400">Tidak ada transaksi</td></tr>
+            <% } else { %>
+              <% transactions.forEach(function(trx){ %>
+                <tr class="border-t hover:bg-gray-50 <%= trx.lead_status === 'LEAD BARU' ? 'new-lead-row' : '' %>">
+                  <td class="p-3">#<%= trx.id %> <% if (trx.lead_status === 'LEAD BARU') { %><span class="ml-2 pulse-badge">NEW</span><% } %></td>
+                  <td class="p-3"><%= trx.customer_name || '-' %></td>
+                  <td class="p-3"><%= trx.affiliate_name || '-' %></td>
+                  <td class="p-3"><%= trx.event_name || ('#' + trx.event_id) || '-' %></td>
+                  <td class="p-3">Rp <%= (parseFloat(trx.total_amount) || 0).toLocaleString('id-ID') %></td>
+                  <td class="p-3">
+                    <% if (typeof trx.commission_amount !== 'undefined' && trx.commission_amount !== null && trx.commission_amount > 0) { %>
+                      Rp <%= Number(trx.commission_amount).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                    <% } else if (trx.projected_commission) { %>
+                      Rp <%= parseFloat(trx.projected_commission).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                    <% } else { %>
+                      -
+                    <% } %>
+                  </td>
+                  <td class="p-3">
+                    <% if (trx.status === 'stage_2_approved') { %>
+                      <!-- For transactions that reached stage_2 (LUNAS), sales may only set SEDANG BERANGKAT -->
+                      <select class="lead-status-select border px-2 py-1 rounded" data-id="<%= trx.id %>">
+                        <option value="">-- pilih status --</option>
+                        <option value="SEDANG BERANGKAT" <%= trx.lead_status === 'SEDANG BERANGKAT' ? 'selected' : '' %>>SEDANG BERANGKAT</option>
+                      </select>
+                    <% } else { %>
+                      <select class="lead-status-select border px-2 py-1 rounded" data-id="<%= trx.id %>">
+                        <option value="">-- pilih status --</option>
+                        <option value="LEAD BARU" <%= trx.lead_status === 'LEAD BARU' ? 'selected' : '' %>>LEAD BARU</option>
+                        <option value="SEDANG DI PROSPEK" <%= trx.lead_status === 'SEDANG DI PROSPEK' ? 'selected' : '' %>>SEDANG DI PROSPEK</option>
+                        <option value="HOT" <%= trx.lead_status === 'HOT' ? 'selected' : '' %>>HOT</option>
+                        <option value="DP" <%= trx.lead_status === 'DP' ? 'selected' : '' %>>DP</option>
+                        <option value="LUNAS" <%= trx.lead_status === 'LUNAS' ? 'selected' : '' %>>LUNAS</option>
+                        <option value="SEDANG BERANGKAT" <%= trx.lead_status === 'SEDANG BERANGKAT' ? 'selected' : '' %>>SEDANG BERANGKAT</option>
+                      </select>
+                    <% } %>
+                    <div class="text-xs text-gray-400 mt-1">Status DB: <%= trx.lead_status || '—' %></div>
+                    <div class="mt-2 action-area" data-id="<%= trx.id %>">
+                      <button class="save-btn hidden px-3 py-1 bg-green-600 text-white rounded text-xs">Simpan</button>
+                      <button class="reject-btn hidden px-3 py-1 bg-red-500 text-white rounded text-xs ml-2">Reject</button>
+                    </div>
+                  </td>
+                  <td class="p-3"><%= trx.lead_updated_at ? new Date(trx.lead_updated_at).toLocaleString('id-ID') : '-' %></td>
+                  <td class="p-3"><button class="reject-row-btn px-3 py-1 bg-red-500 text-white rounded text-xs" data-id="<%= trx.id %>">Reject</button></td>
+                </tr>
+              <% }) %>
+            <% } %>
+          </tbody>
+        </table>
+        </div>
+
+        <!-- Undo toast -->
+        <div id="undoToast" aria-live="polite">
+          <div id="undoMessage">Lead ditolak</div>
+          <div class="ml-4">
+            <button id="undoBtn" class="px-3 py-1 bg-emerald-600 text-white rounded text-sm">Undo</button>
+            <button id="dismissUndo" class="ml-2 px-2 py-1 bg-gray-100 rounded text-sm">Tutup</button>
+          </div>
+        </div>
+
+        <div id="tab-history" class="hidden p-4">
+          <h3 class="text-sm font-semibold mb-3">Riwayat SEDANG BERANGKAT (7 hari)</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="p-2">ID</th>
+                  <th class="p-2">Customer</th>
+                  <th class="p-2">Affiliate</th>
+                  <th class="p-2">Event</th>
+                  <th class="p-2">Jumlah</th>
+                  <th class="p-2">Status</th>
+                  <th class="p-2">Tanggal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (!recentDepartures || recentDepartures.length === 0) { %>
+                  <tr><td colspan="6" class="p-4 text-center text-gray-400">Tidak ada riwayat</td></tr>
+                <% } else { %>
+                  <% recentDepartures.forEach(function(r){ %>
+                    <tr class="border-t">
+                      <td class="p-2">#<%= r.id %></td>
+                      <td class="p-2"><%= r.customer_name || '-' %></td>
+                      <td class="p-2"><%= r.affiliate_name || '-' %></td>
+                      <td class="p-2"><%= r.event_name || '-' %></td>
+                      <td class="p-2">Rp <%= (parseFloat(r.total_amount)||0).toLocaleString('id-ID') %></td>
+                      <td class="p-2"><%= r.status || '-' %></td>
+                      <td class="p-2"><%= new Date(r.updated_at).toLocaleString() %></td>
+                    </tr>
+                  <% }) %>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Tab handling
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', function(){
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('bg-gray-100'));
+      this.classList.add('bg-gray-100');
+      const tab = this.dataset.tab;
+      document.getElementById('tab-leads').classList.toggle('hidden', tab !== 'leads');
+      document.getElementById('tab-history').classList.toggle('hidden', tab !== 'history');
+    }));
+
+    // Setup lead-status selects with conditional Save/Reject UI and regression guard
+    const getStageLevel = (s) => {
+      if (!s) return 0;
+      s = s.toString().toUpperCase();
+      if (s === 'SEDANG BERANGKAT') return 3;
+      if (['LUNAS','DP','HOT'].includes(s)) return 2;
+      if (['LEAD BARU','SEDANG DI PROSPEK'].includes(s)) return 1;
+      return 0;
+    };
+
+    function hideActions(rowId) {
+      const area = document.querySelector('.action-area[data-id="'+rowId+'"]');
+      if (!area) return;
+      area.querySelectorAll('.save-btn, .reject-btn').forEach(b=>b.classList.add('hidden'));
+    }
+
+    function showActions(rowId) {
+      const area = document.querySelector('.action-area[data-id="'+rowId+'"]');
+      if (!area) return;
+      area.querySelectorAll('.save-btn, .reject-btn').forEach(b=>b.classList.remove('hidden'));
+    }
+
+    // Delegated change handler for dynamically inserted selects
+    document.addEventListener('change', function(e) {
+      const sel = e.target;
+      if (!sel || !sel.matches('.lead-status-select')) return;
+      const id = sel.dataset.id;
+      const val = sel.value;
+      if (!val) return;
+
+      // store prev if missing
+      if (!sel.dataset.prev) sel.dataset.prev = '';
+
+      // regression prevention: prevent moving from stage 3 down to 1/2
+      const statusEl = sel.closest('td').querySelector('.text-xs');
+      const currentDbStatus = statusEl ? statusEl.textContent.replace('Status DB: ','').trim() : (sel.dataset.prev || '');
+      const curLevel = getStageLevel(currentDbStatus);
+      const targetLevel = getStageLevel(val);
+      if (curLevel >= 3 && targetLevel < 3) {
+        alert('Tidak diperbolehkan menurunkan status dari tahap 3 ke tahap sebelumnya.');
+        sel.value = sel.dataset.prev || '';
+        return;
+      }
+
+      // If user selected SEDANG BERANGKAT, show Save/Reject buttons instead of auto-saving
+      if (val === 'SEDANG BERANGKAT') {
+        showActions(id);
+        return;
+      }
+
+      // Otherwise auto-save like before and update DB time
+      fetch('/sales/update-lead-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id=${encodeURIComponent(id)}&lead_status=${encodeURIComponent(val)}`
+      }).then(res => res.json()).then(json => {
+        if (json && json.success) {
+          const prev = sel.closest('td').querySelector('.text-xs');
+          if (prev) prev.textContent = 'Status DB: ' + val;
+          // update time cell if backend returned updated_at
+          const timeCell = sel.closest('tr').querySelector('td:nth-child(8)');
+          if (timeCell) {
+            timeCell.textContent = json.updated_at ? new Date(json.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
+          }
+          sel.dataset.prev = val;
+        } else {
+          alert('Gagal menyimpan status');
+          sel.value = sel.dataset.prev || '';
+        }
+      }).catch(()=>{ alert('Gagal menyimpan status'); sel.value = sel.dataset.prev || ''; });
+    });
+
+    // Delegate clicks for save/reject buttons
+    document.addEventListener('click', async function(e){
+      if (e.target.matches('.save-btn')) {
+        const area = e.target.closest('.action-area');
+        const id = area.dataset.id;
+        const select = document.querySelector('.lead-status-select[data-id="'+id+'"]');
+        const val = select.value;
+        if (!val) return;
+        try {
+          const resp = await fetch('/sales/update-lead-status', { method: 'POST', headers: { 'Content-Type':'application/x-www-form-urlencoded' }, body: `id=${encodeURIComponent(id)}&lead_status=${encodeURIComponent(val)}` });
+          const j = await resp.json();
+          if (j && j.success) {
+            // update UI
+            const prev = select.closest('td').querySelector('.text-xs'); if (prev) prev.textContent = 'Status DB: ' + (j.status || val);
+            const prevStatus = select.dataset.prev || '';
+            select.dataset.prev = j.status || val;
+            // update time cell
+            const timeCell = select.closest('tr').querySelector('td:nth-child(8)');
+            if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
+            area.querySelectorAll('.save-btn, .reject-btn').forEach(b=>b.classList.add('hidden'));
+            // adjust NEW badge/count
+            if (prevStatus === 'LEAD BARU' && (j.status || val) !== 'LEAD BARU') {
+              const row = select.closest('tr'); row.classList.remove('new-lead-row'); const badge = row.querySelector('.pulse-badge'); if(badge) badge.remove(); updateNewLeadsCount(-1);
+            } else if (prevStatus !== 'LEAD BARU' && (j.status || val) === 'LEAD BARU') {
+              const row = select.closest('tr'); row.classList.add('new-lead-row'); updateNewLeadsCount(1);
+            }
+            alert('Status disimpan. Jika ada komisi untuk stage ini, akan ditambahkan ke dashboard affiliate.');
+          } else {
+            alert('Gagal menyimpan status');
+          }
+        } catch (err) { console.error(err); alert('Gagal menyimpan status'); }
+      }
+
+      if (e.target.matches('.reject-btn')) {
+        const area = e.target.closest('.action-area');
+        const id = area.dataset.id;
+        const select = document.querySelector('.lead-status-select[data-id="'+id+'"]');
+        // revert to previous
+        select.value = select.dataset.prev || '';
+        area.querySelectorAll('.save-btn, .reject-btn').forEach(b=>b.classList.add('hidden'));
+      }
+
+      if (e.target.matches('.reject-row-btn')) {
+        const id = e.target.dataset.id;
+        if (!confirm('Tandai lead ini sebagai REJECTED?')) return;
+        try {
+          const resp = await fetch('/sales/update-lead-status', { method: 'POST', headers: { 'Content-Type':'application/x-www-form-urlencoded' }, body: `id=${encodeURIComponent(id)}&lead_status=REJECTED` });
+          const j = await resp.json();
+          if (j && j.success) {
+            const select = document.querySelector('.lead-status-select[data-id="'+id+'"]');
+            const prevStatus = select ? (select.dataset.prev || '') : '';
+            if (select) { select.value = 'REJECTED'; select.dataset.prev = 'REJECTED'; }
+            const row = document.querySelector('tr td .action-area[data-id="'+id+'"]')?.closest('tr');
+            if (row) {
+              const statusEl = row.querySelector('.text-xs'); if (statusEl) statusEl.textContent = 'Status DB: ' + (j.status || 'REJECTED');
+              const timeCell = row.querySelector('td:nth-child(8)'); if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
+              // remove NEW indicator if it was new
+              if (prevStatus === 'LEAD BARU') { row.classList.remove('new-lead-row'); const badge = row.querySelector('.pulse-badge'); if(badge) badge.remove(); updateNewLeadsCount(-1); }
+            }
+            // show undo option
+            showUndoToast(id, prevStatus);
+            alert('Lead ditandai REJECTED');
+          } else { alert('Gagal menolak lead'); }
+        } catch (err) { console.error(err); alert('Gagal menolak lead'); }
+      }
+    });
+
+    // --- Helper functions for NEW badge and Undo toast (appended) ---
+    function updateNewLeadsCount(delta) {
+      try {
+        const badge = document.getElementById('newLeadsBadge');
+        const countEl = document.getElementById('newLeadsCount');
+        let count = parseInt(countEl.textContent || '0', 10) || 0;
+        count = count + (delta || 0);
+        if (count < 0) count = 0;
+        countEl.textContent = count;
+        if (count > 0) badge.classList.remove('hidden'); else badge.classList.add('hidden');
+      } catch (e) { console.error(e); }
+    }
+
+    function initNewLeadsBadge() {
+      const initial = document.querySelectorAll('.new-lead-row').length;
+      const countEl = document.getElementById('newLeadsCount');
+      const badge = document.getElementById('newLeadsBadge');
+      countEl.textContent = initial;
+      if (initial > 0) badge.classList.remove('hidden'); else badge.classList.add('hidden');
+    }
+
+    // Undo toast handling
+    let _undoTimer = null;
+    let _lastRejected = null; // { id, prevStatus }
+    function showUndoToast(id, prevStatus) {
+      _lastRejected = { id, prevStatus };
+      const toast = document.getElementById('undoToast');
+      const msg = document.getElementById('undoMessage');
+      msg.textContent = `Lead #${id} ditolak. Undo?`;
+      toast.classList.add('show');
+      if (_undoTimer) clearTimeout(_undoTimer);
+      _undoTimer = setTimeout(() => { hideUndoToast(); _lastRejected = null; }, 8000);
+    }
+    function hideUndoToast() { const toast = document.getElementById('undoToast'); toast.classList.remove('show'); if (_undoTimer) { clearTimeout(_undoTimer); _undoTimer = null; }}
+
+    document.getElementById('undoBtn')?.addEventListener('click', async function(){
+      if (!_lastRejected) return;
+      const id = _lastRejected.id; const prev = _lastRejected.prevStatus || 'LEAD BARU';
+      try {
+        const resp = await fetch('/sales/update-lead-status', { method: 'POST', headers: { 'Content-Type':'application/x-www-form-urlencoded' }, body: `id=${encodeURIComponent(id)}&lead_status=${encodeURIComponent(prev)}` });
+        const j = await resp.json();
+        if (j && j.success) {
+          // update UI
+          const select = document.querySelector('.lead-status-select[data-id="'+id+'"]');
+          if (select) { select.value = prev; select.dataset.prev = prev; }
+          const row = select ? select.closest('tr') : document.querySelector('tr .action-area[data-id="'+id+'"]')?.closest('tr');
+          if (row) {
+            const statusEl = row.querySelector('.text-xs'); if (statusEl) statusEl.textContent = 'Status DB: ' + prev;
+            const timeCell = row.querySelector('td:nth-child(8)'); if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
+            // if returned to LEAD BARU, restore badge
+            if (prev === 'LEAD BARU') { if (!row.classList.contains('new-lead-row')) { row.classList.add('new-lead-row'); const td = row.querySelector('td'); if (td && !td.querySelector('.pulse-badge')) { const sp = document.createElement('span'); sp.className = 'ml-2 pulse-badge'; sp.textContent = 'NEW'; td.appendChild(sp); } updateNewLeadsCount(1); } }
+          }
+          hideUndoToast(); _lastRejected = null;
+          alert('Perubahan dibatalkan (undo).');
+        } else { alert('Gagal mengembalikan status'); }
+      } catch (err) { console.error(err); alert('Gagal mengembalikan status'); }
+    });
+
+    document.getElementById('dismissUndo')?.addEventListener('click', function(){ hideUndoToast(); _lastRejected = null; });
+
+    // Initialize badge on page load
+    initNewLeadsBadge();
+
+    // --- Server-Sent Events (real-time updates) ---
+    if (window.EventSource) {
+      const es = new EventSource('/sales/lead-events');
+      es.onopen = () => console.debug('SSE connected');
+      es.onerror = (e) => console.error('SSE error', e);
+
+      es.addEventListener('new_lead', function(e) {
+        try {
+          const d = JSON.parse(e.data);
+          // prepend to leads table
+          const tbody = document.querySelector('#tab-leads table tbody');
+          if (tbody) {
+            const tr = document.createElement('tr');
+            tr.className = 'border-t hover:bg-gray-50 new-lead-row';
+            tr.innerHTML = `
+              <td class="p-3">#${d.id} <span class="ml-2 pulse-badge">NEW</span></td>
+              <td class="p-3">${d.customer_name || '-'}</td>
+              <td class="p-3">${d.affiliate_name || '-'}</td>
+              <td class="p-3">${d.event_name || ('#' + (d.event_id || ''))}</td>
+              <td class="p-3">Rp ${Number(d.total_amount || 0).toLocaleString('id-ID')}</td>
+              <td class="p-3">-</td>
+              <td class="p-3">
+                <select class="lead-status-select border px-2 py-1 rounded" data-id="${d.id}">
+                  <option value="">-- pilih status --</option>
+                  <option value="LEAD BARU" selected>LEAD BARU</option>
+                  <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
+                  <option value="HOT">HOT</option>
+                  <option value="DP">DP</option>
+                  <option value="LUNAS">LUNAS</option>
+                  <option value="SEDANG BERANGKAT">SEDANG BERANGKAT</option>
+                </select>
+                <div class="text-xs text-gray-400 mt-1">Status DB: LEAD BARU</div>
+                <div class="mt-2 action-area" data-id="${d.id}">
+                  <button class="save-btn hidden px-3 py-1 bg-green-600 text-white rounded text-xs">Simpan</button>
+                  <button class="reject-btn hidden px-3 py-1 bg-red-500 text-white rounded text-xs ml-2">Reject</button>
+                </div>
+              </td>
+              <td class="p-3">${d.updated_at ? new Date(d.updated_at).toLocaleString('id-ID') : new Date().toLocaleString('id-ID')}</td>
+              <td class="p-3"><button class="reject-row-btn px-3 py-1 bg-red-500 text-white rounded text-xs" data-id="${d.id}">Reject</button></td>
+            `;
+            tbody.insertBefore(tr, tbody.firstChild);
+            updateNewLeadsCount(1);
+          }
+        } catch (err) { console.error('new_lead parse error', err); }
+      });
+
+      es.addEventListener('history', function(e) {
+        try {
+          const d = JSON.parse(e.data);
+          // remove from leads table if present
+          const leadsTbody = document.querySelector('#tab-leads table tbody');
+          if (leadsTbody) {
+            const row = leadsTbody.querySelector('.action-area[data-id="'+d.id+'"]')?.closest('tr');
+            if (row) row.remove();
+          }
+          // prepend to history table
+          const histTbody = document.querySelector('#tab-history table tbody');
+          if (histTbody) {
+            const tr = document.createElement('tr');
+            tr.className = 'border-t';
+            tr.innerHTML = `
+              <td class="p-2">#${d.id}</td>
+              <td class="p-2">${d.customer_name || '-'}</td>
+              <td class="p-2">${d.affiliate_name || '-'}</td>
+              <td class="p-2">${d.event_name || '-'}</td>
+              <td class="p-2">Rp ${Number(d.total_amount || 0).toLocaleString('id-ID')}</td>
+              <td class="p-2">${d.status || '-'}</td>
+              <td class="p-2">${d.updated_at ? new Date(d.updated_at).toLocaleString('id-ID') : new Date().toLocaleString('id-ID')}</td>
+            `;
+            histTbody.insertBefore(tr, histTbody.firstChild);
+          }
+        } catch (err) { console.error('history parse error', err); }
+      });
+
+      es.addEventListener('status_update', function(e) {
+        try {
+          const d = JSON.parse(e.data);
+          // update status/time cells in leads table if present
+          const leadsTbody = document.querySelector('#tab-leads table tbody');
+          if (leadsTbody) {
+            const row = leadsTbody.querySelector('.action-area[data-id="'+d.id+'"]')?.closest('tr');
+            if (row) {
+              const statusEl = row.querySelector('.text-xs'); if (statusEl) statusEl.textContent = 'Status DB: ' + (d.status || '-');
+              const timeCell = row.querySelector('td:nth-child(8)'); if (timeCell) timeCell.textContent = d.updated_at ? new Date(d.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
+            }
+          }
+        } catch (err) { console.error('status_update parse error', err); }
+      });
+    }
+  </script>
+</body>
+</html>

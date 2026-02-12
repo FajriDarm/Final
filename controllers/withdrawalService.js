@@ -112,6 +112,36 @@ async function getCommissionSummary(affiliateId) {
 }
 
 /**
+ * Get total/count of commissions where the latest lead status for the transaction is 'SEDANG BERANGKAT'
+ * This is useful when Sales sets lead_status => SEDANG BERANGKAT (stage 3) and we want to show totals
+ */
+async function getReadyByLeadStatus(affiliateId) {
+  try {
+    const [[row]] = await db.query(
+      `
+      SELECT COALESCE(SUM(c.amount), 0) AS total, COUNT(*) AS count
+      FROM commissions c
+      JOIN transactions t ON c.transaction_id = t.id
+      JOIN lead_statuses ls ON ls.transaction_id = t.id
+      WHERE c.affiliate_id = ?
+        AND ls.status = 'SEDANG BERANGKAT'
+        AND c.stage = 3
+        AND c.commission_status = 'ready_for_withdraw'
+    `,
+      [affiliateId],
+    );
+
+    return {
+      total: row.total || 0,
+      count: row.count || 0,
+    };
+  } catch (error) {
+    console.error("Error getReadyByLeadStatus:", error);
+    throw error;
+  }
+}
+
+/**
  * Create withdrawal request (Affiliate initiated)
  * @param {number} affiliateId
  * @param {Array} commissionIds - Optional: specific commission IDs to withdraw
@@ -139,11 +169,40 @@ async function createWithdrawalRequest(affiliateId, commissionIds = null) {
     const [readyCommissions] = await connection.query(query, params);
 
     if (!readyCommissions || readyCommissions.length === 0) {
-      await connection.rollback();
-      return {
-        success: false,
-        error: "No ready commissions found for withdrawal",
-      };
+      // If no explicitly marked ready commissions, try to find commissions by lead status (SEDANG BERANGKAT, stage 3)
+      if (!commissionIds) {
+        const [byLead] = await connection.query(
+          `
+          SELECT c.id, c.amount
+          FROM commissions c
+          JOIN transactions t ON c.transaction_id = t.id
+          JOIN lead_statuses ls ON ls.transaction_id = t.id
+          WHERE c.affiliate_id = ? AND ls.status = 'SEDANG BERANGKAT' AND c.stage = 3
+        `,
+          [affiliateId],
+        );
+
+        if (byLead && byLead.length > 0) {
+          // use these as the ready commissions
+          readyCommissions.splice(0, readyCommissions.length, ...byLead);
+          // mark them as ready_for_withdraw for consistency
+          const ids = byLead.map((c) => c.id);
+          await connection.query(
+            `UPDATE commissions SET commission_status = 'ready_for_withdraw' WHERE id IN (${ids
+              .map(() => "?")
+              .join(",")})`,
+            ids,
+          );
+        }
+      }
+
+      if (!readyCommissions || readyCommissions.length === 0) {
+        await connection.rollback();
+        return {
+          success: false,
+          error: "No ready commissions found for withdrawal",
+        };
+      }
     }
 
     // Calculate total amount
@@ -698,6 +757,7 @@ module.exports = {
   getReadyCommissions,
   getTotalReadyAmount,
   getCommissionSummary,
+  getReadyByLeadStatus,
   createWithdrawalRequest,
   getAffiliateWithdrawals,
   getWithdrawalDetail,

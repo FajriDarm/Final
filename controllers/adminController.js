@@ -524,23 +524,57 @@ const getWithdrawalApprovalsPage = async (req, res) => {
   }
 };
 
-// Get pending withdrawals for approval
+// Get pending withdrawals for approval (supports status filter: pending/approved/rejected/paid)
 const getPendingWithdrawalsForApproval = async (req, res) => {
   try {
     const status = req.query.status || "pending";
 
-    // Query untuk get withdrawals berdasarkan status
-    const [withdrawals] = await db.query(
-      `SELECT p.id, p.affiliate_id, u.name as affiliate_name, u.email as affiliate_email,
-              p.total_amount, p.status, p.created_at, COUNT(pd.commission_id) as commission_count
-       FROM payouts p
-       JOIN users u ON p.affiliate_id = u.id
-       LEFT JOIN payout_details pd ON p.id = pd.payout_id
-       WHERE p.status = ?
-       GROUP BY p.id
-       ORDER BY p.created_at DESC`,
-      [status],
-    );
+    // Use an enriched query similar to financeController to include submitter/approver names
+    let query = `
+      SELECT
+        p.id,
+        p.affiliate_id,
+        u.name as affiliate_name,
+        u.email as affiliate_email,
+        p.total_amount,
+        p.status,
+        u.bank_name AS bank_name,
+        u.bank_account_number AS bank_account_number,
+        u.bank_account_name AS bank_account_name,
+        COUNT(DISTINCT pd.commission_id) as commission_count,
+        p.created_at,
+        p.paid_at,
+        p.finance_note,
+        p.admin_note,
+        p.submitted_by,
+        p.submitted_at,
+        p.admin_approved_by,
+        p.admin_approved_at,
+        su.name AS submitted_by_name,
+        au.name AS admin_approved_name
+      FROM payouts p
+      JOIN users u ON p.affiliate_id = u.id
+      LEFT JOIN users su ON p.submitted_by = su.id
+      LEFT JOIN users au ON p.admin_approved_by = au.id
+      LEFT JOIN payout_details pd ON p.id = pd.payout_id
+      WHERE 1=1
+    `;
+
+    const params = [];
+    if (status && status !== "all") {
+      // If requesting approved, include both 'approved' and 'paid' so already-paid items also appear
+      if (status === "approved") {
+        query += ` AND p.status IN (?, ?)`;
+        params.push("approved", "paid");
+      } else {
+        query += ` AND p.status = ?`;
+        params.push(status);
+      }
+    }
+
+    query += ` GROUP BY p.id ORDER BY p.created_at DESC`;
+
+    const [withdrawals] = await db.query(query, params);
 
     res.json({
       success: true,
@@ -568,9 +602,13 @@ const getWithdrawalDetailForApproval = async (req, res) => {
               u.email as affiliate_email,
               u.bank_name,
               u.bank_account_number,
-              u.bank_account_name
+              u.bank_account_name,
+              su.name as submitted_by_name,
+              au.name as admin_approved_name
        FROM payouts p
        JOIN users u ON p.affiliate_id = u.id
+       LEFT JOIN users su ON p.submitted_by = su.id
+       LEFT JOIN users au ON p.admin_approved_by = au.id
        WHERE p.id = ?`,
       [payoutId],
     );

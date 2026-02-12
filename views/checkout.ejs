@@ -71,19 +71,24 @@
 
           <div class="flex justify-end gap-3 pt-2">
             <a href="/" class="px-4 py-2 border rounded-lg bg-white">Batal</a>
-            <button type="submit" aria-label="Kirim Pesanan" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg">Kirim</button>
+            <button id="checkoutSubmitBtn" type="submit" aria-label="Kirim Pesanan" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg">Kirim</button>
           </div>
         </form>
 
-        <!-- Bank info result -->
-        <div id="bankResult" class="hidden mt-6 bg-green-50 border-l-4 border-green-400 p-4 rounded">
-          <h3 class="font-semibold mb-2">Instruksi Pembayaran</h3>
-          <div class="text-sm text-gray mb-2" id="bank_name">-</div>
-          <div class="text-sm text-gray mb-2"><span class="font-medium">Atas nama: </span><span id="bank_account_name">-</span></div>
-          <div class="text-sm text-gray mb-2"><span class="font-medium">No Rekening: </span><span id="bank_account_number">-</span></div>
-          <div class="text-sm text-gray mt-2">Silakan transfer sesuai nominal, lalu upload bukti pada halaman konfirmasi.</div>
-          <div class="mt-4">
-            <a id="uploadProofBtn" href="#" class="px-4 py-2 bg-white border rounded">Upload Bukti Pembayaran</a>
+        <!-- Payment confirmation modal (replaces inline bank instructions) -->
+        <div id="paymentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div id="paymentModalPanel" class="bg-white rounded-lg p-6 max-w-md w-full transform transition ease-out duration-300 opacity-0 scale-95">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold text-lg">Pembayaran Terkirim</h3>
+              <button id="closePaymentModal" class="text-gray-500 hover:text-gray-700 text-2xl leading-none">&times;</button>
+            </div>
+            <p class="text-sm text-gray-700 mb-3">Terima kasih. Data Anda sudah kami terima. Silakan lakukan pembayaran sesuai instruksi berikut:</p>
+            <div class="text-sm text-gray mb-2"><strong id="modal_bank_name">-</strong></div>
+            <div class="text-sm text-gray mb-2"><strong>Atas nama: </strong><span id="modal_bank_account_name">-</span></div>
+            <div class="text-sm text-gray mb-2"><strong>No Rekening: </strong><span id="modal_bank_account_number">-</span></div>
+            <div class="mt-4 flex justify-end gap-2">
+              <button id="modalCloseBtn" class="px-4 py-2 bg-gray-100 rounded">Tutup</button>
+            </div>
           </div>
         </div>
 
@@ -93,6 +98,7 @@
     </main>
 
     <script>
+      const submitBtn = document.getElementById('checkoutSubmitBtn') || document.querySelector('#checkoutForm button[type="submit"]');
       document.getElementById('checkoutForm')?.addEventListener('submit', async function (e) {
         e.preventDefault();
         const form = e.target;
@@ -105,6 +111,14 @@
           affiliate_ref: form.affiliate_ref?.value || null,
         };
 
+        // prevent duplicate clicks and show loading state
+        const originalBtnText = submitBtn ? submitBtn.textContent : 'Kirim';
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Mengirim...';
+          submitBtn.setAttribute('aria-disabled', 'true');
+        }
+
         try {
           const res = await fetch('/transactions', {
             method: 'POST',
@@ -114,30 +128,82 @@
           const json = await res.json();
           if (!json || !json.success) {
             alert('Terjadi kesalahan saat menyimpan transaksi. Silakan coba lagi.');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = originalBtnText;
+              submitBtn.removeAttribute('aria-disabled');
+            }
             return;
           }
 
-          // Show bank info block
+          // Show modal with bank info and prevent duplicate submissions
           const bank = json.bankInfo || {};
-          document.getElementById('bank_name').textContent = bank.bank_name || '-';
-          document.getElementById('bank_account_name').textContent = bank.bank_account_name || '-';
-          document.getElementById('bank_account_number').textContent = bank.bank_account_number || '-';
+          document.getElementById('modal_bank_name').textContent = bank.bank_name || '-';
+          document.getElementById('modal_bank_account_name').textContent = bank.bank_account_name || '-';
+          document.getElementById('modal_bank_account_number').textContent = bank.bank_account_number || '-';
 
-          document.getElementById('bankResult').classList.remove('hidden');
-
-          // Set upload link to transaction-specific page if you have one
-          const uploadBtn = document.getElementById('uploadProofBtn');
-          if (uploadBtn && json.transactionId) {
-            uploadBtn.href = '/transactions/' + json.transactionId + '/upload-proof';
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Terkirim';
+            submitBtn.setAttribute('aria-disabled', 'true');
           }
 
-          // Optionally scroll to bank result
-          bankResult = document.getElementById('bankResult');
-          bankResult.scrollIntoView({ behavior: 'smooth' });
+          // show modal with animation and auto-close
+          const modal = document.getElementById('paymentModal');
+          const panel = document.getElementById('paymentModalPanel');
+          if (modal && panel) {
+            modal.classList.remove('hidden');
+            // force reflow so transition runs
+            void panel.offsetWidth;
+            panel.classList.remove('opacity-0', 'scale-95');
+            panel.classList.add('opacity-100', 'scale-100');
+
+            // clear previous timer if any
+            if (window._paymentModalAutoCloseTimer) clearTimeout(window._paymentModalAutoCloseTimer);
+            // auto-close after 5 seconds
+            window._paymentModalAutoCloseTimer = setTimeout(() => {
+              closePaymentModal();
+            }, 5000);
+          }
+
         } catch (err) {
           console.error('submit checkout error', err);
           alert('Terjadi kesalahan, coba lagi.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+            submitBtn.removeAttribute('aria-disabled');
+          }
         }
+      });
+
+      // Modal close helpers and handlers with animation + overlay/ESC support
+      function closePaymentModal() {
+        const modal = document.getElementById('paymentModal');
+        const panel = document.getElementById('paymentModalPanel');
+        if (!modal || !panel) return;
+        // animate out
+        panel.classList.remove('opacity-100', 'scale-100');
+        panel.classList.add('opacity-0', 'scale-95');
+        // hide overlay after animation duration
+        setTimeout(() => {
+          modal.classList.add('hidden');
+        }, 300);
+        if (window._paymentModalAutoCloseTimer) {
+          clearTimeout(window._paymentModalAutoCloseTimer);
+          window._paymentModalAutoCloseTimer = null;
+        }
+      }
+
+      document.getElementById('closePaymentModal')?.addEventListener('click', closePaymentModal);
+      document.getElementById('modalCloseBtn')?.addEventListener('click', closePaymentModal);
+      // click overlay outside panel to close
+      document.getElementById('paymentModal')?.addEventListener('click', (e) => {
+        if (e.target === document.getElementById('paymentModal')) closePaymentModal();
+      });
+      // close with Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closePaymentModal();
       });
     </script>
   </body>

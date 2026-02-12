@@ -41,7 +41,7 @@
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-gray-500 text-sm font-medium">Komisi Anda</p>
-                <p class="text-3xl font-bold text-gray-900 mt-2">Rp <%= (typeof totalCommission !== 'undefined' && !isNaN(Number(totalCommission))) ? Number(totalCommission).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0,00' %></p>
+                <p class="text-3xl font-bold text-gray-900 mt-2" id="totalCommissionDisplay">Rp <%= (typeof totalCommission !== 'undefined' && !isNaN(Number(totalCommission))) ? Number(totalCommission).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0,00' %></p>
                 <p class="text-xs text-gray-500 mt-2">
                   <i class="fas fa-info-circle mr-1"></i>
                   Total semua status (pending + ready + paid)
@@ -104,26 +104,53 @@
                       <td class="py-3"><%= l.event_title || '-' %></td>
                       <td class="py-3">
                         <% 
+                          // Prefer explicit lead_status (set by sales) when present
                           let statusLabel = '';
                           let statusColor = '';
-                          
-                          // Determine verification stage based on transaction status
-                          if (l.status === 'rejected') {
-                            statusLabel = 'Rejected';
-                            statusColor = 'text-red-700 bg-red-100';
-                          } else if (l.status === 'completed') {
-                            statusLabel = 'Complete';
-                            statusColor = 'text-green-700 bg-green-100';
-                          } else if (l.status === 'stage_2_approved') {
-                            statusLabel = 'Verifikasi 3';
-                            statusColor = 'text-blue-700 bg-blue-100';
-                          } else if (l.status === 'stage_1_approved') {
-                            statusLabel = 'Verifikasi 2';
-                            statusColor = 'text-purple-700 bg-purple-100';
+                          const leadStatus = l.lead_status;
+                          if (leadStatus) {
+                            // Map custom lead statuses to labels/colors
+                            if (leadStatus === 'LEAD BARU') {
+                              statusLabel = 'Lead Baru';
+                              statusColor = 'text-gray-700 bg-gray-100';
+                            } else if (leadStatus === 'SEDANG DI PROSPEK') {
+                              statusLabel = 'Sedang di Prospek';
+                              statusColor = 'text-yellow-700 bg-yellow-100';
+                            } else if (leadStatus === 'HOT') {
+                              statusLabel = 'HOT';
+                              statusColor = 'text-red-700 bg-red-100';
+                            } else if (leadStatus === 'DP') {
+                              statusLabel = 'DP';
+                              statusColor = 'text-indigo-700 bg-indigo-100';
+                            } else if (leadStatus === 'LUNAS') {
+                              statusLabel = 'LUNAS';
+                              statusColor = 'text-green-700 bg-green-100';
+                            } else if (leadStatus === 'SEDANG BERANGKAT') {
+                              statusLabel = 'Sedang Berangkat';
+                              statusColor = 'text-blue-700 bg-blue-100';
+                            } else {
+                              statusLabel = leadStatus;
+                              statusColor = 'text-gray-700 bg-gray-100';
+                            }
                           } else {
-                            // pending status = stage 1
-                            statusLabel = 'Verifikasi 1';
-                            statusColor = 'text-yellow-700 bg-yellow-100';
+                            // Fallback to transaction status mapping
+                            if (l.status === 'rejected') {
+                              statusLabel = 'Rejected';
+                              statusColor = 'text-red-700 bg-red-100';
+                            } else if (l.status === 'completed') {
+                              statusLabel = 'Complete';
+                              statusColor = 'text-green-700 bg-green-100';
+                            } else if (l.status === 'stage_2_approved') {
+                              statusLabel = 'Verifikasi 3';
+                              statusColor = 'text-blue-700 bg-blue-100';
+                            } else if (l.status === 'stage_1_approved') {
+                              statusLabel = 'Verifikasi 2';
+                              statusColor = 'text-purple-700 bg-purple-100';
+                            } else {
+                              // pending status = stage 1
+                              statusLabel = 'Verifikasi 1';
+                              statusColor = 'text-yellow-700 bg-yellow-100';
+                            }
                           }
                         %>
                         <span class="inline-block px-2 py-0.5 rounded text-xs font-medium <%= statusColor %>">
@@ -323,22 +350,34 @@
           <div class="flex items-center justify-between mb-4">
             <div>
               <h4 class="text-lg font-semibold text-gray-900">Riwayat (lebih dari 7 hari)</h4>
-              <p class="text-sm text-gray-500">Menampilkan semua lead yang sudah lebih dari 7 hari lalu</p>
-            </div>
-            <div class="flex items-center gap-4">
-              <form method="GET" action="/affiliate/dashboard" class="flex items-center gap-2">
-                <label class="text-sm text-gray-500">Verifikasi:</label>
-                <select name="historyStatus" onchange="this.form.submit()" class="px-2 py-1 border rounded">
-                  <option value="all" <%= (typeof historyFilter === 'undefined' || historyFilter === 'all') ? 'selected' : '' %>>Semua</option>
-                  <option value="pending" <%= historyFilter === 'pending' ? 'selected' : '' %>>Verifikasi 1</option>
-                  <option value="stage_1_approved" <%= historyFilter === 'stage_1_approved' ? 'selected' : '' %>>Verifikasi 2</option>
-                  <option value="stage_2_approved" <%= historyFilter === 'stage_2_approved' ? 'selected' : '' %>>Verifikasi 3</option>
-                  <option value="completed" <%= historyFilter === 'completed' ? 'selected' : '' %>>Complete</option>
-                  <option value="rejected" <%= historyFilter === 'rejected' ? 'selected' : '' %>>Rejected</option>
-                </select>
-                <input type="hidden" name="historyPage" value="1">
-              </form>
-            </div>
+                <p class="text-sm text-gray-500">Menampilkan semua lead yang sudah lebih dari 7 hari lalu atau lead yang statusnya tidak berubah selama 7 hari</p>
+              </div>
+              <div class="flex items-center gap-4">
+                <form method="GET" action="/affiliate/dashboard" class="flex items-center gap-2">
+                  <label class="text-sm text-gray-500">Search:</label>
+                  <input type="search" name="historySearch" placeholder="nama, email, whatsapp, event, status, tanggal" value="<%= typeof historySearch !== 'undefined' ? historySearch : '' %>" class="px-3 py-1 border rounded" />
+
+                  <label class="text-sm text-gray-500">Filter Status Lead:</label>
+                  <select name="leadStatus" onchange="this.form.submit()" class="px-2 py-1 border rounded">
+                    <option value="" <%= (typeof leadStatusFilter === 'undefined' || !leadStatusFilter) ? 'selected' : '' %>>Semua Lead Status</option>
+                    <option value="LEAD BARU" <%= leadStatusFilter === 'LEAD BARU' ? 'selected' : '' %>>LEAD BARU</option>
+                    <option value="SEDANG DI PROSPEK" <%= leadStatusFilter === 'SEDANG DI PROSPEK' ? 'selected' : '' %>>SEDANG DI PROSPEK</option>
+                    <option value="HOT" <%= leadStatusFilter === 'HOT' ? 'selected' : '' %>>HOT</option>
+                    <option value="DP" <%= leadStatusFilter === 'DP' ? 'selected' : '' %>>DP</option>
+                    <option value="LUNAS" <%= leadStatusFilter === 'LUNAS' ? 'selected' : '' %>>LUNAS</option>
+                    <option value="SEDANG BERANGKAT" <%= leadStatusFilter === 'SEDANG BERANGKAT' ? 'selected' : '' %>>SEDANG BERANGKAT</option>
+                  </select>
+
+                  <label class="text-sm text-gray-500">Verifikasi:</label>
+                  <select name="historyStatus" onchange="this.form.submit()" class="px-2 py-1 border rounded">
+                    <option value="all" <%= (typeof historyFilter === 'undefined' || historyFilter === 'all') ? 'selected' : '' %>>Semua</option>
+                    <option value="pending" <%= historyFilter === 'pending' ? 'selected' : '' %>>Verifikasi 1</option>
+                    <option value="stage_1_approved" <%= historyFilter === 'stage_1_approved' ? 'selected' : '' %>>Verifikasi 2</option>
+                    <option value="stage_2_approved" <%= historyFilter === 'stage_2_approved' ? 'selected' : '' %>>Verifikasi 3</option>
+                    <option value="completed" <%= historyFilter === 'completed' ? 'selected' : '' %>>Complete</option>
+                    <option value="rejected" <%= historyFilter === 'rejected' ? 'selected' : '' %>>Rejected</option>
+                  </select>
+
           </div>
 
           <div class="overflow-x-auto">
@@ -405,18 +444,20 @@
             <div class="flex items-center gap-2">
               <% const baseUrlHist = '/affiliate/dashboard'; %>
               <% const hf = typeof historyFilter !== 'undefined' ? historyFilter : 'all'; %>
+              <% const hs = typeof historySearch !== 'undefined' ? encodeURIComponent(historySearch) : ''; %>
+              <% const lf = typeof leadStatusFilter !== 'undefined' ? encodeURIComponent(leadStatusFilter) : ''; %>
               <% if (historyPage > 1) { %>
-                <a href="<%= baseUrlHist %>?historyPage=<%= historyPage - 1 %>&historyStatus=<%= hf %>" class="px-3 py-1 bg-gray-100 rounded">&laquo; Prev</a>
+                <a href="<%= baseUrlHist %>?historyPage=<%= historyPage - 1 %>&historyStatus=<%= hf %>&historySearch=<%= hs %>&leadStatus=<%= lf %>" class="px-3 py-1 bg-gray-100 rounded">&laquo; Prev</a>
               <% } %>
               <% for (let p = 1; p <= historyTotalPages; p++) { %>
                 <% if (p === historyPage) { %>
                   <span class="px-3 py-1 bg-purple-600 text-white rounded"><%= p %></span>
                 <% } else { %>
-                  <a href="<%= baseUrlHist %>?historyPage=<%= p %>&historyStatus=<%= hf %>" class="px-3 py-1 bg-gray-100 rounded"><%= p %></a>
+                  <a href="<%= baseUrlHist %>?historyPage=<%= p %>&historyStatus=<%= hf %>&historySearch=<%= hs %>&leadStatus=<%= lf %>" class="px-3 py-1 bg-gray-100 rounded"><%= p %></a>
                 <% } %>
               <% } %>
               <% if (historyPage < historyTotalPages) { %>
-                <a href="<%= baseUrlHist %>?historyPage=<%= historyPage + 1 %>&historyStatus=<%= hf %>" class="px-3 py-1 bg-gray-100 rounded">Next &raquo;</a>
+                <a href="<%= baseUrlHist %>?historyPage=<%= historyPage + 1 %>&historyStatus=<%= hf %>&historySearch=<%= hs %>&leadStatus=<%= lf %>" class="px-3 py-1 bg-gray-100 rounded">Next &raquo;</a>
               <% } %>
             </div>
           </div>
@@ -592,6 +633,14 @@
 
       // Then load events and links
       await loadEventsAndLinks();
+
+      // Initialize SSE to receive commission_awarded events in real-time
+      initCommissionSSE();
+
+      // Setup periodic polling for commission updates (fallback)
+      setInterval(async () => {
+        await fetchUserStatus();
+      }, 10000); // Update every 10 seconds
     });
 
     // Fetch current user status from API
@@ -606,6 +655,15 @@
         if (data.success && data.data) {
           userStatus = data.data.affiliate_status || data.data.status || 'inactive';
           console.debug('Updated userStatus:', userStatus);
+
+          // Update total commission if available
+          if (data.data.totalCommission !== undefined) {
+            const totalCommissionDisplay = document.getElementById('totalCommissionDisplay');
+            if (totalCommissionDisplay) {
+              const commissionValue = parseFloat(data.data.totalCommission) || 0;
+              totalCommissionDisplay.textContent = 'Rp ' + commissionValue.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+          }
 
           // Update status badge if exists
           const affiliateStatusBadge = document.getElementById('affiliateStatusBadge');
@@ -629,6 +687,66 @@
         console.error('Error fetching user status:', error);
         // Keep using the server-rendered status as fallback
       }
+    }
+
+    // Helper: get token from localStorage or cookies
+    function getToken() {
+      try {
+        const stored = localStorage.getItem('authToken');
+        if (stored) return stored;
+        const m = document.cookie.match(/(?:^|; )token=([^;]+)/);
+        if (m) return decodeURIComponent(m[1]);
+      } catch (e) {
+        console.debug('getToken error', e);
+      }
+      return '';
+    }
+
+    // Initialize SSE for commission updates (affiliate)
+    function initCommissionSSE() {
+      if (!('EventSource' in window)) return;
+      const localToken = getToken();
+      // Attach token to SSE query if available
+      const esUrl = '/affiliate/commission-events' + (localToken ? '?token=' + encodeURIComponent(localToken) : '');
+      const es = new EventSource(esUrl);
+      es.onopen = () => console.debug('Commission SSE connected');
+      es.onerror = (e) => {
+        console.error('Commission SSE error', e);
+        setTimeout(() => {
+          try {
+            const newEs = new EventSource(esUrl);
+            newEs.onmessage = es.onmessage;
+            newEs.onerror = es.onerror;
+            newEs.onopen = es.onopen;
+          } catch (err) {
+            console.error('Failed to reconnect SSE', err);
+          }
+        }, 3000);
+      };
+      es.addEventListener('commission_awarded', async (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          const currentAffiliateId = <%= typeof userId !== 'undefined' ? userId : 'null' %>;
+          if (!data || Number(data.affiliate_id) !== Number(currentAffiliateId)) return;
+          // update totals from API (safer) and show toast
+          await fetchUserStatus();
+          showCommissionToast(data.amount, data.transaction_id);
+        } catch (err) {
+          console.error('commission_awarded handler error', err);
+        }
+      });
+    }
+
+    function showCommissionToast(amount, transactionId) {
+      try {
+        const msg = `Komisi Rp ${Number(amount || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} telah ditambahkan`;
+        const el = document.createElement('div');
+        el.className = 'fixed bottom-6 right-6 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-50';
+        el.textContent = msg;
+        document.body.appendChild(el);
+        setTimeout(() => el.classList.add('opacity-0'), 3500);
+        setTimeout(() => el.remove(), 4000);
+      } catch (e) { console.error(e); }
     }
 
     async function loadEventsAndLinks() {

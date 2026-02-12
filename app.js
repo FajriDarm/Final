@@ -156,6 +156,9 @@ app.use("/sales", verifyStage1Routes);
 const verifyStage3Routes = require("./routes/verifyStage3Routes");
 app.use("/sales", verifyStage3Routes);
 
+const verifyLeadsRoutes = require("./routes/verifyLeadsRoutes");
+app.use("/sales", verifyLeadsRoutes);
+
 const monitoringAffiliateRoutes = require("./routes/monitoringAffiliateRoutes");
 app.use("/sales", monitoringAffiliateRoutes);
 
@@ -164,6 +167,11 @@ app.use("/finance", financeRoutes);
 
 const paymentVerificationFinanceRoutes = require("./routes/paymentVerificationFinanceRoutes");
 app.use("/finance", paymentVerificationFinanceRoutes);
+
+// Simple debug endpoint to return current user's info (requires auth token)
+app.get("/api/whoami", authMiddleware, (req, res) => {
+  res.json({ user: req.user || null });
+});
 
 const payoutProcessingFinanceRoutes = require("./routes/payoutProcessingFinanceRoutes");
 app.use("/finance", payoutProcessingFinanceRoutes);
@@ -224,6 +232,26 @@ app.use("/", commissionRoutes);
 app.use("/api", commissionRoutes);
 
 // Start
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+const db = require("./config/database");
+
+(async () => {
+  try {
+    // Ensure lead_statuses table exists so SELECT with LEFT JOIN won't fail
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS lead_statuses (
+        transaction_id INT PRIMARY KEY,
+        status VARCHAR(191),
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    `);
+  } catch (e) {
+    console.error(
+      "Failed creating lead_statuses table at startup:",
+      e.message || e,
+    );
+  }
+
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
+})();

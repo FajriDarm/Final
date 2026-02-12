@@ -122,7 +122,16 @@
                 </tr>
               <% } else if (payouts) { %>
                 <% payouts.forEach(function(payout, index) { %>
-                  <tr class="hover:bg-green-50 transition-colors data-cell" style="animation-delay: <%= index * 50 %>ms">
+                    <tr class="hover:bg-green-50 transition-colors data-cell" data-delay="<%= index * 50 %>">
+                      <script>
+                        // Set animation-delay from data-delay attribute to avoid CSS linter error
+                        document.addEventListener('DOMContentLoaded', function() {
+                          document.querySelectorAll('tr[data-delay]').forEach(function(tr) {
+                            var delay = tr.getAttribute('data-delay');
+                            if (delay) tr.style.animationDelay = delay + 'ms';
+                          });
+                        });
+                      </script>
                     <td class="py-4 px-6">
                       <span class="text-sm font-medium text-gray-900">#<%= payout.id %></span>
                     </td>

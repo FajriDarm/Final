@@ -622,8 +622,7 @@
               <div class="md:text-right">
                 <div class="font-bold text-lg text-green-700 mb-2">Rp ${safeCurrency(payout.total_amount)}</div>
                 <div class="text-xs text-gray-500">ID: #${payout.id}</div>
-                <div class="text-xs text-gray-500">${new Date(payout.created_at).toLocaleDateString('id-ID')}</div>
-              </div>
+                <div class="text-xs text-gray-500">${new Date(payout.created_at).toLocaleDateString('id-ID')}</div>                ${payout.admin_note ? `<div class="text-xs mt-1 text-green-700">Catatan Admin: ${payout.admin_note.length > 120 ? payout.admin_note.substring(0,120) + '...' : payout.admin_note}${payout.admin_approved_name ? ' • oleh ' + payout.admin_approved_name : (payout.admin_approved_by ? ' • oleh ID:' + payout.admin_approved_by : '')}</div>` : ''}              </div>
             </div>
             <div class="flex gap-2 mt-4 pt-4 border-t border-green-100">
               <button onclick="viewDetail(${payout.id})" class="flex-1 px-4 py-2 border border-green-200 text-green-700 rounded-lg font-medium hover:bg-green-50 transition text-sm">
@@ -730,6 +729,19 @@
                   Catatan Finance
                 </h4>
                 <p class="text-sm text-emerald-800">${payout.finance_note}</p>
+                ${payout.submitted_by_name ? `<p class="text-xs text-gray-600 mt-1">Dikirim oleh: ${payout.submitted_by_name} • ${new Date(payout.submitted_at).toLocaleString('id-ID')}</p>` : (payout.submitted_by ? `<p class="text-xs text-gray-600 mt-1">Dikirim oleh ID: ${payout.submitted_by} • ${new Date(payout.submitted_at).toLocaleString('id-ID')}</p>` : '')}
+              </div>
+            ` : ''}
+
+            <!-- Admin Note (if exists) -->
+            ${payout.admin_note ? `
+              <div class="border-b pb-4 bg-yellow-50 rounded-lg p-4">
+                <h4 class="font-semibold text-yellow-900 mb-2 flex items-center gap-2">
+                  <i class="fas fa-sticky-note"></i>
+                  Catatan Admin
+                </h4>
+                <p class="text-sm text-yellow-800">${payout.admin_note}</p>
+                ${payout.admin_approved_by ? `<p class="text-xs text-gray-600 mt-1">Dikirim oleh admin ID: ${payout.admin_approved_by} • ${new Date(payout.admin_approved_at).toLocaleString('id-ID')}</p>` : ''}
               </div>
             ` : ''}
 

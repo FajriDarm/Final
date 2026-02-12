@@ -5,8 +5,12 @@ const authMiddleware = async (req, res, next) => {
   try {
     // Try Authorization header, then parsed cookies, then raw Cookie header
     let token =
-      req.headers.authorization?.replace("Bearer ", "") || req.cookies?.token;
+      req.headers.authorization?.replace("Bearer ", "") ||
+      req.cookies?.token ||
+      req.query?.token ||
+      req.query?.access_token;
 
+    // Fallback: parse raw cookie header if needed
     if (!token && req.headers.cookie) {
       const m = req.headers.cookie.match(/(?:^|; )token=([^;]+)/);
       if (m) token = decodeURIComponent(m[1]);
@@ -149,20 +153,30 @@ const authMiddlewarePage = async (req, res, next) => {
       return res.redirect("/login");
     }
 
-    console.log("🔍 Token found, verifying...");
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || "your-secret-key",
+    console.log(
+      "🔍 Token found, verifying... (first 8 chars):",
+      token ? token.slice(0, 8) + "..." : null,
     );
-    console.log("✅ Token verified, user_id:", decoded.user_id);
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET || "your-secret-key");
+      console.log(
+        "✅ Token verified, user_id:",
+        decoded.user_id || decoded.id || decoded.sub,
+      );
+    } catch (err) {
+      console.error("Token verification failed:", err.message);
+      return res.redirect("/login");
+    }
 
     const [users] = await db.query(
       `SELECT u.id, u.name, u.email, u.role_id, u.affiliate_status, u.status, u.created_at, u.no_wa, u.bank_name, u.bank_account_number, u.bank_account_name, r.name as role
        FROM users u
        JOIN roles r ON u.role_id = r.id
        WHERE u.id = ?`,
-      [decoded.user_id],
+      [decoded.user_id || decoded.id || decoded.sub],
     );
+    console.log("user lookup count:", users.length);
 
     if (users.length === 0) {
       console.log("⚠️  User not found in database");
@@ -172,10 +186,10 @@ const authMiddlewarePage = async (req, res, next) => {
     console.log("✅ User found:", users[0].name);
     req.user = {
       ...users[0],
-      phone: users[0].no_wa || '',
-      bank_name: users[0].bank_name || '',
-      bank_account: users[0].bank_account_number || '',
-      bank_account_name: users[0].bank_account_name || ''
+      phone: users[0].no_wa || "",
+      bank_name: users[0].bank_name || "",
+      bank_account: users[0].bank_account_number || "",
+      bank_account_name: users[0].bank_account_name || "",
     };
     next();
   } catch (error) {
@@ -185,6 +199,31 @@ const authMiddlewarePage = async (req, res, next) => {
 };
 
 module.exports = authMiddleware;
+// Require a specific role (e.g., 'finance', 'sales', 'affiliate')
+function requireRole(roleOrRoles) {
+  const allowed = Array.isArray(roleOrRoles) ? roleOrRoles : [roleOrRoles];
+  return (req, res, next) => {
+    try {
+      if (!req.user) {
+        if (req.accepts && req.accepts("html")) return res.redirect("/login");
+        return res.status(403).json({ success: false, message: "Forbidden" });
+      }
+      if (!allowed.includes(req.user.role)) {
+        if (req.accepts && req.accepts("html"))
+          return res.redirect("/dashboard");
+        return res.status(403).json({
+          success: false,
+          message: `Forbidden - role '${req.user.role}' not allowed`,
+        });
+      }
+      return next();
+    } catch (err) {
+      return res.status(500).json({ success: false, message: "Server error" });
+    }
+  };
+}
+
 module.exports.verifyToken = authMiddleware;
 module.exports.authMiddlewarePage = authMiddlewarePage;
 module.exports.checkAlreadyLoggedIn = checkAlreadyLoggedIn;
+module.exports.requireRole = requireRole;

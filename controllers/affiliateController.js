@@ -113,11 +113,13 @@ const dashboard = async (req, res) => {
     try {
       const params = [...whereParams, perPage, offset];
       const [rows] = await db.query(
-        `SELECT t.id, COALESCE(t.customer_name, c.name) as name, c.email, c.phone, e.title as event_title, t.payment_status, t.status, t.created_at
+        `SELECT t.id, COALESCE(t.customer_name, c.name) as name, c.email, c.phone, e.title as event_title, t.payment_status, t.status, t.created_at, ls.status as lead_status, ls.updated_at as lead_updated_at
          FROM transactions t
          LEFT JOIN customers c ON t.customer_id = c.id
          LEFT JOIN events e ON t.event_id = e.id
+         LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id
          WHERE ${whereClause}
+           AND (ls.updated_at IS NULL OR ls.updated_at >= DATE_SUB(NOW(), INTERVAL 7 DAY))
          ORDER BY t.created_at DESC
          LIMIT ? OFFSET ?`,
         params,
@@ -130,6 +132,8 @@ const dashboard = async (req, res) => {
         event_title: r.event_title || "-",
         payment_status: r.payment_status,
         status: r.status,
+        lead_status: r.lead_status || null,
+        lead_updated_at: r.lead_updated_at || null,
         created_at: r.created_at,
       }));
     } catch (e) {}
@@ -146,24 +150,39 @@ const dashboard = async (req, res) => {
       // table may not exist
     }
 
-    // History: transactions older than 7 days with status paid or rejected
+    // History: transactions older than 7 days OR leads whose lead_status did not change in the last 7 days
     const historyPerPage = 10;
     const historyPage = Math.max(parseInt(req.query.historyPage || "1", 10), 1);
-    const historyFilter = req.query.historyStatus || "all"; // 'pending', 'stage_1_approved', 'stage_2_approved', 'completed', 'rejected', or 'all'
+    const historyFilter = req.query.historyStatus || "all"; // verification filter
+    const historySearch = (req.query.historySearch || "").trim();
+    const leadStatusFilter = (req.query.leadStatus || "").trim();
 
+    // Include transactions older than 7 days OR where lead_status.updated_at is older than 7 days
     let historyWhere =
-      "t.affiliate_id = ? AND t.created_at < DATE_SUB(NOW(), INTERVAL 7 DAY)";
+      "t.affiliate_id = ? AND (t.created_at < DATE_SUB(NOW(), INTERVAL 7 DAY) OR (ls.updated_at IS NOT NULL AND ls.updated_at < DATE_SUB(NOW(), INTERVAL 7 DAY)))";
     const historyParams = [userId];
+
     if (historyFilter && historyFilter !== "all") {
       historyWhere += " AND t.status = ?";
       historyParams.push(historyFilter);
+    }
+
+    if (leadStatusFilter) {
+      historyWhere += " AND ls.status = ?";
+      historyParams.push(leadStatusFilter);
+    }
+
+    if (historySearch) {
+      historyWhere += ` AND (COALESCE(t.customer_name, c.name) LIKE ? OR c.email LIKE ? OR c.phone LIKE ? OR e.title LIKE ? OR ls.status LIKE ? OR t.created_at LIKE ?)`;
+      const like = `%${historySearch}%`;
+      historyParams.push(like, like, like, like, like, like);
     }
 
     // count
     let historyTotalCount = 0;
     try {
       const [cntRows] = await db.query(
-        `SELECT COUNT(*) as cnt FROM transactions t WHERE ${historyWhere}`,
+        `SELECT COUNT(*) as cnt FROM transactions t LEFT JOIN customers c ON t.customer_id = c.id LEFT JOIN events e ON t.event_id = e.id LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id WHERE ${historyWhere}`,
         historyParams,
       );
       historyTotalCount = cntRows[0]?.cnt || 0;
@@ -179,10 +198,11 @@ const dashboard = async (req, res) => {
     try {
       const params = [...historyParams, historyPerPage, historyOffset];
       const [rowsHist] = await db.query(
-        `SELECT t.id, COALESCE(t.customer_name, c.name) AS name, c.email, c.phone, e.title as event_title, t.status, t.payment_status, t.created_at
+        `SELECT t.id, COALESCE(t.customer_name, c.name) AS name, c.email, c.phone, e.title as event_title, t.status, t.payment_status, t.created_at, ls.status as lead_status, ls.updated_at as lead_updated_at
          FROM transactions t
          LEFT JOIN customers c ON t.customer_id = c.id
          LEFT JOIN events e ON t.event_id = e.id
+         LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id
          WHERE ${historyWhere}
          ORDER BY t.created_at DESC
          LIMIT ? OFFSET ?`,
@@ -195,6 +215,8 @@ const dashboard = async (req, res) => {
         phone: r.phone,
         event_title: r.event_title || "-",
         status: r.status,
+        lead_status: r.lead_status || null,
+        lead_updated_at: r.lead_updated_at || null,
         payment_status: r.payment_status,
         created_at: r.created_at,
       }));
@@ -219,12 +241,14 @@ const dashboard = async (req, res) => {
       perPage,
       statusFilter,
       affiliateProfile,
-      // history (older than 7 days)
+      // history (older than 7 days OR lead status unchanged >7 days)
       history,
       historyPage,
       historyTotalPages,
       historyPerPage,
       historyFilter,
+      historySearch: historySearch || "",
+      leadStatusFilter: leadStatusFilter || "",
     });
   } catch (error) {
     console.error("Affiliate dashboard error:", error);
@@ -452,6 +476,16 @@ const getUserStatus = async (req, res) => {
 
     const user = users[0];
 
+    // Get total commission
+    let totalCommission = "0.00";
+    try {
+      const [rows] = await db.query(
+        "SELECT COALESCE(SUM(amount),0) as total FROM commissions WHERE affiliate_id = ?",
+        [userId],
+      );
+      totalCommission = rows[0]?.total || "0.00";
+    } catch (e) {}
+
     res.json({
       success: true,
       data: {
@@ -461,6 +495,7 @@ const getUserStatus = async (req, res) => {
         affiliate_status: user.affiliate_status || "inactive",
         status: user.status || "inactive",
         role: user.role || "user",
+        totalCommission: totalCommission,
       },
     });
   } catch (error) {
@@ -586,6 +621,34 @@ const getCommissionSummaryEndpoint = async (req, res) => {
     });
   } catch (error) {
     console.error("Get commission summary error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * GET /api/affiliate/commissions/ready-by-lead
+ * Get total/count of commissions where the transaction's lead_status = 'SEDANG BERANGKAT'
+ */
+const getReadyByLeadEndpoint = async (req, res) => {
+  try {
+    const userId = req.user?.id || req.query.user_id;
+
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Unauthorized - user id required" });
+    }
+
+    const { getReadyByLeadStatus } = require("./withdrawalService");
+    const result = await getReadyByLeadStatus(userId);
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    console.error("Get ready-by-lead error:", error);
     res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -741,6 +804,24 @@ const commissionDashboard = async (req, res) => {
   }
 };
 
+// SSE stream for commission events (affiliates)
+const commissionEventsStream = (req, res) => {
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
+  });
+  // initial comment ping
+  res.write(": connected\n\n");
+
+  const leadEvents = require("../services/leadEvents");
+  leadEvents.addClient(res);
+
+  req.on("close", () => {
+    leadEvents.removeClient(res);
+  });
+};
+
 module.exports = {
   dashboard,
   commissionDashboard,
@@ -750,7 +831,9 @@ module.exports = {
   getMyCommissions,
   getReadyCommissionsEndpoint,
   getCommissionSummaryEndpoint,
+  getReadyByLeadEndpoint,
   requestWithdrawal,
   getMyWithdrawalRequests,
   getWithdrawalRequestDetail,
+  commissionEventsStream,
 };

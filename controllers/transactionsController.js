@@ -146,6 +146,45 @@ async function createTransaction(req, res) {
       ],
     );
 
+    // 4.5) Initialize lead status for new transaction so affiliate sees 'Lead baru'
+    try {
+      await db.query(
+        `INSERT INTO lead_statuses (transaction_id, status, updated_at) VALUES (?, ?, NOW())
+         ON DUPLICATE KEY UPDATE status = VALUES(status), updated_at = NOW()`,
+        [trxRes.insertId, "LEAD BARU"],
+      );
+
+      // Broadcast new lead to SSE clients (best-effort)
+      try {
+        const leadEvents = require("../services/leadEvents");
+        const [rows] = await db.query(
+          `SELECT t.id, t.total_amount, COALESCE(t.customer_name, c.name) as customer_name, u.name as affiliate_name, e.title as event_name, ls.status as status, ls.updated_at
+           FROM transactions t
+           LEFT JOIN customers c ON t.customer_id = c.id
+           LEFT JOIN users u ON t.affiliate_id = u.id
+           LEFT JOIN events e ON t.event_id = e.id
+           LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id
+           WHERE t.id = ? LIMIT 1`,
+          [trxRes.insertId],
+        );
+        const newLead = rows && rows[0] ? rows[0] : null;
+        if (newLead) leadEvents.broadcast("new_lead", newLead);
+      } catch (e) {
+        console.warn(
+          "Failed to broadcast new lead",
+          trxRes.insertId,
+          e && (e.message || e),
+        );
+      }
+    } catch (e) {
+      // Non-fatal: if table missing or other issue, log and continue
+      console.warn(
+        "Failed to set initial lead status for transaction",
+        trxRes.insertId,
+        e && (e.message || e),
+      );
+    }
+
     // 5) Optionally record affiliate_referral if affiliate present. Avoid duplicates by
     // checking whether a referral for this affiliate/event/customer already exists.
     if (affiliateId && resolvedEventId) {

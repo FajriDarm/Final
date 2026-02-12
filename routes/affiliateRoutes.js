@@ -26,6 +26,13 @@ router.post(
   affiliateController.generateLink,
 );
 
+// SSE commission events for affiliate
+router.get(
+  "/commission-events",
+  authMiddleware,
+  affiliateController.commissionEventsStream,
+);
+
 // ============================================
 // COMMISSION & WITHDRAWAL ENDPOINTS
 // ============================================
@@ -45,6 +52,12 @@ router.get(
   "/api/commissions/summary",
   authMiddleware,
   affiliateController.getCommissionSummaryEndpoint,
+);
+// Total/count of commissions where lead_status = 'SEDANG BERANGKAT' (stage 3 via Sales)
+router.get(
+  "/api/commissions/ready-by-lead",
+  authMiddleware,
+  affiliateController.getReadyByLeadEndpoint,
 );
 
 // Withdrawal request endpoints

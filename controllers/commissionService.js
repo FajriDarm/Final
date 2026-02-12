@@ -73,11 +73,36 @@ async function awardCommissionForTransaction(transactionId, stage) {
     }
 
     // Insert commission record
-    await db.query(
+    const [ins] = await db.query(
       `INSERT INTO commissions (transaction_id, affiliate_id, stage, amount, stage_status, commission_status)
        VALUES (?, ?, ?, ?, 'approved', 'approved')`,
       [transactionId, trx.affiliate_id, stage, amount],
     );
+
+    // Fetch inserted commission for broadcasting
+    try {
+      const [rows] = await db.query(
+        `SELECT id, transaction_id, affiliate_id, stage, amount, created_at FROM commissions WHERE id = ? LIMIT 1`,
+        [ins.insertId],
+      );
+      const commissionRow = rows && rows[0] ? rows[0] : null;
+      if (commissionRow) {
+        try {
+          const leadEvents = require("../services/leadEvents");
+          leadEvents.broadcast("commission_awarded", commissionRow);
+        } catch (e) {
+          console.warn(
+            "Failed to broadcast commission_awarded",
+            e && (e.message || e),
+          );
+        }
+      }
+    } catch (e) {
+      console.warn(
+        "Failed to fetch inserted commission for broadcast",
+        e && (e.message || e),
+      );
+    }
 
     return { inserted: true, amount };
   } catch (err) {

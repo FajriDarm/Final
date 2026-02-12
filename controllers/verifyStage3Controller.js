@@ -26,10 +26,8 @@ exports.getVerifyStage3 = async (req, res) => {
       console.error("Error computing projected commissions (stage 3)", e);
     }
 
-    res.render("sales/verify_stage3", {
-      title: "Verifikasi Tahap 3",
-      transactions,
-    });
+    // redirect to combined page (view moved)
+    return res.redirect("/sales/verify-leads");
   } catch (err) {
     res.status(500).send("Error loading verifikasi tahap 3");
   }
@@ -81,7 +79,7 @@ exports.postVerifyStage3 = async (req, res) => {
         [id],
       );
     }
-    res.redirect("/sales/verify-stage3");
+    res.redirect("/sales/verify-leads");
   } catch (err) {
     res.status(500).send("Gagal memproses verifikasi");
   }
