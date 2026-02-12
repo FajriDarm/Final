@@ -139,6 +139,8 @@ exports.postUpdateLeadStatus = async (req, res) => {
   if (!id || !lead_status)
     return res.status(400).json({ success: false, message: "Missing params" });
   try {
+    // diagnostic array for any payouts created during this update
+    let createdPayouts = [];
     // ensure table exists (safe to call repeatedly)
     await db.query(`
       CREATE TABLE IF NOT EXISTS lead_statuses (
@@ -157,6 +159,20 @@ exports.postUpdateLeadStatus = async (req, res) => {
 
     // If lead moved to SEDANG BERANGKAT, attempt to award commission for stage 3
     if ((lead_status || "").toString().toUpperCase() === "SEDANG BERANGKAT") {
+      // Ensure transaction is marked as paid so finance dashboard counts it
+      try {
+        await db.query(
+          `UPDATE transactions SET payment_status = 'paid' WHERE id = ?`,
+          [id],
+        );
+      } catch (e) {
+        console.error(
+          "Failed to set transaction payment_status to paid for id",
+          id,
+          e,
+        );
+      }
+
       try {
         const {
           awardCommissionForTransaction,
@@ -191,6 +207,97 @@ exports.postUpdateLeadStatus = async (req, res) => {
         );
       } catch (e) {
         console.error("Error awarding commission for SEDANG BERANGKAT", e);
+      }
+    }
+
+    // --- AUTOMATICALLY CREATE & MARK PAYOUT(S) AS PAID for stage-3 commissions
+    // This will: find stage-3 commissions for this transaction, group by affiliate,
+    // create payouts and mark them 'paid', update commissions to 'paid', and
+    // set transaction.payment_status = 'paid' so finance dashboard reflects incoming payments.
+    if ((lead_status || "").toString().toUpperCase() === "SEDANG BERANGKAT") {
+      try {
+        const conn = await db.getConnection();
+        try {
+          await conn.beginTransaction();
+
+          // find stage-3 commissions for this transaction
+          const [commRows] = await conn.query(
+            `SELECT id, affiliate_id, amount FROM commissions WHERE transaction_id = ? AND stage = 3 AND commission_status IN ('ready_for_withdraw','pending','pending_payment')`,
+            [id],
+          );
+
+          if (commRows && commRows.length > 0) {
+            // group by affiliate
+            const groups = {};
+            commRows.forEach((c) => {
+              const a = c.affiliate_id || 0;
+              groups[a] = groups[a] || [];
+              groups[a].push(c);
+            });
+
+            for (const affIdStr of Object.keys(groups)) {
+              const affId = parseInt(affIdStr, 10);
+              const items = groups[affIdStr];
+              const total = items.reduce(
+                (s, it) => s + parseFloat(it.amount || 0),
+                0,
+              );
+
+              if (total <= 0) continue;
+
+              // create payout marked as paid
+              const [pRes] = await conn.query(
+                `INSERT INTO payouts (affiliate_id, total_amount, status, created_at, paid_at) VALUES (?, ?, 'paid', NOW(), NOW())`,
+                [affId, total],
+              );
+              const payoutId = pRes.insertId;
+              createdPayouts.push(payoutId);
+
+              // insert payout_details and mark commissions as paid
+              const commissionIds = items.map((c) => c.id);
+              for (const cid of commissionIds) {
+                await conn.query(
+                  `INSERT INTO payout_details (payout_id, commission_id) VALUES (?, ?)`,
+                  [payoutId, cid],
+                );
+              }
+
+              await conn.query(
+                `UPDATE commissions SET commission_status = 'paid' WHERE id IN (${commissionIds.map(() => "?").join(",")})`,
+                commissionIds,
+              );
+
+              // Log activity
+              await conn.query(
+                `INSERT INTO activity_logs (approved_by, action, target_type, target_id, new_status, description, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())`,
+                [
+                  affId,
+                  "AUTO_MARK_PAYOUT_PAID",
+                  "payout",
+                  payoutId,
+                  "paid",
+                  `Auto-marked payout #${payoutId} paid for affiliate ${affId} (transaction ${id})`,
+                ],
+              );
+            }
+
+            // mark transaction payment_status as paid so dashboard counts it
+            await conn.query(
+              `UPDATE transactions SET payment_status = 'paid' WHERE id = ?`,
+              [id],
+            );
+            console.debug("Auto-set transaction.payment_status=paid for", id);
+          }
+
+          await conn.commit();
+        } catch (e) {
+          await conn.rollback();
+          console.error("Auto-create/mark payout failed", e);
+        } finally {
+          conn.release();
+        }
+      } catch (e) {
+        console.error("Auto payout flow error", e);
       }
     }
 
@@ -236,13 +343,27 @@ exports.postUpdateLeadStatus = async (req, res) => {
         [id],
       );
       const updated = r && r[0] ? r[0] : null;
+      // fetch transaction payment_status for diagnostics
+      let payment_status = null;
+      try {
+        const [trows] = await db.query(
+          `SELECT payment_status FROM transactions WHERE id = ? LIMIT 1`,
+          [id],
+        );
+        payment_status = trows && trows[0] ? trows[0].payment_status : null;
+      } catch (e) {
+        console.error("Error querying transaction payment_status", e);
+      }
+
       return res.json({
         success: true,
         status: updated ? updated.status : lead_status,
         updated_at: updated ? updated.updated_at : null,
+        payment_status: payment_status,
+        created_payouts: createdPayouts,
       });
     } catch (e) {
-      return res.json({ success: true });
+      return res.json({ success: true, created_payouts: createdPayouts });
     }
   } catch (err) {
     console.error("postUpdateLeadStatus error:", err);

@@ -73,6 +73,11 @@ const getDashboardStats = async (req, res) => {
       'SELECT COALESCE(SUM(total_amount), 0) as revenue FROM transactions WHERE status = "completed"',
     );
 
+    // Total Paid (from payment_status = 'paid')
+    const [[{ totalPaid }]] = await db.query(
+      `SELECT COALESCE(SUM(total_amount), 0) as totalPaid FROM transactions WHERE payment_status = 'paid'`,
+    );
+
     // Pending Payouts
     const [pendingPayouts] = await db.query(
       'SELECT COUNT(*) as count FROM payouts WHERE status = "pending"',
@@ -113,6 +118,7 @@ const getDashboardStats = async (req, res) => {
         totalTransactions: totalTransactions[0].count,
         completedTransactions: completedTransactions[0].count,
         totalRevenue: totalRevenue[0].revenue,
+        totalPaid: totalPaid || 0,
         pendingPayouts: pendingPayouts[0].count,
       },
       recentTransactions,
@@ -637,12 +643,22 @@ const getWithdrawalDetailForApproval = async (req, res) => {
       [payoutId],
     );
 
+    // Get payment proof if exists
+    const [proofRows] = await db.query(
+      `SELECT proof_file FROM payment_proofs WHERE payout_id = ? AND proof_type = 'payout_transfer' LIMIT 1`,
+      [payoutId],
+    );
+
+    const proof_file =
+      proofRows && proofRows.length > 0 ? proofRows[0].proof_file : null;
+
     res.json({
       success: true,
       data: {
         ...payout,
         commission_count: commissions.length,
         commissions: commissions,
+        proof_file: proof_file,
       },
     });
   } catch (error) {

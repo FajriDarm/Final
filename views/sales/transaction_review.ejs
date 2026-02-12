@@ -294,7 +294,7 @@
                           }[trx.payment_method] || 'fas fa-money-bill-wave';
                           %>
                           <tr class="hover:bg-green-50 transition-colors data-cell"
-                            style="animation-delay: <%= index * 50 %>ms">
+                            data-delay="<%= index * 50 %>">
                             <td class="py-4 px-6">
                               <div class="flex flex-col">
                                 <span class="font-medium text-gray-900">#<%= trx.id %></span>
@@ -408,7 +408,7 @@
       </main>
 
       <script>
-        document.addEventListener('DOMContentLoaded', function () {
+          document.addEventListener('DOMContentLoaded', function () {
           // Add animation to status badges
           const statusBadges = document.querySelectorAll('.status-badge');
           statusBadges.forEach(badge => {
@@ -420,9 +420,11 @@
             });
           });
 
-          // Add hover effect to table rows
-          const tableRows = document.querySelectorAll('tbody tr[style*="animation-delay"]');
-          tableRows.forEach(row => {
+          // Initialize animation-delay from data-delay attributes to avoid inline CSS EJS expressions
+          const delayedRows = document.querySelectorAll('tbody tr[data-delay]');
+          delayedRows.forEach(row => {
+            const d = row.getAttribute('data-delay');
+            if (d) row.style.animationDelay = d + 'ms';
             row.addEventListener('mouseenter', function () {
               this.style.backgroundColor = '#f0fdf4';
             });

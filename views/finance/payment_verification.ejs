@@ -54,6 +54,11 @@
       overflow: hidden;
     }
 
+    /* Table column helpers */
+    .truncate-col { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .wrap-col { max-width: 340px; white-space: normal; word-break: break-word; }
+    .action-cell .btn { min-width: 96px; }
+
     .data-cell::after {
       content: '';
       position: absolute;
@@ -123,18 +128,19 @@
                 <div class="ml-auto text-sm text-gray-600">Pilih tab untuk melihat lead sesuai status</div>
               </div>
 
-              <table class="w-full">
-                <thead>
-                  <tr class="bg-green-50">
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">ID</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Customer</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Affiliate</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Event</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Jumlah</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Metode Pembayaran</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Komisi</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Lead Status</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Aksi</th>
+              <div class="overflow-auto">
+                <table class="min-w-full divide-y divide-green-100 table-auto">
+                <thead class="bg-green-50">
+                  <tr>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">ID</th>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Customer</th>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Affiliate</th>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Event</th>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Jumlah</th>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Metode</th>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900">Komisi</th>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Lead Status</th>
+                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="paymentsTableBody" class="divide-y divide-green-100">
@@ -153,48 +159,42 @@
                     <% } else if (pendingPayments) { %>
                       <% pendingPayments.forEach(function(payment, index) { %>
                         <tr class="hover:bg-green-50 transition-colors data-cell" data-delay="<%= index * 50 %>" data-lead-status="<%= (payment.lead_status || '').toUpperCase() %>">
-                          <td class="py-4 px-6">
+                          <td class="py-3 px-4 align-top whitespace-nowrap">
                             <span class="text-sm font-medium text-gray-900">#<%= payment.id %></span>
                           </td>
-                          <td class="py-4 px-6">
-                            <div class="flex items-center gap-3">
-                              <div
-                                class="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
+                          <td class="py-3 px-4 align-top">
+                            <div class="flex items-start gap-3">
+                              <div class="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <i class="fas fa-user text-green-600"></i>
                               </div>
-                              <div>
-                                <div class="font-medium text-gray-900">
-                                  <%= payment.customer_name %>
-                                </div>
+                              <div class="min-w-0">
+                                <div class="font-medium text-gray-900 truncate-col"> <%= payment.customer_name %> </div>
                                 <div class="text-xs text-gray-500">Customer</div>
                               </div>
                             </div>
                           </td>
-                          <td class="py-4 px-6">
-                            <div class="font-medium text-gray-900"><%= payment.affiliate_name || '-' %></div>
+                          <td class="py-3 px-4 align-top">
+                            <div class="font-medium text-gray-900 truncate-col"><%= payment.affiliate_name || '-' %></div>
                             <div class="text-xs text-gray-500">Affiliate</div>
                           </td>
-                          <td class="py-4 px-6">
-                            <div class="font-medium text-gray-900"><%= payment.event_name || ('#'+payment.event_id) || '-' %></div>
+                          <td class="py-3 px-4 align-top">
+                            <div class="font-medium text-gray-900 wrap-col"><%= payment.event_name || ('#'+payment.event_id) || '-' %></div>
                             <div class="text-xs text-gray-500">Event</div>
                           </td>
-                          <td class="py-4 px-6">
-                            <span class="font-bold text-green-700">Rp <%= parseInt(payment.total_amount ||
-                                0).toLocaleString('id-ID') %></span>
+                          <td class="py-3 px-4 align-top whitespace-nowrap">
+                            <span class="font-bold text-green-700">Rp <%= parseInt(payment.total_amount || 0).toLocaleString('id-ID') %></span>
                           </td>
-                          <td class="py-4 px-6">
+                          <td class="py-3 px-4 align-top whitespace-nowrap">
                             <div class="flex items-center gap-2">
                               <% if (payment.payment_method==='transfer' ) { %>
                                 <i class="fas fa-bank text-green-600"></i>
-                                <% } else { %>
-                                  <i class="fas fa-money-bill-wave text-green-600"></i>
-                                  <% } %>
-                                    <span class="text-sm font-medium text-gray-700">
-                                      <%= payment.payment_method ? payment.payment_method.toUpperCase() : 'N/A' %>
-                                    </span>
+                              <% } else { %>
+                                <i class="fas fa-money-bill-wave text-green-600"></i>
+                              <% } %>
+                              <span class="text-sm font-medium text-gray-700 truncate-col"><%= payment.payment_method ? payment.payment_method.toUpperCase() : 'N/A' %></span>
                             </div>
                           </td>
-                          <td class="py-4 px-6">
+                          <td class="py-3 px-4 align-top wrap-col">
                             <% if (typeof payment.commission_amount !== 'undefined' && payment.commission_amount > 0) { %>
                               <span class="font-semibold text-green-700">Rp <%= Number(payment.commission_amount).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
                             <% } else if (payment.projected_commission) { %>
@@ -206,7 +206,7 @@
                               <span class="text-gray-400">-</span>
                             <% } %>
                           </td>
-                          <td class="py-4 px-6">
+                          <td class="py-3 px-4 align-top whitespace-nowrap">
                             <div class="flex items-center gap-2">
                               <div class="text-sm text-gray-600"><%= payment.lead_status || '—' %></div>
                               <% if ((payment.lead_status || '').toUpperCase() === 'DP') { %>
@@ -217,15 +217,14 @@
                             </div>
                           </td>
 
-                          <td class="py-4 px-6">
-                            <span
-                              class="px-3 py-1.5 rounded-full text-xs font-medium border border-yellow-200 bg-yellow-100 text-yellow-800 status-badge">
+                          <td class="py-3 px-4 align-top whitespace-nowrap">
+                            <span class="px-3 py-1.5 rounded-full text-xs font-medium border border-yellow-200 bg-yellow-100 text-yellow-800 status-badge">
                               <i class="fas fa-hourglass-half mr-1.5"></i>
                               <%= payment.payment_status ? payment.payment_status.toUpperCase() : 'PENDING' %>
                             </span>
                           </td>
-                          <td class="py-4 px-6">
-                            <div class="flex flex-col gap-2">
+                          <td class="py-3 px-4 align-top action-cell">
+                            <div class="flex flex-col md:flex-row md:items-center gap-2">
                               <div class="text-sm text-gray-600">Lead Status: <span class="font-medium text-gray-800"><%= payment.lead_status || '—' %></span></div>
                               <div class="flex items-center gap-2">
                                 <form data-action="set-lead-status" action="/finance/payment-verification/<%= payment.id %>/set-lead-status" method="POST" class="inline-flex items-center gap-2 finance-action-form">
@@ -238,13 +237,13 @@
                                     <% } %>
                                     <option value="LUNAS">LUNAS</option>
                                   </select>
-                                  <button type="submit" class="px-3 py-2 gradient-success text-white rounded-lg text-xs font-medium hover:shadow-lg transition inline-flex items-center gap-1" data-confirm="Simpan perubahan status?">
+                                  <button type="submit" class="px-3 py-2 gradient-success text-white rounded-lg text-xs font-medium hover:shadow-lg transition inline-flex items-center gap-1 btn" data-confirm="Simpan perubahan status?">
                                     <i class="fas fa-check-circle"></i>
                                     Simpan
                                   </button>
                                 </form>
                                 <form data-action="reject" action="/finance/payment-verification/<%= payment.id %>/reject" method="POST" class="inline finance-action-form">
-                                  <button type="submit" class="px-3 py-2 gradient-danger text-white rounded-lg text-xs font-medium hover:shadow-lg transition inline-flex items-center gap-1" data-confirm="Tolak pembayaran ini?">
+                                  <button type="submit" class="px-3 py-2 gradient-danger text-white rounded-lg text-xs font-medium hover:shadow-lg transition inline-flex items-center gap-1 btn" data-confirm="Tolak pembayaran ini?">
                                     <i class="fas fa-times-circle"></i>
                                     Reject
                                   </button>
@@ -391,7 +390,6 @@
       }, 10000);
 
     }).catch(()=>{});
-  </script>
   </script>
 </body>
 

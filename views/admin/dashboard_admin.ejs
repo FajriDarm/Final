@@ -347,7 +347,8 @@
               animateValue('totalAffiliates', 0, data.stats.totalAffiliates, 1000);
               animateValue('activeEvents', 0, data.stats.activeEvents, 1000);
 
-              const revenueValue = parseInt(data.stats.totalRevenue);
+              // Prefer totalPaid if backend provides it (reflects only paid transactions)
+              const revenueValue = parseInt(data.stats.totalPaid || data.stats.totalRevenue || 0);
               animateValue('totalRevenue', 0, revenueValue, 1000, true);
 
               // Update pending affiliates badge
@@ -370,8 +371,10 @@
           `;
               }
 
-              // Load transactions
-              if (data.recentTransactions) {
+              // Load payments if available (make admin transactions match finance view)
+              if (data.recentPayments && data.recentPayments.length) {
+                loadPayments(data.recentPayments);
+              } else if (data.recentTransactions) {
                 loadTransactions(data.recentTransactions);
               }
 
@@ -430,12 +433,15 @@
           }
 
           tbody.innerHTML = transactions.map((t, index) => {
+            // If payment_status exists (from payments view), prefer that for status display
+            const rawStatus = t.payment_status || t.status || 'unknown';
             const statusClass = {
               'pending': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+              'paid': 'bg-green-100 text-green-800 border-green-200',
               'completed': 'bg-green-100 text-green-800 border-green-200',
               'rejected': 'bg-red-100 text-red-800 border-red-200',
               'processing': 'bg-blue-100 text-blue-800 border-blue-200'
-            }[t.status] || 'bg-gray-100 text-gray-800 border-gray-200';
+            }[rawStatus] || 'bg-gray-100 text-gray-800 border-gray-200';
 
             const amount = parseInt(t.total_amount || 0);
             const isHighValue = amount > 1000000;
@@ -464,7 +470,76 @@
           <td class="py-4 px-6">
             <span class="px-3 py-1.5 rounded-full text-xs font-medium border ${statusClass} status-badge">
               <i class="fas fa-circle text-xs mr-1.5"></i>
-              ${t.status.toUpperCase()}
+              ${rawStatus.toUpperCase()}
+            </span>
+          </td>
+        </tr>
+      `;
+          }).join('');
+        }
+
+        // Render recent payments table rows (same style as finance dashboard)
+        function loadPayments(payments) {
+          const tbody = document.getElementById('transactionsTableBody');
+
+          if (!payments || payments.length === 0) {
+            tbody.innerHTML = `
+        <tr style="height:320px;">
+          <td colspan="3" class="px-6 text-center h-full align-middle">
+            <div class="flex flex-col items-center justify-center min-h-[300px] h-full w-full">
+              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-inbox text-green-600 text-xl"></i>
+              </div>
+              <p class="text-gray-600 font-medium">Belum ada pembayaran</p>
+              <p class="text-sm text-gray-500 mt-2">Pembayaran akan muncul di sini</p>
+            </div>
+          </td>
+        </tr>
+      `;
+            return;
+          }
+
+          tbody.innerHTML = payments.map((t, index) => {
+            const statusClass = {
+              'pending': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+              'paid': 'bg-green-100 text-green-800 border-green-200',
+              'rejected': 'bg-red-100 text-red-800 border-red-200'
+            }[t.payment_status] || 'bg-gray-100 text-gray-800 border-gray-200';
+
+            const amount = parseInt(t.total_amount || 0);
+            const isHighValue = amount > 1000000;
+            const methodIcon = {
+              'bank_transfer': 'fas fa-university',
+              'credit_card': 'fas fa-credit-card',
+              'e-wallet': 'fas fa-wallet',
+              'cash': 'fas fa-money-bill'
+            }[t.payment_method] || 'fas fa-money-bill-wave';
+
+            return `
+        <tr class="hover:bg-green-50 transition-colors data-cell" style="animation-delay: ${index * 50}ms">
+          <td class="py-4 px-6">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-user text-green-600"></i>
+              </div>
+              <div>
+                <div class="font-medium text-gray-900">${t.customer_name || 'Tidak Diketahui'}</div>
+                <div class="text-sm text-gray-500">${t.affiliate_name || 'Tanpa Afiliasi'}</div>
+              </div>
+            </div>
+          </td>
+          <td class="py-4 px-6">
+            <div class="flex flex-col">
+              <span class="font-bold ${isHighValue ? 'text-green-700 text-lg' : 'text-gray-900'}">
+                Rp ${amount.toLocaleString('id-ID')}
+              </span>
+              ${t.commission_amount ? `<span class="text-xs text-gray-500">Komisi: Rp ${parseInt(t.commission_amount).toLocaleString('id-ID')}</span>` : ''}
+            </div>
+          </td>
+          <td class="py-4 px-6">
+            <span class="px-3 py-1.5 rounded-full text-xs font-medium border ${statusClass} status-badge">
+              <i class="fas fa-circle text-xs mr-1.5"></i>
+              ${t.payment_status ? t.payment_status.toUpperCase() : 'UNKNOWN'}
             </span>
           </td>
         </tr>

@@ -503,18 +503,18 @@ exports.getWithdrawalManagementPage = async (req, res) => {
   try {
     const user = req.user || { name: "Finance Officer" };
 
-    // Fetch simple finance stats similar to dashboard
+    // Fetch simple finance stats derived from payouts (consistent with withdrawal management)
     const [[{ totalPaid }]] = await db.query(
-      `SELECT COALESCE(SUM(total_amount), 0) AS totalPaid FROM transactions WHERE payment_status = 'paid'`,
+      `SELECT COALESCE(SUM(total_amount), 0) AS totalPaid FROM payouts WHERE status = 'paid'`,
     );
     const [[{ totalPending }]] = await db.query(
-      `SELECT COALESCE(SUM(total_amount), 0) AS totalPending FROM transactions WHERE payment_status = 'pending'`,
+      `SELECT COALESCE(SUM(total_amount), 0) AS totalPending FROM payouts WHERE status IN ('pending','approved')`,
     );
     const [[{ countPaid }]] = await db.query(
-      `SELECT COUNT(*) AS countPaid FROM transactions WHERE payment_status = 'paid'`,
+      `SELECT COUNT(*) AS countPaid FROM payouts WHERE status = 'paid'`,
     );
     const [[{ countPending }]] = await db.query(
-      `SELECT COUNT(*) AS countPending FROM transactions WHERE payment_status = 'pending'`,
+      `SELECT COUNT(*) AS countPending FROM payouts WHERE status IN ('pending','approved')`,
     );
 
     const stats = {

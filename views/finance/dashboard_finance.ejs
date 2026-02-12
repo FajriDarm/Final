@@ -336,7 +336,7 @@
                               }[t.payment_method] || 'fas fa-money-bill-wave';
                               %>
                               <tr class="hover:bg-green-50 transition-colors data-cell"
-                                style="animation-delay: <%= index * 50 %>ms">
+                                data-animation-delay="<%= index * 50 %>">
                                 <td class="py-4 px-6">
                                   <div class="flex items-center gap-3">
                                     <div
@@ -502,6 +502,12 @@
 
           // Auto-refresh every 30 seconds (if using AJAX)
           // setInterval(loadDashboardStats, 30000);
+
+          // Apply animation delays set via data-animation-delay to avoid inline EJS in style attributes
+          document.querySelectorAll('tr[data-animation-delay]').forEach(function(tr) {
+            const d = tr.getAttribute('data-animation-delay');
+            if (d !== null) tr.style.animationDelay = d + 'ms';
+          });
         });
       </script>
 </body>
