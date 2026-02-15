@@ -150,12 +150,8 @@ app.use("/sales", salesRoutes);
 const transactionReviewRoutes = require("./routes/transactionReviewRoutes");
 app.use("/sales", transactionReviewRoutes);
 
-const verifyStage1Routes = require("./routes/verifyStage1Routes");
-app.use("/sales", verifyStage1Routes);
-
-const verifyStage3Routes = require("./routes/verifyStage3Routes");
-app.use("/sales", verifyStage3Routes);
-
+// `verifyStage1Routes` and `verifyStage3Routes` removed — functionality
+// consolidated into `verifyLeadsRoutes` (combined Sales verification UI/API).
 const verifyLeadsRoutes = require("./routes/verifyLeadsRoutes");
 app.use("/sales", verifyLeadsRoutes);
 

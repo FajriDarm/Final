@@ -1,15 +1,25 @@
-# Workflow Sistem Affiliate (Final)
+<!-- UPDATED: `verify-stage1` & `verify-stage3` deprecated — functionality konsolidasi ke `verify-leads` (lihat bagian "Ringkasan singkat (apa yang berubah)") -->
+
+# Workflow Sistem Affiliate (Final) — (updated)
 
 Dokumen ini menjelaskan **alur kerja lengkap sistem affiliate** dengan **4 role utama**
 (Super Admin, Sales, Finance, Affiliate) serta **3 tahap verifikasi**, dari pembuatan event
 hingga payout komisi.
+
+> Ringkasan singkat (apa yang berubah):
+>
+> - `verify-stage1` dan `verify-stage3` **deprecated** — UI/API digantikan oleh `verify-leads`.
+> - Gunakan `GET /sales/verify-leads` untuk UI, `POST /sales/update-lead-status` untuk aksi, dan `GET /sales/lead-events` untuk SSE.
+> - Workflow dan dokumentasi di bawah ini telah diperbarui untuk mencerminkan konsolidasi tersebut.
 
 ---
 
 ## 1. Role & Tanggung Jawab
 
 ### 1. Super Admin
+
 **Halaman:**
+
 - Dashboard Super Admin
 - Event Management
 - Affiliate Approval
@@ -17,6 +27,7 @@ hingga payout komisi.
 - Activity Log
 
 **Tugas:**
+
 - Membuat & mengatur event promo
 - Mengatur harga coret & harga promo
 - Menentukan metode pembayaran (cash / transfer)
@@ -28,13 +39,16 @@ hingga payout komisi.
 ---
 
 ### 2. Sales
+
 **Halaman:**
+
 - Dashboard Sales
 - Transaction Review
 - Verification Stage 1 & 3
 - Monitoring Affiliate
 
 **Tugas:**
+
 - Verifikasi chat / intent customer (Tahap 1)
 - Verifikasi pengiriman / penyelesaian order (Tahap 3)
 - Approve / reject setiap tahap komisi
@@ -43,12 +57,15 @@ hingga payout komisi.
 ---
 
 ### 3. Finance
+
 **Halaman:**
+
 - Dashboard Finance
 - Payment Verification
 - Payout Processing
 
 **Tugas:**
+
 - Verifikasi pembayaran (DP / lunas)
 - Validasi bukti transfer / cash
 - Rekonsiliasi keuangan
@@ -57,7 +74,9 @@ hingga payout komisi.
 ---
 
 ### 4. Affiliate
+
 **Halaman:**
+
 - Dashboard Affiliate
 - Event List
 - Affiliate Link
@@ -65,6 +84,7 @@ hingga payout komisi.
 - Commission & Withdraw
 
 **Tugas:**
+
 - Mendaftar sebagai affiliate
 - Generate link affiliate
 - Promosi produk
@@ -99,8 +119,8 @@ Simpan Event (draft)
 ↓
 Aktifkan Event (active)
 
-
 **Output:**
+
 - Event siap digunakan affiliate
 - Landing Page otomatis menampilkan harga promo
 
@@ -118,8 +138,8 @@ Super Admin Review
 ├─ Approve → affiliate_status = approved
 └─ Reject → affiliate_status = rejected
 
-
 **Catatan:**
+
 - Affiliate **tidak bisa generate link sebelum approved**
 
 ---
@@ -138,8 +158,8 @@ affiliate_links.code
 
 tracking click
 
-
 **Output:**
+
 - Link siap dibagikan ke customer
 
 ---
@@ -166,12 +186,12 @@ customers
 
 transactions
 
-
 ---
 
 ## Workflow 4 – Pembayaran Customer
 
 ### A. Transfer
+
 Customer submit data
 ↓
 Muncul form transfer
@@ -180,38 +200,44 @@ Customer upload bukti transfer
 ↓
 payment_status = pending
 
-
 ### B. Cash
+
 Customer submit data
 ↓
 payment_status = pending
 ↓
 Menunggu bukti pembayaran
 
-
 ---
 
-## Workflow 5 – Verifikasi 3 Tahap
+## Workflow 5 – Verifikasi (Dropdown oleh Finance & Admin)
 
-### Tahap 1 – Sales (Chat / Intent)
-Sales review transaksi
-├─ Approve → stage 1 approved
-└─ Reject → transaksi ditolak
+Alur verifikasi tiga-tahap lama telah disederhanakan: verifikasi kini dilakukan melalui dropdown/status pada halaman Finance / Admin, sementara Sales tetap menggunakan halaman terpusat `verify-leads` untuk mengelola lead (intent/delivery).
 
+- Sales: mengatur `lead_status` lewat `GET /sales/verify-leads` / `POST /sales/update-lead-status` (nilai seperti `LEAD BARU`, `SEDANG DI PROSPEK`, `HOT`, `DP`, `LUNAS`, `SEDANG BERANGKAT`, `REJECTED`).
+- Finance / Admin: memverifikasi pembayaran dan mengubah status transaksi melalui dropdown pada halaman Payment Verification / Admin Dashboard (mis. `payment_status`: `pending`, `paid`, `invalid`; dan/atau mengubah `lead_status`).
 
-### Tahap 2 – Finance (Pembayaran)
-Finance verifikasi pembayaran
-├─ Valid → stage 2 approved
-└─ Tidak valid → rejected
+Perilaku penting saat status berubah:
 
+- Jika `lead_status` diset `SEDANG BERANGKAT` (oleh Sales atau Finance/Admin), sistem akan:
+  - mencoba men-award komisi stage‑3 (idempotent),
+  - set komisi stage‑3 menjadi `ready_for_withdraw`,
+  - (opsional) auto-create & mark payout `paid` sesuai konfigurasi, dan
+  - memastikan `transactions.payment_status = 'paid'` serta `transactions.status` dapat diupdate ke tanda internal yang cocok (mis. `stage_3_approved`).
+- Jika Finance mengubah `payment_status` menjadi `paid`, ini menjadi otoritatif untuk proses payout/reconciliation.
 
-### Tahap 3 – Sales (Delivery / Completion)
-Sales verifikasi pengiriman
-↓
-Approve tahap 3
-↓
-transaction.status = completed
+Aturan bisnis (ringkas):
 
+- Komisi hanya bisa ditarik bila kondisi pembayaran valid dan lead telah mencapai status yang memadai (mis. `SEDANG BERANGKAT`).
+- Cash tidak di‑auto‑valid oleh Finance; butuh verifikasi manual.
+- Affiliate tidak boleh mengedit transaksi setelah submit.
+- Withdraw harus diverifikasi data bank affiliate sebelum diproses.
+
+Catatan migrasi: setiap UI atau script yang sebelumnya menargetkan endpoint `verify-stage1` / `verify-stage3` harus dialihkan ke:
+
+- UI terpusat Sales: `GET /sales/verify-leads` (render)
+- Aksi ubah status: `POST /sales/update-lead-status`
+- SSE untuk notifikasi real‑time: `GET /sales/lead-events`
 
 ---
 
@@ -221,17 +247,16 @@ Tahap 1 approved → komisi pending
 Tahap 2 approved → komisi pending
 Tahap 3 approved → komisi ready_for_withdraw
 
-
 **Rule Atomic:**
 Jika semua tahap approved
 → Semua komisi = READY FOR WITHDRAW
-
 
 ---
 
 ## Workflow 7 – Dashboard Affiliate
 
 **Yang Ditampilkan:**
+
 - Total pending komisi
 - Ready for withdraw
 - Riwayat transaksi
@@ -253,7 +278,6 @@ Finance transfer dana
 
 Status komisi → PAID
 
-
 ---
 
 ## 3. Ringkasan Alur Global
@@ -272,7 +296,6 @@ Komisi siap ditarik
 ↓
 Payout akhir bulan
 
-
 ---
 
 ## 4. Kesimpulan
@@ -285,10 +308,8 @@ Payout akhir bulan
   - SOP internal
   - Acuan frontend
 
+## EVENT >
 
-
-
-## EVENT > 
 1️⃣ JIKA EVENT = GRATIS
 
 ✅ Yang ditampilkan:
@@ -349,10 +370,7 @@ Toggle: Aktifkan Affiliate
 
 Untuk konfirmasi pembayaran
 
-
-
-## WORKFLOW AFFILATE ##
-
+## WORKFLOW AFFILATE
 
 🔁 WORKFLOW AFFILIATE
 
@@ -382,6 +400,7 @@ Generate code unik
 Simpan ke tabel:
 
 affiliate_links
+
 - affiliate_id
 - event_id
 - code (UNIQ)
@@ -456,6 +475,7 @@ Transfer ke rekening event
 Upload bukti
 
 payment_proofs
+
 - transaction_id
 - proof_file
 
@@ -476,11 +496,12 @@ Cek chat / komunikasi
 Pastikan customer real
 
 Hasil
-Keputusan	Dampak
-Approve	Stage 1 approved
-Reject	Transaction rejected
+Keputusan Dampak
+Approve Stage 1 approved
+Reject Transaction rejected
 Database
 verifications
+
 - transaction_id
 - stage = 1
 - status = approved
@@ -494,10 +515,11 @@ Cek mutasi / bukti transfer
 Validasi cash / transfer
 
 Hasil
-Keputusan	Dampak
-Approve	Stage 2 approved
-Reject	Transaction rejected
+Keputusan Dampak
+Approve Stage 2 approved
+Reject Transaction rejected
 verifications
+
 - stage = 2
 
 8️⃣ VERIFIKASI TAHAP 3 — SALES (DELIVERY)
@@ -511,6 +533,7 @@ Event selesai / produk dikirim
 transaction_status = completed
 
 verifications
+
 - stage = 3
 - status = approved
 
@@ -521,6 +544,7 @@ Komisi TIDAK BISA DITARIK sebelum semua stage approved
 
 Database
 commissions
+
 - transaction_id
 - affiliate_id
 - amount
@@ -545,6 +569,7 @@ Klik Withdraw
 Pilih saldo tersedia
 
 payouts
+
 - affiliate_id
 - total_amount
 - status = pending
@@ -598,3 +623,28 @@ Komisi READY
 Withdraw
 ↓
 Affiliate terima uang
+
+---
+
+**Daftar Nilai Status (Dropdown) — Referensi**
+
+- **Lead status (`lead_status`)** — nilai yang digunakan di UI Sales / Finance:
+  - `LEAD BARU`, `SEDANG DI PROSPEK`, `HOT`, `DP`, `LUNAS`, `SEDANG BERANGKAT`, `REJECTED`.
+  - Siapa yang dapat mengubah: `Sales` via `verify-leads` UI; `Finance`/`Admin` juga dapat menyesuaikan pada halaman Payment Verification / Admin.
+
+- **Payment status (`payment_status`)** — status pembayaran transaksi:
+  - `pending`, `dp`, `paid`, `invalid` (varian lain: `pending_payment` pada beberapa proses internal).
+  - Diubah oleh: `Finance` saat verifikasi pembayaran, atau otomatis oleh sistem pada flows tertentu.
+
+- **Transaction status (`status`)** — lifecycle internal transaksi:
+  - `pending`, `stage_1_approved`, `stage_2_approved`, `stage_3_approved`, `completed`, `rejected`.
+  - Diatur oleh controller (Sales/Finance flows) dan beberapa otomatisasi internal.
+
+- **Commission status (`commission_status`)** — status komisi:
+  - `pending`, `ready_for_withdraw`, `paid`, (kadang `pending_payment`).
+  - Diubah oleh proses awarding/payout.
+
+- **Payout status (`payout.status`)** — status proses payout:
+  - `pending`, `paid` (kemungkinan `canceled` tergantung implementasi tambahan).
+
+Catatan singkat: nilai-nilai di atas diambil dari implementasi saat ini (`views`, `controllers`, dan `scripts`) — jika Anda ingin menormalkan atau membatasi nilai yang valid (mis. paksa semua huruf kapital atau definisikan enum), saya dapat bantu membuat satu tempat sumber kebenaran (konstanta) di kode.
