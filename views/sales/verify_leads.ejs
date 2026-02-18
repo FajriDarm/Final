@@ -470,7 +470,7 @@
     .lead-status-select:focus,
     .history-status-select:focus {
       outline: none;
-      ring: 2px solid rgba(16, 185, 129, 0.5);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
       border-color: transparent;
     }
 
@@ -489,7 +489,7 @@
 
     .search-input:focus {
       outline: none;
-      ring: 2px solid rgba(16, 185, 129, 0.5);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
       border-color: transparent;
     }
 
@@ -511,7 +511,7 @@
 
     .filter-select:focus {
       outline: none;
-      ring: 2px solid rgba(16, 185, 129, 0.5);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
       border-color: transparent;
     }
 
@@ -771,7 +771,7 @@
                     class="tab-btn tab-inactive px-5 py-2.5 rounded-xl text-xs font-extrabold flex items-center gap-2 transition-all duration-300"
                     data-tab="history">
                     <i class="fas fa-history"></i>
-                    <span>Riwayat SEDANG BERANGKAT (7 hari)</span>
+                    <span>Riwayat SEDANG BERANGKAT</span>
                   </button>
                 </div>
               </div>
@@ -859,7 +859,7 @@
                           </td>
                         </tr>
                         <% } else { %>
-                          <% transactions.forEach(function(trx){ %>
+                          <% transactions.forEach(function(trx){ if (trx.lead_status !== 'SEDANG BERANGKAT' && trx.lead_status !== 'REJECTED') { %>
                             <tr class="table-row <%= trx.lead_status === 'LEAD BARU' ? 'new-lead-row' : '' %>">
                               <td class="p-3">
                                 <span class="font-extrabold text-xs text-gray-900">#<%= trx.id %></span>
@@ -963,8 +963,8 @@
                                 </button>
                               </td>
                             </tr>
-                            <% }) %>
-                              <% } %>
+                            <% } }); %>
+                          <% } %>
                     </tbody>
                   </table>
                 </div>
@@ -1249,6 +1249,73 @@
                   } else if (prevStatus !== 'LEAD BARU' && (j.status || val) === 'LEAD BARU') {
                     const row = select.closest('tr'); row.classList.add('new-lead-row'); updateNewLeadsCount(1);
                   }
+
+                  // If status becomes SEDANG BERANGKAT, move the row into History tab (dedupe/update existing)
+                  if ((j.status || val) === 'SEDANG BERANGKAT') {
+                    try {
+                      const row = select.closest('tr');
+                      const leadsTbody = document.querySelector('#leadsTable tbody');
+                      if (row && leadsTbody) row.remove();
+
+                      const histTbody = document.querySelector('#historyTable tbody');
+                      if (histTbody) {
+                        const existing = histTbody.querySelector('tr.history-row[data-id="' + id + '"]');
+                        if (existing) {
+                          // update existing history row instead of inserting duplicate
+                          try {
+                            const amt = existing.querySelector('td:nth-child(5) .font-extrabold'); if (amt && (j.total_amount !== undefined && j.total_amount !== null)) amt.textContent = 'Rp ' + ((Number(j.total_amount) || 0).toLocaleString('id-ID'));
+                            const statusCell = existing.querySelector('td:nth-child(6) span'); if (statusCell) statusCell.textContent = 'SEDANG BERANGKAT';
+                            const timeCell = existing.querySelector('td:nth-child(7) span'); if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
+                            const sel = existing.querySelector('.history-status-select'); if (sel) sel.value = 'SEDANG BERANGKAT';
+                          } catch (err) { console.error('update existing history on move error', err); }
+                        } else {
+                          const tr = document.createElement('tr');
+                          tr.className = 'table-row history-row';
+                          tr.setAttribute('data-id', id);
+                          tr.innerHTML = `
+                            <td class="p-3"><span class="font-extrabold text-xs text-gray-900">#${id}</span></td>
+                            <td class="p-3">
+                              <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
+                                  <i class="fas fa-user text-emerald-600 text-xs"></i>
+                                </div>
+                                <span class="font-medium text-xs text-gray-900">${(j.customer_name || fallbackCustomer)}</span>
+                              </div>
+                            </td>
+                            <td class="p-3">
+                              <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
+                                  <i class="fas fa-user-tie text-purple-600 text-xs"></i>
+                                </div>
+                                <span class="font-medium text-xs text-gray-900">${(j.affiliate_name || fallbackAffiliate)}</span>
+                              </div>
+                            </td>
+                            <td class="p-3"><span class="text-xs text-gray-900">${(j.event_name || fallbackEvent || ('#' + (j.event_id || '')))}</span></td>
+                            <td class="p-3"><span class="font-extrabold text-xs text-gray-900">${(j.total_amount !== undefined && j.total_amount !== null) ? ('Rp ' + (Number(j.total_amount) || 0).toLocaleString('id-ID')) : fallbackAmountText}</span></td>
+                            <td class="p-3"><span class="text-xs text-gray-600">SEDANG BERANGKAT</span></td>
+                            <td class="p-3"><span class="text-xs text-gray-600">${j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID')}</span></td>
+                            <td class="p-3">
+                              <select class="history-status-select mb-2">
+                                <option value="">-- pilih status --</option>
+                                <option value="LEAD BARU">LEAD BARU</option>
+                                <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
+                                <option value="HOT">HOT</option>
+                                <option value="DP">DP</option>
+                                <option value="LUNAS">LUNAS</option>
+                                <option value="SEDANG BERANGKAT" selected>SEDANG BERANGKAT</option>
+                              </select>
+                              <button class="history-restore-btn btn-primary text-[8px] w-full"><i class="fas fa-undo-alt mr-1"></i> Restore</button>
+                            </td>
+                          `;
+                          histTbody.insertBefore(tr, histTbody.firstChild);
+                        }
+                      }
+
+                      applyFiltersAndPaginate({ tableSelector: '#leadsTable', searchInputId: 'leadsSearch', statusInputId: 'leadsStatusFilter', rowsPerPageId: 'leadsRowsPerPage', paginationId: 'leadsPagination', totalId: 'leadsTotal' });
+                      applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' });
+                    } catch (e) { console.error('move to history error', e); }
+                  }
+
                   updateStats();
                   alert('Status disimpan. Jika ada komisi untuk stage ini, akan ditambahkan ke dashboard affiliate.');
                 } else {
@@ -1286,7 +1353,65 @@
                     if (prevStatus === 'LEAD BARU') {
                       row.classList.remove('new-lead-row'); const badge = row.querySelector('.pulse-badge'); if (badge) badge.remove(); updateNewLeadsCount(-1);
                     }
+
+                    // move rejected row into History tab (update if already present)
+                    try {
+                      const leadsTbody = document.querySelector('#leadsTable tbody');
+                      if (row && leadsTbody) row.remove();
+
+                      const histTbody = document.querySelector('#historyTable tbody');
+                      if (histTbody) {
+                        const existing = histTbody.querySelector('tr.history-row[data-id="' + id + '"]');
+                        if (existing) {
+                          try {
+                            const statusCell = existing.querySelector('td:nth-child(6) span'); if (statusCell) statusCell.textContent = 'REJECTED';
+                            const timeCell = existing.querySelector('td:nth-child(7) span'); if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
+                          } catch (err) { console.error('update existing history rejected error', err); }
+                        } else {
+                          const tr = document.createElement('tr');
+                          tr.className = 'table-row history-row';
+                          tr.setAttribute('data-id', id);
+                          tr.innerHTML = `
+                            <td class="p-3"><span class="font-extrabold text-xs text-gray-900">#${id}</span></td>
+                            <td class="p-3">
+                              <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
+                                  <i class="fas fa-user text-emerald-600 text-xs"></i>
+                                </div>
+                                <span class="font-medium text-xs text-gray-900">${j.customer_name || (row.querySelector('td:nth-child(2)')?.textContent.trim() || '-')}</span>
+                              </div>
+                            </td>
+                            <td class="p-3">
+                              <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
+                                  <i class="fas fa-user-tie text-purple-600 text-xs"></i>
+                                </div>
+                                <span class="font-medium text-xs text-gray-900">${j.affiliate_name || (row.querySelector('td:nth-child(3)')?.textContent.trim() || '-')}</span>
+                              </div>
+                            </td>
+                            <td class="p-3"><span class="text-xs text-gray-900">${j.event_name || ('#' + (j.event_id || '')) || (row.querySelector('td:nth-child(4)')?.textContent.trim() || '-')}</span></td>
+                            <td class="p-3"><span class="font-extrabold text-xs text-gray-900">Rp ${(Number(j.total_amount) || 0).toLocaleString('id-ID')}</span></td>
+                            <td class="p-3"><span class="text-xs text-gray-600">REJECTED</span></td>
+                            <td class="p-3"><span class="text-xs text-gray-600">${j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID')}</span></td>
+                            <td class="p-3">
+                              <select class="history-status-select mb-2">
+                                <option value="">-- pilih status --</option>
+                                <option value="LEAD BARU">LEAD BARU</option>
+                                <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
+                                <option value="HOT">HOT</option>
+                                <option value="DP">DP</option>
+                                <option value="LUNAS">LUNAS</option>
+                                <option value="SEDANG BERANGKAT">SEDANG BERANGKAT</option>
+                              </select>
+                              <button class="history-restore-btn btn-primary text-[8px] w-full"><i class="fas fa-undo-alt mr-1"></i> Restore</button>
+                            </td>
+                          `;
+                          histTbody.insertBefore(tr, histTbody.firstChild);
+                        }
+                      }
+                    } catch (e) { console.error('move rejected to history error', e); }
                   }
+
                   updateStats();
                   // show undo option
                   showUndoToast(id, prevStatus);
@@ -1302,6 +1427,13 @@
               const id = match ? match[1] : null;
               const sel = row.querySelector('.history-status-select');
               const newStatus = sel ? sel.value : '';
+              // capture displayed values from the history row as fallbacks (preserve before any DOM removal)
+              const customerNameDisplay = row.querySelector('td:nth-child(2) .font-medium')?.textContent.trim() || row.querySelector('td:nth-child(2)')?.textContent.trim() || '';
+              const affiliateNameDisplay = row.querySelector('td:nth-child(3) .font-medium')?.textContent.trim() || row.querySelector('td:nth-child(3)')?.textContent.trim() || '';
+              const eventDisplay = row.querySelector('td:nth-child(4) .text-xs')?.textContent.trim() || row.querySelector('td:nth-child(4)')?.textContent.trim() || '';
+              const amountDisplay = row.querySelector('td:nth-child(5) .font-extrabold')?.textContent.trim() || row.querySelector('td:nth-child(5)')?.textContent.trim() || '';
+              const commissionDisplay = row.querySelector('td:nth-child(6) .text-xs')?.textContent.trim() || row.querySelector('td:nth-child(6)')?.textContent.trim() || '';
+              const timeDisplay = row.querySelector('td:nth-child(8) span')?.textContent.trim() || row.querySelector('td:nth-child(7) span')?.textContent.trim() || '';
               if (!id || !newStatus) { alert('Pilih status baru terlebih dahulu'); return; }
               if (!confirm('Ubah status lead #' + id + ' menjadi ' + newStatus + ' ?')) return;
               try {
@@ -1310,75 +1442,94 @@
                 });
                 const j = await resp.json();
                 if (j && j.success) {
-                  // remove from history
-                  row.remove();
-                  // try to add a simple row to leads table top
-                  try {
-                    const leadsTbody = document.querySelector('#leadsTable tbody');
-                    if (leadsTbody) {
-                      const tr = document.createElement('tr'); tr.className = 'border-t hover:bg-white/40 transition-all duration-300 border-b border-white/30 bg-white/20 backdrop-blur';
-                      tr.innerHTML = `
-                  <td class="p-3">
-                    <span class="font-extrabold text-xs text-gray-900">#${id}</span>
-                  </td>
-                  <td class="p-3">
-                    <div class="flex items-center gap-2">
-                      <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
-                        <i class="fas fa-user text-emerald-600 text-xs"></i>
+                  // if restoring to SEDANG BERANGKAT or REJECTED, keep/update the row in History — don't move to Leads
+                  if (newStatus === 'SEDANG BERANGKAT' || newStatus === 'REJECTED') {
+                    // update the existing history row's status/time (row still references the history row)
+                    try {
+                      const statusCell = row.querySelector('td:nth-child(6) span');
+                      if (statusCell) statusCell.textContent = newStatus;
+                      const timeCell = row.querySelector('td:nth-child(7) span');
+                      if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
+                      const sel = row.querySelector('.history-status-select'); if (sel) sel.value = newStatus;
+                      applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' });
+                      updateStats();
+                      alert('Status diperbarui (tetap di Riwayat).');
+                    } catch (err) { console.error('update history row error', err); alert('Perubahan berhasil namun pembaruan tampilan gagal'); }
+                  } else {
+                    // remove from history and add to Leads (only for non-HISTORY statuses)
+                    // preserve displayed values for use if server response omits them
+                    const preserved = { customer_name: customerNameDisplay, affiliate_name: affiliateNameDisplay, event_name: eventDisplay, total_amount_text: amountDisplay, commission_text: commissionDisplay, updated_at_text: timeDisplay };
+                    row.remove();
+                    try {
+                      const leadsTbody = document.querySelector('#leadsTable tbody');
+                      if (leadsTbody) {
+                        // avoid inserting duplicate lead row
+                        if (!leadsTbody.querySelector('.action-area[data-id="' + id + '"]')) {
+                          const tr = document.createElement('tr'); tr.className = 'border-t hover:bg-white/40 transition-all duration-300 border-b border-white/30 bg-white/20 backdrop-blur';
+                          tr.innerHTML = `
+                    <td class="p-3">
+                      <span class="font-extrabold text-xs text-gray-900">#${id}</span>
+                    </td>
+                    <td class="p-3">
+                      <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
+                          <i class="fas fa-user text-emerald-600 text-xs"></i>
+                        </div>
+                        <span class="font-medium text-xs text-gray-900">${(j.customer_name || preserved.customer_name || '-')}</span>
                       </div>
-                      <span class="font-medium text-xs text-gray-900">${j.customer_name || '-'}</span>
-                    </div>
-                  </td>
-                  <td class="p-3">
-                    <div class="flex items-center gap-2">
-                      <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
-                        <i class="fas fa-user-tie text-purple-600 text-xs"></i>
+                    </td>
+                    <td class="p-3">
+                      <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
+                          <i class="fas fa-user-tie text-purple-600 text-xs"></i>
+                        </div>
+                        <span class="font-medium text-xs text-gray-900">${(j.affiliate_name || preserved.affiliate_name || '-')}</span>
                       </div>
-                      <span class="font-medium text-xs text-gray-900">${j.affiliate_name || '-'}</span>
-                    </div>
-                  </td>
-                  <td class="p-3">
-                    <span class="text-xs text-gray-900">${j.event_name || ('#' + (j.event_id || ''))}</span>
-                  </td>
-                  <td class="p-3">
-                    <span class="font-extrabold text-xs text-gray-900">Rp ${(Number(j.total_amount) || 0).toLocaleString('id-ID')}</span>
-                  </td>
-                  <td class="p-3">
-                    <span class="text-xs text-gray-400">-</span>
-                  </td>
-                  <td class="p-3">
-                    <select class="lead-status-select" data-id="${id}" data-prev="${newStatus}">
-                      <option value="">-- pilih status --</option>
-                      <option value="LEAD BARU" ${newStatus === 'LEAD BARU' ? 'selected' : ''}>LEAD BARU</option>
-                      <option value="SEDANG DI PROSPEK" ${newStatus === 'SEDANG DI PROSPEK' ? 'selected' : ''}>SEDANG DI PROSPEK</option>
-                      <option value="HOT" ${newStatus === 'HOT' ? 'selected' : ''}>HOT</option>
-                      <option value="DP" ${newStatus === 'DP' ? 'selected' : ''}>DP</option>
-                      <option value="LUNAS" ${newStatus === 'LUNAS' ? 'selected' : ''}>LUNAS</option>
-                      <option value="SEDANG BERANGKAT" ${newStatus === 'SEDANG BERANGKAT' ? 'selected' : ''}>SEDANG BERANGKAT</option>
-                    </select>
-                    <div class="text-[8px] text-gray-500 mt-1">Status DB: ${newStatus}</div>
-                    <div class="mt-2 action-area flex gap-1" data-id="${id}">
-                      <button class="save-btn hidden px-3 py-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg text-[8px] font-extrabold">Simpan</button>
-                      <button class="reject-btn hidden px-3 py-1 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg text-[8px] font-extrabold">Reject</button>
-                    </div>
-                  </td>
-                  <td class="p-3">
-                    <span class="text-xs text-gray-600">${j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID')}</span>
-                  </td>
-                  <td class="p-3">
-                    <button class="reject-row-btn px-3 py-1.5 btn-danger text-[8px]" data-id="${id}">
-                      <i class="fas fa-times mr-1"></i> Reject
-                    </button>
-                  </td>
-                `;
-                      leadsTbody.insertBefore(tr, leadsTbody.firstChild);
-                      updateNewLeadsCount(newStatus === 'LEAD BARU' ? 1 : 0);
-                      applyFiltersAndPaginate({ tableSelector: '#leadsTable', searchInputId: 'leadsSearch', statusInputId: 'leadsStatusFilter', rowsPerPageId: 'leadsRowsPerPage', paginationId: 'leadsPagination', totalId: 'leadsTotal' });
-                    }
-                  } catch (e) { console.error('add restored row error', e); }
-                  updateStats();
-                  applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' });
-                  alert('Status diperbarui dan lead dipindahkan ke tab Leads');
+                    </td>
+                    <td class="p-3">
+                      <span class="text-xs text-gray-900">${(j.event_name || preserved.event_name || ('#' + (j.event_id || '')))}</span>
+                    </td>
+                    <td class="p-3">
+                      <span class="font-extrabold text-xs text-gray-900">${(j.total_amount !== undefined && j.total_amount !== null) ? ('Rp ' + (Number(j.total_amount) || 0).toLocaleString('id-ID')) : (preserved.total_amount_text || 'Rp 0')}</span>
+                    </td>
+                    <td class="p-3">
+                      <span class="text-xs text-gray-400">-</span>
+                    </td>
+                    <td class="p-3">
+                      <select class="lead-status-select" data-id="${id}" data-prev="${newStatus}">
+                        <option value="">-- pilih status --</option>
+                        <option value="LEAD BARU" ${newStatus === 'LEAD BARU' ? 'selected' : ''}>LEAD BARU</option>
+                        <option value="SEDANG DI PROSPEK" ${newStatus === 'SEDANG DI PROSPEK' ? 'selected' : ''}>SEDANG DI PROSPEK</option>
+                        <option value="HOT" ${newStatus === 'HOT' ? 'selected' : ''}>HOT</option>
+                        <option value="DP" ${newStatus === 'DP' ? 'selected' : ''}>DP</option>
+                        <option value="LUNAS" ${newStatus === 'LUNAS' ? 'selected' : ''}>LUNAS</option>
+                        <option value="SEDANG BERANGKAT" ${newStatus === 'SEDANG BERANGKAT' ? 'selected' : ''}>SEDANG BERANGKAT</option>
+                      </select>
+                      <div class="text-[8px] text-gray-500 mt-1">Status DB: ${newStatus}</div>
+                      <div class="mt-2 action-area flex gap-1" data-id="${id}">
+                        <button class="save-btn hidden px-3 py-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg text-[8px] font-extrabold">Simpan</button>
+                        <button class="reject-btn hidden px-3 py-1 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg text-[8px] font-extrabold">Reject</button>
+                      </div>
+                    </td>
+                    <td class="p-3">
+                      <span class="text-xs text-gray-600">${j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID')}</span>
+                    </td>
+                    <td class="p-3">
+                      <button class="reject-row-btn px-3 py-1.5 btn-danger text-[8px]" data-id="${id}">
+                        <i class="fas fa-times mr-1"></i> Reject
+                      </button>
+                    </td>
+                  `;
+                          leadsTbody.insertBefore(tr, leadsTbody.firstChild);
+                        }
+                        updateNewLeadsCount(newStatus === 'LEAD BARU' ? 1 : 0);
+                        applyFiltersAndPaginate({ tableSelector: '#leadsTable', searchInputId: 'leadsSearch', statusInputId: 'leadsStatusFilter', rowsPerPageId: 'leadsRowsPerPage', paginationId: 'leadsPagination', totalId: 'leadsTotal' });
+                      }
+                    } catch (e) { console.error('add restored row error', e); }
+                    updateStats();
+                    applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' });
+                    alert('Status diperbarui dan lead dipindahkan ke tab Leads');
+                  }
                 } else { alert('Gagal memperbarui status'); }
               } catch (err) { console.error(err); alert('Gagal memperbarui status'); }
             }
@@ -1453,7 +1604,73 @@
                 // update UI
                 const select = document.querySelector('.lead-status-select[data-id="' + id + '"]');
                 if (select) { select.value = prev; select.dataset.prev = prev; }
-                const row = select ? select.closest('tr') : document.querySelector('tr .action-area[data-id="' + id + '"]')?.closest('tr');
+
+                // try to update existing leads row, otherwise restore from History into Leads
+                let row = select ? select.closest('tr') : document.querySelector('tr .action-area[data-id="' + id + '"]')?.closest('tr');
+                if (!row) {
+                  // look for history row and move it back to leads (undo after move)
+                  const histRow = document.querySelector('#historyTable tbody tr.history-row[data-id="' + id + '"]');
+                  if (histRow) {
+                    try {
+                      const leadsTbody = document.querySelector('#leadsTable tbody');
+                      const restoredStatus = prev || 'LEAD BARU';
+                      const tr = document.createElement('tr');
+                      tr.className = 'table-row';
+                      tr.innerHTML = `
+                        <td class="p-3">
+                          <span class="font-extrabold text-xs text-gray-900">#${id}</span>
+                          ${restoredStatus === 'LEAD BARU' ? '<span class="ml-2 pulse-badge">NEW</span>' : ''}
+                        </td>
+                        <td class="p-3">
+                          <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
+                              <i class="fas fa-user text-emerald-600 text-xs"></i>
+                            </div>
+                            <span class="font-medium text-xs text-gray-900">${j.customer_name || (histRow.querySelector('td:nth-child(2)')?.textContent.trim() || '-')}</span>
+                          </div>
+                        </td>
+                        <td class="p-3">
+                          <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
+                              <i class="fas fa-user-tie text-purple-600 text-xs"></i>
+                            </div>
+                            <span class="font-medium text-xs text-gray-900">${j.affiliate_name || (histRow.querySelector('td:nth-child(3)')?.textContent.trim() || '-')}</span>
+                          </div>
+                        </td>
+                        <td class="p-3"><span class="text-xs text-gray-900">${j.event_name || ('#' + (j.event_id || '')) || (histRow.querySelector('td:nth-child(4)')?.textContent.trim() || '-')}</span></td>
+                        <td class="p-3"><span class="font-extrabold text-xs text-gray-900">Rp ${(Number(j.total_amount) || 0).toLocaleString('id-ID')}</span></td>
+                        <td class="p-3">
+                          <select class="lead-status-select" data-id="${id}" data-prev="${restoredStatus}">
+                            <option value="">-- pilih status --</option>
+                            <option value="LEAD BARU" ${restoredStatus === 'LEAD BARU' ? 'selected' : ''}>LEAD BARU</option>
+                            <option value="SEDANG DI PROSPEK" ${restoredStatus === 'SEDANG DI PROSPEK' ? 'selected' : ''}>SEDANG DI PROSPEK</option>
+                            <option value="HOT" ${restoredStatus === 'HOT' ? 'selected' : ''}>HOT</option>
+                            <option value="DP" ${restoredStatus === 'DP' ? 'selected' : ''}>DP</option>
+                            <option value="LUNAS" ${restoredStatus === 'LUNAS' ? 'selected' : ''}>LUNAS</option>
+                            <option value="SEDANG BERANGKAT" ${restoredStatus === 'SEDANG BERANGKAT' ? 'selected' : ''}>SEDANG BERANGKAT</option>
+                          </select>
+                          <div class="text-[8px] text-gray-500 mt-1">Status DB: ${restoredStatus}</div>
+                          <div class="mt-2 action-area flex gap-1" data-id="${id}">
+                            <button class="save-btn hidden px-3 py-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg text-[8px] font-extrabold">Simpan</button>
+                            <button class="reject-btn hidden px-3 py-1 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg text-[8px] font-extrabold">Reject</button>
+                          </div>
+                        </td>
+                        <td class="p-3"><span class="text-xs text-gray-600">${j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID')}</span></td>
+                        <td class="p-3">
+                          <button class="reject-row-btn px-3 py-1.5 btn-danger text-[8px]" data-id="${id}">
+                            <i class="fas fa-times mr-1"></i> Reject
+                          </button>
+                        </td>
+                      `;
+                      leadsTbody.insertBefore(tr, leadsTbody.firstChild);
+                      histRow.remove();
+                      applyFiltersAndPaginate({ tableSelector: '#leadsTable', searchInputId: 'leadsSearch', statusInputId: 'leadsStatusFilter', rowsPerPageId: 'leadsRowsPerPage', paginationId: 'leadsPagination', totalId: 'leadsTotal' });
+                      applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' });
+                      row = tr;
+                    } catch (e) { console.error('undo restore from history error', e); }
+                  }
+                }
+
                 if (row) {
                   const statusEl = row.querySelector('.text-gray-500'); if (statusEl) statusEl.textContent = 'Status DB: ' + prev;
                   const timeCell = row.querySelector('td:nth-child(8)'); if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
@@ -1470,6 +1687,7 @@
                     }
                   }
                 }
+
                 updateStats();
                 hideUndoToast(); _lastRejected = null;
                 alert('Perubahan dibatalkan (undo).');
@@ -1512,6 +1730,8 @@
                   const hay = (idCell + ' ' + customer + ' ' + affiliate + ' ' + eventC).toLowerCase();
                   if (hay.indexOf(searchVal) === -1) return false;
                 }
+                // exclude rows that are already moved to History
+                if (['sedang berangkat', 'rejected'].includes(statusText)) return false;
                 if (statusVal) {
                   if (statusText.indexOf(statusVal.toLowerCase()) === -1) return false;
                 }
@@ -1675,56 +1895,72 @@
                 const d = JSON.parse(e.data);
                 // remove from leads table if present
                 const leadsTbody = document.querySelector('#tab-leads table tbody');
+                // capture any displayed lead values from Leads before removing row so we can use as fallback
+                let fallbackCustomer = '-', fallbackAffiliate = '-', fallbackEvent = '-', fallbackAmountText = 'Rp 0';
                 if (leadsTbody) {
                   const row = leadsTbody.querySelector('.action-area[data-id="' + d.id + '"]')?.closest('tr');
-                  if (row) row.remove();
+                  if (row) {
+                    fallbackCustomer = row.querySelector('td:nth-child(2) .font-medium')?.textContent.trim() || row.querySelector('td:nth-child(2)')?.textContent.trim() || '-';
+                    fallbackAffiliate = row.querySelector('td:nth-child(3) .font-medium')?.textContent.trim() || row.querySelector('td:nth-child(3)')?.textContent.trim() || '-';
+                    fallbackEvent = row.querySelector('td:nth-child(4) .text-xs')?.textContent.trim() || row.querySelector('td:nth-child(4)')?.textContent.trim() || '-';
+                    fallbackAmountText = row.querySelector('td:nth-child(5) .font-extrabold')?.textContent.trim() || row.querySelector('td:nth-child(5)')?.textContent.trim() || 'Rp 0';
+                    row.remove();
+                  }
                 }
                 // prepend to history table
                 const histTbody = document.querySelector('#tab-history table tbody');
                 if (histTbody) {
-                  const tr = document.createElement('tr');
-                  tr.className = 'table-row history-row';
-                  tr.setAttribute('data-id', d.id);
-                  tr.innerHTML = `
-                <td class="p-3"><span class="font-extrabold text-xs text-gray-900">#${d.id}</span></td>
-                <td class="p-3">
-                  <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
-                      <i class="fas fa-user text-emerald-600 text-xs"></i>
-                    </div>
-                    <span class="font-medium text-xs text-gray-900">${d.customer_name || '-'}</span>
-                  </div>
-                </td>
-                <td class="p-3">
-                  <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
-                      <i class="fas fa-user-tie text-purple-600 text-xs"></i>
-                    </div>
-                    <span class="font-medium text-xs text-gray-900">${d.affiliate_name || '-'}</span>
-                  </div>
-                </td>
-                <td class="p-3"><span class="text-xs text-gray-900">${d.event_name || '-'}</span></td>
-                <td class="p-3">
-                  <span class="font-extrabold text-xs text-gray-900">Rp ${(Number(d.total_amount) || 0).toLocaleString('id-ID')}</span>
-                </td>
-                <td class="p-3"><span class="text-xs text-gray-600">${d.status || '-'}</span></td>
-                <td class="p-3"><span class="text-xs text-gray-600">${d.updated_at ? new Date(d.updated_at).toLocaleString('id-ID') : new Date().toLocaleString('id-ID')}</span></td>
-                <td class="p-3">
-                  <select class="history-status-select mb-2">
-                    <option value="">-- pilih status --</option>
-                    <option value="LEAD BARU">LEAD BARU</option>
-                    <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
-                    <option value="HOT">HOT</option>
-                    <option value="DP">DP</option>
-                    <option value="LUNAS">LUNAS</option>
-                    <option value="SEDANG BERANGKAT">SEDANG BERANGKAT</option>
-                  </select>
-                  <button class="history-restore-btn btn-primary text-[8px] w-full">
-                    <i class="fas fa-undo-alt mr-1"></i> Restore
-                  </button>
-                </td>
-              `;
-                  histTbody.insertBefore(tr, histTbody.firstChild);
+                  // if an entry for this id already exists in History, update it instead of inserting duplicate
+                  const existing = histTbody.querySelector('tr.history-row[data-id="' + d.id + '"]');
+                  if (existing) {
+                    try {
+                      const cust = existing.querySelector('td:nth-child(2) .font-medium'); if (cust) cust.textContent = d.customer_name || '-';
+                      const aff = existing.querySelector('td:nth-child(3) .font-medium'); if (aff) aff.textContent = d.affiliate_name || '-';
+                      const amt = existing.querySelector('td:nth-child(5) .font-extrabold'); if (amt) amt.textContent = 'Rp ' + ((Number(d.total_amount) || 0).toLocaleString('id-ID'));
+                      const statusCell = existing.querySelector('td:nth-child(6) span'); if (statusCell) statusCell.textContent = d.status || '-';
+                      const timeCell = existing.querySelector('td:nth-child(7) span'); if (timeCell) timeCell.textContent = d.updated_at ? new Date(d.updated_at).toLocaleString('id-ID') : new Date().toLocaleString('id-ID');
+                    } catch (err) { console.error('update existing history row error', err); }
+                  } else {
+                    const tr = document.createElement('tr');
+                    tr.className = 'table-row history-row';
+                    tr.setAttribute('data-id', d.id);
+                    tr.innerHTML = `
+                      <td class="p-3"><span class="font-extrabold text-xs text-gray-900">#${d.id}</span></td>
+                      <td class="p-3">
+                        <div class="flex items-center gap-2">
+                          <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
+                            <i class="fas fa-user text-emerald-600 text-xs"></i>
+                          </div>
+                              <span class="font-medium text-xs text-gray-900">${(d.customer_name || fallbackCustomer || '-')}</span>
+                        </div>
+                      </td>
+                      <td class="p-3">
+                        <div class="flex items-center gap-2">
+                          <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
+                            <i class="fas fa-user-tie text-purple-600 text-xs"></i>
+                          </div>
+                          <span class="font-medium text-xs text-gray-900">${(d.affiliate_name || fallbackAffiliate || '-')}</span>
+                        </div>
+                      </td>
+                      <td class="p-3"><span class="text-xs text-gray-900">${(d.event_name || fallbackEvent || ('#' + (d.event_id || '')))}</span></td>
+                      <td class="p-3"><span class="font-extrabold text-xs text-gray-900">${(d.total_amount !== undefined && d.total_amount !== null) ? ('Rp ' + (Number(d.total_amount) || 0).toLocaleString('id-ID')) : fallbackAmountText}</span></td>
+                      <td class="p-3"><span class="text-xs text-gray-600">${d.status || '-'}</span></td>
+                      <td class="p-3"><span class="text-xs text-gray-600">${d.updated_at ? new Date(d.updated_at).toLocaleString('id-ID') : new Date().toLocaleString('id-ID')}</span></td>
+                      <td class="p-3">
+                        <select class="history-status-select mb-2">
+                          <option value="">-- pilih status --</option>
+                          <option value="LEAD BARU">LEAD BARU</option>
+                          <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
+                          <option value="HOT">HOT</option>
+                          <option value="DP">DP</option>
+                          <option value="LUNAS">LUNAS</option>
+                          <option value="SEDANG BERANGKAT">SEDANG BERANGKAT</option>
+                        </select>
+                        <button class="history-restore-btn btn-primary text-[8px] w-full"><i class="fas fa-undo-alt mr-1"></i> Restore</button>
+                      </td>
+                    `;
+                    histTbody.insertBefore(tr, histTbody.firstChild);
+                  }
                   // refresh history pagination/filters
                   applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' });
                 }
@@ -1734,8 +1970,9 @@
             es.addEventListener('status_update', function (e) {
               try {
                 const d = JSON.parse(e.data);
-                // update status/time cells in leads table if present
                 const leadsTbody = document.querySelector('#tab-leads table tbody');
+
+                // Update status/time cell if the row is present in Leads
                 if (leadsTbody) {
                   const row = leadsTbody.querySelector('.action-area[data-id="' + d.id + '"]')?.closest('tr');
                   if (row) {
@@ -1743,6 +1980,69 @@
                     const timeCell = row.querySelector('td:nth-child(8)'); if (timeCell) timeCell.textContent = d.updated_at ? new Date(d.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
                   }
                 }
+
+                // If backend status became SEDANG BERANGKAT or REJECTED, ensure the row is moved to History
+                if (d.status === 'SEDANG BERANGKAT' || d.status === 'REJECTED') {
+                    try {
+                    // remove from Leads (if present) but capture displayed values first for fallback
+                    let fallbackCustomer2 = '-', fallbackAffiliate2 = '-', fallbackEvent2 = '-', fallbackAmountText2 = 'Rp 0';
+                    if (leadsTbody) {
+                      const existingRow = leadsTbody.querySelector('.action-area[data-id="' + d.id + '"]')?.closest('tr');
+                      if (existingRow) {
+                        fallbackCustomer2 = existingRow.querySelector('td:nth-child(2) .font-medium')?.textContent.trim() || existingRow.querySelector('td:nth-child(2)')?.textContent.trim() || '-';
+                        fallbackAffiliate2 = existingRow.querySelector('td:nth-child(3) .font-medium')?.textContent.trim() || existingRow.querySelector('td:nth-child(3)')?.textContent.trim() || '-';
+                        fallbackEvent2 = existingRow.querySelector('td:nth-child(4) .text-xs')?.textContent.trim() || existingRow.querySelector('td:nth-child(4)')?.textContent.trim() || '-';
+                        fallbackAmountText2 = existingRow.querySelector('td:nth-child(5) .font-extrabold')?.textContent.trim() || existingRow.querySelector('td:nth-child(5)')?.textContent.trim() || 'Rp 0';
+                        existingRow.remove();
+                      }
+                    }
+
+                    const histTbody = document.querySelector('#historyTable tbody');
+                    if (histTbody && !histTbody.querySelector('tr.history-row[data-id="' + d.id + '"]')) {
+                      const tr = document.createElement('tr');
+                      tr.className = 'table-row history-row';
+                      tr.setAttribute('data-id', d.id);
+                      tr.innerHTML = `
+                        <td class="p-3"><span class="font-extrabold text-xs text-gray-900">#${d.id}</span></td>
+                        <td class="p-3">
+                          <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
+                              <i class="fas fa-user text-emerald-600 text-xs"></i>
+                            </div>
+                            <span class="font-medium text-xs text-gray-900">${(d.customer_name || fallbackCustomer2 || '-')}</span>
+                          </div>
+                        </td>
+                        <td class="p-3">
+                          <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
+                              <i class="fas fa-user-tie text-purple-600 text-xs"></i>
+                            </div>
+                            <span class="font-medium text-xs text-gray-900">${(d.affiliate_name || fallbackAffiliate2 || '-')}</span>
+                          </div>
+                        </td>
+                        <td class="p-3"><span class="text-xs text-gray-900">${(d.event_name || fallbackEvent2 || ('#' + (d.event_id || '')))}</span></td>
+                        <td class="p-3"><span class="font-extrabold text-xs text-gray-900">${(d.total_amount !== undefined && d.total_amount !== null) ? ('Rp ' + (Number(d.total_amount) || 0).toLocaleString('id-ID')) : fallbackAmountText2}</span></td>
+                        <td class="p-3"><span class="text-xs text-gray-600">${d.status || ''}</span></td>
+                        <td class="p-3"><span class="text-xs text-gray-600">${d.updated_at ? new Date(d.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID')}</span></td>
+                        <td class="p-3">
+                          <select class="history-status-select mb-2">
+                            <option value="">-- pilih status --</option>
+                            <option value="LEAD BARU">LEAD BARU</option>
+                            <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
+                            <option value="HOT">HOT</option>
+                            <option value="DP">DP</option>
+                            <option value="LUNAS">LUNAS</option>
+                            <option value="SEDANG BERANGKAT">SEDANG BERANGKAT</option>
+                          </select>
+                          <button class="history-restore-btn btn-primary text-[8px] w-full"><i class="fas fa-undo-alt mr-1"></i> Restore</button>
+                        </td>
+                      `;
+                      histTbody.insertBefore(tr, histTbody.firstChild);
+                      applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' });
+                    }
+                  } catch (err) { console.error('status_update move-to-history error', err); }
+                }
+
                 updateStats();
               } catch (err) { console.error('status_update parse error', err); }
             });

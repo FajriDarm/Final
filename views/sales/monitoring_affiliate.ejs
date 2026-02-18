@@ -918,7 +918,7 @@
                             data-name="<%= a.name.toLowerCase() %>" data-email="<%= a.email.toLowerCase() %>"
                             data-total="<%= a.total_transaksi %>" data-completed="<%= a.transaksi_selesai %>"
                             data-sales="<%= salesAmount %>" data-rate="<%= successRate %>"
-                            style="animation-delay: <%= index * 0.05 %>s">
+                            data-delay="<%= index * 0.05 %>">
                             <td class="py-4 px-6">
                               <div class="flex items-center gap-3">
                                 <div
@@ -978,8 +978,7 @@
                                   <%= successRate.toFixed(1) %>%
                                 </span>
                                 <div class="progress-bar">
-                                  <div class="progress-bar-fill <%= progressColor %>"
-                                    style="width: <%= Math.min(successRate, 100) %>%"></div>
+                                  <div class="progress-bar-fill <%= progressColor %>" data-width="<%= Math.min(successRate, 100) %>"></div>
                                 </div>
                               </div>
                             </td>
@@ -1100,6 +1099,20 @@
 
             updateVisibleCount();
           }
+
+          // apply animation-delay values from data-delay attributes (prevents Problems linter errors)
+          document.querySelectorAll('[data-delay]').forEach(el => {
+            const v = el.getAttribute('data-delay');
+            const n = parseFloat(v);
+            if (!isNaN(n)) el.style.animationDelay = n + 's';
+          });
+
+          // apply width values from data-width (avoid inline EJS % in style)
+          document.querySelectorAll('[data-width]').forEach(el => {
+            const v = el.getAttribute('data-width');
+            const n = parseFloat(v);
+            el.style.width = (!isNaN(n) ? (Math.min(n,100) + '%') : '0%');
+          });
 
           function sortTable() {
             const tbody = document.getElementById('affiliatesTableBody');

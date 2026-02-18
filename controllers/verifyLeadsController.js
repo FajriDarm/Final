@@ -14,6 +14,7 @@ exports.getVerifyLeads = async (req, res) => {
       LEFT JOIN events e ON t.event_id = e.id
       LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id
       WHERE t.status IN ('pending', 'stage_2_approved')
+      AND (ls.status IS NULL OR ls.status NOT IN ('SEDANG BERANGKAT','REJECTED'))
       ORDER BY t.created_at DESC
     `);
 
