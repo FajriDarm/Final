@@ -9,8 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "smoke:e2e": "node scripts/test_e2e_flow.js",
     "smoke:history": "node scripts/test_verify_history_flow.js"
-  }
-  ,"keywords": [],
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
