@@ -222,8 +222,10 @@ Perilaku penting saat status berubah:
 - Jika `lead_status` diset `SEDANG BERANGKAT` (oleh Sales atau Finance/Admin), sistem akan:
   - mencoba men-award komisi stage‑3 (idempotent),
   - set komisi stage‑3 menjadi `ready_for_withdraw`,
-  - (opsional) auto-create & mark payout `paid` sesuai konfigurasi, dan
+  - **default:** *tidak melakukan auto‑payout* — pembuatan/penandaan payout sebagai `paid` hanya terjadi jika fitur `AUTO_PAYOUT_ON_STAGE3` diaktifkan (env var). Ini mencegah payout prematur dan memungkinkan Finance melakukan verifikasi manual sebelum pembayaran;
   - memastikan `transactions.payment_status = 'paid'` serta `transactions.status` dapat diupdate ke tanda internal yang cocok (mis. `stage_3_approved`).
+
+  Catatan: untuk mengaktifkan auto-payout tambahkan `AUTO_PAYOUT_ON_STAGE3=true` pada konfigurasi lingkungan.
 - Jika Finance mengubah `payment_status` menjadi `paid`, ini menjadi otoritatif untuk proses payout/reconciliation.
 
 Aturan bisnis (ringkas):

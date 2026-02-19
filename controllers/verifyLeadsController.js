@@ -142,6 +142,11 @@ exports.postUpdateLeadStatus = async (req, res) => {
   try {
     // diagnostic array for any payouts created during this update
     let createdPayouts = [];
+
+    // Feature-flag: control whether system auto-creates & auto-marks payouts when lead -> SEDANG BERANGKAT
+    // Default: false (safe) — enable with AUTO_PAYOUT_ON_STAGE3=true in environment if you explicitly want auto-pay behavior.
+    const autoPayoutEnabled = (process.env.AUTO_PAYOUT_ON_STAGE3 || "false").toString().toLowerCase() === "true";
+
     // ensure table exists (safe to call repeatedly)
     await db.query(`
       CREATE TABLE IF NOT EXISTS lead_statuses (
@@ -215,7 +220,8 @@ exports.postUpdateLeadStatus = async (req, res) => {
     // This will: find stage-3 commissions for this transaction, group by affiliate,
     // create payouts and mark them 'paid', update commissions to 'paid', and
     // set transaction.payment_status = 'paid' so finance dashboard reflects incoming payments.
-    if ((lead_status || "").toString().toUpperCase() === "SEDANG BERANGKAT") {
+    // Auto-create & mark payouts only when the feature-flag is enabled. Otherwise leave commissions `ready_for_withdraw` so Finance processes payouts manually.
+    if (autoPayoutEnabled && (lead_status || "").toString().toUpperCase() === "SEDANG BERANGKAT") {
       try {
         const conn = await db.getConnection();
         try {
@@ -300,6 +306,9 @@ exports.postUpdateLeadStatus = async (req, res) => {
       } catch (e) {
         console.error("Auto payout flow error", e);
       }
+    } else if ((lead_status || "").toString().toUpperCase() === "SEDANG BERANGKAT") {
+      // Feature-flag disabled: do not auto-create payouts. commissions remain `ready_for_withdraw` and Finance will process payouts manually.
+      console.debug('AUTO_PAYOUT_ON_STAGE3 is disabled — skipping auto payout for transaction', id);
     }
 
     // fetch updated row for broadcasting
