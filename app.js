@@ -44,10 +44,63 @@ app.get("/", (req, res) => {
     });
   }
 
-  res.render("LandingPage", {
-    title: "Home",
+  // Render the custom landing page (LPCUST.ejs)
+  res.render("LPCUST", {
+    title: "Home - JamaahCare",
     affiliateRef: ref || null,
     eventSlug: event || null,
+  });
+});
+
+// Public route to render the custom landing page `LPCUST.ejs`
+// Supports the same affiliate/event tracking query params as the main landing page
+app.get("/lp-cust", (req, res) => {
+  const { ref, event } = req.query;
+
+  if (ref) {
+    res.cookie("affiliate_ref", ref, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+  }
+
+  if (event) {
+    res.cookie("event_slug", event, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+  }
+
+  res.render("LPCUST", {
+    title: "Landing (Customer)",
+    affiliateRef: ref || req.cookies?.affiliate_ref || null,
+    eventSlug: event || req.cookies?.event_slug || null,
+  });
+});
+
+// Public route for the original marketing landing page (LandingPage.ejs)
+// Preserves affiliate/event tracking via query params and cookies
+app.get("/landing", (req, res) => {
+  const { ref, event } = req.query;
+
+  if (ref) {
+    res.cookie("affiliate_ref", ref, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+  }
+
+  if (event) {
+    res.cookie("event_slug", event, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+  }
+
+  res.render("LandingPage", {
+    title: "Affillink - Affiliate Marketing Platform",
+    affiliateRef: ref || req.cookies?.affiliate_ref || null,
+    eventSlug: event || req.cookies?.event_slug || null,
   });
 });
 
