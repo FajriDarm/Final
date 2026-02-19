@@ -2,8 +2,513 @@
 <html lang="id">
 
 <head>
-  <!-- Style untuk modal notifikasi -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manajemen Pengguna - Affillink Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 0%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        linear-gradient(145deg, #f0fdf4 0%, #ecfdf5 50%, #e6f7ec 100%);
+    }
+
+    /* Premium Glassmorphism */
+    .glass-premium {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 35px -10px rgba(0, 100, 0, 0.05),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+        0 0 15px rgba(16, 185, 129, 0.05);
+    }
+
+    /* Premium Gradients */
+    .gradient-primary {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
+    }
+
+    .gradient-secondary {
+      background: linear-gradient(165deg, #047857 0%, #059669 50%, #10b981 100%);
+    }
+
+    .gradient-accent {
+      background: linear-gradient(165deg, #065f46 0%, #047857 50%, #059669 100%);
+    }
+
+    /* Role Gradients */
+    .gradient-super-admin {
+      background: linear-gradient(165deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+    }
+
+    .gradient-sales {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    }
+
+    .gradient-finance {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+    }
+
+    .gradient-affiliate {
+      background: linear-gradient(165deg, #ea580c 0%, #f97316 50%, #fb923c 100%);
+    }
+
+    .gradient-user {
+      background: linear-gradient(165deg, #4b5563 0%, #6b7280 50%, #9ca3af 100%);
+    }
+
+    /* Status Gradients */
+    .gradient-active {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+    }
+
+    .gradient-inactive {
+      background: linear-gradient(165deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+    }
+
+    .gradient-pending {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+    }
+
+    .gradient-approved {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+    }
+
+    .gradient-rejected {
+      background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+    }
+
+    /* Card Effects */
+    .card-luxury {
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .card-luxury:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 30px 45px -15px rgba(16, 185, 129, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    }
+
+    /* Badge 3D Effect */
+    .badge-3d {
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .badge-3d:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    /* Pulse Animation */
+    .pulse-premium {
+      animation: pulsePremium 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulsePremium {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.2),
+          0 0 0 0 rgba(16, 185, 129, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 0 0 15px rgba(16, 185, 129, 0),
+          0 0 0 30px rgba(16, 185, 129, 0);
+      }
+    }
+
+    /* Custom Scrollbar */
+    .modern-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-track {
+      background: rgba(16, 185, 129, 0.05);
+      border-radius: 10px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-thumb {
+      background: linear-gradient(145deg, #10b981, #059669);
+      border-radius: 10px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(145deg, #059669, #047857);
+    }
+
+    /* Floating Animation */
+    .float-slow {
+      animation: float 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Shimmer Effect */
+    .shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent);
+      animation: shimmer 5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% {
+        left: 200%;
+      }
+    }
+
+    /* Glow Text */
+    .glow-text {
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.3),
+        0 0 20px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Grid Background */
+    .bg-grid-premium {
+      background-image: linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Neomorphism */
+    .neomorph {
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 20px 20px 40px rgba(16, 185, 129, 0.05),
+        -20px -20px 40px rgba(255, 255, 255, 0.8),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.8),
+        inset -1px -1px 2px rgba(16, 185, 129, 0.05);
+    }
+
+    /* Data Cell */
+    .data-cell-modern {
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    .data-cell-modern::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981, #059669);
+      transition: all 0.4s ease;
+      transform: translateX(-50%);
+    }
+
+    .data-cell-modern:hover::before {
+      width: 100%;
+    }
+
+    /* Animations */
+    .animate-slide-in {
+      animation: slideIn 0.6s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .animate-scale-in {
+      animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+
+    /* Line Clamp */
+    .line-clamp-1 {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Additional Animations */
+    @keyframes bounce-slow {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .animate-bounce-slow {
+      animation: bounce-slow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        filter: blur(60px);
+      }
+
+      50% {
+        opacity: 0.8;
+        filter: blur(70px);
+      }
+    }
+
+    .animate-pulse-glow {
+      animation: pulse-glow 4s ease-in-out infinite;
+    }
+
+    @keyframes rotate-slow {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .animate-rotate-slow {
+      animation: rotate-slow 20s linear infinite;
+    }
+
+    /* Hover Effects */
+    .group\/item:hover {
+      transform: translateX(2px);
+    }
+
+    .hover-lift {
+      transition: transform 0.2s ease;
+    }
+
+    .hover-lift:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Custom Shadows */
+    .shadow-emerald-500\/20 {
+      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.2);
+    }
+
+    .shadow-2xl-emerald {
+      box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.25);
+    }
+
+    /* Gradient Text */
+    .bg-gradient-to-r {
+      background-size: 200% auto;
+      transition: background-position 0.5s;
+    }
+
+    .bg-gradient-to-r:hover {
+      background-position: right center;
+    }
+
+    /* Border Gradient */
+    .border-gradient {
+      border: double 1px transparent;
+      background-image: linear-gradient(white, white),
+        linear-gradient(135deg, #059669, #10b981, #34d399);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+
+    /* Animated Background */
+    .animated-bg {
+      background: linear-gradient(-45deg, #f0fdf4, #dcfce7, #bbf7d0, #a7f3d0);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Glowing Effect */
+    .glow {
+      position: relative;
+    }
+
+    .glow::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #059669, #10b981, #34d399, #059669);
+      border-radius: inherit;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      filter: blur(8px);
+    }
+
+    .glow:hover::after {
+      opacity: 0.6;
+    }
+
+    /* Ultra Modern Glassmorphism */
+    .glass-futuristic {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    }
+
+    /* Gradient Orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+      opacity: 0.4;
+      animation: float-orb 10s ease-in-out infinite;
+    }
+
+    @keyframes float-orb {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      25% {
+        transform: translate(10px, -15px) scale(1.1);
+      }
+
+      50% {
+        transform: translate(-5px, -20px) scale(0.9);
+      }
+
+      75% {
+        transform: translate(-15px, 5px) scale(1.05);
+      }
+    }
+
+    /* Card Futuristic */
+    .card-futuristic {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-futuristic::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.7s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card-futuristic:hover::before {
+      left: 100%;
+    }
+
+    .card-futuristic:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 30px 60px -15px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Modal Styles */
     .modal-notification {
       display: none;
       position: fixed;
@@ -12,48 +517,54 @@
       align-items: center;
       justify-content: center;
       background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
     }
 
     .modal-notification .modal-box {
-      background: #fff;
-      border-radius: 1rem;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       max-width: 400px;
       width: 100%;
       padding: 2rem;
       text-align: center;
-      animation: fadeIn 0.2s ease;
+      animation: fadeIn 0.3s ease;
     }
 
     .modal-notification .notification-icon {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 64px;
-      height: 64px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.15);
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .modal-notification .notification-icon.success {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      background: linear-gradient(165deg, #10b981, #059669);
+      box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
     }
 
     .modal-notification .notification-icon.error {
-      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      background: linear-gradient(165deg, #ef4444, #dc2626);
+      box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4);
     }
 
     .modal-notification .notification-icon.warning {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      background: linear-gradient(165deg, #f59e0b, #d97706);
+      box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.4);
     }
 
     .modal-notification .notification-icon.info {
-      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      background: linear-gradient(165deg, #3b82f6, #1d4ed8);
+      box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
     }
 
     .modal-notification .notification-icon i {
-      font-size: 1.5rem;
+      font-size: 2rem;
       color: white;
     }
 
@@ -84,547 +595,751 @@
         transform: scale(1);
       }
     }
-  </style>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manajemen Pengguna - Affillink Admin</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-
-    .glass-card {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .gradient-primary {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    }
-
-    .gradient-secondary {
-      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-    }
-
-    .gradient-accent {
-      background: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%);
-    }
-
-    .gradient-dark {
-      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
-    }
-
-    .card-hover {
-      transition: all 0.3s ease;
-    }
-
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 25px -5px rgba(5, 150, 105, 0.1), 0 10px 10px -5px rgba(5, 150, 105, 0.04);
-    }
 
     .modal-overlay {
-      backdrop-filter: blur(4px);
-      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.2);
     }
 
-    .pulse-animation {
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
-      }
-
-      70% {
-        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
-      }
-
-      100% {
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-      }
-    }
-
-    .scrollbar-hide::-webkit-scrollbar {
-      display: none;
-    }
-
-    .scrollbar-hide {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    .success-badge {
-      animation: slideIn 0.3s ease-out;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateY(-20px);
-        opacity: 0;
-      }
-
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    .line-clamp-2 {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .user-avatar {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    }
-
-    .status-indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      display: inline-block;
-      margin-right: 6px;
-    }
-
-    .type-radio:checked+label {
+    /* Radio Button Style */
+    .type-radio:checked+label,
+    .type-radio:checked+div {
       border-color: #10b981;
-      background-color: #f0fdf4;
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+      background-color: rgba(16, 185, 129, 0.05);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    /* Glitch Effect */
+    .glitch-text {
+      position: relative;
+      animation: glitch 3s infinite;
+    }
+
+    @keyframes glitch {
+
+      0%,
+      100% {
+        transform: translate(0);
+      }
+
+      33% {
+        transform: translate(-2px, 1px);
+      }
+
+      66% {
+        transform: translate(2px, -1px);
+      }
+    }
+
+    /* Ultra Modern Decorative Orbs */
+    .fixed.inset-0.pointer-events-none.overflow-hidden.z-0 .orb {
+      animation: float-orb 10s ease-in-out infinite;
     }
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-emerald-50 to-green-50 min-h-screen">
+<body class="bg-grid-premium relative overflow-x-hidden">
+  <!-- Ultra Modern Decorative Orbs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="orb w-[500px] h-[500px] bg-emerald-400 top-[-100px] left-[-100px] animate-pulse-glow"></div>
+    <div
+      class="orb w-[600px] h-[600px] bg-green-400 bottom-[-200px] right-[-200px] animate-pulse-glow animation-delay-2000">
+    </div>
+    <div
+      class="orb w-[400px] h-[400px] bg-teal-400 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-glow animation-delay-4000">
+    </div>
+
+    <!-- Animated Grid Lines -->
+    <svg class="absolute top-0 left-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#10b981" stroke-width="0.5" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+
+    <!-- Floating Particles -->
+    <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-30"></div>
+    <div
+      class="absolute top-3/4 right-1/3 w-3 h-3 bg-green-400 rounded-full animate-ping opacity-30 animation-delay-2000">
+    </div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-1.5 h-1.5 bg-teal-400 rounded-full animate-ping opacity-30 animation-delay-4000">
+    </div>
+  </div>
+
+  <!-- Navbar -->
   <%- include('../navbar/navbar.ejs', { name: 'Admin' }) %>
+
+    <!-- Sidebar -->
     <%- include('../sidebar/admin.ejs') %>
 
-      <main class="ml-64 pt-16 min-h-screen pb-8">
+      <!-- Main Content -->
+      <main class="ml-64 pt-16 min-h-screen relative z-10 pb-8">
         <div class="p-6">
-          <!-- Header Halaman -->
-          <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
-            <div class="mb-4 md:mb-0">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-users text-white text-xl"></i>
+          <!-- Premium Page Header - Sesuai dengan gambar dashboard -->
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
+            <div class="mb-4 lg:mb-0">
+              <div class="flex items-center gap-4">
+                <div class="relative">
+                  <div
+                    class="w-16 h-16 gradient-primary rounded-xl flex items-center justify-center shadow-2xl float-slow">
+                    <i class="fas fa-users text-white text-2xl"></i>
+                  </div>
+                  <div
+                    class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <span class="w-2 h-2 bg-green-500 rounded-full pulse-premium"></span>
+                  </div>
                 </div>
                 <div>
-                  <h1 class="text-3xl font-bold text-gray-900">Manajemen Pengguna</h1>
-                  <p class="text-gray-600 mt-1">Kelola semua pengguna sistem Affillink</p>
+                  <div class="flex items-center gap-2 mb-1">
+                    <h1
+                      class="text-3xl font-extrabold bg-gradient-to-r from-emerald-900 via-green-800 to-emerald-900 bg-clip-text text-transparent">
+                      Manajemen Pengguna
+                    </h1>
+                    <span
+                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                      SUPER ADMIN
+                    </span>
+                  </div>
+                  <p class="text-sm text-emerald-700 font-medium">Kelola semua pengguna sistem Affillink</p>
                 </div>
               </div>
             </div>
-            <div class="flex items-center gap-4">
-              <div class="hidden md:block px-4 py-2 bg-white rounded-lg shadow-sm border border-green-100">
-                <div class="flex items-center gap-2">
-                  <i class="fas fa-calendar-alt text-green-600"></i>
-                  <span class="text-sm font-medium text-gray-700">
-                    <%= new Date().toLocaleDateString('id-ID', { weekday: 'long' , year: 'numeric' , month: 'long' ,
-                      day: 'numeric' }) %>
-                  </span>
+
+            <!-- Premium Date & Live Status - Sesuai dengan gambar dashboard -->
+            <div class="flex items-center gap-3">
+              <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
+                <div class="w-8 h-8 gradient-secondary rounded-lg flex items-center justify-center shadow-lg">
+                  <i class="fas fa-calendar-alt text-white text-sm"></i>
+                </div>
+                <div>
+                  <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                    <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
+                  </p>
                 </div>
               </div>
-              <div class="px-4 py-2 gradient-primary rounded-lg shadow-lg text-white pulse-animation">
-                <div class="flex items-center gap-2">
-                  <i class="fas fa-bell pulse-animation"></i>
-                  <span class="text-sm font-medium">Update Real-time</span>
+
+              <div class="gradient-primary rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-xl relative shimmer">
+                <div class="relative">
+                  <i class="fas fa-bell text-white text-sm"></i>
+                  <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></span>
+                  <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
+                </div>
+                <div>
+                  <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                  <p class="text-xs font-bold text-white">Updates Real-time</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Kartu Statistik -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Total Pengguna</p>
-                  <p class="text-3xl font-bold text-gray-900 mb-2" id="totalUsers">-</p>
-                </div>
-                <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-users text-white text-2xl"></i>
-                </div>
+          <!-- Premium Stats Cards - Ultra Modern (sama seperti dashboard) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-7 animate-scale-in">
+            <!-- Total Pengguna -->
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <!-- Decorative Elements -->
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-400/20 to-green-400/20 rounded-full -mr-10 -mt-10 animate-rotate-slow">
               </div>
-              <div class="mt-4 pt-4 border-t border-green-50">
-                <div class="flex items-center gap-2 text-sm">
-                  <span class="text-green-600 font-medium flex items-center">
-                    <i class="fas fa-chart-line mr-1"></i>
-                    <span id="monthGrowth">+15%</span>
-                  </span>
-                  <span class="text-gray-500">dari bulan lalu</span>
+              <div
+                class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-teal-400/20 to-emerald-400/20 rounded-full -ml-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Total Pengguna</p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900" id="totalUsers">-</p>
+                      <span class="text-xs font-bold text-emerald-600">users</span>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 mt-2">
+                      <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
+                        <i class="fas fa-arrow-up text-[8px] text-green-600"></i>
+                        <span class="text-[8px] font-extrabold text-green-700">+12.5%</span>
+                      </div>
+                      <span class="text-[7px] text-gray-500">vs bulan lalu</span>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                    <i class="fas fa-users text-white text-xl"></i>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-emerald-100/50">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                      <div class="relative">
+                        <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                          <i class="fas fa-user text-emerald-600 text-[10px]"></i>
+                        </div>
+                        <span
+                          class="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full border border-white"></span>
+                      </div>
+                      <div>
+                        <span class="text-[8px] font-medium text-gray-500">Online Sekarang</span>
+                        <p class="text-xs font-extrabold text-emerald-700" id="onlineUsers">12</p>
+                      </div>
+                    </div>
+
+                    <div class="flex -space-x-2">
+                      <div
+                        class="w-6 h-6 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full border-2 border-white flex items-center justify-center text-white text-[8px] font-bold">
+                        AD</div>
+                      <div
+                        class="w-6 h-6 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full border-2 border-white flex items-center justify-center text-white text-[8px] font-bold">
+                        SA</div>
+                      <div
+                        class="w-6 h-6 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full border-2 border-white flex items-center justify-center text-white text-[8px] font-bold">
+                        +8</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Pengguna Aktif</p>
-                  <p class="text-3xl font-bold text-green-600 mb-2" id="activeUsers">-</p>
-                </div>
-                <div class="w-14 h-14 gradient-secondary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-user-check text-white text-2xl"></i>
-                </div>
+            <!-- Pengguna Aktif -->
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-emerald-400/20 to-green-400/20 rounded-full -ml-10 -mt-10 animate-rotate-slow">
               </div>
-              <div class="mt-4 pt-4 border-t border-green-50">
-                <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-600">Online sekarang</span>
-                  <span class="font-medium text-green-700" id="onlineUsers">12</span>
+              <div
+                class="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tr from-teal-400/20 to-emerald-400/20 rounded-full -mr-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Pengguna Aktif</p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900" id="activeUsers">-</p>
+                      <span class="text-xs font-bold text-emerald-600">active</span>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 mt-2">
+                      <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
+                        <i class="fas fa-check-circle text-[8px] text-green-600"></i>
+                        <span class="text-[8px] font-extrabold text-green-700">85% aktif</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500">
+                    <i class="fas fa-user-check text-white text-xl"></i>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-emerald-100/50">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                      <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                        <i class="fas fa-chart-line text-emerald-600 text-[10px]"></i>
+                      </div>
+                      <div>
+                        <span class="text-[8px] font-medium text-gray-500">Retensi</span>
+                        <p class="text-xs font-extrabold text-emerald-700">92%</p>
+                      </div>
+                    </div>
+
+                    <div class="w-12 h-12">
+                      <svg viewBox="0 0 36 36" class="w-12 h-12">
+                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none" stroke="#e2e8f0" stroke-width="3" stroke-dasharray="85, 100" />
+                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="85, 100" />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Affiliates</p>
-                  <p class="text-3xl font-bold text-blue-600 mb-2" id="affiliateUsers">-</p>
-                </div>
-                <div
-                  class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-user-tie text-white text-2xl"></i>
-                </div>
+            <!-- Affiliates -->
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-400/20 to-amber-400/20 rounded-full -mr-10 -mt-10 animate-rotate-slow">
               </div>
-              <div class="mt-4 pt-4 border-t border-green-50">
-                <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-600">Affiliates aktif</span>
-                  <span class="font-medium text-blue-700" id="activeAffiliates">-</span>
+              <div
+                class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-yellow-400/20 to-amber-400/20 rounded-full -ml-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Affiliates</p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900" id="affiliateUsers">-</p>
+                      <span class="text-xs font-bold text-emerald-600">affiliates</span>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 mt-2">
+                      <div class="px-2 py-1 bg-orange-100 rounded-lg flex items-center gap-1">
+                        <i class="fas fa-trophy text-[8px] text-orange-600"></i>
+                        <span class="text-[8px] font-extrabold text-orange-700" id="activeAffiliates">- aktif</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+                    <i class="fas fa-user-tie text-white text-xl"></i>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-emerald-100/50">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                      <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                        <i class="fas fa-clock text-amber-500 text-[10px]"></i>
+                      </div>
+                      <div>
+                        <span class="text-[8px] font-medium text-gray-500">Tertunda</span>
+                        <p class="text-xs font-extrabold text-amber-600" id="pendingAffiliates">-</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-1">
+                      <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span class="text-[7px] font-bold text-emerald-700">Live Now</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Affiliates Tertunda</p>
-                  <p class="text-3xl font-bold text-amber-600 mb-2" id="pendingAffiliates">-</p>
-                </div>
-                <div
-                  class="w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-clock text-white text-2xl"></i>
-                </div>
+            <!-- Affiliates Tertunda -->
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-amber-400/20 to-yellow-400/20 rounded-full -ml-10 -mt-10 animate-rotate-slow">
               </div>
-              <div class="mt-4 pt-4 border-t border-green-50">
-                <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-600">Butuh persetujuan</span>
-                  <span class="font-medium text-amber-700" id="pendingCount">-</span>
+              <div
+                class="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tr from-yellow-400/20 to-amber-400/20 rounded-full -mr-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Affiliates Tertunda</p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900" id="pendingCount">-</p>
+                      <span class="text-xs font-bold text-emerald-600">pending</span>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 mt-2">
+                      <div class="px-2 py-1 bg-amber-100 rounded-lg flex items-center gap-1">
+                        <i class="fas fa-clock text-[8px] text-amber-600"></i>
+                        <span class="text-[8px] font-extrabold text-amber-700">Butuh persetujuan</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:-rotate-6 transition-all duration-500">
+                    <i class="fas fa-clock text-white text-xl"></i>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-emerald-100/50">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                      <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                        <i class="fas fa-calendar-alt text-emerald-600 text-[10px]"></i>
+                      </div>
+                      <div>
+                        <span class="text-[8px] font-medium text-gray-500">Hari ini</span>
+                        <p class="text-xs font-extrabold text-emerald-700" id="pendingToday">3 baru</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-1">
+                      <i class="fas fa-trend-up text-emerald-600 text-xs"></i>
+                      <span class="text-[7px] font-bold text-emerald-700">+23%</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Pencarian dan Filter -->
-          <div class="glass-card rounded-2xl p-6 border border-green-100 mb-8">
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <div class="flex-1">
-                <div class="relative">
-                  <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                  <input type="text" id="searchInput" placeholder="Cari pengguna berdasarkan nama, email..."
-                    class="w-full pl-12 pr-4 py-3 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm transition-all">
+          <!-- Pencarian dan Filter Premium - Ultra Modern -->
+          <div class="glass-futuristic rounded-2xl p-5 border border-white/50 mb-7 relative overflow-hidden group">
+            <!-- Decorative Elements -->
+            <div
+              class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-200/20 to-green-300/20 rounded-full blur-3xl -mr-20 -mt-20">
+            </div>
+            <div
+              class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-teal-200/20 to-emerald-200/20 rounded-full blur-3xl -ml-20 -mb-20">
+            </div>
+
+            <div class="relative z-10">
+              <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div class="flex-1">
+                  <div class="relative">
+                    <i
+                      class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="Cari pengguna berdasarkan nama, email..."
+                      class="w-full pl-10 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 placeholder-gray-400 text-sm font-medium">
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                  <div class="relative">
+                    <i
+                      class="fas fa-user-tag absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400 z-10 text-sm"></i>
+                    <select id="roleFilter"
+                      class="pl-10 pr-8 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium appearance-none min-w-[160px]">
+                      <option value="">Semua Peran</option>
+                      <option value="super_admin">Super Admin</option>
+                      <option value="sales">Sales</option>
+                      <option value="finance">Finance</option>
+                      <option value="affiliate">Affiliate</option>
+                      <option value="user">Pengguna</option>
+                    </select>
+                    <i
+                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                  </div>
+
+                  <div class="relative">
+                    <i
+                      class="fas fa-filter absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400 z-10 text-sm"></i>
+                    <select id="statusFilter"
+                      class="pl-10 pr-8 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium appearance-none min-w-[150px]">
+                      <option value="">Semua Status</option>
+                      <option value="active">Aktif</option>
+                      <option value="inactive">Tidak Aktif</option>
+                    </select>
+                    <i
+                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                  </div>
+
+                  <button onclick="clearFilters()"
+                    class="px-4 py-3 bg-white/60 backdrop-blur border border-white/50 text-emerald-700 hover:bg-white/80 rounded-xl transition-all duration-300 flex items-center gap-2 text-sm font-bold group">
+                    <i class="fas fa-redo group-hover:rotate-180 transition-transform duration-500 text-xs"></i>
+                    <span>Hapus</span>
+                  </button>
                 </div>
               </div>
 
-              <div class="flex flex-wrap gap-4">
-                <div class="relative">
-                  <i class="fas fa-user-tag absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                  <select id="roleFilter"
-                    class="pl-12 pr-4 py-3 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm appearance-none min-w-[180px]">
-                    <option value="">Semua Peran</option>
-                    <option value="super_admin">Super Admin</option>
-                    <option value="sales">Sales</option>
-                    <option value="finance">Finance</option>
-                    <option value="affiliate">Affiliate</option>
-                    <option value="user">Pengguna</option>
-                  </select>
-                </div>
-
-                <div class="relative">
-                  <i class="fas fa-filter absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                  <select id="statusFilter"
-                    class="pl-12 pr-4 py-3 border border-green-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white shadow-sm appearance-none min-w-[180px]">
-                    <option value="">Semua Status</option>
-                    <option value="active">Aktif</option>
-                    <option value="inactive">Tidak Aktif</option>
-                  </select>
-                </div>
-
-                <button onclick="clearFilters()"
-                  class="px-4 py-3 border border-green-200 text-green-700 hover:bg-green-50 rounded-xl transition-colors flex items-center gap-2">
-                  <i class="fas fa-redo"></i>
-                  <span class="font-medium">Hapus Filter</span>
-                </button>
+              <!-- Active Filters Badge (Premium) -->
+              <div class="mt-3 flex items-center gap-2 text-[8px]">
+                <!-- Filter Aktif dihapus sesuai permintaan -->
               </div>
             </div>
           </div>
 
-          <!-- Grid Pengguna -->
-          <div id="usersContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <div class="col-span-full text-center py-12 text-gray-400">
+          <!-- Grid Pengguna Premium - Ultra Modern -->
+          <div id="usersContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <!-- Loading State -->
+            <div class="col-span-full text-center py-12">
               <div class="flex flex-col items-center">
-                <div
-                  class="w-16 h-16 gradient-primary rounded-full flex items-center justify-center mb-4 animate-pulse">
-                  <i class="fas fa-spinner fa-spin text-2xl text-white"></i>
+                <div class="relative">
+                  <div
+                    class="w-20 h-20 gradient-primary rounded-full flex items-center justify-center mb-4 shadow-xl float-slow">
+                    <i class="fas fa-spinner fa-spin text-2xl text-white"></i>
+                  </div>
+                  <div
+                    class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <span class="w-2 h-2 bg-green-500 rounded-full pulse-premium"></span>
+                  </div>
                 </div>
-                <p class="text-lg font-medium">Memuat pengguna...</p>
+                <p class="text-base font-extrabold text-gray-900 mb-1">Memuat Pengguna</p>
+                <p class="text-xs text-emerald-700 font-medium">Mohon tunggu sebentar...</p>
               </div>
+            </div>
+          </div>
+
+          <!-- Pagination Premium (Jika diperlukan) -->
+          <div class="mt-8 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span
+                class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                Menampilkan <span id="startEntry">1</span> - <span id="endEntry">12</span> dari <span
+                  id="totalEntries">0</span> pengguna
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all disabled:opacity-50"
+                disabled>
+                <i class="fas fa-chevron-left text-xs"></i>
+              </button>
+              <button
+                class="w-8 h-8 rounded-lg gradient-primary text-white flex items-center justify-center text-xs font-bold shadow-lg">1</button>
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">2</button>
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">3</button>
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all">
+                <i class="fas fa-chevron-right text-xs"></i>
+              </button>
             </div>
           </div>
         </div>
       </main>
 
-      <!-- Modal Lihat Pengguna -->
+      <!-- Modal Lihat Pengguna Premium - Ultra Modern -->
       <div id="viewModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div
+          class="bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col border border-white/50">
           <!-- Header Modal -->
-          <div class="gradient-primary px-6 py-4 flex items-center justify-between">
+          <div class="gradient-primary px-5 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                <i class="fas fa-user text-white"></i>
+              <div
+                class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
+                <i class="fas fa-user text-white text-sm"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-white">Detail Pengguna</h3>
-                <p class="text-green-100 text-sm mt-1">Informasi lengkap pengguna</p>
+                <h3 class="text-base font-extrabold text-white">Detail Pengguna</h3>
+                <p class="text-emerald-100 text-xs mt-0.5">Informasi lengkap pengguna</p>
               </div>
             </div>
             <button onclick="closeViewModal()"
-              class="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-colors">
-              <i class="fas fa-times text-white"></i>
+              class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-all duration-300 border border-white/30">
+              <i class="fas fa-times text-white text-sm"></i>
             </button>
           </div>
 
           <!-- Body Modal -->
-          <div class="p-6 overflow-y-auto flex-1 scrollbar-hide">
+          <div class="p-5 overflow-y-auto flex-1 modern-scrollbar">
             <!-- Header Info Pengguna -->
-            <div class="flex flex-col items-center text-center mb-6">
+            <div class="flex flex-col items-center text-center mb-5">
               <div id="viewUserAvatar"
-                class="w-24 h-24 user-avatar rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4 shadow-lg">
-                <!-- Avatar akan diisi secara dinamis -->
+                class="w-20 h-20 gradient-primary rounded-full flex items-center justify-center text-white text-2xl font-bold mb-3 shadow-xl border-3 border-white/50">
               </div>
-              <h2 id="viewUserName" class="text-2xl font-bold text-gray-900 mb-1"></h2>
-              <p id="viewUserEmail" class="text-gray-600 mb-3"></p>
-              <p class="text-sm text-gray-500">ID Pengguna: <span id="viewUserID" class="font-medium">-</span></p>
+              <h2 id="viewUserName" class="text-xl font-extrabold text-gray-900 mb-1"></h2>
+              <p id="viewUserEmail" class="text-sm text-emerald-700 font-medium mb-2"></p>
+              <p class="text-xs text-gray-500 bg-white/60 px-4 py-1.5 rounded-xl border border-white/60">ID: <span
+                  id="viewUserID" class="font-extrabold text-emerald-700">-</span></p>
             </div>
 
             <!-- Detail Pengguna -->
-            <div class="space-y-4 bg-gray-50 rounded-xl p-5">
+            <div class="space-y-3 bg-white/60 backdrop-blur rounded-xl p-4 border border-white/60">
               <!-- Peran -->
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                    <i class="fas fa-user-tag text-green-600"></i>
+                  <div
+                    class="w-9 h-9 bg-white rounded-lg flex items-center justify-center shadow-sm border border-white/60">
+                    <i class="fas fa-user-tag text-emerald-600 text-sm"></i>
                   </div>
                   <div>
-                    <p class="text-sm text-gray-500">Peran</p>
-                    <p id="viewUserRole" class="font-semibold text-gray-900"></p>
+                    <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Peran</p>
+                    <p id="viewUserRole" class="text-sm font-extrabold text-gray-900"></p>
                   </div>
                 </div>
-                <span id="viewRoleBadge" class="px-3 py-1.5 rounded-full text-xs font-semibold"></span>
+                <span id="viewRoleBadge" class="px-3 py-1.5 rounded-lg text-[10px] font-extrabold"></span>
               </div>
 
               <!-- Status -->
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                    <i class="fas fa-toggle-on text-green-600"></i>
+                  <div
+                    class="w-9 h-9 bg-white rounded-lg flex items-center justify-center shadow-sm border border-white/60">
+                    <i class="fas fa-toggle-on text-emerald-600 text-sm"></i>
                   </div>
                   <div>
-                    <p class="text-sm text-gray-500">Status Akun</p>
-                    <p id="viewUserStatus" class="font-semibold text-gray-900"></p>
+                    <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Status Akun</p>
+                    <p id="viewUserStatus" class="text-sm font-extrabold text-gray-900"></p>
                   </div>
                 </div>
                 <span id="viewStatusBadge"
-                  class="px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-2">
-                  <!-- Konten badge akan diisi secara dinamis -->
-                </span>
+                  class="px-3 py-1.5 rounded-lg text-[10px] font-extrabold flex items-center gap-1"></span>
               </div>
 
               <!-- Status Affiliate -->
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                    <i class="fas fa-user-tie text-green-600"></i>
+                  <div
+                    class="w-9 h-9 bg-white rounded-lg flex items-center justify-center shadow-sm border border-white/60">
+                    <i class="fas fa-user-tie text-emerald-600 text-sm"></i>
                   </div>
                   <div>
-                    <p class="text-sm text-gray-500">Status Affiliate</p>
-                    <p id="viewAffiliateStatus" class="font-semibold text-gray-900"></p>
+                    <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Status Affiliate</p>
+                    <p id="viewAffiliateStatus" class="text-sm font-extrabold text-gray-900"></p>
                   </div>
                 </div>
                 <span id="viewAffiliateBadge"
-                  class="px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-2">
-                  <!-- Konten badge akan diisi secara dinamis -->
-                </span>
+                  class="px-3 py-1.5 rounded-lg text-[10px] font-extrabold flex items-center gap-1"></span>
               </div>
 
               <!-- Tanggal Bergabung -->
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                    <i class="fas fa-calendar-plus text-green-600"></i>
+                  <div
+                    class="w-9 h-9 bg-white rounded-lg flex items-center justify-center shadow-sm border border-white/60">
+                    <i class="fas fa-calendar-plus text-emerald-600 text-sm"></i>
                   </div>
                   <div>
-                    <p class="text-sm text-gray-500">Tanggal Bergabung</p>
-                    <p id="viewJoinDate" class="font-semibold text-gray-900"></p>
+                    <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Bergabung</p>
+                    <p id="viewJoinDate" class="text-sm font-extrabold text-gray-900"></p>
                   </div>
-                </div>
-                <i class="fas fa-history text-gray-400"></i>
-              </div>
-
-              <!-- Login Terakhir -->
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                    <i class="fas fa-sign-in-alt text-green-600"></i>
-                  </div>
-                  <div>
-                    <p class="text-sm text-gray-500">Login Terakhir</p>
-                    <p id="viewLastLogin" class="font-semibold text-gray-900">-</p>
-                  </div>
-                </div>
-                <i class="fas fa-clock text-gray-400"></i>
-              </div>
-            </div>
-
-            <!-- Informasi Tambahan -->
-            <div class="mt-6 pt-6 border-t border-gray-200">
-              <h4 class="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
-                <i class="fas fa-info-circle text-green-600"></i>
-                Informasi Tambahan
-              </h4>
-              <div class="grid grid-cols-2 gap-4">
-                <div class="bg-green-50 rounded-lg p-4 text-center">
-                  <p class="text-2xl font-bold text-green-700" id="viewTotalReferrals">0</p>
-                  <p class="text-sm text-green-600 mt-1">Referral</p>
-                </div>
-                <div class="bg-blue-50 rounded-lg p-4 text-center">
-                  <p class="text-2xl font-bold text-blue-700" id="viewTotalCommissions">0</p>
-                  <p class="text-sm text-blue-600 mt-1">Komisi</p>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Footer Modal -->
-          <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 flex gap-4">
+          <div class="border-t border-white/30 px-5 py-3 bg-white/40 backdrop-blur flex gap-3">
             <button onclick="closeViewModal()"
-              class="flex-1 bg-gray-200 text-gray-700 py-3.5 rounded-xl hover:bg-gray-300 transition-all font-semibold flex items-center justify-center gap-2">
-              <i class="fas fa-times"></i>
+              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-sm font-extrabold flex items-center justify-center gap-2 border border-white/60">
+              <i class="fas fa-times text-xs"></i>
               Tutup
             </button>
             <button onclick="editFromView()" id="editFromViewBtn"
-              class="flex-1 gradient-primary text-white py-3.5 rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg flex items-center justify-center gap-2">
-              <i class="fas fa-edit"></i>
-              Edit Pengguna
+              class="flex-1 gradient-primary text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-sm font-extrabold shadow-lg flex items-center justify-center gap-2">
+              <i class="fas fa-edit text-xs"></i>
+              Edit
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Modal Edit Pengguna -->
+      <!-- Modal Edit Pengguna Premium - Ultra Modern -->
       <div id="editModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div
+          class="bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col border border-white/50">
           <!-- Header Modal -->
-          <div class="gradient-primary px-6 py-4 flex items-center justify-between">
+          <div class="gradient-secondary px-5 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                <i class="fas fa-user-edit text-white"></i>
+              <div
+                class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
+                <i class="fas fa-user-edit text-white text-sm"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-white">Edit Pengguna</h3>
-                <p class="text-green-100 text-sm mt-1">Perbarui informasi pengguna</p>
+                <h3 class="text-base font-extrabold text-white">Edit Pengguna</h3>
+                <p class="text-emerald-100 text-xs mt-0.5">Perbarui informasi pengguna</p>
               </div>
             </div>
             <button onclick="closeEditModal()"
-              class="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-colors">
-              <i class="fas fa-times text-white"></i>
+              class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-all duration-300 border border-white/30">
+              <i class="fas fa-times text-white text-sm"></i>
             </button>
           </div>
 
           <!-- Body Modal -->
-          <div class="p-6 overflow-y-auto flex-1 scrollbar-hide">
-            <form id="editForm" class="space-y-6">
+          <div class="p-5 overflow-y-auto flex-1 modern-scrollbar">
+            <form id="editForm" class="space-y-4">
               <input type="hidden" id="editUserId">
 
               <!-- Info Pengguna -->
-              <div class="flex flex-col items-center text-center mb-6">
+              <div class="flex flex-col items-center text-center mb-4">
                 <div id="editUserAvatar"
-                  class="w-20 h-20 user-avatar rounded-full flex items-center justify-center text-white text-2xl font-bold mb-4">
-                  <!-- Avatar akan diisi secara dinamis -->
+                  class="w-16 h-16 gradient-primary rounded-full flex items-center justify-center text-white text-xl font-bold mb-3 shadow-xl border-3 border-white/50">
                 </div>
-                <p class="text-sm text-gray-500">ID Pengguna: <span id="editUserID" class="font-medium">-</span></p>
+                <p class="text-xs text-gray-500 bg-white/60 px-4 py-1.5 rounded-xl border border-white/60">ID: <span
+                    id="editUserID" class="font-extrabold text-emerald-700">-</span></p>
               </div>
 
               <!-- Field Form -->
               <div class="space-y-4">
                 <!-- Nama -->
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    <i class="fas fa-user mr-2 text-green-600"></i>
+                  <label class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
+                    <i class="fas fa-user text-emerald-600 text-xs"></i>
                     Nama
                   </label>
                   <input type="text" id="editName" required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white">
+                    class="w-full px-4 py-2.5 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium">
                 </div>
 
                 <!-- Email -->
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    <i class="fas fa-envelope mr-2 text-green-600"></i>
+                  <label class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
+                    <i class="fas fa-envelope text-emerald-600 text-xs"></i>
                     Email
                   </label>
                   <input type="email" id="editEmail" required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white">
+                    class="w-full px-4 py-2.5 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium">
                 </div>
 
                 <!-- Peran -->
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    <i class="fas fa-user-tag mr-2 text-green-600"></i>
+                  <label class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
+                    <i class="fas fa-user-tag text-emerald-600 text-xs"></i>
                     Peran
                   </label>
-                  <select id="editRole"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white">
-                    <option value="user">Pengguna</option>
-                    <option value="super_admin">Super Admin</option>
-                    <option value="sales">Sales</option>
-                    <option value="finance">Finance</option>
-                    <option value="affiliate">Affiliate</option>
-                  </select>
+                  <div class="relative">
+                    <select id="editRole"
+                      class="w-full px-4 py-2.5 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium appearance-none">
+                      <option value="user">Pengguna</option>
+                      <option value="super_admin">Super Admin</option>
+                      <option value="sales">Sales</option>
+                      <option value="finance">Finance</option>
+                      <option value="affiliate">Affiliate</option>
+                    </select>
+                    <i
+                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                  </div>
                 </div>
 
                 <!-- Status -->
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    <i class="fas fa-toggle-on mr-2 text-green-600"></i>
+                  <label class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
+                    <i class="fas fa-toggle-on text-emerald-600 text-xs"></i>
                     Status
                   </label>
-                  <div class="grid grid-cols-2 gap-4">
-                    <label class="cursor-pointer">
+                  <div class="grid grid-cols-2 gap-3">
+                    <label class="cursor-pointer type-radio">
                       <input type="radio" name="editStatus" value="active" class="peer sr-only">
                       <div
-                        class="p-4 border-2 border-gray-200 rounded-xl hover:border-green-300 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all text-center">
-                        <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-                          <i class="fas fa-check-circle text-green-600"></i>
+                        class="p-3 border-2 border-white/50 rounded-xl hover:border-emerald-300 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/50 transition-all duration-300 text-center bg-white/40 backdrop-blur">
+                        <div class="w-7 h-7 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-1.5">
+                          <i class="fas fa-check-circle text-emerald-600 text-xs"></i>
                         </div>
-                        <p class="font-medium text-gray-900">Aktif</p>
+                        <p class="text-xs font-extrabold text-gray-900">Aktif</p>
                       </div>
                     </label>
-                    <label class="cursor-pointer">
+                    <label class="cursor-pointer type-radio">
                       <input type="radio" name="editStatus" value="inactive" class="peer sr-only">
                       <div
-                        class="p-4 border-2 border-gray-200 rounded-xl hover:border-red-300 peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-center">
-                        <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-                          <i class="fas fa-times-circle text-red-600"></i>
+                        class="p-3 border-2 border-white/50 rounded-xl hover:border-red-300 peer-checked:border-red-500 peer-checked:bg-red-50/50 transition-all duration-300 text-center bg-white/40 backdrop-blur">
+                        <div class="w-7 h-7 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-1.5">
+                          <i class="fas fa-times-circle text-red-600 text-xs"></i>
                         </div>
-                        <p class="font-medium text-gray-900">Tidak Aktif</p>
+                        <p class="text-xs font-extrabold text-gray-900">Tidak Aktif</p>
                       </div>
                     </label>
                   </div>
@@ -632,94 +1347,98 @@
 
                 <!-- Status Affiliate -->
                 <div id="affiliateStatusSection" class="hidden">
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    <i class="fas fa-user-tie mr-2 text-green-600"></i>
+                  <label class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
+                    <i class="fas fa-user-tie text-emerald-600 text-xs"></i>
                     Status Affiliate
                   </label>
-                  <select id="editAffiliateStatus"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white">
-                    <option value="inactive">Tidak Aktif</option>
-                    <option value="pending">Tertunda</option>
-                    <option value="approved">Disetujui</option>
-                    <option value="rejected">Ditolak</option>
-                  </select>
+                  <div class="relative">
+                    <select id="editAffiliateStatus"
+                      class="w-full px-4 py-2.5 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium appearance-none">
+                      <option value="inactive">Tidak Aktif</option>
+                      <option value="pending">Tertunda</option>
+                      <option value="approved">Disetujui</option>
+                      <option value="rejected">Ditolak</option>
+                    </select>
+                    <i
+                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                  </div>
                 </div>
               </div>
             </form>
           </div>
 
           <!-- Footer Modal -->
-          <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 flex gap-4">
+          <div class="border-t border-white/30 px-5 py-3 bg-white/40 backdrop-blur flex gap-3">
             <button type="button" onclick="closeEditModal()"
-              class="flex-1 bg-gray-200 text-gray-700 py-3.5 rounded-xl hover:bg-gray-300 transition-all font-semibold flex items-center justify-center gap-2">
-              <i class="fas fa-times"></i>
+              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-sm font-extrabold flex items-center justify-center gap-2 border border-white/60">
+              <i class="fas fa-times text-xs"></i>
               Batal
             </button>
             <button type="submit" form="editForm"
-              class="flex-1 gradient-primary text-white py-3.5 rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg flex items-center justify-center gap-2">
-              <i class="fas fa-save"></i>
-              Simpan Perubahan
+              class="flex-1 gradient-secondary text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-sm font-extrabold shadow-lg flex items-center justify-center gap-2">
+              <i class="fas fa-save text-xs"></i>
+              Simpan
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Modal Notifikasi -->
+      <!-- Modal Notifikasi Premium -->
       <div id="notificationModal" class="modal-notification">
         <div class="modal-box">
           <span class="notification-icon success" id="notificationIcon">
-            <svg class="notification-checkmark-svg" width="48" height="48" viewBox="0 0 48 48">
+            <svg class="notification-checkmark-svg" width="40" height="40" viewBox="0 0 48 48">
               <circle cx="24" cy="24" r="22" fill="none" stroke="#fff" stroke-width="4" opacity="0.15" />
               <path class="notification-checkmark-path" d="M14 25.5L22 33L34 17" fill="none" stroke="#fff"
                 stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </span>
-          <h2 class="text-xl font-bold text-gray-900 mb-2" id="notificationTitle">Sukses</h2>
-          <p class="text-gray-600 mb-6" id="notificationMessage">Operasi berhasil dilakukan</p>
+          <h2 class="text-xl font-extrabold text-gray-900 mb-2" id="notificationTitle">Sukses</h2>
+          <p class="text-gray-600 mb-4 text-sm font-medium" id="notificationMessage">Operasi berhasil dilakukan</p>
           <button id="closeNotificationModalBtn" type="button"
-            class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3.5 px-6 rounded-xl font-medium hover:from-green-700 hover:to-emerald-700 transition-all duration-200">
+            class="w-full gradient-primary text-white py-3 px-5 rounded-xl text-sm font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg">
             Tutup
           </button>
         </div>
       </div>
 
-      <!-- Modal Konfirmasi -->
+      <!-- Modal Konfirmasi Premium -->
       <div id="confirmationModal" class="modal-notification" style="display: none;">
         <div class="modal-box">
           <span class="notification-icon warning" id="confirmationIcon">
             <i class="fas fa-exclamation-triangle"></i>
           </span>
-          <h2 class="text-xl font-bold text-gray-900 mb-2" id="confirmationTitle">Konfirmasi</h2>
-          <p class="text-gray-600 mb-6" id="confirmationMessage">Apakah Anda yakin?</p>
+          <h2 class="text-xl font-extrabold text-gray-900 mb-2" id="confirmationTitle">Konfirmasi</h2>
+          <p class="text-gray-600 mb-4 text-sm font-medium" id="confirmationMessage">Apakah Anda yakin?</p>
           <div class="flex gap-3">
             <button id="cancelConfirmationBtn" type="button"
-              class="flex-1 bg-gray-200 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-300 transition-all duration-200">
+              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 px-4 rounded-xl text-sm font-extrabold transition-all duration-300 border border-white/60">
               Batal
             </button>
             <button id="confirmActionBtn" type="button"
-              class="flex-1 bg-gradient-to-r from-yellow-500 to-amber-500 text-white py-3 px-6 rounded-xl font-medium hover:opacity-90 transition-all duration-200">
+              class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white py-3 px-4 rounded-xl text-sm font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg">
               Ya
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Modal Hapus Pengguna -->
+      <!-- Modal Hapus Pengguna Premium -->
       <div id="deleteModal" class="modal-notification" style="display: none;">
         <div class="modal-box">
           <span class="notification-icon error" id="deleteIcon">
             <i class="fas fa-trash-alt"></i>
           </span>
-          <h2 class="text-xl font-bold text-gray-900 mb-2">Hapus Pengguna</h2>
-          <p class="text-gray-600 mb-6" id="deleteMessage">Apakah Anda yakin ingin menghapus pengguna ini? Tindakan ini
-            tidak dapat dibatalkan.</p>
+          <h2 class="text-xl font-extrabold text-gray-900 mb-2">Hapus Pengguna</h2>
+          <p class="text-gray-600 mb-4 text-sm font-medium" id="deleteMessage">Apakah Anda yakin ingin menghapus
+            pengguna ini?</p>
           <div class="flex gap-3">
             <button id="cancelDeleteBtn" type="button"
-              class="flex-1 bg-gray-200 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-300 transition-all duration-200">
+              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 px-4 rounded-xl text-sm font-extrabold transition-all duration-300 border border-white/60">
               Batal
             </button>
             <button id="confirmDeleteBtn" type="button"
-              class="flex-1 bg-gradient-to-r from-red-600 to-rose-600 text-white py-3 px-6 rounded-xl font-medium hover:opacity-90 transition-all duration-200">
+              class="flex-1 bg-gradient-to-r from-red-600 to-rose-600 text-white py-3 px-4 rounded-xl text-sm font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg">
               Hapus
             </button>
           </div>
@@ -736,9 +1455,6 @@
         // FUNGSI NOTIFIKASI MODAL
         // ============================================================
 
-        /**
-         * Tampilkan modal notifikasi dengan berbagai tipe
-         */
         function showNotification(type, title, message, autoClose = true) {
           const modal = document.getElementById('notificationModal');
           const icon = document.getElementById('notificationIcon');
@@ -746,46 +1462,44 @@
           const messageEl = document.getElementById('notificationMessage');
           const closeBtn = document.getElementById('closeNotificationModalBtn');
 
-          // Reset kelas icon
           icon.className = 'notification-icon';
 
-          // Konfigurasi untuk setiap tipe notifikasi
           const configs = {
             success: {
               iconClass: 'success',
               iconHTML: `
-                <svg class="notification-checkmark-svg" width="48" height="48" viewBox="0 0 48 48">
-                  <circle cx="24" cy="24" r="22" fill="none" stroke="#fff" stroke-width="4" opacity="0.15" />
-                  <path class="notification-checkmark-path" d="M14 25.5L22 33L34 17" fill="none" stroke="#fff" stroke-width="4"
-                    stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              `,
-              buttonClass: 'from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700'
+            <svg class="notification-checkmark-svg" width="40" height="40" viewBox="0 0 48 48">
+              <circle cx="24" cy="24" r="22" fill="none" stroke="#fff" stroke-width="4" opacity="0.15" />
+              <path class="notification-checkmark-path" d="M14 25.5L22 33L34 17" fill="none" stroke="#fff" stroke-width="4"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          `,
+              buttonClass: 'gradient-primary'
             },
             error: {
               iconClass: 'error',
               iconHTML: '<i class="fas fa-times-circle"></i>',
-              buttonClass: 'from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700'
+              buttonClass: 'bg-gradient-to-r from-red-600 to-rose-600'
             },
             warning: {
               iconClass: 'warning',
               iconHTML: '<i class="fas fa-exclamation-triangle"></i>',
-              buttonClass: 'from-yellow-600 to-amber-600 hover:from-yellow-700 hover:to-amber-700'
+              buttonClass: 'bg-gradient-to-r from-amber-500 to-orange-500'
             },
             info: {
               iconClass: 'info',
               iconHTML: '<i class="fas fa-info-circle"></i>',
-              buttonClass: 'from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
+              buttonClass: 'bg-gradient-to-r from-blue-600 to-indigo-600'
             },
             edit: {
               iconClass: 'success',
               iconHTML: '<i class="fas fa-user-edit"></i>',
-              buttonClass: 'from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700'
+              buttonClass: 'gradient-primary'
             },
             delete: {
               iconClass: 'error',
               iconHTML: '<i class="fas fa-user-times"></i>',
-              buttonClass: 'from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700'
+              buttonClass: 'bg-gradient-to-r from-red-600 to-rose-600'
             }
           };
 
@@ -796,10 +1510,8 @@
           titleEl.textContent = title;
           messageEl.textContent = message;
 
-          // Update warna tombol berdasarkan tipe
-          closeBtn.className = `w-full bg-gradient-to-r ${config.buttonClass} text-white py-3.5 px-6 rounded-xl font-medium transition-all duration-200`;
+          closeBtn.className = `w-full ${config.buttonClass} text-white py-3 px-5 rounded-xl text-sm font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg`;
 
-          // Reset animasi checkmark untuk notifikasi sukses
           if (type === 'success' || type === 'edit') {
             const checkmarkPath = icon.querySelector('.notification-checkmark-path');
             if (checkmarkPath) {
@@ -823,9 +1535,6 @@
           }
         }
 
-        /**
-         * Tampilkan modal konfirmasi dengan callback
-         */
         function showConfirmationModal(type, title, message, confirmText, cancelText, onConfirm, onCancel = null) {
           const modal = document.getElementById('confirmationModal');
           const icon = document.getElementById('confirmationIcon');
@@ -834,21 +1543,25 @@
           const confirmBtn = document.getElementById('confirmActionBtn');
           const cancelBtn = document.getElementById('cancelConfirmationBtn');
 
-          // Konfigurasi icon berdasarkan tipe
           const iconConfigs = {
             approve: {
               iconClass: 'warning',
               iconHTML: '<i class="fas fa-user-check"></i>',
-              buttonClass: 'from-green-600 to-emerald-600'
+              buttonClass: 'bg-gradient-to-r from-green-600 to-emerald-600'
             },
             reject: {
               iconClass: 'warning',
               iconHTML: '<i class="fas fa-user-times"></i>',
-              buttonClass: 'from-red-600 to-rose-600'
+              buttonClass: 'bg-gradient-to-r from-red-600 to-rose-600'
+            },
+            edit: {
+              iconClass: 'warning',
+              iconHTML: '<i class="fas fa-user-edit"></i>',
+              buttonClass: 'gradient-primary'
             }
           };
 
-          const config = iconConfigs[type] || { iconClass: 'warning', iconHTML: '<i class="fas fa-exclamation-triangle"></i>', buttonClass: 'from-yellow-500 to-amber-500' };
+          const config = iconConfigs[type] || { iconClass: 'warning', iconHTML: '<i class="fas fa-exclamation-triangle"></i>', buttonClass: 'bg-gradient-to-r from-amber-500 to-orange-500' };
 
           icon.className = 'notification-icon';
           icon.classList.add(config.iconClass);
@@ -859,13 +1572,10 @@
           confirmBtn.textContent = confirmText;
           cancelBtn.textContent = cancelText;
 
-          // Update warna tombol konfirmasi
-          confirmBtn.className = `flex-1 bg-gradient-to-r ${config.buttonClass} text-white py-3 px-6 rounded-xl font-medium hover:opacity-90 transition-all duration-200`;
+          confirmBtn.className = `flex-1 ${config.buttonClass} text-white py-3 px-4 rounded-xl text-sm font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg`;
 
-          // Simpan callback
           confirmationCallback = onConfirm;
 
-          // Setup event listeners
           confirmBtn.onclick = function (e) {
             e.preventDefault();
             closeConfirmationModal();
@@ -880,7 +1590,6 @@
 
           modal.style.display = 'flex';
 
-          // Tutup dengan klik di luar
           modal.addEventListener('click', function (e) {
             if (e.target === modal) {
               closeConfirmationModal();
@@ -888,7 +1597,6 @@
             }
           });
 
-          // Tutup dengan ESC key
           const escHandler = function (e) {
             if (e.key === 'Escape') {
               closeConfirmationModal();
@@ -899,21 +1607,16 @@
           document.addEventListener('keydown', escHandler);
         }
 
-        /**
-         * Tampilkan modal konfirmasi hapus
-         */
         function showDeleteModal(userName, onConfirm, onCancel = null) {
           const modal = document.getElementById('deleteModal');
           const messageEl = document.getElementById('deleteMessage');
           const confirmBtn = document.getElementById('confirmDeleteBtn');
           const cancelBtn = document.getElementById('cancelDeleteBtn');
 
-          messageEl.textContent = `Apakah Anda yakin ingin menghapus pengguna "${userName}"? Tindakan ini tidak dapat dibatalkan.`;
+          messageEl.textContent = `Apakah Anda yakin ingin menghapus pengguna "${userName}"?`;
 
-          // Simpan callback
           deleteCallback = onConfirm;
 
-          // Setup event listeners
           confirmBtn.onclick = function (e) {
             e.preventDefault();
             closeDeleteModal();
@@ -928,7 +1631,6 @@
 
           modal.style.display = 'flex';
 
-          // Tutup dengan klik di luar
           modal.addEventListener('click', function (e) {
             if (e.target === modal) {
               closeDeleteModal();
@@ -936,7 +1638,6 @@
             }
           });
 
-          // Tutup dengan ESC key
           const escHandler = function (e) {
             if (e.key === 'Escape') {
               closeDeleteModal();
@@ -947,40 +1648,25 @@
           document.addEventListener('keydown', escHandler);
         }
 
-        /**
-         * Tutup modal konfirmasi
-         */
         function closeConfirmationModal() {
           const modal = document.getElementById('confirmationModal');
           modal.style.display = 'none';
         }
 
-        /**
-         * Tutup modal hapus
-         */
         function closeDeleteModal() {
           const modal = document.getElementById('deleteModal');
           modal.style.display = 'none';
         }
 
-        /**
-         * Tutup modal notifikasi
-         */
         function closeNotification() {
           const modal = document.getElementById('notificationModal');
           modal.style.display = 'none';
         }
 
-        /**
-         * Tampilkan notifikasi sukses
-         */
         function showSuccess(message, title = 'Sukses') {
           showNotification('success', title, message);
         }
 
-        /**
-         * Tampilkan notifikasi error
-         */
         function showError(message, title = 'Error') {
           showNotification('error', title, message);
         }
@@ -1011,6 +1697,7 @@
           const affiliates = users.filter(u => u.affiliate_status === 'approved').length;
           const pending = users.filter(u => u.affiliate_status === 'pending').length;
           const activeAffiliates = users.filter(u => u.affiliate_status === 'approved' && u.status === 'active').length;
+          const pendingToday = Math.floor(Math.random() * 5) + 1; // Contoh data
 
           document.getElementById('totalUsers').textContent = total;
           document.getElementById('activeUsers').textContent = active;
@@ -1018,6 +1705,10 @@
           document.getElementById('pendingAffiliates').textContent = pending;
           document.getElementById('activeAffiliates').textContent = activeAffiliates;
           document.getElementById('pendingCount').textContent = pending;
+          document.getElementById('pendingToday').textContent = pendingToday + ' baru';
+          document.getElementById('onlineUsers').textContent = Math.floor(Math.random() * 20) + 5;
+          document.getElementById('totalEntries').textContent = total;
+          document.getElementById('endEntry').textContent = Math.min(12, total);
         }
 
         function displayUsers(users) {
@@ -1025,15 +1716,20 @@
 
           if (!users || users.length === 0) {
             container.innerHTML = `
-          <div class="col-span-full text-center py-16">
+          <div class="col-span-full text-center py-12">
             <div class="flex flex-col items-center">
-              <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
-                <i class="fas fa-users text-4xl text-gray-300"></i>
+              <div class="relative">
+                <div class="w-20 h-20 bg-white/60 backdrop-blur rounded-full flex items-center justify-center mb-4 border-3 border-white/50 float-slow">
+                  <i class="fas fa-users text-2xl text-emerald-300"></i>
+                </div>
+                <div class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                  <span class="w-2 h-2 bg-amber-500 rounded-full pulse-premium"></span>
+                </div>
               </div>
-              <h3 class="text-xl font-semibold text-gray-700 mb-2">Tidak Ada Pengguna Ditemukan</h3>
-              <p class="text-gray-500 max-w-md mx-auto">Tidak ada pengguna yang cocok dengan kriteria pencarian Anda.</p>
-              <button onclick="clearFilters()" class="mt-6 px-6 py-3 gradient-primary text-white rounded-xl hover:opacity-90 transition-all font-semibold flex items-center gap-2">
-                <i class="fas fa-redo"></i>
+              <h3 class="text-lg font-extrabold text-gray-900 mb-2">Tidak Ada Pengguna</h3>
+              <p class="text-sm text-emerald-700 font-medium max-w-md">Tidak ada pengguna yang cocok dengan kriteria pencarian Anda.</p>
+              <button onclick="clearFilters()" class="mt-5 px-5 py-2.5 gradient-primary text-white rounded-xl hover:opacity-90 transition-all duration-300 text-sm font-extrabold shadow-lg flex items-center gap-2">
+                <i class="fas fa-redo text-xs"></i>
                 Hapus Filter
               </button>
             </div>
@@ -1042,112 +1738,116 @@
             return;
           }
 
-          container.innerHTML = users.map(user => {
+          container.innerHTML = users.slice(0, 12).map(user => {
             const roleConfig = {
-              'super_admin': { bg: 'bg-gradient-to-br from-purple-500 to-purple-600', text: 'text-purple-100', icon: 'fas fa-crown', badge: 'Super Admin' },
-              'sales': { bg: 'bg-gradient-to-br from-blue-500 to-blue-600', text: 'text-blue-100', icon: 'fas fa-chart-line', badge: 'Sales' },
-              'finance': { bg: 'bg-gradient-to-br from-green-500 to-green-600', text: 'text-green-100', icon: 'fas fa-coins', badge: 'Finance' },
-              'affiliate': { bg: 'bg-gradient-to-br from-orange-500 to-orange-600', text: 'text-orange-100', icon: 'fas fa-user-tie', badge: 'Affiliate' },
-              'user': { bg: 'bg-gradient-to-br from-gray-500 to-gray-600', text: 'text-gray-100', icon: 'fas fa-user', badge: 'Pengguna' }
-            }[user.role_name] || { bg: 'bg-gradient-to-br from-gray-500 to-gray-600', text: 'text-gray-100', icon: 'fas fa-user', badge: 'Pengguna' };
+              'super_admin': { bg: 'gradient-super-admin', text: 'text-white', icon: 'fas fa-crown', badge: 'Super Admin' },
+              'sales': { bg: 'gradient-sales', text: 'text-white', icon: 'fas fa-chart-line', badge: 'Sales' },
+              'finance': { bg: 'gradient-finance', text: 'text-white', icon: 'fas fa-coins', badge: 'Finance' },
+              'affiliate': { bg: 'gradient-affiliate', text: 'text-white', icon: 'fas fa-user-tie', badge: 'Affiliate' },
+              'user': { bg: 'gradient-user', text: 'text-white', icon: 'fas fa-user', badge: 'Pengguna' }
+            }[user.role_name] || { bg: 'gradient-user', text: 'text-white', icon: 'fas fa-user', badge: 'Pengguna' };
 
             const affiliateStatusConfig = {
-              'inactive': { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-minus-circle' },
-              'pending': { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: 'fas fa-clock' },
-              'approved': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fas fa-check-circle' },
-              'rejected': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle' }
-            }[user.affiliate_status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-minus-circle' };
+              'inactive': { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-minus-circle', label: 'Tidak Aktif' },
+              'pending': { bg: 'bg-amber-100', text: 'text-amber-800', icon: 'fas fa-clock', label: 'Tertunda' },
+              'approved': { bg: 'bg-emerald-100', text: 'text-emerald-800', icon: 'fas fa-check-circle', label: 'Disetujui' },
+              'rejected': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle', label: 'Ditolak' }
+            }[user.affiliate_status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-minus-circle', label: 'Tidak Aktif' };
 
             const statusConfig = {
-              'active': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fas fa-check-circle' },
-              'inactive': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle' }
-            }[user.status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-question-circle' };
+              'active': { bg: 'bg-emerald-100', text: 'text-emerald-800', icon: 'fas fa-check-circle', label: 'Aktif' },
+              'inactive': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle', label: 'Tidak Aktif' }
+            }[user.status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-question-circle', label: 'Unknown' };
 
             const joinDate = user.created_at ? new Date(user.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
 
             return `
-          <div class="card-hover bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
+          <div class="glass-futuristic rounded-xl overflow-hidden group card-futuristic border border-white/50">
             <!-- Header dengan avatar -->
-            <div class="relative h-32 ${roleConfig.bg} flex items-center justify-center">
-              <div class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-4 border-white/30">
-                <span class="text-2xl font-bold text-white">${user.name.charAt(0).toUpperCase()}</span>
+            <div class="relative h-24 ${roleConfig.bg} flex items-center justify-center">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-3 border-white/30 shadow-lg transform group-hover:scale-110 transition-all duration-500">
+                <span class="text-xl font-extrabold text-white">${user.name.charAt(0).toUpperCase()}</span>
               </div>
-              <div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button onclick="editUser(${user.id})" class="w-9 h-9 rounded-lg bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors flex items-center justify-center">
-                  <i class="fas fa-edit"></i>
+              <div class="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <button onclick="viewUser(${user.id})" class="w-7 h-7 rounded-lg bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors flex items-center justify-center border border-white/30">
+                  <i class="fas fa-eye text-xs"></i>
                 </button>
-                <button onclick="deleteUser(${user.id})" class="w-9 h-9 rounded-lg bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors flex items-center justify-center">
-                  <i class="fas fa-trash"></i>
+                <button onclick="editUser(${user.id})" class="w-7 h-7 rounded-lg bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors flex items-center justify-center border border-white/30">
+                  <i class="fas fa-edit text-xs"></i>
+                </button>
+                <button onclick="deleteUser(${user.id})" class="w-7 h-7 rounded-lg bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-colors flex items-center justify-center border border-white/30">
+                  <i class="fas fa-trash text-xs"></i>
                 </button>
               </div>
             </div>
 
             <!-- Konten -->
-            <div class="p-6">
+            <div class="p-4">
               <div class="flex items-center justify-between mb-3">
                 <div>
-                  <h3 class="font-bold text-lg text-gray-900">${user.name}</h3>
-                  <div class="flex items-center gap-1 text-sm text-gray-500 mt-1">
-                    <i class="fas fa-envelope text-gray-400"></i>
-                    <span class="truncate">${user.email}</span>
+                  <h3 class="font-extrabold text-base text-gray-900 mb-0.5 line-clamp-1">${user.name}</h3>
+                  <div class="flex items-center gap-1.5 text-xs text-emerald-700">
+                    <i class="fas fa-envelope text-emerald-400 text-[10px]"></i>
+                    <span class="truncate max-w-[120px] font-medium">${user.email}</span>
                   </div>
                 </div>
-                <span class="px-3 py-1.5 rounded-full text-xs font-semibold ${roleConfig.text} ${roleConfig.bg} flex items-center gap-2">
-                  <i class="${roleConfig.icon} text-xs"></i>
+                <span class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold ${roleConfig.text} ${roleConfig.bg} flex items-center gap-1 shadow-md border border-white/20">
+                  <i class="${roleConfig.icon} text-[8px]"></i>
                   ${roleConfig.badge}
                 </span>
               </div>
 
-              <div class="space-y-3">
-                <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-500 flex items-center gap-1">
-                    <i class="fas fa-id-card text-gray-400"></i>
-                    ID Pengguna
+              <div class="space-y-2.5">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-emerald-700 font-semibold flex items-center gap-1.5">
+                    <i class="fas fa-id-card text-emerald-400 text-[10px]"></i>
+                    ID
                   </span>
-                  <span class="font-semibold text-gray-900">#${user.id}</span>
+                  <span class="font-extrabold text-gray-900 bg-white/60 px-2.5 py-1 rounded-lg text-[10px] border border-white/60">#${user.id}</span>
                 </div>
 
-                <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-500 flex items-center gap-1">
-                    <i class="fas fa-user-tie text-gray-400"></i>
-                    Status Affiliate
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-emerald-700 font-semibold flex items-center gap-1.5">
+                    <i class="fas fa-user-tie text-emerald-400 text-[10px]"></i>
+                    Affiliate
                   </span>
-                  <span class="font-semibold ${affiliateStatusConfig.text} bg-white px-3 py-1.5 rounded-full text-xs border ${affiliateStatusConfig.text.replace('text-', 'border-')}/20 flex items-center gap-2">
-                    <i class="${affiliateStatusConfig.icon}"></i>
-                    ${user.affiliate_status ? user.affiliate_status.charAt(0).toUpperCase() + user.affiliate_status.slice(1) : 'Tidak Aktif'}
+                  <span class="font-extrabold ${affiliateStatusConfig.text} bg-white/60 px-2.5 py-1 rounded-lg text-[9px] border border-white/60 flex items-center gap-1">
+                    <i class="${affiliateStatusConfig.icon} text-[8px]"></i>
+                    ${affiliateStatusConfig.label}
                   </span>
                 </div>
 
-                <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-500 flex items-center gap-1">
-                    <i class="fas fa-toggle-on text-gray-400"></i>
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-emerald-700 font-semibold flex items-center gap-1.5">
+                    <i class="fas fa-toggle-on text-emerald-400 text-[10px]"></i>
                     Status
                   </span>
-                  <span class="font-semibold ${statusConfig.text} bg-white px-3 py-1.5 rounded-full text-xs border ${statusConfig.text.replace('text-', 'border-')}/20 flex items-center gap-2">
-                    <i class="${statusConfig.icon}"></i>
-                    ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                  <span class="font-extrabold ${statusConfig.text} bg-white/60 px-2.5 py-1 rounded-lg text-[9px] border border-white/60 flex items-center gap-1">
+                    <i class="${statusConfig.icon} text-[8px]"></i>
+                    ${statusConfig.label}
                   </span>
                 </div>
 
-                <div class="flex items-center justify-between text-sm pt-2 border-t border-gray-100">
-                  <span class="text-gray-500 flex items-center gap-1">
-                    <i class="fas fa-calendar-plus text-gray-400"></i>
+                <div class="flex items-center justify-between text-xs pt-2 border-t border-white/30">
+                  <span class="text-emerald-700 font-semibold flex items-center gap-1.5">
+                    <i class="fas fa-calendar-plus text-emerald-400 text-[10px]"></i>
                     Bergabung
                   </span>
-                  <span class="text-gray-900 font-medium">${joinDate}</span>
+                  <span class="text-gray-900 font-extrabold text-[10px]">${joinDate}</span>
                 </div>
               </div>
             </div>
 
             <!-- Footer dengan aksi cepat -->
-            <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex gap-3">
-              <button onclick="viewUser(${user.id})" class="flex-1 text-sm font-semibold text-gray-600 hover:text-gray-800 py-2.5 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
-                <i class="fas fa-eye"></i>
+            <div class="px-4 py-3 bg-white/30 backdrop-blur border-t border-white/30 flex gap-2">
+              <button onclick="viewUser(${user.id})" class="flex-1 text-[10px] font-extrabold text-emerald-700 hover:text-emerald-800 py-2 rounded-lg hover:bg-white/60 transition-all duration-300 flex items-center justify-center gap-1 border border-white/30">
+                <i class="fas fa-eye text-[8px]"></i>
                 Lihat
               </button>
-              <div class="w-px bg-gray-300"></div>
-              <button onclick="editUser(${user.id})" class="flex-1 text-sm font-semibold text-blue-600 hover:text-blue-800 py-2.5 rounded-lg hover:bg-blue-50 transition-colors flex items-center justify-center gap-2">
-                <i class="fas fa-edit"></i>
+              <div class="w-px bg-white/30"></div>
+              <button onclick="editUser(${user.id})" class="flex-1 text-[10px] font-extrabold text-emerald-700 hover:text-emerald-800 py-2 rounded-lg hover:bg-white/60 transition-all duration-300 flex items-center justify-center gap-1 border border-white/30">
+                <i class="fas fa-edit text-[8px]"></i>
                 Edit
               </button>
             </div>
@@ -1159,73 +1859,69 @@
         function viewUser(userId) {
           const user = allUsers.find(u => u.id === userId);
           if (user) {
-            // Set informasi dasar
             document.getElementById('viewUserID').textContent = user.id;
             document.getElementById('viewUserName').textContent = user.name;
             document.getElementById('viewUserEmail').textContent = user.email;
 
-            // Set avatar
             const avatar = document.getElementById('viewUserAvatar');
             avatar.textContent = user.name.charAt(0).toUpperCase();
-            avatar.className = 'w-24 h-24 user-avatar rounded-full flex items-center justify-center text-white text-3xl font-bold mb-4 shadow-lg';
+            avatar.className = 'w-20 h-20 gradient-primary rounded-full flex items-center justify-center text-white text-2xl font-bold mb-3 shadow-xl border-3 border-white/50';
 
-            // Set peran
             document.getElementById('viewUserRole').textContent = user.role_name || 'Pengguna';
 
             const roleConfig = {
-              'super_admin': { bg: 'bg-gradient-to-br from-purple-500 to-purple-600', text: 'text-white', badge: 'Super Admin' },
-              'sales': { bg: 'bg-gradient-to-br from-blue-500 to-blue-600', text: 'text-white', badge: 'Sales' },
-              'finance': { bg: 'bg-gradient-to-br from-green-500 to-green-600', text: 'text-white', badge: 'Finance' },
-              'affiliate': { bg: 'bg-gradient-to-br from-orange-500 to-orange-600', text: 'text-white', badge: 'Affiliate' },
-              'user': { bg: 'bg-gradient-to-br from-gray-500 to-gray-600', text: 'text-white', badge: 'Pengguna' }
-            }[user.role_name] || { bg: 'bg-gradient-to-br from-gray-500 to-gray-600', text: 'text-white', badge: 'Pengguna' };
+              'super_admin': { bg: 'gradient-super-admin', text: 'text-white', badge: 'Super Admin' },
+              'sales': { bg: 'gradient-sales', text: 'text-white', badge: 'Sales' },
+              'finance': { bg: 'gradient-finance', text: 'text-white', badge: 'Finance' },
+              'affiliate': { bg: 'gradient-affiliate', text: 'text-white', badge: 'Affiliate' },
+              'user': { bg: 'gradient-user', text: 'text-white', badge: 'Pengguna' }
+            }[user.role_name] || { bg: 'gradient-user', text: 'text-white', badge: 'Pengguna' };
 
             const roleBadge = document.getElementById('viewRoleBadge');
-            roleBadge.className = `px-3 py-1.5 rounded-full text-xs font-semibold ${roleConfig.bg} ${roleConfig.text}`;
+            roleBadge.className = `px-3 py-1.5 rounded-lg text-[10px] font-extrabold ${roleConfig.bg} ${roleConfig.text}`;
             roleBadge.textContent = roleConfig.badge;
 
-            // Set status
-            document.getElementById('viewUserStatus').textContent = user.status.charAt(0).toUpperCase() + user.status.slice(1);
+            document.getElementById('viewUserStatus').textContent = user.status === 'active' ? 'Aktif' : 'Tidak Aktif';
 
             const statusConfig = {
-              'active': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fas fa-check-circle' },
-              'inactive': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle' }
-            }[user.status] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-question-circle' };
+              'active': { bg: 'gradient-active', text: 'text-white', icon: 'fas fa-check-circle' },
+              'inactive': { bg: 'gradient-inactive', text: 'text-white', icon: 'fas fa-times-circle' }
+            }[user.status] || { bg: 'bg-gray-500', text: 'text-white', icon: 'fas fa-question-circle' };
 
             const statusBadge = document.getElementById('viewStatusBadge');
-            statusBadge.className = `px-3 py-1.5 rounded-full text-xs font-semibold ${statusConfig.text} ${statusConfig.bg} flex items-center gap-2`;
-            statusBadge.innerHTML = `<i class="${statusConfig.icon}"></i>${user.status.charAt(0).toUpperCase() + user.status.slice(1)}`;
+            statusBadge.className = `px-3 py-1.5 rounded-lg text-[10px] font-extrabold ${statusConfig.bg} ${statusConfig.text} flex items-center gap-1 border border-white/30`;
+            statusBadge.innerHTML = `<i class="${statusConfig.icon} text-[8px]"></i>${user.status === 'active' ? 'Aktif' : 'Tidak Aktif'}`;
 
-            // Set status affiliate
             const affiliateStatus = user.affiliate_status || 'inactive';
-            document.getElementById('viewAffiliateStatus').textContent = affiliateStatus.charAt(0).toUpperCase() + affiliateStatus.slice(1);
+            const affiliateLabel = {
+              'inactive': 'Tidak Aktif',
+              'pending': 'Tertunda',
+              'approved': 'Disetujui',
+              'rejected': 'Ditolak'
+            }[affiliateStatus] || 'Tidak Aktif';
+
+            document.getElementById('viewAffiliateStatus').textContent = affiliateLabel;
 
             const affiliateConfig = {
               'inactive': { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-minus-circle' },
-              'pending': { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: 'fas fa-clock' },
-              'approved': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fas fa-check-circle' },
-              'rejected': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fas fa-times-circle' }
+              'pending': { bg: 'gradient-pending', text: 'text-white', icon: 'fas fa-clock' },
+              'approved': { bg: 'gradient-approved', text: 'text-white', icon: 'fas fa-check-circle' },
+              'rejected': { bg: 'gradient-rejected', text: 'text-white', icon: 'fas fa-times-circle' }
             }[affiliateStatus] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-minus-circle' };
 
             const affiliateBadge = document.getElementById('viewAffiliateBadge');
-            affiliateBadge.className = `px-3 py-1.5 rounded-full text-xs font-semibold ${affiliateConfig.text} ${affiliateConfig.bg} flex items-center gap-2`;
-            affiliateBadge.innerHTML = `<i class="${affiliateConfig.icon}"></i>${affiliateStatus.charAt(0).toUpperCase() + affiliateStatus.slice(1)}`;
+            affiliateBadge.className = `px-3 py-1.5 rounded-lg text-[10px] font-extrabold ${affiliateConfig.bg} ${affiliateConfig.text} flex items-center gap-1 border border-white/30`;
+            affiliateBadge.innerHTML = `<i class="${affiliateConfig.icon} text-[8px]"></i>${affiliateLabel}`;
 
-            // Set tanggal
             const joinDate = user.created_at ? new Date(user.created_at).toLocaleDateString('id-ID', {
-              weekday: 'long',
               day: 'numeric',
               month: 'long',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
+              year: 'numeric'
             }) : '-';
             document.getElementById('viewJoinDate').textContent = joinDate;
 
-            // Set tombol edit ke pengguna saat ini
             document.getElementById('editFromViewBtn').setAttribute('onclick', `closeViewModal(); editUser(${user.id})`);
 
-            // Tampilkan modal
             document.getElementById('viewModal').classList.remove('hidden');
             document.getElementById('viewModal').classList.add('flex');
             document.body.style.overflow = 'hidden';
@@ -1240,7 +1936,6 @@
 
         function editFromView() {
           closeViewModal();
-          // Tunggu sedikit sebelum membuka modal edit agar animasi smooth
           setTimeout(() => {
             const userId = document.getElementById('viewUserID').textContent;
             editUser(parseInt(userId));
@@ -1257,15 +1952,12 @@
             document.getElementById('editEmail').value = user.email;
             document.getElementById('editRole').value = user.role_name || 'user';
 
-            // Set avatar
             const avatar = document.getElementById('editUserAvatar');
             avatar.textContent = user.name.charAt(0).toUpperCase();
-            avatar.className = 'w-20 h-20 user-avatar rounded-full flex items-center justify-center text-white text-2xl font-bold mb-4';
+            avatar.className = 'w-16 h-16 gradient-primary rounded-full flex items-center justify-center text-white text-xl font-bold mb-3 shadow-xl border-3 border-white/50';
 
-            // Set radio status
             document.querySelector(`input[name="editStatus"][value="${user.status}"]`).checked = true;
 
-            // Set status affiliate jika ada
             if (user.affiliate_status) {
               document.getElementById('editAffiliateStatus').value = user.affiliate_status;
               document.getElementById('affiliateStatusSection').classList.remove('hidden');
@@ -1286,7 +1978,6 @@
           document.body.style.overflow = '';
         }
 
-        // Handle pengiriman form dengan konfirmasi
         document.getElementById('editForm').addEventListener('submit', async (e) => {
           e.preventDefault();
 
@@ -1296,11 +1987,10 @@
           const user = allUsers.find(u => u.id === userId);
           if (!user) return;
 
-          // Tampilkan modal konfirmasi sebelum edit
           showConfirmationModal(
             'edit',
-            'Konfirmasi Edit Pengguna',
-            `Apakah Anda yakin ingin mengubah data pengguna "${user.name}"?`,
+            'Konfirmasi Edit',
+            `Ubah data pengguna "${user.name}"?`,
             'Ya, Edit',
             'Batal',
             async function () {
@@ -1322,25 +2012,16 @@
                 const data = await response.json();
 
                 if (data.success) {
-                  // Tampilkan notifikasi berhasil edit
-                  showNotification('edit', 'Berhasil Diperbarui',
-                    `Pengguna "${formData.name}" telah berhasil diperbarui.`);
-
+                  showNotification('edit', 'Berhasil', `Pengguna "${formData.name}" diperbarui.`);
                   closeEditModal();
                   loadUsers();
                 } else {
-                  showNotification('error', 'Gagal Memperbarui',
-                    `Gagal mengupdate pengguna: ${data.message || 'Error tidak diketahui'}`);
+                  showNotification('error', 'Gagal', data.message || 'Gagal mengupdate pengguna');
                 }
               } catch (error) {
                 console.error('Error updating user:', error);
-                showNotification('error', 'Gagal Memperbarui',
-                  `Terjadi kesalahan: ${error.message}`);
+                showNotification('error', 'Error', error.message);
               }
-            },
-            function () {
-              // Aksi ketika dibatalkan
-              console.log('Edit dibatalkan');
             }
           );
         });
@@ -1350,7 +2031,6 @@
           const user = allUsers.find(u => u.id === userId);
           if (!user) return;
 
-          // Tampilkan modal konfirmasi hapus
           showDeleteModal(
             user.name,
             async function () {
@@ -1362,29 +2042,19 @@
                 const data = await response.json();
 
                 if (data.success) {
-                  // Tampilkan notifikasi berhasil hapus
-                  showNotification('delete', 'Berhasil Dihapus',
-                    `Pengguna "${user.name}" telah berhasil dihapus.`);
-
+                  showNotification('delete', 'Berhasil', `Pengguna "${user.name}" dihapus.`);
                   loadUsers();
                 } else {
-                  showNotification('error', 'Gagal Menghapus',
-                    `Gagal menghapus pengguna: ${data.message || 'Error tidak diketahui'}`);
+                  showNotification('error', 'Gagal', data.message || 'Gagal menghapus pengguna');
                 }
               } catch (error) {
                 console.error('Error deleting user:', error);
-                showNotification('error', 'Gagal Menghapus',
-                  `Terjadi kesalahan: ${error.message}`);
+                showNotification('error', 'Error', error.message);
               }
-            },
-            function () {
-              // Aksi ketika dibatalkan
-              console.log('Delete dibatalkan');
             }
           );
         }
 
-        // Pencarian dan filter
         let searchTimeout;
         document.getElementById('searchInput').addEventListener('input', (e) => {
           clearTimeout(searchTimeout);
@@ -1410,6 +2080,8 @@
           });
 
           displayUsers(filtered);
+          document.getElementById('totalEntries').textContent = filtered.length;
+          document.getElementById('endEntry').textContent = Math.min(12, filtered.length);
         }
 
         function clearFilters() {
@@ -1419,7 +2091,6 @@
           filterUsers();
         }
 
-        // Tutup modal dengan tombol escape
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') {
             if (!document.getElementById('viewModal').classList.contains('hidden')) {
@@ -1436,7 +2107,6 @@
           }
         });
 
-        // Tutup modal dengan klik di luar
         document.getElementById('viewModal').addEventListener('click', (e) => {
           if (e.target === document.getElementById('viewModal')) {
             closeViewModal();
@@ -1449,9 +2119,7 @@
           }
         });
 
-        // Event listener untuk modal notifikasi
         document.addEventListener('DOMContentLoaded', function () {
-          // Event listener untuk tombol close pada notifikasi modal
           const closeBtn = document.getElementById('closeNotificationModalBtn');
           if (closeBtn) {
             closeBtn.addEventListener('click', function (e) {
@@ -1460,7 +2128,6 @@
             });
           }
 
-          // Event listener untuk tombol close pada konfirmasi modal
           const cancelConfirmationBtn = document.getElementById('cancelConfirmationBtn');
           if (cancelConfirmationBtn) {
             cancelConfirmationBtn.addEventListener('click', function (e) {
@@ -1469,7 +2136,6 @@
             });
           }
 
-          // Event listener untuk tombol close pada delete modal
           const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
           if (cancelDeleteBtn) {
             cancelDeleteBtn.addEventListener('click', function (e) {
@@ -1478,7 +2144,6 @@
             });
           }
 
-          // Tutup modal ketika klik di luar
           const notificationModal = document.getElementById('notificationModal');
           if (notificationModal) {
             notificationModal.addEventListener('click', function (e) {
@@ -1506,29 +2171,9 @@
             });
           }
 
-          const detailModal = document.getElementById('viewModal');
-          if (detailModal) {
-            detailModal.addEventListener('click', (e) => {
-              if (e.target === detailModal) {
-                closeViewModal();
-              }
-            });
-          }
-
-          const approvalModal = document.getElementById('editModal');
-          if (approvalModal) {
-            approvalModal.addEventListener('click', (e) => {
-              if (e.target === approvalModal) {
-                closeEditModal();
-              }
-            });
-          }
+          loadUsers();
         });
 
-        // Load users pada saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', loadUsers);
-
-        // Auto-refresh setiap 60 detik
         setInterval(loadUsers, 60000);
       </script>
 </body>

@@ -8,108 +8,249 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 0%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        linear-gradient(145deg, #f0fdf4 0%, #ecfdf5 50%, #e6f7ec 100%);
+    }
+
+    /* Premium Glassmorphism */
+    .glass-premium {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 35px -10px rgba(0, 100, 0, 0.05),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
     }
 
     .glass-card {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+        0 0 15px rgba(16, 185, 129, 0.05);
     }
 
+    /* Premium Gradients */
     .gradient-primary {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
     }
 
     .gradient-secondary {
-      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      background: linear-gradient(165deg, #047857 0%, #059669 50%, #10b981 100%);
     }
 
     .gradient-accent {
-      background: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%);
+      background: linear-gradient(165deg, #065f46 0%, #047857 50%, #059669 100%);
     }
 
-    .gradient-dark {
-      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    /* Status Gradients */
+    .gradient-pending {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
     }
 
-    .gradient-warning {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    .gradient-approved {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
     }
 
-    .gradient-danger {
-      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    .gradient-rejected {
+      background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+    }
+
+    .gradient-paid {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
     }
 
     .gradient-info {
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
     }
 
-    .card-hover {
-      transition: all 0.3s ease;
+    /* Card Effects */
+    .card-luxury {
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
-    .card-hover:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 20px -5px rgba(5, 150, 105, 0.1), 0 8px 8px -5px rgba(5, 150, 105, 0.04);
+    .card-luxury:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 30px 45px -15px rgba(16, 185, 129, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
     }
 
-    .pulse-animation {
-      animation: pulse 2s infinite;
+    /* Pulse Animation */
+    .pulse-premium {
+      animation: pulsePremium 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
 
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
-      }
+    @keyframes pulsePremium {
 
-      70% {
-        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
-      }
-
+      0%,
       100% {
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.2),
+          0 0 0 0 rgba(16, 185, 129, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 0 0 15px rgba(16, 185, 129, 0),
+          0 0 0 30px rgba(16, 185, 129, 0);
       }
     }
 
-    .scrollbar-hide::-webkit-scrollbar {
-      display: none;
+    /* Custom Scrollbar */
+    .modern-scrollbar::-webkit-scrollbar {
+      width: 6px;
     }
 
-    .scrollbar-hide {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+    .modern-scrollbar::-webkit-scrollbar-track {
+      background: rgba(16, 185, 129, 0.05);
+      border-radius: 10px;
     }
 
-    .status-badge {
-      transition: all 0.2s ease;
+    .modern-scrollbar::-webkit-scrollbar-thumb {
+      background: linear-gradient(145deg, #10b981, #059669);
+      border-radius: 10px;
     }
 
-    .status-badge:hover {
-      transform: scale(1.05);
+    .modern-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(145deg, #059669, #047857);
     }
 
-    .tab-active {
+    /* Floating Animation */
+    .float-slow {
+      animation: float 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Shimmer Effect */
+    .shimmer {
       position: relative;
       overflow: hidden;
     }
 
-    .tab-active::after {
+    .shimmer::after {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, #10b981, #059669);
-      border-radius: 3px 3px 0 0;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent);
+      animation: shimmer 5s infinite;
     }
 
+    @keyframes shimmer {
+      100% {
+        left: 200%;
+      }
+    }
+
+    /* Grid Background */
+    .bg-grid-premium {
+      background-image: linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Neomorphism */
+    .neomorph {
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 20px 20px 40px rgba(16, 185, 129, 0.05),
+        -20px -20px 40px rgba(255, 255, 255, 0.8),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.8),
+        inset -1px -1px 2px rgba(16, 185, 129, 0.05);
+    }
+
+    /* Slide In Animation */
+    .animate-slide-in {
+      animation: slideIn 0.6s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .animate-scale-in {
+      animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Animation Delays */
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+
+    /* Tab Styles */
+    .tab-active {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      color: white;
+      box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+    }
+
+    .tab-inactive {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      color: #4b5563;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .tab-inactive:hover {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Fade In Animation */
     .fade-in {
-      animation: fadeIn 0.3s ease-in-out;
+      animation: fadeIn 0.4s ease-in-out;
     }
 
     @keyframes fadeIn {
@@ -124,14 +265,185 @@
       }
     }
 
-    .modal-backdrop {
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
+    /* Ultra Modern Glassmorphism */
+    .glass-futuristic {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    }
+
+    /* Gradient Orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+      opacity: 0.4;
+      animation: float-orb 10s ease-in-out infinite;
+    }
+
+    @keyframes float-orb {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      25% {
+        transform: translate(10px, -15px) scale(1.1);
+      }
+
+      50% {
+        transform: translate(-5px, -20px) scale(0.9);
+      }
+
+      75% {
+        transform: translate(-15px, 5px) scale(1.05);
+      }
+    }
+
+    /* Card Futuristic */
+    .card-futuristic {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-futuristic::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.7s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card-futuristic:hover::before {
+      left: 100%;
+    }
+
+    .card-futuristic:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 30px 60px -15px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Border Gradient */
+    .border-gradient {
+      border: double 1px transparent;
+      background-image: linear-gradient(white, white), linear-gradient(135deg, white, white, white);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+
+    /* Pulse Glow */
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        filter: blur(60px);
+      }
+
+      50% {
+        opacity: 0.8;
+        filter: blur(70px);
+      }
+    }
+
+    .animate-pulse-glow {
+      animation: pulse-glow 4s ease-in-out infinite;
+    }
+
+    /* Rotate Slow */
+    @keyframes rotate-slow {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .animate-rotate-slow {
+      animation: rotate-slow 20s linear infinite;
+    }
+
+    /* Notification Toast */
+    .notification-toast {
+      position: fixed;
+      top: 5rem;
+      right: 1.5rem;
+      z-index: 9999;
+      animation: slideInRight 0.3s ease-out;
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    /* Line Clamp */
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-emerald-50 to-green-50">
+<body class="bg-grid-premium relative overflow-x-hidden">
+  <!-- Ultra Modern Decorative Orbs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="orb w-[500px] h-[500px] bg-emerald-400 top-[-100px] left-[-100px] animate-pulse-glow"></div>
+    <div
+      class="orb w-[600px] h-[600px] bg-green-400 bottom-[-200px] right-[-200px] animate-pulse-glow animation-delay-2000">
+    </div>
+    <div
+      class="orb w-[400px] h-[400px] bg-teal-400 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-glow animation-delay-4000">
+    </div>
+
+    <!-- Animated Grid Lines -->
+    <svg class="absolute top-0 left-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#10b981" stroke-width="0.5" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+
+    <!-- Floating Particles -->
+    <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-30"></div>
+    <div
+      class="absolute top-3/4 right-1/3 w-3 h-3 bg-green-400 rounded-full animate-ping opacity-30 animation-delay-2000">
+    </div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-1.5 h-1.5 bg-teal-400 rounded-full animate-ping opacity-30 animation-delay-4000">
+    </div>
+  </div>
+
   <!-- Navbar -->
   <%- include('../navbar/navbar.ejs', { name: 'Admin' }) %>
 
@@ -139,142 +451,296 @@
     <%- include('../sidebar/admin.ejs') %>
 
       <!-- Konten Utama -->
-      <main class="ml-64 pt-16 min-h-screen">
+      <main class="ml-64 pt-16 min-h-screen relative z-10">
         <div class="p-6">
-          <!-- Header Halaman -->
-          <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
-            <div class="mb-4 md:mb-0">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-check-circle text-white text-xl"></i>
+          <!-- Premium Page Header - Sesuai dengan dashboard -->
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
+            <div class="mb-4 lg:mb-0">
+              <div class="flex items-center gap-4">
+                <div class="relative">
+                  <div
+                    class="w-16 h-16 gradient-primary rounded-xl flex items-center justify-center shadow-2xl float-slow">
+                    <i class="fas fa-check-circle text-white text-2xl"></i>
+                  </div>
+                  <div
+                    class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <span class="w-2 h-2 bg-green-500 rounded-full pulse-premium"></span>
+                  </div>
                 </div>
                 <div>
-                  <h1 class="text-3xl font-bold text-gray-900">Persetujuan Penarikan Komisi</h1>
-                  <p class="text-gray-600 mt-1">Tinjau dan setujui/tolak permintaan penarikan dari Finance</p>
+                  <div class="flex items-center gap-2 mb-1">
+                    <h1
+                      class="text-3xl font-extrabold bg-gradient-to-r from-emerald-900 via-green-800 to-emerald-900 bg-clip-text text-transparent">
+                      Persetujuan Penarikan
+                    </h1>
+                    <span
+                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                      SUPER ADMIN
+                    </span>
+                  </div>
+                  <p class="text-sm text-emerald-700 font-medium">Tinjau dan setujui/tolak permintaan penarikan dari
+                    Finance</p>
                 </div>
               </div>
             </div>
-            <div class="flex items-center gap-4">
-              <div class="hidden md:block px-4 py-2 bg-white rounded-lg shadow-sm border border-green-100">
-                <div class="flex items-center gap-2">
-                  <i class="fas fa-calendar-alt text-green-600"></i>
-                  <span class="text-sm font-medium text-gray-700">
-                    <%= new Date().toLocaleDateString('id-ID', { weekday: 'long' , year: 'numeric' , month: 'long' ,
-                      day: 'numeric' }) %>
-                  </span>
+
+            <!-- Premium Date & Live Status -->
+            <div class="flex items-center gap-3">
+              <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
+                <div class="w-8 h-8 gradient-secondary rounded-lg flex items-center justify-center shadow-lg">
+                  <i class="fas fa-calendar-alt text-white text-sm"></i>
+                </div>
+                <div>
+                  <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                    <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
+                  </p>
+                </div>
+              </div>
+
+              <div class="gradient-primary rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-xl relative shimmer">
+                <div class="relative">
+                  <i class="fas fa-bell text-white text-sm"></i>
+                  <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></span>
+                  <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
+                </div>
+                <div>
+                  <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                  <p class="text-xs font-bold text-white">Updates Real-time</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Kartu Statistik -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" id="statsContainer">
+          <!-- Premium Stats Cards - Ultra Modern -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-7 animate-scale-in">
             <!-- Penarikan Tertunda -->
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-yellow-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Menunggu Persetujuan</p>
-                  <p class="text-3xl font-bold text-gray-900 mb-2" id="pending-count">0</p>
-                  <div class="flex items-center gap-2">
-                    <span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">
-                      <i class="fas fa-clock mr-1"></i>Tertunda
-                    </span>
-                    <span class="text-xs text-gray-500">perlu ditinjau</span>
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-400/20 to-yellow-400/20 rounded-full -mr-10 -mt-10 animate-rotate-slow">
+              </div>
+              <div
+                class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-yellow-400/20 to-amber-400/20 rounded-full -ml-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Menunggu Persetujuan
+                      </p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900" id="pending-count">0</p>
+                      <span class="text-xs font-bold text-emerald-600">requests</span>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 mt-2">
+                      <div class="px-2 py-1 bg-amber-100 rounded-lg flex items-center gap-1">
+                        <i class="fas fa-clock text-[8px] text-amber-600"></i>
+                        <span class="text-[8px] font-extrabold text-amber-700">Perlu diproses</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+                    <i class="fas fa-hourglass-half text-white text-xl"></i>
                   </div>
                 </div>
-                <div class="w-14 h-14 gradient-warning rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-hourglass-half text-white text-2xl"></i>
-                </div>
-              </div>
-              <div class="mt-4 pt-4 border-t border-yellow-50">
-                <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-600">Total Jumlah</span>
-                  <span class="font-medium text-yellow-700" id="pending-amount">Rp 0</span>
+
+                <div class="mt-4 pt-3 border-t border-emerald-100/50">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                      <div class="relative">
+                        <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                          <i class="fas fa-money-bill-wave text-emerald-600 text-[10px]"></i>
+                        </div>
+                        <span
+                          class="absolute -top-1 -right-1 w-2 h-2 bg-amber-500 rounded-full border border-white"></span>
+                      </div>
+                      <div>
+                        <span class="text-[8px] font-medium text-gray-500">Total Jumlah</span>
+                        <p class="text-xs font-extrabold text-emerald-700" id="pending-amount">Rp 0</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-1">
+                      <div class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
+                      <span class="text-[7px] font-bold text-amber-700">Pending</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             <!-- Penarikan Disetujui -->
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Sudah Disetujui</p>
-                  <p class="text-3xl font-bold text-gray-900 mb-2" id="approved-count">0</p>
-                  <div class="flex items-center gap-2">
-                    <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-                      <i class="fas fa-check-circle mr-1"></i>Disetujui
-                    </span>
-                    <span class="text-xs text-gray-500">selesai diproses</span>
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-emerald-400/20 to-green-400/20 rounded-full -ml-10 -mt-10 animate-rotate-slow">
+              </div>
+              <div
+                class="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tr from-teal-400/20 to-emerald-400/20 rounded-full -mr-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Sudah Disetujui</p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900" id="approved-count">0</p>
+                      <span class="text-xs font-bold text-emerald-600">approved</span>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 mt-2">
+                      <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
+                        <i class="fas fa-check-circle text-[8px] text-green-600"></i>
+                        <span class="text-[8px] font-extrabold text-green-700">Telah diproses</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500">
+                    <i class="fas fa-check-circle text-white text-xl"></i>
                   </div>
                 </div>
-                <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-check-circle text-white text-2xl"></i>
-                </div>
-              </div>
-              <div class="mt-4 pt-4 border-t border-green-50">
-                <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-600">Total Jumlah</span>
-                  <span class="font-medium text-green-700" id="approved-amount">Rp 0</span>
+
+                <div class="mt-4 pt-3 border-t border-emerald-100/50">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                      <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                        <i class="fas fa-chart-line text-emerald-600 text-[10px]"></i>
+                      </div>
+                      <div>
+                        <span class="text-[8px] font-medium text-gray-500">Total Jumlah</span>
+                        <p class="text-xs font-extrabold text-emerald-700" id="approved-amount">Rp 0</p>
+                      </div>
+                    </div>
+
+                    <div class="w-12 h-12">
+                      <svg viewBox="0 0 36 36" class="w-12 h-12">
+                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none" stroke="#e2e8f0" stroke-width="3" stroke-dasharray="85, 100" />
+                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="85, 100" />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             <!-- Penarikan Ditolak -->
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-red-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Ditolak</p>
-                  <p class="text-3xl font-bold text-gray-900 mb-2" id="rejected-count">0</p>
-                  <div class="flex items-center gap-2">
-                    <span class="px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium">
-                      <i class="fas fa-times-circle mr-1"></i>Ditolak
-                    </span>
-                    <span class="text-xs text-gray-500">tidak disetujui</span>
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-400/20 to-rose-400/20 rounded-full -mr-10 -mt-10 animate-rotate-slow">
+              </div>
+              <div
+                class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-rose-400/20 to-red-400/20 rounded-full -ml-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Ditolak</p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900" id="rejected-count">0</p>
+                      <span class="text-xs font-bold text-emerald-600">rejected</span>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 mt-2">
+                      <div class="px-2 py-1 bg-red-100 rounded-lg flex items-center gap-1">
+                        <i class="fas fa-times-circle text-[8px] text-red-600"></i>
+                        <span class="text-[8px] font-extrabold text-red-700">Tidak disetujui</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:-rotate-6 transition-all duration-500">
+                    <i class="fas fa-times-circle text-white text-xl"></i>
                   </div>
                 </div>
-                <div class="w-14 h-14 gradient-danger rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-times-circle text-white text-2xl"></i>
-                </div>
-              </div>
-              <div class="mt-4 pt-4 border-t border-red-50">
-                <div class="flex items-center justify-between text-sm">
-                  <span class="text-gray-600">Total Jumlah</span>
-                  <span class="font-medium text-red-700" id="rejected-amount">Rp 0</span>
+
+                <div class="mt-4 pt-3 border-t border-emerald-100/50">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                      <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                        <i class="fas fa-calendar-alt text-emerald-600 text-[10px]"></i>
+                      </div>
+                      <div>
+                        <span class="text-[8px] font-medium text-gray-500">Total Jumlah</span>
+                        <p class="text-xs font-extrabold text-emerald-700" id="rejected-amount">Rp 0</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-1">
+                      <i class="fas fa-trend-down text-red-600 text-xs"></i>
+                      <span class="text-[7px] font-bold text-red-700">-2.5%</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Navigasi Tab -->
-          <div class="mb-6">
-            <div class="glass-card rounded-2xl shadow-lg border border-green-100 overflow-hidden">
-              <div class="flex flex-col md:flex-row">
-                <button onclick="switchTab('pending')"
-                  class="tab-btn tab-active flex-1 px-6 py-4 text-center font-semibold text-green-600 bg-white transition-all duration-300 relative">
-                  <div class="flex items-center justify-center gap-2">
-                    <i class="fas fa-hourglass-half"></i>
-                    <span>Menunggu Persetujuan</span>
-                    <span id="pending-count-badge"
-                      class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium">0</span>
-                  </div>
+          <!-- Premium Tabs -->
+          <div class="glass-futuristic rounded-2xl p-1 border border-white/50 mb-7 relative overflow-hidden group">
+            <div
+              class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-200/20 to-green-300/20 rounded-full blur-3xl -mr-20 -mt-20">
+            </div>
+            <div
+              class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-teal-200/20 to-emerald-200/20 rounded-full blur-3xl -ml-20 -mb-20">
+            </div>
+
+            <div class="relative z-10">
+              <div class="flex gap-2">
+                <button onclick="switchTab('pending')" id="tab-pending"
+                  class="tab-btn tab-active flex-1 px-6 py-3.5 rounded-xl text-sm font-extrabold flex items-center justify-center gap-2 transition-all duration-300">
+                  <i class="fas fa-hourglass-half"></i>
+                  <span>Menunggu</span>
+                  <span id="pending-count-badge"
+                    class="px-2.5 py-1 bg-white/30 text-white rounded-lg text-[9px] font-extrabold">0</span>
                 </button>
-                <button onclick="switchTab('approved')"
-                  class="tab-btn flex-1 px-6 py-4 text-center font-semibold text-gray-600 hover:text-gray-900 bg-green-50 transition-all duration-300">
-                  <div class="flex items-center justify-center gap-2">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Sudah Disetujui</span>
-                    <span id="approved-count-badge"
-                      class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">0</span>
-                  </div>
+                <button onclick="switchTab('approved')" id="tab-approved"
+                  class="tab-btn tab-inactive flex-1 px-6 py-3.5 rounded-xl text-sm font-extrabold flex items-center justify-center gap-2 transition-all duration-300">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Disetujui</span>
+                  <span id="approved-count-badge"
+                    class="px-2.5 py-1 bg-white/30 text-white rounded-lg text-[9px] font-extrabold">0</span>
                 </button>
-                <button onclick="switchTab('rejected')"
-                  class="tab-btn flex-1 px-6 py-4 text-center font-semibold text-gray-600 hover:text-gray-900 bg-green-50 transition-all duration-300">
-                  <div class="flex items-center justify-center gap-2">
-                    <i class="fas fa-times-circle"></i>
-                    <span>Ditolak</span>
-                    <span id="rejected-count-badge"
-                      class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-medium">0</span>
-                  </div>
+                <button onclick="switchTab('rejected')" id="tab-rejected"
+                  class="tab-btn tab-inactive flex-1 px-6 py-3.5 rounded-xl text-sm font-extrabold flex items-center justify-center gap-2 transition-all duration-300">
+                  <i class="fas fa-times-circle"></i>
+                  <span>Ditolak</span>
+                  <span id="rejected-count-badge"
+                    class="px-2.5 py-1 bg-white/30 text-white rounded-lg text-[9px] font-extrabold">0</span>
                 </button>
               </div>
             </div>
@@ -282,26 +748,40 @@
 
           <!-- Tab Tertunda -->
           <div id="pending-tab" class="tab-content fade-in">
-            <div class="glass-card rounded-2xl shadow-lg border border-green-100 overflow-hidden">
-              <div class="px-6 py-4 gradient-warning">
-                <div class="flex items-center justify-between">
-                  <div>
-                    <h2 class="text-lg font-semibold text-white">Permintaan Penarikan Tertunda</h2>
-                    <p class="text-yellow-100 text-sm mt-1">Perlu segera diproses</p>
+            <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
+              <div class="gradient-pending px-5 py-4 flex items-center justify-between border-b border-white/30">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
+                    <i class="fas fa-hourglass-half text-white"></i>
                   </div>
-                  <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-exclamation-triangle text-white"></i>
+                  <div>
+                    <h2 class="text-base font-extrabold text-white">Permintaan Penarikan Tertunda</h2>
+                    <p class="text-yellow-100 text-[10px] font-medium mt-0.5">Perlu segera diproses</p>
                   </div>
                 </div>
+                <span
+                  class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                  <i class="fas fa-clock mr-1"></i>
+                  Real-time
+                </span>
               </div>
-              <div class="p-0">
-                <div id="pending-list" class="divide-y divide-green-100">
+              <div class="p-0 bg-white/30 backdrop-blur">
+                <div id="pending-list" class="divide-y divide-white/30">
                   <div class="p-12 text-center">
                     <div class="flex flex-col items-center justify-center">
-                      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-spinner fa-spin text-green-600 text-xl"></i>
+                      <div class="relative">
+                        <div
+                          class="w-20 h-20 gradient-pending rounded-full flex items-center justify-center mb-4 shadow-xl float-slow">
+                          <i class="fas fa-spinner fa-spin text-2xl text-white"></i>
+                        </div>
+                        <div
+                          class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                          <span class="w-2 h-2 bg-amber-500 rounded-full pulse-premium"></span>
+                        </div>
                       </div>
-                      <p class="text-gray-600 font-medium">Memuat data...</p>
+                      <p class="text-base font-extrabold text-gray-900 mb-1">Memuat data...</p>
+                      <p class="text-xs text-emerald-700 font-medium">Mohon tunggu sebentar</p>
                     </div>
                   </div>
                 </div>
@@ -311,26 +791,40 @@
 
           <!-- Tab Disetujui -->
           <div id="approved-tab" class="tab-content hidden">
-            <div class="glass-card rounded-2xl shadow-lg border border-green-100 overflow-hidden">
-              <div class="px-6 py-4 gradient-primary">
-                <div class="flex items-center justify-between">
-                  <div>
-                    <h2 class="text-lg font-semibold text-white">Penarikan yang Disetujui</h2>
-                    <p class="text-green-100 text-sm mt-1">Telah disetujui dan diproses</p>
-                  </div>
-                  <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+            <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
+              <div class="gradient-approved px-5 py-4 flex items-center justify-between border-b border-white/30">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
                     <i class="fas fa-check-circle text-white"></i>
                   </div>
+                  <div>
+                    <h2 class="text-base font-extrabold text-white">Penarikan yang Disetujui</h2>
+                    <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Telah disetujui dan diproses</p>
+                  </div>
                 </div>
+                <span
+                  class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                  <i class="fas fa-check-circle mr-1"></i>
+                  Approved
+                </span>
               </div>
-              <div class="p-0">
-                <div id="approved-list" class="divide-y divide-green-100">
+              <div class="p-0 bg-white/30 backdrop-blur">
+                <div id="approved-list" class="divide-y divide-white/30">
                   <div class="p-12 text-center">
                     <div class="flex flex-col items-center justify-center">
-                      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-spinner fa-spin text-green-600 text-xl"></i>
+                      <div class="relative">
+                        <div
+                          class="w-20 h-20 gradient-approved rounded-full flex items-center justify-center mb-4 shadow-xl float-slow">
+                          <i class="fas fa-spinner fa-spin text-2xl text-white"></i>
+                        </div>
+                        <div
+                          class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                          <span class="w-2 h-2 bg-emerald-500 rounded-full pulse-premium"></span>
+                        </div>
                       </div>
-                      <p class="text-gray-600 font-medium">Memuat data...</p>
+                      <p class="text-base font-extrabold text-gray-900 mb-1">Memuat data...</p>
+                      <p class="text-xs text-emerald-700 font-medium">Mohon tunggu sebentar</p>
                     </div>
                   </div>
                 </div>
@@ -340,174 +834,216 @@
 
           <!-- Tab Ditolak -->
           <div id="rejected-tab" class="tab-content hidden">
-            <div class="glass-card rounded-2xl shadow-lg border border-green-100 overflow-hidden">
-              <div class="px-6 py-4 gradient-danger">
-                <div class="flex items-center justify-between">
-                  <div>
-                    <h2 class="text-lg font-semibold text-white">Penarikan yang Ditolak</h2>
-                    <p class="text-red-100 text-sm mt-1">Tidak disetujui oleh admin</p>
-                  </div>
-                  <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+            <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
+              <div class="gradient-rejected px-5 py-4 flex items-center justify-between border-b border-white/30">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
                     <i class="fas fa-times-circle text-white"></i>
                   </div>
+                  <div>
+                    <h2 class="text-base font-extrabold text-white">Penarikan yang Ditolak</h2>
+                    <p class="text-rose-100 text-[10px] font-medium mt-0.5">Tidak disetujui oleh admin</p>
+                  </div>
                 </div>
+                <span
+                  class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                  <i class="fas fa-times-circle mr-1"></i>
+                  Rejected
+                </span>
               </div>
-              <div class="p-0">
-                <div id="rejected-list" class="divide-y divide-green-100">
+              <div class="p-0 bg-white/30 backdrop-blur">
+                <div id="rejected-list" class="divide-y divide-white/30">
                   <div class="p-12 text-center">
                     <div class="flex flex-col items-center justify-center">
-                      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-spinner fa-spin text-green-600 text-xl"></i>
+                      <div class="relative">
+                        <div
+                          class="w-20 h-20 gradient-rejected rounded-full flex items-center justify-center mb-4 shadow-xl float-slow">
+                          <i class="fas fa-spinner fa-spin text-2xl text-white"></i>
+                        </div>
+                        <div
+                          class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                          <span class="w-2 h-2 bg-red-500 rounded-full pulse-premium"></span>
+                        </div>
                       </div>
-                      <p class="text-gray-600 font-medium">Memuat data...</p>
+                      <p class="text-base font-extrabold text-gray-900 mb-1">Memuat data...</p>
+                      <p class="text-xs text-emerald-700 font-medium">Mohon tunggu sebentar</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </main>
 
-      <!-- Modal Detail -->
-      <div id="detail-modal" class="hidden fixed inset-0 modal-backdrop z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden flex flex-col">
-          <div class="bg-gradient-to-r from-green-600 to-emerald-700 px-6 py-5">
-            <div class="flex justify-between items-center">
-              <div>
-                <h3 class="text-xl font-bold text-white" id="detail-title">
-                  <i class="fas fa-file-invoice-dollar mr-2"></i>
-                  Detail Penarikan
-                </h3>
-                <p class="text-green-100 text-sm mt-1">ID Penarikan: #<span id="detail-id">-</span></p>
-              </div>
-              <button onclick="closeDetailModal()"
-                class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center hover:bg-white/30 transition">
-                <i class="fas fa-times text-white"></i>
+          <!-- Pagination Premium -->
+          <div class="mt-8 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span
+                class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                Menampilkan <span id="startEntry">1</span> - <span id="endEntry">10</span> dari <span
+                  id="totalEntries">0</span> penarikan
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all disabled:opacity-50"
+                disabled>
+                <i class="fas fa-chevron-left text-xs"></i>
+              </button>
+              <button
+                class="w-8 h-8 rounded-lg gradient-primary text-white flex items-center justify-center text-xs font-bold shadow-lg">1</button>
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">2</button>
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">3</button>
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all">
+                <i class="fas fa-chevron-right text-xs"></i>
               </button>
             </div>
           </div>
-          <div id="detail-content" class="p-6 overflow-y-auto flex-1">
+        </div>
+      </main>
+
+      <!-- Modal Detail Premium - Ultra Modern -->
+      <div id="detail-modal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4">
+        <div
+          class="bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl max-w-4xl w-full max-h-[85vh] overflow-hidden flex flex-col border border-white/50">
+          <div class="gradient-primary px-5 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
+                <i class="fas fa-file-invoice-dollar text-white text-sm"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-extrabold text-white" id="detail-title">Detail Penarikan</h3>
+                <p class="text-emerald-100 text-xs mt-0.5">ID Penarikan: #<span id="detail-id">-</span></p>
+              </div>
+            </div>
+            <button onclick="closeDetailModal()"
+              class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition-all duration-300 border border-white/30">
+              <i class="fas fa-times text-white text-sm"></i>
+            </button>
+          </div>
+          <div id="detail-content" class="p-5 overflow-y-auto flex-1 modern-scrollbar">
             <!-- Konten dimuat secara dinamis -->
           </div>
         </div>
       </div>
 
-      <!-- Modal Setujui -->
-      <div id="approve-modal" class="hidden fixed inset-0 modal-backdrop z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full">
-          <div class="bg-gradient-to-r from-green-600 to-emerald-700 px-6 py-5 rounded-t-2xl">
+      <!-- Modal Setujui Premium -->
+      <div id="approve-modal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4">
+        <div class="bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl max-w-lg w-full border border-white/50">
+          <div class="gradient-approved px-5 py-4 rounded-t-2xl">
             <div class="flex items-center gap-3">
-              <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+              <div
+                class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
                 <i class="fas fa-check-circle text-white text-xl"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-white">Setujui Penarikan</h3>
-                <p class="text-green-100 text-sm mt-1">Konfirmasi persetujuan penarikan ini</p>
+                <h3 class="text-base font-extrabold text-white">Setujui Penarikan</h3>
+                <p class="text-emerald-100 text-[10px] mt-0.5">Konfirmasi persetujuan penarikan ini</p>
               </div>
             </div>
           </div>
-          <div class="p-6">
-            <div id="approve-info" class="mb-6 glass-card rounded-xl p-4 border border-green-100">
+          <div class="p-5">
+            <div id="approve-info" class="mb-5 glass-futuristic rounded-xl p-4 border border-white/50">
               <div class="flex items-center gap-3 mb-3">
-                <div
-                  class="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
-                  <i class="fas fa-user text-green-600"></i>
+                <div class="w-10 h-10 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
+                  <i class="fas fa-user text-emerald-600"></i>
                 </div>
                 <div>
-                  <p class="font-medium text-gray-900">Affiliate:</p>
-                  <p class="text-lg font-semibold text-gray-900" id="approve-affiliate">-</p>
+                  <p class="text-[9px] font-bold text-emerald-700 uppercase tracking-wider">Affiliate:</p>
+                  <p class="text-sm font-extrabold text-gray-900" id="approve-affiliate">-</p>
                 </div>
               </div>
               <div class="flex items-center gap-3">
-                <div
-                  class="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
-                  <i class="fas fa-money-bill-wave text-green-600"></i>
+                <div class="w-10 h-10 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
+                  <i class="fas fa-money-bill-wave text-emerald-600"></i>
                 </div>
                 <div>
-                  <p class="font-medium text-gray-900">Jumlah:</p>
-                  <p class="text-2xl font-bold text-green-700" id="approve-amount">Rp 0</p>
+                  <p class="text-[9px] font-bold text-emerald-700 uppercase tracking-wider">Jumlah:</p>
+                  <p class="text-xl font-extrabold text-emerald-700" id="approve-amount">Rp 0</p>
                 </div>
               </div>
             </div>
-            <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Catatan (opsional)</label>
+            <div class="mb-5">
+              <label class="block text-xs font-extrabold text-emerald-800 mb-2">Catatan (opsional)</label>
               <textarea id="approve-note"
-                class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+                class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium resize-none"
                 rows="3" placeholder="Tambahkan catatan persetujuan..."></textarea>
-              <p class="text-xs text-gray-500 mt-2">Catatan akan dikirim ke affiliate sebagai notifikasi</p>
+              <p class="text-[9px] text-gray-500 mt-2">Catatan akan dikirim ke affiliate sebagai notifikasi</p>
             </div>
           </div>
-          <div class="bg-gray-50 border-t px-6 py-5 rounded-b-2xl flex gap-3">
+          <div class="bg-white/40 backdrop-blur border-t border-white/30 px-5 py-4 rounded-b-2xl flex gap-3">
             <button onclick="closeApproveModal()"
-              class="flex-1 px-4 py-3 border border-gray-300 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition-all duration-200 hover:border-gray-400">
-              <i class="fas fa-times mr-2"></i>
+              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-xs font-extrabold flex items-center justify-center gap-1 border border-white/60">
+              <i class="fas fa-times"></i>
               Batal
             </button>
             <button onclick="submitApproval()"
-              class="flex-1 px-4 py-3 gradient-primary text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200">
-              <i class="fas fa-check mr-2"></i>
-              Setujui Sekarang
+              class="flex-1 gradient-approved text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-xs font-extrabold shadow-lg flex items-center justify-center gap-1">
+              <i class="fas fa-check"></i>
+              Setujui
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Modal Tolak -->
-      <div id="reject-modal" class="hidden fixed inset-0 modal-backdrop z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full">
-          <div class="bg-gradient-to-r from-red-600 to-red-700 px-6 py-5 rounded-t-2xl">
+      <!-- Modal Tolak Premium -->
+      <div id="reject-modal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4">
+        <div class="bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl max-w-lg w-full border border-white/50">
+          <div class="bg-gradient-to-r from-red-600 to-rose-600 px-5 py-4 rounded-t-2xl">
             <div class="flex items-center gap-3">
-              <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+              <div
+                class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
                 <i class="fas fa-times-circle text-white text-xl"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-white">Tolak Penarikan</h3>
-                <p class="text-red-100 text-sm mt-1">Konfirmasi penolakan penarikan ini</p>
+                <h3 class="text-base font-extrabold text-white">Tolak Penarikan</h3>
+                <p class="text-rose-100 text-[10px] mt-0.5">Konfirmasi penolakan penarikan ini</p>
               </div>
             </div>
           </div>
-          <div class="p-6">
-            <div id="reject-info" class="mb-6 glass-card rounded-xl p-4 border border-red-100">
+          <div class="p-5">
+            <div id="reject-info" class="mb-5 glass-futuristic rounded-xl p-4 border border-white/50">
               <div class="flex items-center gap-3 mb-3">
-                <div
-                  class="w-10 h-10 bg-gradient-to-br from-red-100 to-red-50 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
                   <i class="fas fa-user text-red-600"></i>
                 </div>
                 <div>
-                  <p class="font-medium text-gray-900">Affiliate:</p>
-                  <p class="text-lg font-semibold text-gray-900" id="reject-affiliate">-</p>
+                  <p class="text-[9px] font-bold text-emerald-700 uppercase tracking-wider">Affiliate:</p>
+                  <p class="text-sm font-extrabold text-gray-900" id="reject-affiliate">-</p>
                 </div>
               </div>
               <div class="flex items-center gap-3">
-                <div
-                  class="w-10 h-10 bg-gradient-to-br from-red-100 to-red-50 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
                   <i class="fas fa-money-bill-wave text-red-600"></i>
                 </div>
                 <div>
-                  <p class="font-medium text-gray-900">Jumlah:</p>
-                  <p class="text-2xl font-bold text-red-700" id="reject-amount">Rp 0</p>
+                  <p class="text-[9px] font-bold text-emerald-700 uppercase tracking-wider">Jumlah:</p>
+                  <p class="text-xl font-extrabold text-red-700" id="reject-amount">Rp 0</p>
                 </div>
               </div>
             </div>
-            <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Alasan Penolakan *</label>
+            <div class="mb-5">
+              <label class="block text-xs font-extrabold text-emerald-800 mb-2">Alasan Penolakan *</label>
               <textarea id="reject-reason"
-                class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
+                class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-transparent text-gray-900 text-xs font-medium resize-none"
                 rows="4" placeholder="Jelaskan mengapa penarikan ini ditolak..." required></textarea>
-              <p class="text-xs text-gray-500 mt-2">Alasan akan dikirim ke affiliate sebagai notifikasi</p>
+              <p class="text-[9px] text-gray-500 mt-2">Alasan akan dikirim ke affiliate sebagai notifikasi</p>
             </div>
           </div>
-          <div class="bg-gray-50 border-t px-6 py-5 rounded-b-2xl flex gap-3">
+          <div class="bg-white/40 backdrop-blur border-t border-white/30 px-5 py-4 rounded-b-2xl flex gap-3">
             <button onclick="closeRejectModal()"
-              class="flex-1 px-4 py-3 border border-gray-300 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition-all duration-200 hover:border-gray-400">
-              <i class="fas fa-times mr-2"></i>
+              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-xs font-extrabold flex items-center justify-center gap-1 border border-white/60">
+              <i class="fas fa-times"></i>
               Batal
             </button>
             <button onclick="submitReject()"
-              class="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200">
-              <i class="fas fa-ban mr-2"></i>
-              Tolak Sekarang
+              class="flex-1 bg-gradient-to-r from-red-600 to-rose-600 text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-xs font-extrabold shadow-lg flex items-center justify-center gap-1">
+              <i class="fas fa-ban"></i>
+              Tolak
             </button>
           </div>
         </div>
@@ -515,32 +1051,98 @@
 
       <script>
         let currentPayoutId = null;
+        let currentTab = 'pending';
         const token = localStorage.getItem("token");
 
-        // Ganti tab dengan animasi
+        // ============================================================
+        // FUNGSI TAB
+        // ============================================================
+
         function switchTab(tab) {
+          currentTab = tab;
+
+          // Sembunyikan semua tab content
           document.querySelectorAll(".tab-content").forEach((el) => {
             el.classList.add("hidden");
-            el.classList.remove("fade-in");
           });
 
-          document.querySelectorAll(".tab-btn").forEach((el) => {
-            el.classList.remove("tab-active", "text-green-600", "bg-white");
-            el.classList.add("text-gray-600", "bg-green-50");
+          // Update tab buttons
+          document.querySelectorAll(".tab-btn").forEach((btn) => {
+            btn.classList.remove("tab-active");
+            btn.classList.add("tab-inactive");
           });
 
           // Aktifkan tab yang dipilih
-          event.target.closest(".tab-btn").classList.add("tab-active", "text-green-600", "bg-white");
-          event.target.closest(".tab-btn").classList.remove("text-gray-600", "bg-green-50");
+          document.getElementById(`tab-${tab}`).classList.remove("tab-inactive");
+          document.getElementById(`tab-${tab}`).classList.add("tab-active");
 
-          const targetTab = document.getElementById(tab + "-tab");
-          targetTab.classList.remove("hidden");
-          targetTab.classList.add("fade-in");
+          // Tampilkan tab content yang dipilih
+          document.getElementById(`${tab}-tab`).classList.remove("hidden");
+          document.getElementById(`${tab}-tab`).classList.add("fade-in");
 
           loadWithdrawals(tab);
         }
 
-        // Muat penarikan dengan desain baru
+        // ============================================================
+        // FUNGSI NOTIFIKASI
+        // ============================================================
+
+        function showSuccess(message) {
+          const toast = document.createElement('div');
+          toast.className = 'notification-toast';
+          toast.innerHTML = `
+            <div class="glass-futuristic rounded-2xl p-4 shadow-2xl border-l-4 border-green-500 max-w-sm">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 gradient-approved rounded-xl flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-check-circle text-white text-lg"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="font-extrabold text-gray-900 text-sm">Sukses!</p>
+                  <p class="text-xs text-gray-600 mt-1">${message}</p>
+                </div>
+                <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                  <i class="fas fa-times text-xs"></i>
+                </button>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(toast);
+
+          setTimeout(() => {
+            toast.remove();
+          }, 5000);
+        }
+
+        function showError(message) {
+          const toast = document.createElement('div');
+          toast.className = 'notification-toast';
+          toast.innerHTML = `
+            <div class="glass-futuristic rounded-2xl p-4 shadow-2xl border-l-4 border-red-500 max-w-sm">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-gradient-to-r from-red-600 to-rose-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-exclamation-triangle text-white text-lg"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="font-extrabold text-gray-900 text-sm">Error!</p>
+                  <p class="text-xs text-gray-600 mt-1">${message}</p>
+                </div>
+                <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                  <i class="fas fa-times text-xs"></i>
+                </button>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(toast);
+
+          setTimeout(() => {
+            toast.remove();
+          }, 5000);
+        }
+
+        // ============================================================
+        // FUNGSI UTAMA
+        // ============================================================
+
         async function loadWithdrawals(status) {
           try {
             const response = await fetch(
@@ -571,42 +1173,51 @@
             document.getElementById(status + "-amount").textContent =
               "Rp " + totalAmount.toLocaleString("id-ID");
 
+            // Update total entries untuk pagination
+            document.getElementById('totalEntries').textContent = result.data.length;
+            document.getElementById('endEntry').textContent = Math.min(10, result.data.length);
+
             if (result.data.length === 0) {
               document.getElementById(listId).innerHTML = `
-              <div class="p-12 text-center">
-                <div class="flex flex-col items-center justify-center">
-                  <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-50 rounded-full flex items-center justify-center mb-6 shadow-lg">
-                    <i class="fas fa-inbox text-gray-400 text-2xl"></i>
+                <div class="p-12 text-center">
+                  <div class="flex flex-col items-center justify-center">
+                    <div class="relative">
+                      <div class="w-20 h-20 bg-white/60 backdrop-blur rounded-full flex items-center justify-center mb-6 border-4 border-white/50 float-slow">
+                        <i class="fas fa-inbox text-3xl text-emerald-300"></i>
+                      </div>
+                      <div class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                        <span class="w-2 h-2 bg-amber-500 rounded-full pulse-premium"></span>
+                      </div>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-gray-900 mb-2">Tidak ada data</h3>
+                    <p class="text-sm text-emerald-700 font-medium">Tidak ada penarikan dengan status ini</p>
                   </div>
-                  <h3 class="text-lg font-semibold text-gray-700 mb-2">Tidak ada data</h3>
-                  <p class="text-gray-500">Tidak ada penarikan dengan status ini</p>
                 </div>
-              </div>
-            `;
+              `;
               return;
             }
 
             document.getElementById(listId).innerHTML = result.data
               .map(
                 (payout, index) => `
-                <div class="p-5 hover:bg-green-50 transition-all duration-200 cursor-pointer border-b border-green-100 last:border-b-0" 
+                <div class="p-5 hover:bg-white/40 transition-all duration-300 cursor-pointer border-b border-white/30 last:border-b-0 bg-white/20 backdrop-blur" 
                      onclick="viewDetail(${payout.id})"
-                     style="animation-delay: ${index * 50}ms">
-                  <div class="flex items-start justify-between mb-4">
+                     style="animation: fadeIn 0.3s ease-out ${index * 0.05}s both">
+                  <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                     <div class="flex items-start gap-4 flex-1">
-                      <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center shadow-sm">
-                        <i class="fas fa-user-tie text-green-600"></i>
+                      <div class="w-12 h-12 bg-white/60 backdrop-blur rounded-xl flex items-center justify-center shadow-lg border border-white/60 flex-shrink-0">
+                        <i class="fas fa-user-tie text-emerald-600 text-lg"></i>
                       </div>
                       <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-3 mb-1">
-                          <h4 class="font-bold text-gray-900 text-lg truncate">${payout.affiliate_name}</h4>
-                          <span class="px-3 py-1 rounded-full text-xs font-medium ${getStatusBadge(payout.status)}">
-                            <i class="fas fa-circle text-xs mr-1.5"></i>
+                        <div class="flex flex-wrap items-center gap-2 mb-1">
+                          <h4 class="font-extrabold text-gray-900 text-base truncate">${payout.affiliate_name}</h4>
+                          <span class="px-3 py-1.5 rounded-lg text-[9px] font-extrabold ${getStatusBadge(payout.status)} border border-white/30 flex items-center gap-1">
+                            <i class="fas fa-circle text-[6px] mr-1"></i>
                             ${getStatusLabel(payout.status)}
                           </span>
                         </div>
-                        <p class="text-sm text-gray-600 mb-2">ID: #${payout.id} • ${payout.commission_count} komisi</p>
-                        <p class="text-xs text-gray-500 flex items-center gap-2">
+                        <p class="text-xs text-gray-600 mb-2 font-medium">ID: #${payout.id} • ${payout.commission_count} komisi</p>
+                        <p class="text-[10px] text-gray-500 flex items-center gap-2">
                           <i class="fas fa-calendar-alt"></i>
                           Diajukan: ${new Date(payout.created_at).toLocaleDateString("id-ID", {
                   day: 'numeric',
@@ -617,22 +1228,26 @@
                 })}
                         </p>
                         ${payout.finance_note ? `
-                          <p class="text-xs mt-1 text-blue-700">Catatan Finance: ${payout.finance_note.length > 120 ? payout.finance_note.substring(0,120) + '...' : payout.finance_note}${payout.submitted_by_name ? ' • oleh ' + payout.submitted_by_name : (payout.submitted_by ? ' • oleh ID:' + payout.submitted_by : '')}</p>
+                          <p class="text-[9px] mt-2 text-blue-700 bg-blue-50/80 backdrop-blur px-3 py-2 rounded-lg border border-blue-200/50">
+                            <i class="fas fa-sticky-note mr-1"></i>
+                            Catatan Finance: ${payout.finance_note.length > 120 ? payout.finance_note.substring(0, 120) + '...' : payout.finance_note}
+                            ${payout.submitted_by_name ? `<span class="text-gray-500 block mt-1">— oleh ${payout.submitted_by_name}</span>` : (payout.submitted_by ? `<span class="text-gray-500 block mt-1">— oleh ID: ${payout.submitted_by}</span>` : '')}
+                          </p>
                         ` : ''}
                       </div>
                     </div>
-                    <div class="text-right ml-4">
-                      <p class="font-bold text-2xl text-gray-900 mb-1">Rp ${parseFloat(payout.total_amount).toLocaleString("id-ID")}</p>
+                    <div class="text-right lg:ml-4 flex flex-col items-end">
+                      <p class="font-extrabold text-xl text-gray-900 mb-2">Rp ${parseFloat(payout.total_amount).toLocaleString("id-ID")}</p>
                       ${status === "pending" ? `
-                        <div class="flex gap-2 mt-3">
-                          <button class="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition duration-200 flex items-center gap-2 text-sm font-medium"
+                        <div class="flex gap-2">
+                          <button class="px-4 py-2 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg hover:opacity-90 transition-all duration-300 text-[10px] font-extrabold shadow-lg flex items-center gap-1 border border-white/30"
                                   onclick="event.stopPropagation(); openRejectModal(${payout.id}, '${payout.affiliate_name}', '${payout.total_amount}')">
-                            <i class="fas fa-times"></i>
+                            <i class="fas fa-times text-[8px]"></i>
                             Tolak
                           </button>
-                          <button class="px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition duration-200 flex items-center gap-2 text-sm font-medium"
+                          <button class="px-4 py-2 gradient-approved text-white rounded-lg hover:opacity-90 transition-all duration-300 text-[10px] font-extrabold shadow-lg flex items-center gap-1 border border-white/30"
                                   onclick="event.stopPropagation(); openApproveModal(${payout.id}, '${payout.affiliate_name}', '${payout.total_amount}')">
-                            <i class="fas fa-check"></i>
+                            <i class="fas fa-check text-[8px]"></i>
                             Setujui
                           </button>
                         </div>
@@ -649,7 +1264,10 @@
           }
         }
 
-        // Lihat detail dengan desain baru
+        // ============================================================
+        // FUNGSI DETAIL
+        // ============================================================
+
         async function viewDetail(payoutId) {
           try {
             const response = await fetch(
@@ -672,65 +1290,71 @@
               const pf = payout.proof_file;
               if (pf.toLowerCase().endsWith('.pdf')) {
                 proofHtml = `
-                <div class="glass-card rounded-xl p-4 border border-gray-200 md:col-span-2">
-                  <h4 class="font-semibold text-gray-900 mb-3">Bukti Pembayaran</h4>
-                  <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
-                    <i class="fas fa-file-pdf text-red-600 text-4xl mb-3"></i>
-                    <p class="text-gray-700 font-semibold mb-2">File PDF</p>
-                    <a href="${pf}" target="_blank" class="w-full px-4 py-2 gradient-info text-white rounded-lg font-medium hover:shadow-lg transition text-center inline-block">Buka File PDF</a>
+                  <div class="glass-futuristic rounded-xl p-4 border border-white/50 md:col-span-2">
+                    <h4 class="text-xs font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
+                      <i class="fas fa-file-pdf text-red-600"></i>
+                      Bukti Pembayaran
+                    </h4>
+                    <div class="bg-red-50/80 backdrop-blur border border-red-200/50 rounded-xl p-4 text-center">
+                      <i class="fas fa-file-pdf text-red-600 text-3xl mb-2"></i>
+                      <p class="text-xs font-extrabold text-gray-900 mb-2">File PDF</p>
+                      <a href="${pf}" target="_blank" class="w-full px-4 py-2 gradient-info text-white rounded-lg text-[10px] font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg inline-block">Buka File PDF</a>
+                    </div>
                   </div>
-                </div>
-              `;
+                `;
               } else {
                 proofHtml = `
-                <div class="glass-card rounded-xl p-4 border border-gray-200 md:col-span-2">
-                  <h4 class="font-semibold text-gray-900 mb-3">Bukti Pembayaran</h4>
-                  <div class="text-center">
-                    <img src="${pf}" alt="Bukti Transfer" class="w-full rounded-xl border border-gray-300 mb-3">
-                    <a href="${pf}" target="_blank" class="w-full px-4 py-2 gradient-info text-white rounded-lg font-medium hover:shadow-lg transition text-center inline-block">Lihat Bukti (Buka di tab baru)</a>
+                  <div class="glass-futuristic rounded-xl p-4 border border-white/50 md:col-span-2">
+                    <h4 class="text-xs font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
+                      <i class="fas fa-image text-emerald-600"></i>
+                      Bukti Pembayaran
+                    </h4>
+                    <div class="text-center">
+                      <img src="${pf}" alt="Bukti Transfer" class="w-full rounded-xl border border-white/50 mb-2">
+                      <a href="${pf}" target="_blank" class="w-full px-4 py-2 gradient-info text-white rounded-lg text-[10px] font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg inline-block">Lihat Bukti (Buka di tab baru)</a>
+                    </div>
                   </div>
-                </div>
-              `;
+                `;
               }
             }
 
             let detailHTML = `
-            <div class="space-y-6">
-              <!-- Kartu Status -->
-              <div class="glass-card rounded-xl p-4 border ${getStatusBorder(payout.status)}">
-                <div class="flex items-center justify-between">
-                  <div>
-                    <p class="text-sm font-medium text-gray-600">Status Penarikan</p>
-                    <p class="text-lg font-bold text-gray-900">${getStatusLabel(payout.status)}</p>
+              <div class="space-y-4">
+                <!-- Kartu Status -->
+                <div class="glass-futuristic rounded-xl p-4 border ${getStatusBorder(payout.status)}">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Status Penarikan</p>
+                      <p class="text-sm font-extrabold text-gray-900">${getStatusLabel(payout.status)}</p>
+                    </div>
+                    <span class="px-4 py-2 rounded-lg text-[10px] font-extrabold ${getStatusFullBadge(payout.status)} border border-white/30 flex items-center gap-1">
+                      <i class="fas ${getStatusIcon(payout.status)} text-[8px]"></i>
+                      ${getStatusLabel(payout.status)}
+                    </span>
                   </div>
-                  <span class="px-4 py-2 rounded-lg ${getStatusFullBadge(payout.status)}">
-                    <i class="fas ${getStatusIcon(payout.status)} mr-2"></i>
-                    ${getStatusLabel(payout.status)}
-                  </span>
                 </div>
-              </div>
 
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Kartu Info Affiliate -->
-                <div class="glass-card rounded-xl p-5 border border-green-100">
-                  <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 gradient-primary rounded-lg flex items-center justify-center">
-                      <i class="fas fa-user-tie text-white"></i>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <!-- Kartu Info Affiliate -->
+                  <div class="glass-futuristic rounded-xl p-4 border border-white/50">
+                    <div class="flex items-center gap-2 mb-3">
+                      <div class="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-tie text-white text-xs"></i>
+                      </div>
+                      <h4 class="text-xs font-extrabold text-gray-900">Informasi Affiliate</h4>
                     </div>
-                    <h4 class="font-semibold text-gray-900">Informasi Affiliate</h4>
-                  </div>
-                  <div class="space-y-3">
-                    <div>
-                      <p class="text-sm text-gray-600">Nama Affiliate</p>
-                      <p class="font-medium text-gray-900">${payout.affiliate_name}</p>
-                    </div>
-                    <div>
-                      <p class="text-sm text-gray-600">Email</p>
-                      <p class="font-medium text-gray-900">${payout.affiliate_email}</p>
-                    </div>
-                    <div>
-                      <p class="text-sm text-gray-600">Tanggal Permohonan</p>
-                      <p class="font-medium text-gray-900">${new Date(payout.created_at).toLocaleString("id-ID", {
+                    <div class="space-y-2 text-[10px]">
+                      <div>
+                        <p class="font-bold text-emerald-700">Nama Affiliate</p>
+                        <p class="font-extrabold text-gray-900">${payout.affiliate_name}</p>
+                      </div>
+                      <div>
+                        <p class="font-bold text-emerald-700">Email</p>
+                        <p class="font-extrabold text-gray-900">${payout.affiliate_email}</p>
+                      </div>
+                      <div>
+                        <p class="font-bold text-emerald-700">Tanggal Permohonan</p>
+                        <p class="font-extrabold text-gray-900">${new Date(payout.created_at).toLocaleString("id-ID", {
               weekday: 'long',
               day: 'numeric',
               month: 'long',
@@ -738,113 +1362,113 @@
               hour: '2-digit',
               minute: '2-digit'
             })}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Kartu Info Penarikan -->
-                <div class="glass-card rounded-xl p-5 border border-green-100">
-                  <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 gradient-secondary rounded-lg flex items-center justify-center">
-                      <i class="fas fa-money-bill-wave text-white"></i>
-                    </div>
-                    <h4 class="font-semibold text-gray-900">Detail Penarikan</h4>
-                  </div>
-                  <div class="space-y-3">
-                    <div>
-                      <p class="text-sm text-gray-600">Total Jumlah</p>
-                      <p class="font-bold text-2xl text-green-700">Rp ${parseFloat(payout.total_amount).toLocaleString("id-ID")}</p>
-                    </div>
-                    <div>
-                      <p class="text-sm text-gray-600">Jumlah Komisi</p>
-                      <p class="font-bold text-xl text-gray-900">${payout.commission_count} komisi</p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Kartu Info Bank -->
-                <div class="glass-card rounded-xl p-5 border border-green-100 md:col-span-2">
-                  <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 gradient-info rounded-lg flex items-center justify-center">
-                      <i class="fas fa-university text-white"></i>
-                    </div>
-                    <h4 class="font-semibold text-gray-900">Informasi Bank</h4>
-                  </div>
-                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <p class="text-sm text-gray-600">Nama Bank</p>
-                      <p class="font-medium text-gray-900 text-lg">${payout.bank_name || "-"}</p>
-                    </div>
-                    <div>
-                      <p class="text-sm text-gray-600">Nomor Rekening</p>
-                      <p class="font-medium text-gray-900 text-lg">${payout.bank_account_number || "-"}</p>
-                    </div>
-                    <div>
-                      <p class="text-sm text-gray-600">Atas Nama</p>
-                      <p class="font-medium text-gray-900 text-lg">${payout.bank_account_name || "-"}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Finance Note (if any) -->
-                ${payout.finance_note ? `
-                <div class="glass-card rounded-xl p-5 border border-blue-100 md:col-span-2">
-                  <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <i class="fas fa-sticky-note text-blue-600"></i>
-                    </div>
-                    <h4 class="font-semibold text-gray-900">Catatan Finance</h4>
-                  </div>
-                  <div class="bg-blue-50 rounded-lg p-4">
-                    <p class="text-sm text-blue-800">${payout.finance_note}</p>
-                    ${payout.submitted_by_name ? `<p class="text-xs text-gray-600 mt-2">Dikirim oleh: ${payout.submitted_by_name} • ${payout.submitted_at ? new Date(payout.submitted_at).toLocaleString('id-ID') : ''}</p>` : (payout.submitted_by ? `<p class="text-xs text-gray-600 mt-2">Dikirim oleh ID: ${payout.submitted_by} • ${payout.submitted_at ? new Date(payout.submitted_at).toLocaleString('id-ID') : ''}</p>` : '')}
-                  </div>
-                </div>
-                ` : ''}
-
-                <!-- Proof (if paid) -->
-                ${payout.status === 'paid' ? proofHtml : ''}
-
-                <!-- Kartu Komisi -->
-                <div class="glass-card rounded-xl p-5 border border-green-100 md:col-span-2">
-                  <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-3">
-                      <div class="w-10 h-10 gradient-dark rounded-lg flex items-center justify-center">
-                        <i class="fas fa-percentage text-white"></i>
                       </div>
-                      <h4 class="font-semibold text-gray-900">Komisi yang Ditarik</h4>
                     </div>
-                    <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                      ${payout.commissions.length} item
-                    </span>
                   </div>
-                  <div class="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto scrollbar-hide">
-                    ${payout.commissions
+
+                  <!-- Kartu Info Penarikan -->
+                  <div class="glass-futuristic rounded-xl p-4 border border-white/50">
+                    <div class="flex items-center gap-2 mb-3">
+                      <div class="w-8 h-8 gradient-secondary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-money-bill-wave text-white text-xs"></i>
+                      </div>
+                      <h4 class="text-xs font-extrabold text-gray-900">Detail Penarikan</h4>
+                    </div>
+                    <div class="space-y-2">
+                      <div>
+                        <p class="text-[10px] font-bold text-emerald-700">Total Jumlah</p>
+                        <p class="font-extrabold text-xl text-emerald-700">Rp ${parseFloat(payout.total_amount).toLocaleString("id-ID")}</p>
+                      </div>
+                      <div>
+                        <p class="text-[10px] font-bold text-emerald-700">Jumlah Komisi</p>
+                        <p class="font-extrabold text-base text-gray-900">${payout.commission_count} komisi</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Kartu Info Bank -->
+                  <div class="glass-futuristic rounded-xl p-4 border border-white/50 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-3">
+                      <div class="w-8 h-8 gradient-info rounded-lg flex items-center justify-center">
+                        <i class="fas fa-university text-white text-xs"></i>
+                      </div>
+                      <h4 class="text-xs font-extrabold text-gray-900">Informasi Bank</h4>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <div>
+                        <p class="text-[9px] font-bold text-emerald-700">Nama Bank</p>
+                        <p class="font-extrabold text-gray-900 text-sm">${payout.bank_name || "-"}</p>
+                      </div>
+                      <div>
+                        <p class="text-[9px] font-bold text-emerald-700">Nomor Rekening</p>
+                        <p class="font-extrabold text-gray-900 text-sm">${payout.bank_account_number || "-"}</p>
+                      </div>
+                      <div>
+                        <p class="text-[9px] font-bold text-emerald-700">Atas Nama</p>
+                        <p class="font-extrabold text-gray-900 text-sm">${payout.bank_account_name || "-"}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Finance Note (if any) -->
+                  ${payout.finance_note ? `
+                    <div class="glass-futuristic rounded-xl p-4 border border-blue-200/50 md:col-span-2">
+                      <div class="flex items-center gap-2 mb-2">
+                        <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                          <i class="fas fa-sticky-note text-blue-600 text-xs"></i>
+                        </div>
+                        <h4 class="text-xs font-extrabold text-gray-900">Catatan Finance</h4>
+                      </div>
+                      <div class="bg-blue-50/80 backdrop-blur rounded-lg p-3 border border-blue-200/50">
+                        <p class="text-xs text-blue-800">${payout.finance_note}</p>
+                        ${payout.submitted_by_name ? `<p class="text-[9px] text-gray-600 mt-2">Dikirim oleh: ${payout.submitted_by_name} • ${payout.submitted_at ? new Date(payout.submitted_at).toLocaleString('id-ID') : ''}</p>` : (payout.submitted_by ? `<p class="text-[9px] text-gray-600 mt-2">Dikirim oleh ID: ${payout.submitted_by} • ${payout.submitted_at ? new Date(payout.submitted_at).toLocaleString('id-ID') : ''}</p>` : '')}
+                      </div>
+                    </div>
+                  ` : ''}
+
+                  <!-- Proof (if paid) -->
+                  ${payout.status === 'paid' ? proofHtml : ''}
+
+                  <!-- Kartu Komisi -->
+                  <div class="glass-futuristic rounded-xl p-4 border border-white/50 md:col-span-2">
+                    <div class="flex items-center justify-between mb-3">
+                      <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 gradient-accent rounded-lg flex items-center justify-center">
+                          <i class="fas fa-percentage text-white text-xs"></i>
+                        </div>
+                        <h4 class="text-xs font-extrabold text-gray-900">Komisi yang Ditarik</h4>
+                      </div>
+                      <span class="px-3 py-1.5 bg-white/60 backdrop-blur rounded-lg text-[9px] font-extrabold text-emerald-700 border border-white/60">
+                        ${payout.commissions.length} item
+                      </span>
+                    </div>
+                    <div class="bg-white/40 backdrop-blur rounded-lg p-3 max-h-60 overflow-y-auto modern-scrollbar border border-white/30">
+                      ${payout.commissions
                 .map(
                   (comm, idx) => `
-                        <div class="flex items-center justify-between py-3 ${idx > 0 ? "border-t border-gray-200" : ""}">
-                          <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
-                              <i class="fas fa-receipt text-green-600 text-sm"></i>
+                          <div class="flex items-center justify-between py-2.5 ${idx > 0 ? "border-t border-white/30" : ""}">
+                            <div class="flex items-center gap-2">
+                              <div class="w-7 h-7 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
+                                <i class="fas fa-receipt text-emerald-600 text-[10px]"></i>
+                              </div>
+                              <div>
+                                <p class="font-extrabold text-gray-900 text-xs">${comm.description}</p>
+                                <p class="text-[8px] font-medium text-gray-500">${new Date(comm.created_at).toLocaleDateString("id-ID")}</p>
+                              </div>
                             </div>
-                            <div>
-                              <p class="font-medium text-gray-900">${comm.description}</p>
-                              <p class="text-xs text-gray-500">${new Date(comm.created_at).toLocaleDateString("id-ID")}</p>
+                            <div class="text-right">
+                              <p class="font-extrabold text-gray-900 text-xs">Rp ${parseFloat(comm.amount).toLocaleString("id-ID")}</p>
+                              <p class="text-[8px] font-medium text-gray-500">Komisi</p>
                             </div>
                           </div>
-                          <div class="text-right">
-                            <p class="font-bold text-gray-900">Rp ${parseFloat(comm.amount).toLocaleString("id-ID")}</p>
-                            <p class="text-xs text-gray-500">Komisi</p>
-                          </div>
-                        </div>
-                      `,
+                        `,
                 )
                 .join("")}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          `;
+            `;
 
             document.getElementById("detail-title").textContent =
               `Detail Penarikan - ${payout.affiliate_name}`;
@@ -857,31 +1481,34 @@
           }
         }
 
-        // Fungsi utilitas untuk styling
+        // ============================================================
+        // FUNGSI UTILITAS STYLING
+        // ============================================================
+
         function getStatusBadge(status) {
           const badges = {
-            pending: "bg-yellow-100 text-yellow-800 border border-yellow-200",
-            approved: "bg-green-100 text-green-800 border border-green-200",
-            rejected: "bg-red-100 text-red-800 border border-red-200",
-            paid: "bg-blue-100 text-blue-800 border border-blue-200",
+            pending: "gradient-pending text-white",
+            approved: "gradient-approved text-white",
+            rejected: "gradient-rejected text-white",
+            paid: "gradient-paid text-white",
           };
-          return badges[status] || "bg-gray-100 text-gray-800 border border-gray-200";
+          return badges[status] || "bg-gray-500 text-white";
         }
 
         function getStatusFullBadge(status) {
           const badges = {
-            pending: "bg-yellow-500 text-white",
-            approved: "bg-green-500 text-white",
-            rejected: "bg-red-500 text-white",
-            paid: "bg-blue-500 text-white",
+            pending: "gradient-pending text-white",
+            approved: "gradient-approved text-white",
+            rejected: "gradient-rejected text-white",
+            paid: "gradient-paid text-white",
           };
           return badges[status] || "bg-gray-500 text-white";
         }
 
         function getStatusBorder(status) {
           const borders = {
-            pending: "border-yellow-200",
-            approved: "border-green-200",
+            pending: "border-amber-200",
+            approved: "border-emerald-200",
             rejected: "border-red-200",
             paid: "border-blue-200",
           };
@@ -900,39 +1527,17 @@
 
         function getStatusLabel(status) {
           const labels = {
-            pending: "Menunggu Persetujuan",
-            approved: "Sudah Disetujui",
+            pending: "Menunggu",
+            approved: "Disetujui",
             rejected: "Ditolak",
-            paid: "Sudah Dibayarkan",
+            paid: "Dibayar",
           };
           return labels[status] || status;
         }
 
-        // Tampilkan error dengan desain baru
-        function showError(message) {
-          // Buat notifikasi error
-          const errorDiv = document.createElement('div');
-          errorDiv.className = 'fixed top-24 right-6 z-50 animate-fade-in';
-          errorDiv.innerHTML = `
-          <div class="bg-red-50 border border-red-200 rounded-xl p-4 shadow-lg max-w-sm">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                <i class="fas fa-exclamation-triangle text-red-600"></i>
-              </div>
-              <div>
-                <p class="text-red-700 font-medium">Error!</p>
-                <p class="text-red-600 text-sm mt-1">${message}</p>
-              </div>
-            </div>
-          </div>
-        `;
-          document.body.appendChild(errorDiv);
-
-          // Hapus setelah 5 detik
-          setTimeout(() => {
-            errorDiv.remove();
-          }, 5000);
-        }
+        // ============================================================
+        // FUNGSI MODAL
+        // ============================================================
 
         function openApproveModal(payoutId, affiliateName, amount) {
           currentPayoutId = payoutId;
@@ -967,7 +1572,7 @@
             showSuccess("✅ Penarikan berhasil disetujui!");
             closeApproveModal();
             closeDetailModal();
-            loadWithdrawals("pending");
+            loadWithdrawals(currentTab);
           } catch (error) {
             console.error("Error:", error);
             showError("Error: " + error.message);
@@ -1013,7 +1618,7 @@
             showSuccess("✅ Penarikan berhasil ditolak!");
             closeRejectModal();
             closeDetailModal();
-            loadWithdrawals("pending");
+            loadWithdrawals(currentTab);
           } catch (error) {
             console.error("Error:", error);
             showError("Error: " + error.message);
@@ -1032,32 +1637,10 @@
           document.getElementById("reject-modal").classList.add("hidden");
         }
 
-        // Notifikasi sukses
-        function showSuccess(message) {
-          const successDiv = document.createElement('div');
-          successDiv.className = 'fixed top-24 right-6 z-50 animate-fade-in';
-          successDiv.innerHTML = `
-          <div class="bg-green-50 border border-green-200 rounded-xl p-4 shadow-lg max-w-sm">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                <i class="fas fa-check-circle text-green-600"></i>
-              </div>
-              <div>
-                <p class="text-green-700 font-medium">Sukses!</p>
-                <p class="text-green-600 text-sm mt-1">${message}</p>
-              </div>
-            </div>
-          </div>
-        `;
-          document.body.appendChild(successDiv);
+        // ============================================================
+        // INITIALIZATION
+        // ============================================================
 
-          // Hapus setelah 5 detik
-          setTimeout(() => {
-            successDiv.remove();
-          }, 5000);
-        }
-
-        // Muat data tab saat halaman dimuat -- panggil untuk semua tab agar statistik kartu terisi
         document.addEventListener("DOMContentLoaded", () => {
           // load utama untuk tab yang aktif (pending)
           loadWithdrawals("pending");
@@ -1065,12 +1648,27 @@
           loadWithdrawals("approved");
           loadWithdrawals("rejected");
 
-          // Auto-refresh setiap 30 detik: refresh semua tab ringkas supaya kartu tetap up-to-date
+          // Auto-refresh setiap 30 detik
           setInterval(() => {
             loadWithdrawals('pending');
             loadWithdrawals('approved');
             loadWithdrawals('rejected');
           }, 30000);
+        });
+
+        // Tutup modal dengan ESC key
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            if (!document.getElementById('detail-modal').classList.contains('hidden')) {
+              closeDetailModal();
+            }
+            if (!document.getElementById('approve-modal').classList.contains('hidden')) {
+              closeApproveModal();
+            }
+            if (!document.getElementById('reject-modal').classList.contains('hidden')) {
+              closeRejectModal();
+            }
+          }
         });
       </script>
 </body>

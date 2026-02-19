@@ -1,21 +1,3 @@
-  <!-- Notification Modal (Loading) -->
-  <div id="notif-modal" class="fixed top-6 right-6 z-50 min-w-[260px] max-w-xs bg-green-100 border-l-4 border-green-500 shadow-lg rounded-lg flex items-center px-5 py-3 text-green-800 text-sm font-medium transition-all duration-500 opacity-0 pointer-events-none" style="box-shadow: 0 2px 12px rgba(76,175,80,0.15);">
-    <svg class="animate-spin mr-2 h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-    <span id="notif-text">Mengalihkan ke halaman login...</span>
-    <div class="absolute left-0 bottom-0 w-full h-1 overflow-hidden">
-      <div id="notif-progress" class="h-full bg-green-500 animate-notif-progress"></div>
-    </div>
-  </div>
-  <style>
-    @keyframes notif-progress {
-      0% { width: 0%; }
-      100% { width: 100%; }
-    }
-    .animate-notif-progress {
-      width: 0%;
-      animation: notif-progress 1.2s linear forwards;
-    }
-  </style>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,88 +6,223 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register | Affillink</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.08rem; /* default 16px x 1.08 = 17.3px */
+      background: radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 0%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        linear-gradient(145deg, #f0fdf4 0%, #ecfdf5 50%, #e6f7ec 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .gradient-bg {
-      background: linear-gradient(135deg, #1E3A5F 0%, #4CAF50 100%);
+    /* Premium Glassmorphism */
+    .glass-premium {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 35px -10px rgba(0, 100, 0, 0.05),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
     }
 
-    .glass-effect {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      animation: fadeInUp 1s cubic-bezier(0.23, 1, 0.32, 1);
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+        0 0 15px rgba(16, 185, 129, 0.05);
     }
 
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(40px) scale(0.98);
-      }
+    /* Premium Gradients */
+    .gradient-primary {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
+    }
 
+    .gradient-secondary {
+      background: linear-gradient(165deg, #047857 0%, #059669 50%, #10b981 100%);
+    }
+
+    /* Ultra Modern Glassmorphism */
+    .glass-futuristic {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    }
+
+    /* Gradient Orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+      opacity: 0.4;
+      animation: float-orb 10s ease-in-out infinite;
+    }
+
+    @keyframes float-orb {
+
+      0%,
       100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translate(0, 0) scale(1);
+      }
+
+      25% {
+        transform: translate(10px, -15px) scale(1.1);
+      }
+
+      50% {
+        transform: translate(-5px, -20px) scale(0.9);
+      }
+
+      75% {
+        transform: translate(-15px, 5px) scale(1.05);
       }
     }
 
-    .input-focus:focus {
-      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-      border-color: #4CAF50;
+    /* Card Futuristic */
+    .card-futuristic {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
     }
 
+    .card-futuristic::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.7s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card-futuristic:hover::before {
+      left: 100%;
+    }
+
+    .card-futuristic:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 30px 60px -15px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Pulse Glow */
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        filter: blur(60px);
+      }
+
+      50% {
+        opacity: 0.8;
+        filter: blur(70px);
+      }
+    }
+
+    .animate-pulse-glow {
+      animation: pulse-glow 4s ease-in-out infinite;
+    }
+
+    /* Hover Lift */
+    .hover-lift {
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Input Focus Effects */
+    .input-container:focus-within .input-icon {
+      color: #10b981;
+      transform: translateY(-1px);
+    }
+
+    .input-container:focus-within input {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+      transform: translateY(-1px);
+    }
+
+    /* Modern Input Glow Animation */
+    .input-container input:focus {
+      box-shadow: 0 0 8px 2px #10b98133, 0 0 0 3px #10b98122;
+      scale: 1.05;
+      transition: box-shadow 0.3s, scale 0.2s;
+    }
+
+    /* Modern Button Hover Animation */
     .btn-primary {
-      background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-      animation: bounceIn 0.8s 0.2s both;
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
-
-    @keyframes bounceIn {
-      0% {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-
-      60% {
-        opacity: 1;
-        transform: scale(1.05);
-      }
-
-      80% {
-        transform: scale(0.97);
-      }
-
-      100% {
-        transform: scale(1);
-      }
-    }
-
     .btn-primary:hover {
-      transform: translateY(-2px) scale(1.04) rotate(-1deg);
-      box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 15px 25px -5px rgba(16, 185, 129, 0.5);
     }
-
     .btn-primary:active {
-      transform: translateY(0) scale(0.98);
+      transform: translateY(0);
     }
 
-    .eye-icon {
-      cursor: pointer;
-      color: #999;
+    /* Shake Animation for Error */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+      100% { transform: translateX(0); }
+    }
+    .shake {
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
     }
 
-    .eye-icon:hover {
-      color: #4CAF50;
+    /* Card Fade-in Slide-up Animation */
+    .animate-form-in {
+      animation: formIn 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+    @keyframes formIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
+    /* Password Strength */
     .password-strength {
       height: 4px;
-      background: #e5e7eb;
+      background: rgba(229, 231, 235, 0.3);
       border-radius: 2px;
       margin-top: 0.5rem;
       overflow: hidden;
@@ -115,225 +232,255 @@
       height: 100%;
       width: 0%;
       transition: all 0.3s ease;
+      border-radius: 2px;
     }
 
     .strength-weak {
-      background: #ef4444;
+      background: linear-gradient(90deg, #ef4444, #f87171);
       width: 33%;
     }
 
     .strength-fair {
-      background: #f59e0b;
+      background: linear-gradient(90deg, #f59e0b, #fbbf24);
       width: 66%;
     }
 
     .strength-strong {
-      background: #10b981;
+      background: linear-gradient(90deg, #10b981, #34d399);
       width: 100%;
     }
 
-    /* Modal Styles */
-    .modal-success {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-    }
+    /* Notification Progress */
+    @keyframes notif-progress {
+      0% {
+        width: 0%;
+      }
 
-    .modal-content {
-      background: #fff;
-      border-radius: 1.5rem;
-      padding: 2.5rem 2rem 2rem 2rem;
-      box-shadow: 0 10px 40px rgba(76, 175, 80, 0.15);
-      text-align: center;
-      min-width: 320px;
-      animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-
-    .checkmark {
-      width: 70px;
-      height: 70px;
-      display: inline-block;
-      margin-bottom: 1.5rem;
-    }
-
-    .checkmark__circle {
-      stroke: #10b981;
-      stroke-width: 5;
-      fill: none;
-      stroke-dasharray: 166;
-      stroke-dashoffset: 166;
-      animation: strokeCircle 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-    }
-
-    .checkmark__check {
-      stroke: #10b981;
-      stroke-width: 5;
-      fill: none;
-      stroke-dasharray: 48;
-      stroke-dashoffset: 48;
-      animation: strokeCheck 0.4s 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-    }
-
-    @keyframes strokeCircle {
       100% {
-        stroke-dashoffset: 0;
+        width: 100%;
       }
     }
 
-    @keyframes strokeCheck {
-      100% {
-        stroke-dashoffset: 0;
-      }
+    .animate-notif-progress {
+      width: 0%;
+      animation: notif-progress 1.2s linear forwards;
+    }
+
+    /* Grid Background */
+    .bg-grid-premium {
+      background-image: linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
     }
   </style>
 </head>
 
-<body class="gradient-bg min-h-screen flex items-center justify-center p-4 py-12">
-  <div class="w-full max-w-md">
-    <!-- Card -->
-    <div class="glass-effect rounded-2xl shadow-2xl p-8 md:p-10">
+<body class="bg-grid-premium relative overflow-x-hidden">
+  <!-- Ultra Modern Decorative Orbs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="orb w-[500px] h-[500px] bg-emerald-400 top-[-100px] left-[-100px] animate-pulse-glow"></div>
+    <div
+      class="orb w-[600px] h-[600px] bg-green-400 bottom-[-200px] right-[-200px] animate-pulse-glow animation-delay-2000">
+    </div>
+    <div
+      class="orb w-[400px] h-[400px] bg-teal-400 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-glow animation-delay-4000">
+    </div>
+
+    <!-- Animated Grid Lines -->
+    <svg class="absolute top-0 left-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#10b981" stroke-width="0.5" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+
+    <!-- Floating Particles -->
+    <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-30"></div>
+    <div
+      class="absolute top-3/4 right-1/3 w-3 h-3 bg-green-400 rounded-full animate-ping opacity-30 animation-delay-2000">
+    </div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-1.5 h-1.5 bg-teal-400 rounded-full animate-ping opacity-30 animation-delay-4000">
+    </div>
+  </div>
+
+  <!-- Notification Modal Premium -->
+  <div id="notif-modal"
+    class="fixed top-6 right-6 z-50 min-w-[280px] max-w-sm transition-all duration-500 opacity-0 pointer-events-none">
+    <div class="glass-futuristic rounded-xl p-4 border-l-4 border-green-500 border border-white/50 shadow-2xl">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+            </path>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="font-extrabold text-gray-900 text-sm">Proses Registrasi</p>
+          <p id="notif-text" class="text-xs text-gray-600 mt-0.5">Mengalihkan ke halaman login...</p>
+        </div>
+      </div>
+      <div class="mt-2 w-full bg-white/30 rounded-full h-1 overflow-hidden">
+        <div id="notif-progress"
+          class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full animate-notif-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative z-10 w-full max-w-md px-4">
+    <!-- Card Premium -->
+    <div class="glass-futuristic rounded-2xl p-8 md:p-10 border border-white/50 hover-lift animate-form-in" id="registerCard">
       <!-- Logo & Header -->
       <div class="text-center mb-8">
         <div class="flex justify-center mb-4">
           <img src="/images/logoAffilllink2.png" alt="Affillink Logo" class="w-52 h-auto object-contain">
         </div>
-        <p class="text-gray-600 text-sm">Join Our Affiliate Network</p>
-        <p class="text-gray-500 text-xs">Create your account and start earning</p>
+        <p class="text-base text-emerald-700 font-semibold">Join Our Affiliate Network</p>
+        <p class="text-sm text-gray-500 mt-1">Create your account and start earning</p>
       </div>
 
-      <!-- Error Messages -->
+      <!-- Error/Success Messages Premium -->
       <% if (typeof error !=='undefined' ) { %>
-        <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-sm animate-pulse">
-          <%= error %>
+        <div class="mb-6 glass-futuristic rounded-xl p-4 border-l-4 border-red-500 fade-in">
+          <div class="flex items-start gap-3">
+            <div
+              class="w-8 h-8 bg-gradient-to-r from-red-600 to-rose-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-exclamation-circle text-white text-sm"></i>
+            </div>
+            <div class="flex-1">
+              <p class="font-extrabold text-gray-900 text-xs">Error</p>
+              <p class="text-[10px] text-gray-600 mt-0.5">
+                <%= error %>
+              </p>
+            </div>
+          </div>
         </div>
         <% } %>
 
           <!-- Form -->
-          <form id="registerForm" action="/api/auth/register" method="POST" class="space-y-4">
-          
-
+          <form id="registerForm" action="/api/auth/register" method="POST" class="space-y-5">
             <!-- Full Name Input -->
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+              <label for="name" class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                <i class="fas fa-user text-emerald-600 text-xs mr-1"></i>
                 Full Name
               </label>
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                  </svg>
+              <div class="input-container relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fas fa-user text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
                 </div>
-                <input type="text" id="name" name="name" placeholder="Full Name"
-                  class="input-focus w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg transition focus:outline-none"
+                <input type="text" id="name" name="name" placeholder="John Doe"
+                  class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
                   required value="<%= typeof name !== 'undefined' ? name : '' %>">
               </div>
-              <span class="error-name text-red-500 text-sm mt-1 hidden"></span>
+              <span class="error-name text-red-500 text-[10px] mt-1 hidden flex items-center gap-1">
+                <i class="fas fa-exclamation-circle"></i>
+                <span></span>
+              </span>
             </div>
 
             <!-- Email Input -->
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+              <label for="email" class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                <i class="fas fa-envelope text-emerald-600 text-xs mr-1"></i>
                 Email Address
               </label>
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                    </path>
-                  </svg>
+              <div class="input-container relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fas fa-envelope text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
                 </div>
                 <input type="email" id="email" name="email" placeholder="your@email.com"
-                  class="input-focus w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg transition focus:outline-none"
+                  class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
                   required value="<%= typeof email !== 'undefined' ? email : '' %>">
               </div>
-              <span class="error-email text-red-500 text-sm mt-1 hidden"></span>
+              <span class="error-email text-red-500 text-[10px] mt-1 hidden flex items-center gap-1">
+                <i class="fas fa-exclamation-circle"></i>
+                <span></span>
+              </span>
             </div>
 
             <!-- Password Input -->
             <div>
-              <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+              <label for="password" class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                <i class="fas fa-lock text-emerald-600 text-xs mr-1"></i>
                 Password
               </label>
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                    </path>
-                  </svg>
+              <div class="input-container relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fas fa-lock text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
                 </div>
                 <input type="password" id="password" name="password" placeholder="••••••••"
-                  class="input-focus w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-lg transition focus:outline-none"
+                  class="block w-full pl-9 pr-10 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
                   required minlength="8">
-                <button type="button" class="eye-icon absolute inset-y-0 right-0 pr-4 flex items-center"
+                <button type="button"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-emerald-400 hover:text-emerald-600 transition-colors"
                   onclick="togglePassword('password')">
-                  <svg class="toggle-eye-icon-1 w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                      d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm4-4H7V4h12v14z" />
-                  </svg>
+                  <i class="toggle-eye-icon-1 fas fa-eye"></i>
                 </button>
               </div>
               <div class="password-strength">
                 <div class="password-strength-bar" id="strengthBar"></div>
               </div>
-              <span class="error-password text-red-500 text-sm mt-1 hidden"></span>
+              <span class="error-password text-red-500 text-[10px] mt-1 hidden flex items-center gap-1">
+                <i class="fas fa-exclamation-circle"></i>
+                <span></span>
+              </span>
             </div>
 
             <!-- Confirm Password Input -->
             <div>
-              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
+              <label for="confirmPassword"
+                class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                <i class="fas fa-lock text-emerald-600 text-xs mr-1"></i>
                 Confirm Password
               </label>
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                    </path>
-                  </svg>
+              <div class="input-container relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fas fa-lock text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
                 </div>
                 <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••"
-                  class="input-focus w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-lg transition focus:outline-none"
+                  class="block w-full pl-9 pr-10 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
                   required minlength="8">
-                <button type="button" class="eye-icon absolute inset-y-0 right-0 pr-4 flex items-center"
+                <button type="button"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-emerald-400 hover:text-emerald-600 transition-colors"
                   onclick="togglePassword('confirmPassword')">
-                  <svg class="toggle-eye-icon-2 w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                      d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm4-4H7V4h12v14z" />
-                  </svg>
+                  <i class="toggle-eye-icon-2 fas fa-eye"></i>
                 </button>
               </div>
-              <span class="error-confirmPassword text-red-500 text-sm mt-1 hidden"></span>
+              <span class="error-confirmPassword text-red-500 text-[10px] mt-1 hidden flex items-center gap-1">
+                <i class="fas fa-exclamation-circle"></i>
+                <span></span>
+              </span>
             </div>
 
             <!-- Terms & Conditions -->
-            <label class="flex items-start cursor-pointer mt-4">
+            <label class="flex items-start cursor-pointer group mt-4">
               <input type="checkbox" id="agree_terms" name="agree_terms"
-                class="w-4 h-4 rounded border-gray-300 accent-green-500 mt-1" required>
-              <span class="ml-2 text-xs text-gray-600">
+                class="w-4 h-4 rounded border-gray-300 accent-emerald-500 mt-0.5" required>
+              <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-900">
                 I agree to the
-                <a href="#" class="text-green-600 hover:text-green-700 font-semibold">Terms & Conditions</a>
+                <a href="#" class="text-emerald-700 hover:text-emerald-800 font-bold">Terms & Conditions</a>
                 and
-                <a href="#" class="text-green-600 hover:text-green-700 font-semibold">Privacy Policy</a>
+                <a href="#" class="text-emerald-700 hover:text-emerald-800 font-bold">Privacy Policy</a>
               </span>
             </label>
-            <span class="error-agree_terms text-red-500 text-sm mt-1 hidden"></span>
+            <span class="error-agree_terms text-red-500 text-[10px] mt-1 hidden flex items-center gap-1">
+              <i class="fas fa-exclamation-circle"></i>
+              <span></span>
+            </span>
 
             <!-- Submit Button -->
             <button type="submit" id="registerBtn"
-              class="btn-primary w-full py-3 rounded-lg text-white font-semibold text-lg mt-6 transition flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+              class="btn-primary w-full py-3.5 rounded-xl font-extrabold text-base mt-6 transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
               <span id="btnText">Create Account</span>
-              <svg id="loadingSpinner" class="hidden w-5 h-5 ml-2 text-white animate-spin"
-                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg id="loadingSpinner" class="hidden w-4 h-4 text-white animate-spin" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor"
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
@@ -343,54 +490,93 @@
           </form>
 
           <!-- Sign In Link -->
-          <p class="text-center text-gray-600 text-sm mt-6">
+          <p class="text-center text-sm text-gray-600 mt-6">
             Already have an account?
-            <a href="/login" class="text-green-600 hover:text-green-700 font-semibold transition">
+            <a href="/login"
+              class="font-extrabold text-emerald-700 hover:text-emerald-800 transition inline-flex items-center gap-1">
               Sign In
+              <i class="fas fa-arrow-right text-xs"></i>
             </a>
           </p>
     </div>
 
     <!-- Footer -->
-    <p class="text-center text-gray-300 text-xs mt-8">
+    <p class="text-center text-xs text-gray-500 mt-8">
       © <%= new Date().getFullYear() %> Affillink. All rights reserved.
     </p>
   </div>
 
   <!-- Success Modal -->
   <div id="modalSuccess" style="display:none;" class="fixed inset-0 flex items-center justify-center z-50">
-    <div class="bg-white rounded-2xl shadow-2xl px-10 py-10 flex flex-col items-center max-w-lg w-full animate-fadeInModal">
-      <svg class="mb-6" width="96" height="96" viewBox="0 0 52 52">
-        <circle cx="26" cy="26" r="25" fill="none" stroke="#8fd19e" stroke-width="3" style="stroke-dasharray:166;stroke-dashoffset:166;animation:strokeCircle 0.6s cubic-bezier(0.65,0,0.45,1) forwards;"/>
-        <path fill="none" stroke="#8fd19e" stroke-width="3" stroke-linecap="round" d="M14 27l7 7 16-16" style="stroke-dasharray:48;stroke-dashoffset:48;animation:strokeCheck 0.4s 0.6s cubic-bezier(0.65,0,0.45,1) forwards;"/>
-      </svg>
-      <h2 class="text-2xl font-bold mb-2 text-black">Registrasi Berhasil!</h2>
-      <p class="text-base text-gray-700 text-center mb-2">Akun Anda telah berhasil dibuat.<br>Anda akan diarahkan ke halaman login.</p>
+    <div class="glass-futuristic rounded-2xl p-10 max-w-lg w-full mx-4 text-center animate-scale-in">
+      <div class="mb-6">
+        <svg class="checkmark w-20 h-20 mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+          <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" stroke="#10b981" stroke-width="3" />
+          <path class="checkmark__check" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round"
+            d="M14 27l7 7 16-16" />
+        </svg>
+      </div>
+      <h2 class="text-xl font-extrabold text-gray-900 mb-2">Registrasi Berhasil!</h2>
+      <p class="text-xs text-gray-600">Akun Anda telah berhasil dibuat.<br>Anda akan diarahkan ke halaman login.</p>
     </div>
-    <style>
-      @keyframes strokeCircle { to { stroke-dashoffset: 0; } }
-      @keyframes strokeCheck { to { stroke-dashoffset: 0; } }
-      @keyframes fadeInModal {
-        from { opacity: 0; transform: translateY(-20px) scale(0.98); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
-      }
-      .animate-fadeInModal {
-        animation: fadeInModal 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-      }
-    </style>
   </div>
+
+  <style>
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .animate-scale-in {
+      animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .checkmark__circle {
+      stroke-dasharray: 166;
+      stroke-dashoffset: 166;
+      animation: strokeCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+
+    .checkmark__check {
+      stroke-dasharray: 48;
+      stroke-dashoffset: 48;
+      animation: strokeCheck 0.4s 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+
+    @keyframes strokeCircle {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes strokeCheck {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+  </style>
 
   <script>
     const togglePassword = (fieldId) => {
       const passwordInput = document.getElementById(fieldId);
       const eyeIconClass = fieldId === 'password' ? '.toggle-eye-icon-1' : '.toggle-eye-icon-2';
       const toggleEyeIcon = document.querySelector(eyeIconClass);
+
       if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
-        toggleEyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+        toggleEyeIcon.classList.remove('fa-eye');
+        toggleEyeIcon.classList.add('fa-eye-slash');
       } else {
         passwordInput.type = 'password';
-        toggleEyeIcon.innerHTML = '<path d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm4-4H7V4h12v14z"/>';
+        toggleEyeIcon.classList.remove('fa-eye-slash');
+        toggleEyeIcon.classList.add('fa-eye');
       }
     };
 
@@ -399,13 +585,14 @@
       const password = e.target.value;
       const strengthBar = document.getElementById('strengthBar');
       let strength = 0;
+
       if (password.length >= 8) strength += 1;
       if (password.match(/[a-z]+/)) strength += 1;
       if (password.match(/[A-Z]+/)) strength += 1;
       if (password.match(/[0-9]+/)) strength += 1;
       if (password.match(/[\W_]+/)) strength += 1;
 
-      strengthBar.className = 'password-strength-bar transition-all';
+      strengthBar.className = 'password-strength-bar';
       if (strength <= 2) {
         strengthBar.classList.add('strength-weak');
       } else if (strength <= 3) {
@@ -416,6 +603,27 @@
 
       document.querySelector('.error-password').classList.add('hidden');
     });
+
+    // Show notification modal function
+    function showNotifModal(message) {
+      const modal = document.getElementById('notif-modal');
+      const text = document.getElementById('notif-text');
+      const progress = document.getElementById('notif-progress');
+
+      text.textContent = message;
+      modal.style.opacity = '1';
+      modal.style.pointerEvents = 'auto';
+
+      // Reset progress bar animation
+      progress.classList.remove('animate-notif-progress');
+      void progress.offsetWidth; // force reflow
+      progress.classList.add('animate-notif-progress');
+
+      setTimeout(() => {
+        modal.style.opacity = '0';
+        modal.style.pointerEvents = 'none';
+      }, 2000);
+    }
 
     // Handle form submission
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
@@ -432,7 +640,7 @@
 
       // Show loading state
       registerBtn.disabled = true;
-      btnText.textContent = 'Membuat Akun...';
+      btnText.textContent = 'Creating Account...';
       loadingSpinner.classList.remove('hidden');
 
       const formData = {
@@ -446,7 +654,7 @@
       // Validation
       if (!formData.agree_terms) {
         const errorElement = document.querySelector('.error-agree_terms');
-        errorElement.textContent = 'You must agree to the Terms & Conditions';
+        errorElement.querySelector('span').textContent = 'You must agree to the Terms & Conditions';
         errorElement.classList.remove('hidden');
         resetButtonState();
         return;
@@ -454,7 +662,7 @@
 
       if (formData.password !== formData.confirmPassword) {
         const errorElement = document.querySelector('.error-confirmPassword');
-        errorElement.textContent = 'Passwords do not match';
+        errorElement.querySelector('span').textContent = 'Passwords do not match';
         errorElement.classList.remove('hidden');
         resetButtonState();
         return;
@@ -475,31 +683,15 @@
         if (response.ok) {
           // Show modal success
           document.getElementById('modalSuccess').style.display = 'flex';
-          setTimeout(function () {
-            // Show notification modal before redirect
+
+          setTimeout(() => {
+            document.getElementById('modalSuccess').style.display = 'none';
             showNotifModal('Mengalihkan ke halaman login...');
-            setTimeout(function () {
+
+            setTimeout(() => {
               window.location.href = '/login';
             }, 1200);
           }, 1200);
-
-          // Show notification modal function
-          function showNotifModal(message) {
-            const modal = document.getElementById('notif-modal');
-            const text = document.getElementById('notif-text');
-            const progress = document.getElementById('notif-progress');
-            text.textContent = message;
-            modal.style.opacity = '1';
-            modal.style.pointerEvents = 'auto';
-            // Reset progress bar animation
-            progress.classList.remove('animate-notif-progress');
-            void progress.offsetWidth; // force reflow
-            progress.classList.add('animate-notif-progress');
-            setTimeout(() => {
-              modal.style.opacity = '0';
-              modal.style.pointerEvents = 'none';
-            }, 1200);
-          }
         } else {
           resetButtonState();
 
@@ -507,7 +699,10 @@
             Object.keys(data.errors).forEach(field => {
               const errorElement = document.querySelector(`.error-${field}`);
               if (errorElement) {
-                errorElement.textContent = data.errors[field][0];
+                const errorSpan = errorElement.querySelector('span');
+                if (errorSpan) {
+                  errorSpan.textContent = data.errors[field][0];
+                }
                 errorElement.classList.remove('hidden');
               }
             });
@@ -516,12 +711,21 @@
           if (data.message) {
             // Show general error
             const errorDiv = document.createElement('div');
-            errorDiv.className = 'mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-sm animate-pulse';
-            errorDiv.textContent = data.message;
+            errorDiv.className = 'mb-6 glass-futuristic rounded-xl p-4 border-l-4 border-red-500 fade-in';
+            errorDiv.innerHTML = `
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 bg-gradient-to-r from-red-600 to-rose-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-exclamation-circle text-white text-sm"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="font-extrabold text-gray-900 text-xs">Error</p>
+                  <p class="text-[10px] text-gray-600 mt-0.5">${data.message}</p>
+                </div>
+              </div>
+            `;
 
-            // Insert after messages or before form
             const form = document.getElementById('registerForm');
-            const existingError = document.querySelector('.bg-red-100');
+            const existingError = document.querySelector('.mb-6.glass-futuristic.border-l-4.border-red-500');
             if (existingError) {
               existingError.replaceWith(errorDiv);
             } else {
@@ -532,7 +736,29 @@
       } catch (error) {
         console.error('Error:', error);
         resetButtonState();
-        alert('An error occurred. Please try again.');
+
+        // Show error modal
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'mb-6 glass-futuristic rounded-xl p-4 border-l-4 border-red-500 fade-in';
+        errorDiv.innerHTML = `
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 bg-gradient-to-r from-red-600 to-rose-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-exclamation-circle text-white text-sm"></i>
+            </div>
+            <div class="flex-1">
+              <p class="font-extrabold text-gray-900 text-xs">Error</p>
+              <p class="text-[10px] text-gray-600 mt-0.5">Terjadi kesalahan. Silakan coba lagi.</p>
+            </div>
+          </div>
+        `;
+
+        const form = document.getElementById('registerForm');
+        const existingError = document.querySelector('.mb-6.glass-futuristic.border-l-4.border-red-500');
+        if (existingError) {
+          existingError.replaceWith(errorDiv);
+        } else {
+          form.parentNode.insertBefore(errorDiv, form);
+        }
       }
 
       function resetButtonState() {
@@ -559,14 +785,14 @@
       document.querySelector('.error-agree_terms').classList.add('hidden');
     });
 
-        // Pre-fill form data if it exists in the template
-        <% if (typeof name !== 'undefined' && name) { %>
+    // Pre-fill form data if it exists in the template
+    <% if (typeof name !== 'undefined' && name) { %>
       document.getElementById('name').value = '<%= name %>';
-        <% } %>
-        
-        <% if (typeof email !== 'undefined' && email) { %>
+    <% } %>
+    
+    <% if (typeof email !== 'undefined' && email) { %>
       document.getElementById('email').value = '<%= email %>';
-        <% } %>
+    <% } %>
   </script>
 </body>
 

@@ -8,29 +8,280 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-        /* Animasi shimmer/glow untuk progress bar loading modal */
-        @keyframes shimmer {
-          0% {
-            background-position: -200% center;
-          }
-          100% {
-            background-position: 200% center;
-          }
-        }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
 
-        .animate-shimmer {
-          animation: shimmer 1.5s infinite linear;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 0%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        linear-gradient(145deg, #f0fdf4 0%, #ecfdf5 50%, #e6f7ec 100%);
+    }
+
+    /* Premium Glassmorphism */
+    .glass-premium {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 35px -10px rgba(0, 100, 0, 0.05),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+        0 0 15px rgba(16, 185, 129, 0.05);
+    }
+
+    /* Premium Gradients */
+    .gradient-primary {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
+    }
+
+    .gradient-secondary {
+      background: linear-gradient(165deg, #047857 0%, #059669 50%, #10b981 100%);
+    }
+
+    .gradient-accent {
+      background: linear-gradient(165deg, #065f46 0%, #047857 50%, #059669 100%);
+    }
+
+    .gradient-warning {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+    }
+
+    .gradient-info {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    }
+
+    .gradient-danger {
+      background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+    }
+
+    .gradient-purple {
+      background: linear-gradient(165deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+    }
+
+    .gradient-teal {
+      background: linear-gradient(165deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%);
+    }
+
+    .gradient-blue {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    }
+
+    .gradient-amber {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+    }
+
+    /* Success Gradient */
+    .gradient-success {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+    }
+
+    /* Card Effects */
+    .card-luxury {
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .card-luxury:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 30px 45px -15px rgba(16, 185, 129, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    }
+
+    /* Badge 3D Effect */
+    .badge-3d {
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .badge-3d:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    /* Pulse Animation */
+    .pulse-premium {
+      animation: pulsePremium 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulsePremium {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.2),
+          0 0 0 0 rgba(16, 185, 129, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 0 0 15px rgba(16, 185, 129, 0),
+          0 0 0 30px rgba(16, 185, 129, 0);
+      }
+    }
+
+    /* Custom Scrollbar */
+    .modern-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-track {
+      background: rgba(16, 185, 129, 0.05);
+      border-radius: 10px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-thumb {
+      background: linear-gradient(145deg, #10b981, #059669);
+      border-radius: 10px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(145deg, #059669, #047857);
+    }
+
+    /* Floating Animation */
+    .float-slow {
+      animation: float 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Shimmer Effect */
+    .shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent);
+      animation: shimmer 5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% {
+        left: 200%;
+      }
+    }
+
+    @keyframes shimmer-progress {
+      0% {
+        background-position: -200% center;
+      }
+
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    .animate-shimmer {
+      animation: shimmer-progress 1.5s infinite linear;
+    }
+
+    /* Glow Text */
+    .glow-text {
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.3),
+        0 0 20px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Grid Background */
+    .bg-grid-premium {
+      background-image: linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Neomorphism */
+    .neomorph {
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 20px 20px 40px rgba(16, 185, 129, 0.05),
+        -20px -20px 40px rgba(255, 255, 255, 0.8),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.8),
+        inset -1px -1px 2px rgba(16, 185, 129, 0.05);
+    }
+
+    /* Animations */
+    .animate-slide-in {
+      animation: slideIn 0.6s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .animate-scale-in {
+      animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
     @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(10px);
       }
 
       to {
         opacity: 1;
         transform: translateY(0);
       }
+    }
+
+    .slide-up {
+      animation: slideUp 0.5s ease-out;
     }
 
     @keyframes slideUp {
@@ -45,123 +296,204 @@
       }
     }
 
-    @keyframes pulse-gentle {
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+
+    /* Ultra Modern Glassmorphism */
+    .glass-futuristic {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    }
+
+    /* Gradient Orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+      opacity: 0.4;
+      animation: float-orb 10s ease-in-out infinite;
+    }
+
+    @keyframes float-orb {
 
       0%,
       100% {
-        transform: scale(1);
-        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+
+      25% {
+        transform: translate(10px, -15px) scale(1.1);
       }
 
       50% {
-        transform: scale(1.02);
-        opacity: 0.9;
+        transform: translate(-5px, -20px) scale(0.9);
+      }
+
+      75% {
+        transform: translate(-15px, 5px) scale(1.05);
       }
     }
 
-    .animate-fadeIn {
-      animation: fadeIn 0.4s ease-out;
+    /* Card Futuristic */
+    .card-futuristic {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
     }
 
-    .animate-slideUp {
-      animation: slideUp 0.5s ease-out;
+    .card-futuristic::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.7s ease;
+      z-index: 1;
+      pointer-events: none;
     }
 
-    .animate-pulse-gentle {
-      animation: pulse-gentle 2s infinite ease-in-out;
+    .card-futuristic:hover::before {
+      left: 100%;
     }
 
-    /* Input focus effects */
-    .input-container:focus-within .input-icon {
-      color: #22c55e;
-      transform: translateY(-1px);
+    .card-futuristic:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 30px 60px -15px rgba(16, 185, 129, 0.4);
     }
 
-    .input-container:focus-within input,
-    .input-container:focus-within select {
-      border-color: #22c55e;
-      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
-      transform: translateY(-1px);
+    /* Border Gradient */
+    .border-gradient {
+      border: double 1px transparent;
+      background-image: linear-gradient(white, white),
+        linear-gradient(135deg, #059669, #10b981, #34d399);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
     }
 
-    /* Enhanced avatar */
-    .profile-avatar {
-      background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
-      box-shadow: 0 10px 25px -5px rgba(34, 197, 94, 0.3), 0 0 0 4px rgba(255, 255, 255, 0.9);
+    /* Pulse Glow */
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        filter: blur(60px);
+      }
+
+      50% {
+        opacity: 0.8;
+        filter: blur(70px);
+      }
     }
 
-    /* Glass morphism effect */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+    .animate-pulse-glow {
+      animation: pulse-glow 4s ease-in-out infinite;
     }
 
-    /* Status badge enhancements */
-    .status-badge {
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    /* Rotate Slow */
+    @keyframes rotate-slow {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
     }
 
-    /* Progress bar animation */
-    .progress-bar-animate {
-      transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    .animate-rotate-slow {
+      animation: rotate-slow 20s linear infinite;
     }
 
-    /* Card hover effects */
+    /* Hover Lift */
     .hover-lift {
       transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .hover-lift:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.2);
     }
 
-    /* Mobile optimizations */
-    @media (max-width: 640px) {
-      .mobile-stack {
-        display: flex;
-        flex-direction: column;
+    /* Profile Avatar */
+    .profile-avatar {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.3), 0 0 0 4px rgba(255, 255, 255, 0.9);
+    }
+
+    /* Input Focus Effects */
+    .input-container:focus-within .input-icon {
+      color: #10b981;
+      transform: translateY(-1px);
+    }
+
+    .input-container:focus-within input,
+    .input-container:focus-within select {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+      transform: translateY(-1px);
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      height: 0.5rem;
+      border-radius: 9999px;
+      overflow: hidden;
+      background: rgba(229, 231, 235, 0.5);
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 0.5s ease;
+    }
+
+    .progress-bar-fill.green {
+      background: linear-gradient(90deg, #10b981, #059669);
+    }
+
+    .progress-bar-fill.yellow {
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+
+    .progress-bar-fill.red {
+      background: linear-gradient(90deg, #ef4444, #dc2626);
+    }
+
+    /* Checkmark Animation */
+    @keyframes circleFill {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes progressFill {
+      from {
+        width: 0%;
       }
 
-      .mobile-padding {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-
-      .mobile-full {
+      to {
         width: 100%;
-        margin-left: 0;
-        margin-right: 0;
       }
     }
 
-    /* Custom scrollbar */
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
+    .checkmark-path {
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: checkmark 0.5s ease-in-out 0.3s forwards;
     }
 
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 4px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-
-    /* Smooth transitions */
-    * {
-      transition: background-color 0.2s ease, border-color 0.2s ease;
-    }
-
-    /* Success modal animation */
     @keyframes checkmark {
       0% {
         stroke-dashoffset: 100;
@@ -174,561 +506,657 @@
       }
     }
 
-    .checkmark-path {
-      stroke-dasharray: 100;
-      stroke-dashoffset: 100;
-      animation: checkmark 0.5s ease-in-out 0.3s forwards;
+    /* Mobile Optimizations */
+    @media (max-width: 640px) {
+      .mobile-stack {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    /* Navigation Link Styles */
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem 1rem;
+      border-radius: 0.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .nav-link.active {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      color: white;
+    }
+
+    .nav-link.active .nav-icon {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .nav-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
     }
   </style>
 </head>
 
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-grid-premium relative overflow-x-hidden">
+  <!-- Ultra Modern Decorative Orbs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="orb w-[500px] h-[500px] bg-emerald-400 top-[-100px] left-[-100px] animate-pulse-glow"></div>
+    <div
+      class="orb w-[600px] h-[600px] bg-green-400 bottom-[-200px] right-[-200px] animate-pulse-glow animation-delay-2000">
+    </div>
+    <div
+      class="orb w-[400px] h-[400px] bg-teal-400 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-glow animation-delay-4000">
+    </div>
+
+    <!-- Animated Grid Lines -->
+    <svg class="absolute top-0 left-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#10b981" stroke-width="0.5" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+
+    <!-- Floating Particles -->
+    <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-30"></div>
+    <div
+      class="absolute top-3/4 right-1/3 w-3 h-3 bg-green-400 rounded-full animate-ping opacity-30 animation-delay-2000">
+    </div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-1.5 h-1.5 bg-teal-400 rounded-full animate-ping opacity-30 animation-delay-4000">
+    </div>
+  </div>
+
   <!-- Navbar -->
   <%- include('./navbar/navbar.ejs', { name: user.name }) %>
 
     <!-- Main Content -->
-    <div class="pt-20 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <!-- Error Alert -->
-      <% if (typeof error !=='undefined' && error) { %>
-        <div class="mb-6 glass-card rounded-xl border-l-4 border-red-500 p-4 animate-fadeIn">
-          <div class="flex items-start">
-            <div class="flex-shrink-0 pt-0.5">
-              <div class="w-8 h-8 bg-red-50 rounded-full flex items-center justify-center">
-                <i class="fas fa-exclamation-circle text-red-500"></i>
-              </div>
-            </div>
-            <div class="ml-3">
-              <h3 class="text-sm font-semibold text-red-800">Perhatian</h3>
-              <div class="mt-1 text-sm text-red-700">
-                <%= error %>
-              </div>
-            </div>
-          </div>
-        </div>
-        <% } %>
-
-          <!-- Header Section -->
-          <div class="mb-8 animate-slideUp">
-            <div class="flex items-center justify-between mobile-stack">
-              <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3">
-                  <div class="w-2 h-10 bg-gradient-to-b from-green-500 to-emerald-600 rounded-full"></div>
-                  Profile Saya
-                </h1>
-                <p class="mt-2 text-gray-600 text-sm sm:text-base">Kelola informasi profil dan rekening Anda</p>
-              </div>
-              <div class="mt-3 sm:mt-0 flex items-center gap-2">
-                <span
-                  class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-green-50 text-green-800 border border-green-100 status-badge">
-                  <i class="fas fa-user-check text-green-600 mr-1.5"></i>
-                  <%= user.role ? user.role.replace('_', ' ' ).toUpperCase() : 'USER' %>
-                </span>
-                <span
-                  class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium <%= user.affiliate_status === 'approved' ? 'bg-green-50 text-green-800 border border-green-100' : 'bg-yellow-50 text-yellow-800 border border-yellow-100' %> status-badge">
-                  <i
-                    class="fas <%= user.affiliate_status === 'approved' ? 'fa-badge-check' : 'fa-clock' %> <%= user.affiliate_status === 'approved' ? 'text-green-600' : 'text-yellow-500' %> mr-1.5"></i>
-                  <%= user.affiliate_status ? user.affiliate_status.toUpperCase() : 'INACTIVE' %>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Profile Completion Indicator -->
-          <div id="profileRealtimeWrapper"
-            class="mb-6 bg-white rounded-xl shadow-sm border border-gray-100 p-6 animate-slideUp hover-lift">
-            <div class="flex items-center gap-5">
+    <main class="ml-56 pt-16 min-h-screen relative z-10">
+      <div class="p-6 max-w-7xl mx-auto" style="margin-left:0;">
+        <!-- Premium Page Header - Sesuai dengan dashboard -->
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
+          <div class="mb-4 lg:mb-0">
+            <div class="flex items-center gap-4">
               <div class="relative">
                 <div
-                  class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg"
-                  id="profileRealtimePercent">
-                  <span class="text-white font-bold text-xl">-</span>
+                  class="w-16 h-16 gradient-primary rounded-xl flex items-center justify-center shadow-2xl float-slow">
+                  <i class="fas fa-user-circle text-white text-2xl"></i>
                 </div>
                 <div
-                  class="absolute -bottom-1 -right-1 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-100">
-                  <i class="fas fa-chart-line text-green-600 text-xs"></i>
+                  class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                  <span class="w-2 h-2 bg-green-500 rounded-full pulse-premium"></span>
                 </div>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <h1
+                    class="text-3xl font-extrabold bg-gradient-to-r from-emerald-900 via-green-800 to-emerald-900 bg-clip-text text-transparent">
+                    Profile Saya
+                  </h1>
+                  <span
+                    class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                    <%= user.role ? user.role.replace('_', ' ' ).toUpperCase() : 'USER' %>
+                  </span>
+                </div>
+                <p class="text-sm text-emerald-700 font-medium">Kelola informasi profil dan rekening Anda</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Premium Date & Status Badges -->
+          <div class="flex items-center gap-3">
+            <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
+              <div class="w-8 h-8 gradient-secondary rounded-lg flex items-center justify-center shadow-lg">
+                <i class="fas fa-calendar-alt text-white text-sm"></i>
+              </div>
+              <div>
+                <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                  <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
+                </p>
+              </div>
+            </div>
+
+            <div class="gradient-primary rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-xl relative shimmer">
+              <div class="relative">
+                <i class="fas fa-bell text-white text-sm"></i>
+                <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></span>
+                <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
+              </div>
+              <div>
+                <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                <p class="text-xs font-bold text-white">Updates Real-time</p>
+              </div>
+            </div>
+
+            <span
+              class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold <%= user.affiliate_status === 'approved' ? 'gradient-success' : 'gradient-warning' %> text-white border border-white/30 flex items-center gap-1">
+              <i class="fas <%= user.affiliate_status === 'approved' ? 'fa-check-circle' : 'fa-clock' %>"></i>
+              <%= user.affiliate_status ? user.affiliate_status.toUpperCase() : 'INACTIVE' %>
+            </span>
+          </div>
+        </div>
+
+        <!-- Error Alert Premium -->
+        <% if (typeof error !=='undefined' && error) { %>
+          <div class="glass-futuristic rounded-xl p-4 border-l-4 border-red-500 mb-6 fade-in">
+            <div class="flex items-start gap-3">
+              <div
+                class="w-10 h-10 bg-gradient-to-r from-red-600 to-rose-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-exclamation-circle text-white"></i>
               </div>
               <div class="flex-1">
-                <div class="flex justify-between items-center mb-3">
-                  <div>
-                    <h3 class="text-sm font-semibold text-gray-700">Kelengkapan Profil</h3>
-                    <p class="text-xs text-gray-500 mt-1">Lengkapi profil untuk pengalaman terbaik</p>
-                  </div>
-                  <div class="text-lg font-bold text-green-700" id="profileRealtimeText">0%</div>
-                </div>
-                <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                  <div id="profileRealtimeBar"
-                    class="h-2.5 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full progress-bar-animate"
-                    style="width:0%"></div>
-                </div>
-                <div class="flex justify-between mt-2">
-                  <span class="text-xs text-gray-500">0%</span>
-                  <span class="text-xs text-gray-500">100%</span>
-                </div>
+                <p class="font-extrabold text-gray-900 text-sm">Perhatian</p>
+                <p class="text-xs text-gray-600 mt-1">
+                  <%= error %>
+                </p>
               </div>
             </div>
           </div>
+          <% } %>
 
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Sidebar - Left Column -->
-            <div class="lg:col-span-1 space-y-6">
-              <!-- Profile Card -->
-              <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover-lift">
-                <div class="p-6 border-b border-gray-100">
-                  <div class="flex flex-col items-center text-center">
-                    <!-- Avatar -->
-                    <div class="relative mb-5">
-                      <div
-                        class="w-28 h-28 profile-avatar rounded-full flex items-center justify-center mb-4 animate-fadeIn">
-                        <span class="text-white text-3xl font-bold">
-                          <%= user.name.charAt(0).toUpperCase() %>
-                        </span>
-                      </div>
-                      <div
-                        class="absolute bottom-4 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-100">
-                        <i class="fas fa-check-circle text-green-500"></i>
-                      </div>
-                    </div>
-
-                    <h3 class="text-xl font-bold text-gray-900 mb-1">
-                      <%= user.name %>
-                    </h3>
-                    <p class="text-sm text-gray-500 mb-4 flex items-center justify-center gap-1">
-                      <i class="fas fa-envelope text-gray-400 text-xs"></i>
-                      <%= user.email %>
-                    </p>
-
-                    <div class="flex flex-col gap-2 w-full">
-                      <div class="flex items-center justify-between bg-gray-50 px-4 py-2.5 rounded-lg">
-                        <span class="text-sm text-gray-600">ID Member</span>
-                        <span class="text-sm font-mono font-semibold text-gray-800">#<%= user.id ?
-                            user.id.toString().padStart(6, '0' ) : '000000' %></span>
-                      </div>
-
-                      <div class="flex items-center justify-between bg-gray-50 px-4 py-2.5 rounded-lg">
-                        <span class="text-sm text-gray-600">Status</span>
-                        <span
-                          class="text-sm font-semibold <%= user.status === 'active' ? 'text-green-600' : 'text-yellow-600' %>">
-                          <i class="fas fa-circle text-xs mr-1.5"></i>
-                          <%= user.status==='active' ? 'Aktif' : user.status || 'Aktif' %>
-                        </span>
-                      </div>
-                    </div>
+            <!-- Profile Completion Indicator Premium -->
+            <div id="profileRealtimeWrapper"
+              class="glass-futuristic rounded-2xl p-5 mb-6 hover-lift border border-white/50 fade-in">
+              <div class="flex flex-col sm:flex-row items-center gap-5">
+                <div class="relative flex-shrink-0">
+                  <div
+                    class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-2xl"
+                    id="profileRealtimePercent">
+                    <span class="text-white font-extrabold text-2xl">-</span>
+                  </div>
+                  <div
+                    class="absolute -bottom-1 -right-1 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                    <i class="fas fa-chart-line text-emerald-600 text-xs"></i>
                   </div>
                 </div>
-
-                <!-- Navigation -->
-                <nav class="p-4 space-y-2">
-                  <a href="/dashboard"
-                    class="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gray-50 rounded-xl transition-all duration-200 <%= (activePage === 'dashboard') ? 'bg-green-50 text-green-700 font-semibold border border-green-100' : '' %>">
-                    <div
-                      class="w-10 h-10 <%= (activePage === 'dashboard') ? 'bg-green-500' : 'bg-gray-100' %> rounded-xl flex items-center justify-center transition-all duration-200">
-                      <i class="fas fa-home <%= (activePage === 'dashboard') ? 'text-white' : 'text-gray-600' %>"></i>
+                <div class="flex-1 w-full">
+                  <div class="flex justify-between items-center mb-2">
+                    <div>
+                      <h3 class="text-sm font-extrabold text-gray-900">Kelengkapan Profil</h3>
+                      <p class="text-[10px] text-gray-500 mt-1">Lengkapi profil untuk pengalaman terbaik</p>
                     </div>
-                    <span>Dashboard</span>
-                    <i class="fas fa-chevron-right ml-auto text-gray-300 text-sm"></i>
-                  </a>
-                  <a href="/settings"
-                    class="flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 <%= (activePage === 'settings') ? 'bg-green-50 text-green-700 font-semibold border border-green-100' : 'text-gray-700 hover:bg-gray-50' %>">
-                    <div
-                      class="w-10 h-10 <%= (activePage === 'settings') ? 'bg-green-500' : 'bg-gray-100' %> rounded-xl flex items-center justify-center transition-all duration-200">
-                      <i class="fas fa-cog <%= (activePage === 'settings') ? 'text-white' : 'text-gray-600' %>"></i>
-                    </div>
-                    <span>Pengaturan</span>
-                    <i class="fas fa-chevron-right ml-auto text-gray-300 text-sm"></i>
-                  </a>
-                  <a href="/profile"
-                    class="flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 <%= (activePage === 'profile') ? 'bg-green-50 text-green-700 font-semibold border border-green-100' : 'text-gray-700 hover:bg-gray-50' %>">
-                    <div
-                      class="w-10 h-10 <%= (activePage === 'profile') ? 'bg-green-500' : 'bg-gray-100' %> rounded-xl flex items-center justify-center transition-all duration-200">
-                      <i class="fas fa-user <%= (activePage === 'profile') ? 'text-white' : 'text-gray-600' %>"></i>
-                    </div>
-                    <span>Profil</span>
-                    <i class="fas fa-chevron-right ml-auto text-gray-300 text-sm"></i>
-                  </a>
-                </nav>
+                    <div class="text-xl font-extrabold text-emerald-700" id="profileRealtimeText">0%</div>
+                  </div>
+                  <div class="progress-bar">
+                    <div id="profileRealtimeBar" class="progress-bar-fill" style="width:0%"></div>
+                  </div>
+                  <div class="flex justify-between mt-1">
+                    <span class="text-[8px] text-gray-500">0%</span>
+                    <span class="text-[8px] text-gray-500">100%</span>
+                  </div>
+                </div>
               </div>
+            </div>
 
-              <!-- Stats Card -->
-              <div
-                class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100 shadow-sm hover-lift">
-                <div class="flex items-center justify-between mb-6">
-                  <h3 class="font-semibold text-green-900">Statistik Akun</h3>
-                  <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-chart-pie text-green-600"></i>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <!-- Sidebar - Left Column -->
+              <div class="lg:col-span-1 space-y-6">
+                <!-- Profile Card Premium -->
+                <div class="glass-futuristic rounded-2xl overflow-hidden border border-white/50 hover-lift">
+                  <div class="gradient-secondary px-5 py-4 border-b border-white/30">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
+                        <i class="fas fa-user-circle text-white"></i>
+                      </div>
+                      <div>
+                        <h3 class="text-base font-extrabold text-white">Informasi Akun</h3>
+                        <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Detail profil Anda</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="p-5 bg-white/30 backdrop-blur">
+                    <div class="flex flex-col items-center text-center mb-5">
+                      <!-- Avatar -->
+                      <div class="relative mb-4">
+                        <div
+                          class="w-28 h-28 profile-avatar rounded-full flex items-center justify-center shadow-2xl border-4 border-white/50">
+                          <span class="text-white text-3xl font-extrabold">
+                            <%= user.name.charAt(0).toUpperCase() %>
+                          </span>
+                        </div>
+                        <div
+                          class="absolute bottom-1 right-1 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                          <i class="fas fa-check-circle text-emerald-500"></i>
+                        </div>
+                      </div>
+
+                      <h3 class="text-xl font-extrabold text-gray-900 mb-1">
+                        <%= user.name %>
+                      </h3>
+                      <p class="text-xs text-gray-500 mb-4 flex items-center justify-center gap-1">
+                        <i class="fas fa-envelope text-emerald-400"></i>
+                        <%= user.email %>
+                      </p>
+
+                      <div class="w-full space-y-2">
+                        <div
+                          class="flex items-center justify-between glass-futuristic p-3 rounded-xl border border-white/50">
+                          <span class="text-[9px] font-bold text-emerald-700">ID Member</span>
+                          <span class="text-xs font-extrabold text-gray-900">#<%= user.id ?
+                              user.id.toString().padStart(6, '0' ) : '000000' %></span>
+                        </div>
+
+                        <div
+                          class="flex items-center justify-between glass-futuristic p-3 rounded-xl border border-white/50">
+                          <span class="text-[9px] font-bold text-emerald-700">Status</span>
+                          <span
+                            class="text-xs font-extrabold <%= user.status === 'active' ? 'text-emerald-700' : 'text-amber-600' %>">
+                            <i class="fas fa-circle text-xs mr-1"></i>
+                            <%= user.status==='active' ? 'Aktif' : user.status || 'Aktif' %>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Navigation dengan Icon dan Text yang Sudah Diperbaiki -->
+                    <nav class="space-y-2 mt-4 pt-4 border-t border-white/30">
+                      <a href="/dashboard" class="nav-link <%= (activePage === 'dashboard') ? 'active' : '' %>">
+                        <div class="nav-icon <%= (activePage === 'dashboard') ? 'bg-white/20' : 'bg-white/60' %>">
+                          <i
+                            class="fas fa-home <%= (activePage === 'dashboard') ? 'text-white' : 'text-emerald-600' %>"></i>
+                        </div>
+                        <span class="text-xs font-extrabold flex-1">Dashboard</span>
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                      </a>
+
+                      <a href="/settings" class="nav-link <%= (activePage === 'settings') ? 'active' : '' %>">
+                        <div class="nav-icon <%= (activePage === 'settings') ? 'bg-white/20' : 'bg-white/60' %>">
+                          <i
+                            class="fas fa-cog <%= (activePage === 'settings') ? 'text-white' : 'text-emerald-600' %>"></i>
+                        </div>
+                        <span class="text-xs font-extrabold flex-1">Pengaturan</span>
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                      </a>
+
+                      <a href="/profile" class="nav-link <%= (activePage === 'profile') ? 'active' : '' %>">
+                        <div class="nav-icon <%= (activePage === 'profile') ? 'bg-white/20' : 'bg-white/60' %>">
+                          <i
+                            class="fas fa-user <%= (activePage === 'profile') ? 'text-white' : 'text-emerald-600' %>"></i>
+                        </div>
+                        <span class="text-xs font-extrabold flex-1">Profil</span>
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                      </a>
+                    </nav>
                   </div>
                 </div>
-                <div class="space-y-5">
-                  <div>
-                    <div class="flex justify-between items-center mb-1">
-                      <span class="text-sm text-green-700">Total Komisi</span>
-                      <span class="text-sm font-bold text-green-900">Rp <%= (user.total_commission ||
-                          0).toLocaleString('id-ID') %></span>
+
+                <!-- Stats Card Premium -->
+                <div class="glass-futuristic rounded-2xl p-5 border border-white/50 hover-lift">
+                  <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xs font-extrabold text-gray-900">Statistik Akun</h3>
+                    <div class="w-10 h-10 gradient-info rounded-lg flex items-center justify-center">
+                      <i class="fas fa-chart-pie text-white"></i>
                     </div>
-                    <div class="w-full bg-green-100 rounded-full h-1.5 overflow-hidden">
-                      <div class="h-1.5 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full" style="width: 85%">
+                  </div>
+                  <div class="space-y-4">
+                    <div>
+                      <div class="flex justify-between items-center mb-1">
+                        <span class="text-[9px] font-bold text-emerald-700">Total Komisi</span>
+                        <span class="text-xs font-extrabold text-gray-900">Rp <%= (user.total_commission ||
+                            0).toLocaleString('id-ID') %></span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-bar-fill green" style="width: 85%"></div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="flex justify-between items-center mb-1">
+                        <span class="text-[9px] font-bold text-emerald-700">Total Penarikan</span>
+                        <span class="text-xs font-extrabold text-gray-900">Rp <%= (user.total_withdrawn ||
+                            0).toLocaleString('id-ID') %></span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-bar-fill green" style="width: 60%"></div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="flex justify-between items-center mb-1">
+                        <span class="text-[9px] font-bold text-emerald-700">Rate Komisi</span>
+                        <span class="text-xs font-extrabold text-gray-900">
+                          <%= user.commission_rate || 0 %>%
+                        </span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-bar-fill green" style="width: <%= user.commission_rate || 0 %>%"></div>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div>
-                    <div class="flex justify-between items-center mb-1">
-                      <span class="text-sm text-emerald-700">Total Penarikan</span>
-                      <span class="text-sm font-bold text-emerald-900">Rp <%= (user.total_withdrawn ||
-                          0).toLocaleString('id-ID') %></span>
+                <!-- Account Info Card Premium -->
+                <div class="glass-futuristic rounded-2xl p-5 border border-white/50 hover-lift">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 gradient-info rounded-lg flex items-center justify-center">
+                      <i class="fas fa-info-circle text-white"></i>
                     </div>
-                    <div class="w-full bg-emerald-100 rounded-full h-1.5 overflow-hidden">
-                      <div class="h-1.5 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full" style="width: 60%">
-                      </div>
-                    </div>
+                    <h3 class="text-xs font-extrabold text-gray-900">Informasi Akun</h3>
                   </div>
-
-                  <div>
-                    <div class="flex justify-between items-center mb-1">
-                      <span class="text-sm text-teal-700">Rate Komisi</span>
-                      <span class="text-sm font-bold text-teal-900">
-                        <%= user.commission_rate || 0 %>%
+                  <div class="space-y-3">
+                    <div class="flex items-center justify-between py-2 border-b border-white/30">
+                      <span class="text-[9px] font-bold text-emerald-700">Terdaftar Sejak</span>
+                      <span class="text-xs font-extrabold text-gray-900">
+                        <%= user.created_at ? new Date(user.created_at).toLocaleDateString('id-ID', { day: 'numeric' ,
+                          month: 'short' , year: 'numeric' }) : new Date().toLocaleDateString('id-ID', { day: 'numeric'
+                          , month: 'short' , year: 'numeric' }) %>
                       </span>
                     </div>
-                    <div class="w-full bg-teal-100 rounded-full h-1.5 overflow-hidden">
-                      <div class="h-1.5 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full"
-                        style="width: <%= user.commission_rate || 0 %>%"></div>
+                    <div class="flex items-center justify-between py-2 border-b border-white/30">
+                      <span class="text-[9px] font-bold text-emerald-700">Terakhir Login</span>
+                      <span class="text-xs font-extrabold text-gray-900">
+                        <%= user.last_login ? new Date(user.last_login).toLocaleDateString('id-ID', { day: 'numeric' ,
+                          month: 'short' }) : 'Hari ini' %>
+                      </span>
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                      <span class="text-[9px] font-bold text-emerald-700">Total Referral</span>
+                      <span class="text-xs font-extrabold text-gray-900">
+                        <%= user.total_referrals || 0 %> orang
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Account Info Card -->
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover-lift">
-                <div class="flex items-center gap-3 mb-6">
-                  <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-info-circle text-blue-600"></i>
+              <!-- Main Content - Right Column -->
+              <div class="lg:col-span-2">
+                <!-- Edit Profile Card Premium -->
+                <div class="glass-futuristic rounded-2xl overflow-hidden border border-white/50 mb-6 hover-lift">
+                  <!-- Card Header -->
+                  <div class="gradient-primary px-5 py-4 border-b border-white/30">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
+                        <i class="fas fa-user-edit text-white"></i>
+                      </div>
+                      <div>
+                        <h2 class="text-base font-extrabold text-white">Edit Profil</h2>
+                        <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Update informasi pribadi dan rekening
+                          bank Anda</p>
+                      </div>
+                    </div>
                   </div>
-                  <h3 class="font-semibold text-gray-900">Informasi Akun</h3>
+
+                  <!-- Form Section -->
+                  <div class="p-5 bg-white/30 backdrop-blur">
+                    <form id="updateProfileForm" class="space-y-8">
+                      <!-- Personal Information -->
+                      <div>
+                        <div class="flex items-center gap-3 mb-4">
+                          <div
+                            class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
+                            <i class="fas fa-user-circle text-emerald-600 text-xs"></i>
+                          </div>
+                          <h3 class="text-xs font-extrabold text-gray-900">Informasi Pribadi</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <!-- Name -->
+                          <div>
+                            <label for="name"
+                              class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                              Nama Lengkap
+                              <span class="text-red-500 ml-1">*</span>
+                            </label>
+                            <div class="input-container relative">
+                              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i
+                                  class="fas fa-user text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                              </div>
+                              <input type="text" id="name" name="name" value="<%= user.name %>" required
+                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                placeholder="Masukkan nama lengkap" />
+                            </div>
+                          </div>
+
+                          <!-- Email -->
+                          <div>
+                            <label for="email"
+                              class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                              Alamat Email
+                              <span class="text-red-500 ml-1">*</span>
+                            </label>
+                            <div class="input-container relative">
+                              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i
+                                  class="fas fa-envelope text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                              </div>
+                              <input type="email" id="email" name="email" value="<%= user.email %>" required
+                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                placeholder="email@contoh.com" />
+                            </div>
+                          </div>
+
+                          <!-- Phone -->
+                          <div class="md:col-span-2">
+                            <label for="phone" class="block text-[9px] font-extrabold text-emerald-800 mb-1.5">
+                              Nomor Telepon/WhatsApp
+                            </label>
+                            <div class="input-container relative">
+                              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i
+                                  class="fas fa-phone text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                              </div>
+                              <input type="tel" id="phone" name="phone" value="<%= user.phone || '' %>"
+                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                placeholder="08xxxxxxxxxx" />
+                            </div>
+                            <p class="text-[8px] text-gray-500 mt-1 ml-1">
+                              <i class="fas fa-info-circle text-emerald-400 mr-1"></i>
+                              Berguna untuk verifikasi dan notifikasi
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Bank Information -->
+                      <div class="pt-6 border-t border-white/30">
+                        <div class="flex items-center gap-3 mb-4">
+                          <div
+                            class="w-8 h-8 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
+                            <i class="fas fa-university text-blue-600 text-xs"></i>
+                          </div>
+                          <h3 class="text-xs font-extrabold text-gray-900">Informasi Rekening Bank</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <!-- Bank Name -->
+                          <div>
+                            <label for="bank_name" class="block text-[9px] font-extrabold text-emerald-800 mb-1.5">
+                              Nama Bank
+                            </label>
+                            <div class="input-container relative">
+                              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i
+                                  class="fas fa-university text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                              </div>
+                              <div class="relative">
+                                <select id="bank_name" name="bank_name"
+                                  class="block w-full pl-9 pr-8 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium appearance-none">
+                                  <option value="">Pilih Bank</option>
+                                  <option value="BCA" <%=user.bank_name==='BCA' ? 'selected' : '' %>>BCA</option>
+                                  <option value="BNI" <%=user.bank_name==='BNI' ? 'selected' : '' %>>BNI</option>
+                                  <option value="BRI" <%=user.bank_name==='BRI' ? 'selected' : '' %>>BRI</option>
+                                  <option value="MANDIRI" <%=user.bank_name==='MANDIRI' ? 'selected' : '' %>>MANDIRI
+                                  </option>
+                                  <option value="CIMB" <%=user.bank_name==='CIMB' ? 'selected' : '' %>>CIMB Niaga
+                                  </option>
+                                  <option value="PERMATA" <%=user.bank_name==='PERMATA' ? 'selected' : '' %>>Permata
+                                    Bank</option>
+                                  <option value="DANAMON" <%=user.bank_name==='DANAMON' ? 'selected' : '' %>>Danamon
+                                  </option>
+                                  <option value="BTN" <%=user.bank_name==='BTN' ? 'selected' : '' %>>BTN</option>
+                                  <option value="JENIUS" <%=user.bank_name==='JENIUS' ? 'selected' : '' %>>Jenius (BTPN)
+                                  </option>
+                                  <option value="BSI" <%=user.bank_name==='BSI' ? 'selected' : '' %>>BSI (Bank Syariah
+                                    Indonesia)</option>
+                                  <option value="LAINNYA" <%=user.bank_name==='LAINNYA' ? 'selected' : '' %>>Bank
+                                    Lainnya</option>
+                                </select>
+                                <i
+                                  class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Bank Account -->
+                          <div>
+                            <label for="bank_account" class="block text-[9px] font-extrabold text-emerald-800 mb-1.5">
+                              Nomor Rekening
+                            </label>
+                            <div class="input-container relative">
+                              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i
+                                  class="fas fa-credit-card text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                              </div>
+                              <input type="text" id="bank_account" name="bank_account"
+                                value="<%= user.bank_account || '' %>"
+                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                placeholder="Contoh: 1234567890" />
+                            </div>
+                          </div>
+
+                          <!-- Bank Account Name -->
+                          <div class="md:col-span-2">
+                            <label for="bank_account_name"
+                              class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                              Nama Pemilik Rekening
+                              <span class="text-red-500 ml-1">*</span>
+                            </label>
+                            <div class="input-container relative">
+                              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i
+                                  class="fas fa-user-tie text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                              </div>
+                              <input type="text" id="bank_account_name" name="bank_account_name"
+                                value="<%= user.bank_account_name || '' %>"
+                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                placeholder="Nama sesuai dengan rekening bank" required />
+                            </div>
+                            <p class="text-[8px] text-gray-500 mt-1 ml-1">
+                              <i class="fas fa-exclamation-triangle text-amber-500 mr-1"></i>
+                              Harus sama persis dengan nama di buku tabungan/KTP
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Submit Button -->
+                      <div class="pt-6 border-t border-white/30">
+                        <button type="submit" id="submitBtn"
+                          class="w-full gradient-primary text-white py-4 px-6 rounded-xl font-extrabold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm shadow-lg">
+                          <i class="fas fa-save"></i>
+                          <span>Simpan Perubahan</span>
+                          <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                        <p class="text-[8px] text-gray-500 text-center mt-3 flex items-center justify-center gap-1">
+                          <i class="fas fa-shield-alt text-emerald-400"></i>
+                          Data Anda aman dan terenkripsi
+                        </p>
+                      </div>
+                    </form>
+                  </div>
                 </div>
-                <div class="space-y-4">
-                  <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
-                    <span class="text-sm text-gray-600">Terdaftar Sejak</span>
-                    <span class="text-sm font-medium text-gray-900">
-                      <%= user.created_at ? new Date(user.created_at).toLocaleDateString('id-ID', { day: 'numeric' ,
-                        month: 'short' , year: 'numeric' }) : new Date().toLocaleDateString('id-ID', { day: 'numeric' ,
-                        month: 'short' , year: 'numeric' }) %>
-                    </span>
-                  </div>
-                  <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
-                    <span class="text-sm text-gray-600">Terakhir Login</span>
-                    <span class="text-sm font-medium text-gray-900">
-                      <%= user.last_login ? new Date(user.last_login).toLocaleDateString('id-ID', { day: 'numeric' ,
-                        month: 'short' }) : 'Hari ini' %>
-                    </span>
-                  </div>
-                  <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
-                    <span class="text-sm text-gray-600">Total Referral</span>
-                    <span class="text-sm font-medium text-gray-900">
-                      <%= user.total_referrals || 0 %> orang
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <!-- Main Content - Right Column -->
-            <div class="lg:col-span-2">
-              <!-- Edit Profile Card -->
-              <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 mb-6 hover-lift">
-                <!-- Card Header -->
-                <div class="p-6 border-b border-gray-100">
-                  <div class="flex items-center gap-4">
-                    <div
-                      class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-md">
-                      <i class="fas fa-user-edit text-white text-lg"></i>
-                    </div>
-                    <div>
-                      <h2 class="text-xl font-bold text-gray-900">Edit Profil</h2>
-                      <p class="text-sm text-gray-500 mt-1">Update informasi pribadi dan rekening bank Anda</p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Form Section -->
-                <div class="p-6">
-                  <form id="updateProfileForm" class="space-y-8">
-                    <!-- Personal Information -->
-                    <div>
-                      <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
-                          <i class="fas fa-user-circle text-green-600"></i>
-                        </div>
-                        <div>
-                          <h3 class="text-lg font-semibold text-gray-900">Informasi Pribadi</h3>
-                          <p class="text-sm text-gray-500 mt-1">Data diri dan kontak</p>
-                        </div>
+                <!-- Information Card Premium -->
+                <div class="glass-futuristic rounded-2xl p-5 border border-blue-200/50 bg-blue-50/30 hover-lift">
+                  <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                      <div
+                        class="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center border border-white/60">
+                        <i class="fas fa-lightbulb text-blue-600 text-lg"></i>
                       </div>
-                      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <!-- Name -->
-                        <div>
-                          <label for="name" class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-                            Nama Lengkap
-                            <span class="text-red-500 ml-1">*</span>
-                          </label>
-                          <div class="input-container relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                              <i class="fas fa-user text-gray-400 input-icon transition-all duration-200"></i>
-                            </div>
-                            <input type="text" id="name" name="name" value="<%= user.name %>" required
-                              class="block w-full pl-10 pr-4 py-3.5 border border-gray-200 rounded-xl focus:outline-none transition-all duration-200 bg-gray-50 focus:bg-white"
-                              placeholder="Masukkan nama lengkap" />
+                    </div>
+                    <div class="flex-1">
+                      <h3 class="text-xs font-extrabold text-blue-900 mb-3">Tips & Informasi Penting</h3>
+                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
+                          <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-green-600 text-[8px]"></i>
                           </div>
+                          <span class="text-[9px] text-blue-800">Pastikan informasi rekening bank benar</span>
                         </div>
-
-                        <!-- Email -->
-                        <div>
-                          <label for="email" class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-                            Alamat Email
-                            <span class="text-red-500 ml-1">*</span>
-                          </label>
-                          <div class="input-container relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                              <i class="fas fa-envelope text-gray-400 input-icon transition-all duration-200"></i>
-                            </div>
-                            <input type="email" id="email" name="email" value="<%= user.email %>" required
-                              class="block w-full pl-10 pr-4 py-3.5 border border-gray-200 rounded-xl focus:outline-none transition-all duration-200 bg-gray-50 focus:bg-white"
-                              placeholder="email@contoh.com" />
+                        <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
+                          <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-green-600 text-[8px]"></i>
                           </div>
+                          <span class="text-[9px] text-blue-800">Nama pemilik rekening harus sesuai KTP</span>
                         </div>
-
-                        <!-- Phone -->
-                        <div class="md:col-span-2">
-                          <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-                            Nomor Telepon/WhatsApp
-                          </label>
-                          <div class="input-container relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                              <i class="fas fa-phone text-gray-400 input-icon transition-all duration-200"></i>
-                            </div>
-                            <input type="tel" id="phone" name="phone" value="<%= user.phone || '' %>"
-                              class="block w-full pl-10 pr-4 py-3.5 border border-gray-200 rounded-xl focus:outline-none transition-all duration-200 bg-gray-50 focus:bg-white"
-                              placeholder="08xxxxxxxxxx" />
+                        <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
+                          <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-green-600 text-[8px]"></i>
                           </div>
-                          <p class="text-xs text-gray-500 mt-2 ml-1">
-                            <i class="fas fa-info-circle text-gray-400 mr-1"></i>
-                            Berguna untuk verifikasi dan notifikasi
-                          </p>
+                          <span class="text-[9px] text-blue-800">Email untuk notifikasi dan reset password</span>
                         </div>
-                      </div>
-                    </div>
-
-                    <!-- Bank Information -->
-                    <div class="pt-8 border-t border-gray-100">
-                      <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                          <i class="fas fa-university text-blue-600"></i>
-                        </div>
-                        <div>
-                          <h3 class="text-lg font-semibold text-gray-900">Informasi Rekening Bank</h3>
-                          <p class="text-sm text-gray-500 mt-1">Untuk penarikan komisi</p>
-                        </div>
-                      </div>
-                      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <!-- Bank Name -->
-                        <div>
-                          <label for="bank_name" class="block text-sm font-medium text-gray-700 mb-2">
-                            Nama Bank
-                          </label>
-                          <div class="input-container relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                              <i class="fas fa-university text-gray-400 input-icon transition-all duration-200"></i>
-                            </div>
-                            <select id="bank_name" name="bank_name"
-                              class="block w-full pl-10 pr-4 py-3.5 border border-gray-200 rounded-xl focus:outline-none transition-all duration-200 bg-gray-50 focus:bg-white appearance-none">
-                              <option value="">Pilih Bank</option>
-                              <option value="BCA" <%=user.bank_name==='BCA' ? 'selected' : '' %>>BCA</option>
-                              <option value="BNI" <%=user.bank_name==='BNI' ? 'selected' : '' %>>BNI</option>
-                              <option value="BRI" <%=user.bank_name==='BRI' ? 'selected' : '' %>>BRI</option>
-                              <option value="MANDIRI" <%=user.bank_name==='MANDIRI' ? 'selected' : '' %>>MANDIRI
-                              </option>
-                              <option value="CIMB" <%=user.bank_name==='CIMB' ? 'selected' : '' %>>CIMB Niaga</option>
-                              <option value="PERMATA" <%=user.bank_name==='PERMATA' ? 'selected' : '' %>>Permata Bank
-                              </option>
-                              <option value="DANAMON" <%=user.bank_name==='DANAMON' ? 'selected' : '' %>>Danamon
-                              </option>
-                              <option value="BTN" <%=user.bank_name==='BTN' ? 'selected' : '' %>>BTN</option>
-                              <option value="JENIUS" <%=user.bank_name==='JENIUS' ? 'selected' : '' %>>Jenius (BTPN)
-                              </option>
-                              <option value="BSI" <%=user.bank_name==='BSI' ? 'selected' : '' %>>BSI (Bank Syariah
-                                Indonesia)</option>
-                              <option value="LAINNYA" <%=user.bank_name==='LAINNYA' ? 'selected' : '' %>>Bank Lainnya
-                              </option>
-                            </select>
-                            <div class="absolute right-3 top-3.5 pointer-events-none">
-                              <i class="fas fa-chevron-down text-gray-400"></i>
-                            </div>
+                        <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
+                          <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-green-600 text-[8px]"></i>
                           </div>
-                        </div>
-
-                        <!-- Bank Account -->
-                        <div>
-                          <label for="bank_account" class="block text-sm font-medium text-gray-700 mb-2">
-                            Nomor Rekening
-                          </label>
-                          <div class="input-container relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                              <i class="fas fa-credit-card text-gray-400 input-icon transition-all duration-200"></i>
-                            </div>
-                            <input type="text" id="bank_account" name="bank_account"
-                              value="<%= user.bank_account || '' %>"
-                              class="block w-full pl-10 pr-4 py-3.5 border border-gray-200 rounded-xl focus:outline-none transition-all duration-200 bg-gray-50 focus:bg-white"
-                              placeholder="Contoh: 1234567890" />
-                          </div>
-                        </div>
-
-                        <!-- Bank Account Name -->
-                        <div class="md:col-span-2">
-                          <label for="bank_account_name"
-                            class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-                            Nama Pemilik Rekening
-                            <span class="text-red-500 ml-1">*</span>
-                          </label>
-                          <div class="input-container relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                              <i class="fas fa-user-tie text-gray-400 input-icon transition-all duration-200"></i>
-                            </div>
-                            <input type="text" id="bank_account_name" name="bank_account_name"
-                              value="<%= user.bank_account_name || '' %>"
-                              class="block w-full pl-10 pr-4 py-3.5 border border-gray-200 rounded-xl focus:outline-none transition-all duration-200 bg-gray-50 focus:bg-white"
-                              placeholder="Nama sesuai dengan rekening bank" required />
-                          </div>
-                          <p class="text-xs text-gray-500 mt-2 ml-1">
-                            <i class="fas fa-exclamation-triangle text-yellow-500 mr-1"></i>
-                            Harus sama persis dengan nama di buku tabungan/KTP
-                          </p>
+                          <span class="text-[9px] text-blue-800">Perubahan disimpan langsung ke database</span>
                         </div>
                       </div>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="pt-8 border-t border-gray-100">
-                      <button type="submit" id="submitBtn"
-                        class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3 hover:shadow-lg animate-pulse-gentle">
-                        <i class="fas fa-save text-lg"></i>
-                        <span>Simpan Perubahan</span>
-                        <i class="fas fa-arrow-right ml-2 text-sm"></i>
-                      </button>
-                      <p class="text-xs text-gray-500 text-center mt-3 flex items-center justify-center gap-1">
-                        <i class="fas fa-shield-alt text-gray-400"></i>
-                        Data Anda aman dan terenkripsi
-                      </p>
-                    </div>
-                  </form>
-                </div>
-              </div>
-
-              <!-- Information Card -->
-              <div
-                class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-100 shadow-sm hover-lift">
-                <div class="flex items-start gap-4">
-                  <div class="flex-shrink-0">
-                    <div
-                      class="w-12 h-12 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl flex items-center justify-center border border-blue-200">
-                      <i class="fas fa-lightbulb text-blue-600 text-xl"></i>
-                    </div>
-                  </div>
-                  <div class="flex-1">
-                    <h3 class="font-bold text-blue-900 mb-4">Tips & Informasi Penting</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div class="flex items-start gap-2 bg-white/50 p-3 rounded-lg">
-                        <div
-                          class="w-6 h-6 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <i class="fas fa-check text-green-600 text-xs"></i>
+                      <div class="mt-4 pt-3 border-t border-blue-200/50">
+                        <div class="flex items-center gap-2 text-[9px] text-blue-700">
+                          <i class="fas fa-clock text-blue-500"></i>
+                          <span>Perubahan akan berlaku dalam 1-2 menit</span>
                         </div>
-                        <span class="text-sm text-blue-800">Pastikan informasi rekening bank benar</span>
-                      </div>
-                      <div class="flex items-start gap-2 bg-white/50 p-3 rounded-lg">
-                        <div
-                          class="w-6 h-6 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <i class="fas fa-check text-green-600 text-xs"></i>
-                        </div>
-                        <span class="text-sm text-blue-800">Nama pemilik rekening harus sesuai KTP</span>
-                      </div>
-                      <div class="flex items-start gap-2 bg-white/50 p-3 rounded-lg">
-                        <div
-                          class="w-6 h-6 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <i class="fas fa-check text-green-600 text-xs"></i>
-                        </div>
-                        <span class="text-sm text-blue-800">Email untuk notifikasi dan reset password</span>
-                      </div>
-                      <div class="flex items-start gap-2 bg-white/50 p-3 rounded-lg">
-                        <div
-                          class="w-6 h-6 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <i class="fas fa-check text-green-600 text-xs"></i>
-                        </div>
-                        <span class="text-sm text-blue-800">Perubahan disimpan langsung ke database</span>
-                      </div>
-                    </div>
-                    <div class="mt-5 pt-4 border-t border-blue-100">
-                      <div class="flex items-center gap-2 text-sm text-blue-700">
-                        <i class="fas fa-clock text-blue-500"></i>
-                        <span>Perubahan akan berlaku dalam 1-2 menit</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-    </div>
+      </div>
+    </main>
 
-    <!-- Loading Overlay -->
+    <!-- Loading Overlay Premium -->
     <div id="loadingOverlay"
-      class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+      class="hidden fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
       <div
-        class="bg-white rounded-2xl p-10 flex flex-col items-center gap-6 max-w-md w-full mx-4 animate-fadeIn shadow-2xl">
+        class="glass-futuristic rounded-2xl p-10 flex flex-col items-center gap-6 max-w-md w-full mx-4 fade-in border border-white/50">
         <div class="relative">
-          <div class="animate-spin rounded-full h-20 w-20 border-4 border-green-500 border-t-transparent"></div>
+          <div class="animate-spin rounded-full h-20 w-20 border-4 border-emerald-500 border-t-transparent"></div>
           <div class="absolute inset-0 flex items-center justify-center">
-            <i class="fas fa-user-edit text-green-600 text-2xl"></i>
+            <i class="fas fa-user-edit text-emerald-600 text-2xl"></i>
           </div>
         </div>
         <div class="text-center">
-          <h3 class="text-gray-800 font-bold text-xl mb-2">Memperbarui Profil</h3>
-          <p class="text-gray-600">Harap tunggu sebentar, data Anda sedang diproses...</p>
+          <h3 class="text-gray-900 font-extrabold text-xl mb-2">Memperbarui Profil</h3>
+          <p class="text-xs text-gray-600">Harap tunggu sebentar, data Anda sedang diproses...</p>
         </div>
-        <!-- Progress Bar dengan Animasi Mengkilap -->
-        <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden relative">
-          <!-- Background static bar -->
-          <div class="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200"></div>
-
-          <!-- Animated shimmer bar -->
-          <div class="absolute inset-0 h-2.5 rounded-full animate-shimmer" style="
-            background: linear-gradient(
-              90deg,
-              rgba(34, 197, 94, 0.1) 0%,
-              rgba(34, 197, 94, 0.3) 25%,
-              rgba(34, 197, 94, 0.6) 50%,
-              rgba(34, 197, 94, 0.3) 75%,
-              rgba(34, 197, 94, 0.1) 100%
-            );
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite linear;
-          "></div>
-
-          <!-- Glowing overlay effect -->
-          <div class="absolute inset-0 h-2.5 rounded-full" style="
-            background: linear-gradient(
-              90deg,
-              transparent 0%,
-              rgba(255, 255, 255, 0.4) 25%,
-              rgba(255, 255, 255, 0.8) 50%,
-              rgba(255, 255, 255, 0.4) 75%,
-              transparent 100%
-            );
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite linear;
-            filter: blur(1px);
-          "></div>
+        <!-- Progress Bar dengan Animasi Shimmer -->
+        <div class="w-full bg-white/30 rounded-full h-2 overflow-hidden relative">
+          <div class="absolute inset-0 h-2 rounded-full animate-shimmer" style="
+          background: linear-gradient(90deg,
+            rgba(16, 185, 129, 0.1) 0%,
+            rgba(16, 185, 129, 0.3) 25%,
+            rgba(16, 185, 129, 0.6) 50%,
+            rgba(16, 185, 129, 0.3) 75%,
+            rgba(16, 185, 129, 0.1) 100%);
+          background-size: 200% 100%;
+        "></div>
         </div>
       </div>
     </div>
+
+    <!-- Success Modal (will be created dynamically) -->
+    <!-- Success modal template will be injected by JavaScript -->
 
     <script>
       // Real-time profile completeness calculation
@@ -750,19 +1178,28 @@
 
           if (percentEl) {
             const span = percentEl.querySelector('span') || percentEl;
-            span.textContent = percent + '%';
+            span.textContent = percent;
 
             // Update gradient based on percentage
             if (percent < 30) {
-              percentEl.className = 'w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-lg';
+              percentEl.className = 'w-20 h-20 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-2xl';
             } else if (percent < 70) {
-              percentEl.className = 'w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center shadow-lg';
+              percentEl.className = 'w-20 h-20 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center shadow-2xl';
             } else {
-              percentEl.className = 'w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg';
+              percentEl.className = 'w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-2xl';
             }
           }
 
-          if (barEl) barEl.style.width = percent + '%';
+          if (barEl) {
+            barEl.style.width = percent + '%';
+            if (percent === 100) {
+              barEl.className = 'progress-bar-fill green';
+            } else if (percent >= 70) {
+              barEl.className = 'progress-bar-fill yellow';
+            } else {
+              barEl.className = 'progress-bar-fill red';
+            }
+          }
           if (textEl) textEl.textContent = percent + '%';
         } catch (e) {
           console.error('computeProfileRealtime error', e);
@@ -782,11 +1219,6 @@
         // Initial compute
         setTimeout(() => {
           computeProfileRealtime();
-          // Add animation to progress bar
-          const barEl = document.getElementById('profileRealtimeBar');
-          if (barEl) {
-            barEl.classList.add('progress-bar-animate');
-          }
         }, 300);
       })();
 
@@ -800,7 +1232,6 @@
         // Show loading with animation
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Menyimpan...</span>';
-        submitBtn.classList.remove('animate-pulse-gentle');
         loadingOverlay.classList.remove('hidden');
 
         const formData = new FormData(e.target);
@@ -833,34 +1264,23 @@
               modal.id = 'successModal';
               modal.className = 'fixed inset-0 flex items-center justify-center z-50 p-4';
               modal.innerHTML = `
-              <div class="bg-white rounded-2xl shadow-2xl p-10 flex flex-col items-center text-center max-w-md w-full animate-fadeIn">
+              <div class="glass-futuristic rounded-2xl p-10 flex flex-col items-center text-center max-w-md w-full fade-in border border-white/50">
                 <div class="mb-6 relative">
                   <svg class="w-24 h-24" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="#f0fdf4" stroke-width="8"/>
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="#22c55e" stroke-width="8" 
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(16,185,129,0.2)" stroke-width="8"/>
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#10b981" stroke-width="8" 
                             stroke-dasharray="283" stroke-dashoffset="283" 
                             style="animation: circleFill 0.6s ease-in-out forwards;"/>
-                    <path class="checkmark-path" d="M30,50 L45,65 L70,35" fill="none" stroke="#22c55e" 
+                    <path class="checkmark-path" d="M30,50 L45,65 L70,35" fill="none" stroke="#10b981" 
                           stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
-                  <style>
-                    @keyframes circleFill {
-                      to { stroke-dashoffset: 0; }
-                    }
-                  </style>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-3">Berhasil Disimpan!</h2>
-                <p class="text-gray-600 mb-6">Profil Anda telah berhasil diperbarui.</p>
-                <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                <h2 class="text-2xl font-extrabold text-gray-900 mb-3">Berhasil Disimpan!</h2>
+                <p class="text-sm text-gray-600 mb-6">Profil Anda telah berhasil diperbarui.</p>
+                <div class="w-full bg-white/30 rounded-full h-2 overflow-hidden">
                   <div class="h-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" 
                        style="animation: progressFill 2s linear forwards;"></div>
                 </div>
-                <style>
-                  @keyframes progressFill {
-                    from { width: 0%; }
-                    to { width: 100%; }
-                  }
-                </style>
               </div>
             `;
               document.body.appendChild(modal);
@@ -898,14 +1318,14 @@
             const errorModal = document.createElement('div');
             errorModal.className = 'fixed inset-0 flex items-center justify-center z-50 p-4';
             errorModal.innerHTML = `
-            <div class="bg-white rounded-2xl shadow-2xl p-8 flex flex-col items-center text-center max-w-md w-full animate-fadeIn">
-              <div class="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mb-6">
-                <i class="fas fa-times-circle text-red-500 text-3xl"></i>
+            <div class="glass-futuristic rounded-2xl p-8 flex flex-col items-center text-center max-w-md w-full fade-in border border-white/50">
+              <div class="w-20 h-20 bg-gradient-to-r from-red-500 to-rose-500 rounded-full flex items-center justify-center mb-6">
+                <i class="fas fa-times-circle text-white text-3xl"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-3">Gagal Menyimpan</h3>
-              <p class="text-gray-600 mb-6">${result.message || 'Terjadi kesalahan. Silakan coba lagi.'}</p>
+              <h3 class="text-xl font-extrabold text-gray-900 mb-3">Gagal Menyimpan</h3>
+              <p class="text-sm text-gray-600 mb-6">${result.message || 'Terjadi kesalahan. Silakan coba lagi.'}</p>
               <button onclick="this.parentElement.parentElement.remove()" 
-                class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3.5 px-6 rounded-xl font-medium hover:from-green-700 hover:to-emerald-700 transition-all duration-200">
+                class="w-full gradient-primary text-white py-3.5 px-6 rounded-xl font-extrabold hover:opacity-90 transition-all duration-200">
                 Tutup
               </button>
             </div>
@@ -918,14 +1338,14 @@
           const networkErrorModal = document.createElement('div');
           networkErrorModal.className = 'fixed inset-0 flex items-center justify-center z-50 p-4';
           networkErrorModal.innerHTML = `
-          <div class="bg-white rounded-2xl shadow-2xl p-8 flex flex-col items-center text-center max-w-md w-full animate-fadeIn">
-            <div class="w-20 h-20 bg-yellow-50 rounded-full flex items-center justify-center mb-6">
-              <i class="fas fa-wifi text-yellow-500 text-3xl"></i>
+          <div class="glass-futuristic rounded-2xl p-8 flex flex-col items-center text-center max-w-md w-full fade-in border border-white/50">
+            <div class="w-20 h-20 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center mb-6">
+              <i class="fas fa-wifi text-white text-3xl"></i>
             </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-3">Koneksi Terputus</h3>
-            <p class="text-gray-600 mb-6">Periksa koneksi internet Anda dan coba lagi.</p>
+            <h3 class="text-xl font-extrabold text-gray-900 mb-3">Koneksi Terputus</h3>
+            <p class="text-sm text-gray-600 mb-6">Periksa koneksi internet Anda dan coba lagi.</p>
             <button onclick="this.parentElement.parentElement.remove()" 
-              class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3.5 px-6 rounded-xl font-medium hover:from-green-700 hover:to-emerald-700 transition-all duration-200">
+              class="w-full gradient-primary text-white py-3.5 px-6 rounded-xl font-extrabold hover:opacity-90 transition-all duration-200">
               Tutup
             </button>
           </div>
@@ -934,8 +1354,7 @@
         } finally {
           // Hide loading
           submitBtn.disabled = false;
-          submitBtn.innerHTML = '<i class="fas fa-save text-lg"></i><span>Simpan Perubahan</span><i class="fas fa-arrow-right ml-2 text-sm"></i>';
-          submitBtn.classList.add('animate-pulse-gentle');
+          submitBtn.innerHTML = '<i class="fas fa-save"></i><span>Simpan Perubahan</span><i class="fas fa-arrow-right ml-1"></i>';
           loadingOverlay.classList.add('hidden');
         }
       });
@@ -983,7 +1402,7 @@
           try {
             const updatedData = JSON.parse(e.newValue);
             if (updatedData.full_name) {
-              const nameEl = document.querySelector('.text-xl.font-bold.text-gray-900');
+              const nameEl = document.querySelector('.text-xl.font-extrabold.text-gray-900');
               if (nameEl) nameEl.textContent = updatedData.full_name;
             }
             // Recompute profile completeness

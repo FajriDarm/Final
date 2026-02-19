@@ -1,932 +1,2066 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Affillink Affiliate</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 0%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        linear-gradient(145deg, #f0fdf4 0%, #ecfdf5 50%, #e6f7ec 100%);
+    }
+
+    /* Premium Glassmorphism */
+    .glass-premium {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 35px -10px rgba(0, 100, 0, 0.05),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+        0 0 15px rgba(16, 185, 129, 0.05);
+    }
+
+    /* Premium Gradients */
+    .gradient-primary {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
+    }
+
+    .gradient-secondary {
+      background: linear-gradient(165deg, #047857 0%, #059669 50%, #10b981 100%);
+    }
+
+    .gradient-accent {
+      background: linear-gradient(165deg, #065f46 0%, #047857 50%, #059669 100%);
+    }
+
+    .gradient-warning {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+    }
+
+    .gradient-info {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    }
+
+    .gradient-danger {
+      background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+    }
+
+    .gradient-purple {
+      background: linear-gradient(165deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+    }
+
+    .gradient-teal {
+      background: linear-gradient(165deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%);
+    }
+
+    .gradient-blue {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    }
+
+    .gradient-amber {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+    }
+
+    /* Status Gradients */
+    .status-lead-baru {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    }
+
+    .status-diprospek {
+      background: linear-gradient(165deg, #f59e0b 0%, #fbbf24 50%, #fcd34d 100%);
+    }
+
+    .status-hot {
+      background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+    }
+
+    .status-dp {
+      background: linear-gradient(165deg, #8b5cf6 0%, #a78bfa 50%, #c4b5fd 100%);
+    }
+
+    .status-lunas {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+    }
+
+    .status-berangkat {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    }
+
+    .status-rejected {
+      background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+    }
+
+    .status-pending {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+    }
+
+    .status-approved {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+    }
+
+    /* Card Effects */
+    .card-luxury {
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .card-luxury:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 30px 45px -15px rgba(16, 185, 129, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    }
+
+    /* Badge 3D Effect */
+    .badge-3d {
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .badge-3d:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    /* Pulse Animation */
+    .pulse-premium {
+      animation: pulsePremium 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulsePremium {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.2),
+          0 0 0 0 rgba(16, 185, 129, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 0 0 15px rgba(16, 185, 129, 0),
+          0 0 0 30px rgba(16, 185, 129, 0);
+      }
+    }
+
+    /* Custom Scrollbar */
+    .modern-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-track {
+      background: rgba(16, 185, 129, 0.05);
+      border-radius: 10px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-thumb {
+      background: linear-gradient(145deg, #10b981, #059669);
+      border-radius: 10px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(145deg, #059669, #047857);
+    }
+
+    /* Floating Animation */
+    .float-slow {
+      animation: float 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Shimmer Effect */
+    .shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent);
+      animation: shimmer 5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% {
+        left: 200%;
+      }
+    }
+
+    /* Glow Text */
+    .glow-text {
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.3),
+        0 0 20px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Grid Background */
+    .bg-grid-premium {
+      background-image: linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Neomorphism */
+    .neomorph {
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 20px 20px 40px rgba(16, 185, 129, 0.05),
+        -20px -20px 40px rgba(255, 255, 255, 0.8),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.8),
+        inset -1px -1px 2px rgba(16, 185, 129, 0.05);
+    }
+
+    /* Data Cell */
+    .data-cell-modern {
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    .data-cell-modern::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981, #059669);
+      transition: all 0.4s ease;
+      transform: translateX(-50%);
+    }
+
+    .data-cell-modern:hover::before {
+      width: 100%;
+    }
+
+    /* Animations */
+    .animate-slide-in {
+      animation: slideIn 0.6s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .animate-scale-in {
+      animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+
+    /* Ultra Modern Glassmorphism */
+    .glass-futuristic {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    }
+
+    /* Gradient Orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+      opacity: 0.4;
+      animation: float-orb 10s ease-in-out infinite;
+    }
+
+    @keyframes float-orb {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      25% {
+        transform: translate(10px, -15px) scale(1.1);
+      }
+
+      50% {
+        transform: translate(-5px, -20px) scale(0.9);
+      }
+
+      75% {
+        transform: translate(-15px, 5px) scale(1.05);
+      }
+    }
+
+    /* Card Futuristic */
+    .card-futuristic {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-futuristic::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.7s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card-futuristic:hover::before {
+      left: 100%;
+    }
+
+    .card-futuristic:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 30px 60px -15px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Border Gradient */
+    .border-gradient {
+      border: double 1px transparent;
+      background-image: linear-gradient(white, white), linear-gradient(135deg, white, white, white);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+
+    /* Pulse Glow */
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        filter: blur(60px);
+      }
+
+      50% {
+        opacity: 0.8;
+        filter: blur(70px);
+      }
+    }
+
+    .animate-pulse-glow {
+      animation: pulse-glow 4s ease-in-out infinite;
+    }
+
+    /* Rotate Slow */
+    @keyframes rotate-slow {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .animate-rotate-slow {
+      animation: rotate-slow 20s linear infinite;
+    }
+
+    /* Table Row Styles */
+    .table-row {
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(5px);
+    }
+
+    .table-row:hover {
+      background: rgba(255, 255, 255, 0.6);
+      transform: scale(1.01);
+      box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.15);
+    }
+
+    /* Tab Styles */
+    .tab-active {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      color: white;
+      box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+    }
+
+    .tab-inactive {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      color: #4b5563;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .tab-inactive:hover {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Button Styles */
+    .btn-primary {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      color: #374151;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .btn-info {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2);
+    }
+
+    .btn-info:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    .btn-warning {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-warning:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    .btn-purple {
+      background: linear-gradient(165deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.2);
+    }
+
+    .btn-purple:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    /* Profile Completion Bar */
+    .profile-bar {
+      height: 0.625rem;
+      border-radius: 9999px;
+      overflow: hidden;
+      background: rgba(229, 231, 235, 0.5);
+    }
+
+    .profile-bar-fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 0.5s ease;
+    }
+
+    .profile-bar-fill.green {
+      background: linear-gradient(90deg, #10b981, #059669);
+    }
+
+    .profile-bar-fill.yellow {
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+
+    .profile-bar-fill.red {
+      background: linear-gradient(90deg, #ef4444, #dc2626);
+    }
+
+    /* Copy Button Animation */
+    .copy-btn-copied {
+      background: #10b981 !important;
+      transition: all 0.2s ease;
+    }
+
+    /* Toast Notification */
+    .notification-toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 9999;
+      animation: slideInRight 0.3s ease-out;
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Line Clamp */
+    .line-clamp-1 {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
+
+<body class="bg-grid-premium relative overflow-x-hidden">
+  <!-- Ultra Modern Decorative Orbs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="orb w-[500px] h-[500px] bg-emerald-400 top-[-100px] left-[-100px] animate-pulse-glow"></div>
+    <div
+      class="orb w-[600px] h-[600px] bg-green-400 bottom-[-200px] right-[-200px] animate-pulse-glow animation-delay-2000">
+    </div>
+    <div
+      class="orb w-[400px] h-[400px] bg-teal-400 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-glow animation-delay-4000">
+    </div>
+
+    <!-- Animated Grid Lines -->
+    <svg class="absolute top-0 left-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#10b981" stroke-width="0.5" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+
+    <!-- Floating Particles -->
+    <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-30"></div>
+    <div
+      class="absolute top-3/4 right-1/3 w-3 h-3 bg-green-400 rounded-full animate-ping opacity-30 animation-delay-2000">
+    </div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-1.5 h-1.5 bg-teal-400 rounded-full animate-ping opacity-30 animation-delay-4000">
+    </div>
+  </div>
+
   <!-- Navbar -->
-  <%- include('../navbar/navbar.ejs', { name: typeof name !== 'undefined' ? name : '' }) %>
+  <%- include('../navbar/navbar.ejs', { name: typeof name !=='undefined' ? name : '' }) %>
 
-  <!-- Sidebar -->
-  <%- include('../sidebar/affiliate.ejs') %>
+    <!-- Sidebar -->
+    <%- include('../sidebar/affiliate.ejs') %>
 
-  <!-- Main Content -->
-  <main class="ml-64 pt-16 min-h-screen">
-    <div class="p-6">
-      <div class="space-y-6">
+      <!-- Main Content -->
+      <main class="ml-64 pt-16 min-h-screen relative z-10">
+        <div class="p-6">
+          <!-- Premium Page Header - Sesuai dengan dashboard -->
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
+            <div class="mb-4 lg:mb-0">
+              <div class="flex items-center gap-4">
+                <div class="relative">
+                  <div
+                    class="w-16 h-16 gradient-primary rounded-xl flex items-center justify-center shadow-2xl float-slow">
+                    <i class="fas fa-chart-line text-white text-2xl"></i>
+                  </div>
+                  <div
+                    class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <span class="w-2 h-2 bg-green-500 rounded-full pulse-premium"></span>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <h1
+                      class="text-3xl font-extrabold bg-gradient-to-r from-emerald-900 via-green-800 to-emerald-900 bg-clip-text text-transparent">
+                      Dashboard Affiliate
+                    </h1>
+                    <span
+                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                      AFFILIATE
+                    </span>
+                  </div>
+                  <p class="text-sm text-emerald-700 font-medium">Halo, <span class="font-extrabold">
+                      <%= typeof name !=='undefined' ? name : 'Affiliate' %>
+                    </span></p>
+                </div>
+              </div>
+            </div>
 
-        <!-- Page Header -->
-        <div class="flex items-center justify-between">
-          <div>
-            <h1 class="text-3xl font-bold text-gray-900">Dashboard Affiliate</h1>
-            <p class="text-gray-600 mt-1">Halo, <span class="font-semibold"><%= typeof name !== 'undefined' ? name : 'Affiliate' %></span></p>
-          </div>
-          <div class="text-sm text-gray-500">
-            <i class="fas fa-calendar-alt mr-2"></i>
-            <%= new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
-          </div>
-        </div>
+            <!-- Premium Date & Live Status -->
+            <div class="flex items-center gap-3">
+              <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
+                <div class="w-8 h-8 gradient-secondary rounded-lg flex items-center justify-center shadow-lg">
+                  <i class="fas fa-calendar-alt text-white text-sm"></i>
+                </div>
+                <div>
+                  <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                    <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
+                  </p>
+                </div>
+              </div>
 
-        <!-- Top Cards (summary) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <p class="text-gray-500 text-sm font-medium">Program Affiliate Aktif</p>
-            <p class="text-3xl font-bold text-gray-900 mt-2"><span id="activeProgramsCount"><%= typeof activeProgramsCount !== 'undefined' ? activeProgramsCount : 0 %></span></p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-gray-500 text-sm font-medium">Komisi Anda</p>
-                <p class="text-3xl font-bold text-gray-900 mt-2" id="totalCommissionDisplay">Rp <%= (typeof totalCommission !== 'undefined' && !isNaN(Number(totalCommission))) ? Number(totalCommission).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0,00' %></p>
-                <p class="text-xs text-gray-500 mt-2">
-                  <i class="fas fa-info-circle mr-1"></i>
-                  Total semua status (pending + ready + paid)
-                </p>
+              <div class="gradient-primary rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-xl relative shimmer">
+                <div class="relative">
+                  <i class="fas fa-bell text-white text-sm"></i>
+                  <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></span>
+                  <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
+                </div>
+                <div>
+                  <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                  <p class="text-xs font-bold text-white">Updates Real-time</p>
+                </div>
+              </div>
+
+              <div id="affiliateStatusBadge" class="hidden">
+                <!-- Status badge will be shown here -->
               </div>
             </div>
           </div>
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <p class="text-gray-500 text-sm font-medium">Total Leads</p>
-            <p class="text-3xl font-bold text-gray-900 mt-2"><%= typeof totalLeads !== 'undefined' ? totalLeads : 0 %></p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <p class="text-gray-500 text-sm font-medium">Leads 30 hari terakhir</p>
-            <p class="text-3xl font-bold text-gray-900 mt-2"><%= typeof leadsLast30 !== 'undefined' ? leadsLast30 : 0 %></p>
-          </div>
-        </div>
 
-        <!-- Main Row: Leads table + Profile -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <!-- Leads table (left, spans 2 cols) -->
-          <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <div class="flex items-center justify-between mb-4">
-              <div>
-                <h2 class="text-lg font-semibold text-gray-900">Lead Terbaru</h2>
-                <p class="text-sm text-gray-500">Menampilkan <%= typeof perPage !== 'undefined' ? perPage : 5 %> lead per halaman</p>
+          <!-- Premium Stats Cards - Ultra Modern -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-7 animate-scale-in">
+            <!-- Program Affiliate Aktif -->
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-400/20 to-green-400/20 rounded-full -mr-10 -mt-10 animate-rotate-slow">
               </div>
-              <div class="flex items-center gap-4">
-                <div class="text-sm text-gray-500">Total: <span class="font-medium"><%= typeof totalLeads !== 'undefined' ? totalLeads : 0 %></span></div>
-                <form method="GET" action="/affiliate/dashboard" class="flex items-center gap-2">
-                  <label class="text-sm text-gray-500">Status:</label>
-                  <select name="status" onchange="this.form.submit()" class="px-2 py-1 border rounded">
-                    <option value="all" <%= (typeof statusFilter === 'undefined' || statusFilter === 'all') ? 'selected' : '' %>>Semua</option>
-                    <option value="pending" <%= statusFilter === 'pending' ? 'selected' : '' %>>pending</option>
-                    <option value="paid" <%= statusFilter === 'paid' ? 'selected' : '' %>>paid</option>
-                    <option value="rejected" <%= statusFilter === 'rejected' ? 'selected' : '' %>>rejected</option>
-                  </select>
-                  <input type="hidden" name="page" value="1">
+              <div
+                class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-teal-400/20 to-emerald-400/20 rounded-full -ml-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Program Affiliate Aktif
+                      </p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900" id="activeProgramsCount">
+                        <%= typeof activeProgramsCount !=='undefined' ? activeProgramsCount : 0 %>
+                      </p>
+                      <span class="text-xs font-bold text-emerald-600">program</span>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                    <i class="fas fa-handshake text-white text-xl"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Komisi Anda -->
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-emerald-400/20 to-green-400/20 rounded-full -ml-10 -mt-10 animate-rotate-slow">
+              </div>
+              <div
+                class="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tr from-teal-400/20 to-emerald-400/20 rounded-full -mr-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Komisi Anda</p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-3xl font-black text-gray-900 break-all" id="totalCommissionDisplay">Rp <%= (typeof
+                          totalCommission !=='undefined' && !isNaN(Number(totalCommission))) ?
+                          Number(totalCommission).toLocaleString('id-ID', { minimumFractionDigits: 2,
+                          maximumFractionDigits: 2 }) : '0,00' %>
+                      </p>
+                      <span class="text-xs font-bold text-emerald-600">IDR</span>
+                    </div>
+
+                    <p class="text-[8px] text-gray-500 mt-2 flex items-center gap-1">
+                      <i class="fas fa-info-circle text-emerald-400"></i>
+                      Total semua status (pending + ready + paid)
+                    </p>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500">
+                    <i class="fas fa-coins text-white text-xl"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Total Leads -->
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-indigo-400/20 rounded-full -mr-10 -mt-10 animate-rotate-slow">
+              </div>
+              <div
+                class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-indigo-400/20 to-purple-400/20 rounded-full -ml-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Total Leads</p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900">
+                        <%= typeof totalLeads !=='undefined' ? totalLeads : 0 %>
+                      </p>
+                      <span class="text-xs font-bold text-emerald-600">leads</span>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+                    <i class="fas fa-users text-white text-xl"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Leads 30 hari terakhir -->
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-amber-400/20 to-orange-400/20 rounded-full -ml-10 -mt-10 animate-rotate-slow">
+              </div>
+              <div
+                class="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tr from-orange-400/20 to-amber-400/20 rounded-full -mr-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Leads 30 hari terakhir
+                      </p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900">
+                        <%= typeof leadsLast30 !=='undefined' ? leadsLast30 : 0 %>
+                      </p>
+                      <span class="text-xs font-bold text-emerald-600">leads</span>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:-rotate-6 transition-all duration-500">
+                    <i class="fas fa-calendar-alt text-white text-xl"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Row: Leads table + Profile -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-7">
+            <!-- Leads table (left, spans 2 cols) -->
+            <div class="lg:col-span-2 glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
+              <div class="gradient-primary px-5 py-4 flex items-center justify-between border-b border-white/30">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
+                    <i class="fas fa-users text-white"></i>
+                  </div>
+                  <div>
+                    <h2 class="text-base font-extrabold text-white">Lead Terbaru</h2>
+                    <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Menampilkan <%= typeof perPage
+                        !=='undefined' ? perPage : 5 %> lead per halaman</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span
+                    class="text-[9px] font-medium text-white bg-white/20 backdrop-blur px-3 py-1.5 rounded-lg border border-white/30">
+                    <i class="fas fa-chart-line mr-1"></i>
+                    Total: <span class="font-extrabold">
+                      <%= typeof totalLeads !=='undefined' ? totalLeads : 0 %>
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="p-5 bg-white/30 backdrop-blur">
+                <div class="flex items-center justify-between mb-4">
+                  <form method="GET" action="/affiliate/dashboard" class="flex items-center gap-2">
+                    <label class="text-[10px] font-medium text-emerald-700">Status:</label>
+                    <div class="relative">
+                      <select name="status" onchange="this.form.submit()"
+                        class="appearance-none pl-3 pr-8 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
+                        <option value="all" <%=(typeof statusFilter==='undefined' || statusFilter==='all' ) ? 'selected'
+                          : '' %>>Semua</option>
+                        <option value="pending" <%=statusFilter==='pending' ? 'selected' : '' %>>pending</option>
+                        <option value="paid" <%=statusFilter==='paid' ? 'selected' : '' %>>paid</option>
+                        <option value="rejected" <%=statusFilter==='rejected' ? 'selected' : '' %>>rejected</option>
+                      </select>
+                      <i
+                        class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                    </div>
+                    <input type="hidden" name="page" value="1">
+                  </form>
+                </div>
+
+                <div class="overflow-x-auto modern-scrollbar">
+                  <table class="w-full text-left">
+                    <thead class="bg-white/10 backdrop-blur border-b border-white/30">
+                      <tr>
+                        <th class="py-3 px-4 text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">Nama
+                        </th>
+                        <th class="py-3 px-4 text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">Email
+                        </th>
+                        <th class="py-3 px-4 text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                          WhatsApp</th>
+                        <th class="py-3 px-4 text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">Event
+                        </th>
+                        <th class="py-3 px-4 text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                          Status</th>
+                        <th class="py-3 px-4 text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                          Tanggal</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/30 bg-white/20 backdrop-blur">
+                      <% if (Array.isArray(leads) && leads.length> 0) {
+                        leads.forEach(function(l, index){
+                        let statusClass = '';
+                        let statusLabel = '';
+                        const leadStatus = l.lead_status;
+
+                        if (leadStatus) {
+                        if (leadStatus === 'LEAD BARU') {
+                        statusLabel = 'Lead Baru';
+                        statusClass = 'status-lead-baru';
+                        } else if (leadStatus === 'SEDANG DI PROSPEK') {
+                        statusLabel = 'Sedang di Prospek';
+                        statusClass = 'status-diprospek';
+                        } else if (leadStatus === 'HOT') {
+                        statusLabel = 'HOT';
+                        statusClass = 'status-hot';
+                        } else if (leadStatus === 'DP') {
+                        statusLabel = 'DP';
+                        statusClass = 'status-dp';
+                        } else if (leadStatus === 'LUNAS') {
+                        statusLabel = 'LUNAS';
+                        statusClass = 'status-lunas';
+                        } else if (leadStatus === 'SEDANG BERANGKAT') {
+                        statusLabel = 'Sedang Berangkat';
+                        statusClass = 'status-berangkat';
+                        } else {
+                        statusLabel = leadStatus;
+                        statusClass = 'bg-gray-500 text-white';
+                        }
+                        } else {
+                        if (l.status === 'rejected') {
+                        statusLabel = 'Rejected';
+                        statusClass = 'status-rejected';
+                        } else if (l.status === 'completed') {
+                        statusLabel = 'Complete';
+                        statusClass = 'status-lunas';
+                        } else if (l.status === 'stage_2_approved') {
+                        statusLabel = 'Verifikasi 3';
+                        statusClass = 'status-berangkat';
+                        } else if (l.status === 'stage_1_approved') {
+                        statusLabel = 'Verifikasi 2';
+                        statusClass = 'status-info';
+                        } else {
+                        statusLabel = 'Verifikasi 1';
+                        statusClass = 'status-pending';
+                        }
+                        }
+                        %>
+                        <tr
+                          class="table-row hover:bg-white/40 transition-all duration-300 border-b border-white/30 last:border-b-0 fade-in"
+                          style="animation-delay: <%= index * 0.03 %>s">
+                          <td class="py-3 px-4">
+                            <div class="flex items-center gap-2">
+                              <div
+                                class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
+                                <i class="fas fa-user text-emerald-600 text-xs"></i>
+                              </div>
+                              <span class="text-xs font-medium text-gray-900">
+                                <%= l.name || '-' %>
+                              </span>
+                            </div>
+                          </td>
+                          <td class="py-3 px-4 text-xs text-gray-700">
+                            <%= l.email || '-' %>
+                          </td>
+                          <td class="py-3 px-4 text-xs text-gray-700">
+                            <%= l.phone || '-' %>
+                          </td>
+                          <td class="py-3 px-4 text-xs text-gray-700">
+                            <%= l.event_title || '-' %>
+                          </td>
+                          <td class="py-3 px-4">
+                            <span
+                              class="px-2 py-1 rounded-lg text-[8px] font-extrabold <%= statusClass %> text-white border border-white/30">
+                              <%= statusLabel %>
+                            </span>
+                          </td>
+                          <td class="py-3 px-4">
+                            <span class="text-xs text-gray-600">
+                              <%= l.created_at ? new Date(l.created_at).toLocaleString() : '-' %>
+                            </span>
+                          </td>
+                        </tr>
+                        <% }) } else { %>
+                          <tr>
+                            <td colspan="6" class="py-12 px-4 text-center">
+                              <div class="flex flex-col items-center justify-center">
+                                <div class="relative">
+                                  <div
+                                    class="w-20 h-20 bg-white/60 backdrop-blur rounded-full flex items-center justify-center mb-4 border-4 border-white/50 float-slow">
+                                    <i class="fas fa-inbox text-3xl text-emerald-300"></i>
+                                  </div>
+                                  <div
+                                    class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                                    <span class="w-2 h-2 bg-amber-500 rounded-full pulse-premium"></span>
+                                  </div>
+                                </div>
+                                <p class="text-base font-extrabold text-gray-900 mb-2">Belum ada lead</p>
+                                <p class="text-xs text-emerald-700 font-medium">Lead akan muncul di sini</p>
+                              </div>
+                            </td>
+                          </tr>
+                          <% } %>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-4 flex items-center justify-between">
+                  <div
+                    class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                    Halaman <%= currentPage %> dari <%= totalPages %>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <% const baseUrl='/affiliate/dashboard' ; %>
+                      <% const sf=typeof statusFilter !=='undefined' ? statusFilter : 'all' ; %>
+                        <% if (currentPage> 1) { %>
+                          <a href="<%= baseUrl %>?page=<%= currentPage - 1 %>&status=<%= sf %>"
+                            class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all">
+                            <i class="fas fa-chevron-left text-xs"></i>
+                          </a>
+                          <% } %>
+                            <% for (let p=1; p <=totalPages; p++) { %>
+                              <% if (p===currentPage) { %>
+                                <span
+                                  class="w-8 h-8 rounded-lg gradient-primary text-white flex items-center justify-center text-xs font-bold shadow-lg">
+                                  <%= p %>
+                                </span>
+                                <% } else { %>
+                                  <a href="<%= baseUrl %>?page=<%= p %>&status=<%= sf %>"
+                                    class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">
+                                    <%= p %>
+                                  </a>
+                                  <% } %>
+                                    <% } %>
+                                      <% if (currentPage < totalPages) { %>
+                                        <a href="<%= baseUrl %>?page=<%= currentPage + 1 %>&status=<%= sf %>"
+                                          class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all">
+                                          <i class="fas fa-chevron-right text-xs"></i>
+                                        </a>
+                                        <% } %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Profile & Bank (right column) -->
+            <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
+              <div class="gradient-secondary px-5 py-4 border-b border-white/30">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
+                    <i class="fas fa-user-circle text-white"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-base font-extrabold text-white">Profil & Data Bank</h3>
+                    <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Kelengkapan data affiliate</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-5 bg-white/30 backdrop-blur">
+                <!-- Profile Completion Indicator -->
+                <div class="mb-6 glass-futuristic rounded-xl p-4 border border-blue-200/50 bg-blue-50/30">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-extrabold text-emerald-800">Kelengkapan Profil</span>
+                    <span class="text-sm font-extrabold text-blue-600" id="profileCompletionPercent">0%</span>
+                  </div>
+                  <div class="profile-bar">
+                    <div id="profileCompletionBar" class="profile-bar-fill" style="width: 0%"></div>
+                  </div>
+                  <p class="text-[9px] text-gray-600 mt-2 flex items-center gap-1">
+                    <i class="fas fa-info-circle text-emerald-400"></i>
+                    Lengkapi semua data untuk aktifkan fitur generate link
+                  </p>
+                </div>
+
+                <% const
+                  _requiredFields=['full_name','email','phone','bank_name','bank_account_number','bank_account_name'];
+                  let _filledCount=0; if (typeof affiliateProfile !=='undefined' && affiliateProfile) {
+                  _requiredFields.forEach(function(f){ if (affiliateProfile[f] && String(affiliateProfile[f]).trim()
+                  !=='' ) _filledCount++; }); } const serverProfilePercent=Math.round((_filledCount /
+                  _requiredFields.length) * 100); %>
+
+                  <% if (typeof affiliateProfile !=='undefined' && affiliateProfile) { %>
+                    <div class="space-y-3 text-xs">
+                      <div
+                        class="flex items-center justify-between p-3 glass-futuristic rounded-xl border border-white/50">
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-6 h-6 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
+                            <i class="fas fa-user text-emerald-600 text-[8px]"></i>
+                          </div>
+                          <span class="text-[9px] font-bold text-emerald-700">Nama</span>
+                        </div>
+                        <span class="font-extrabold text-xs text-gray-900">
+                          <%= affiliateProfile.full_name || '-' %>
+                        </span>
+                        <span id="field-name" class="text-xs">
+                          <% if (affiliateProfile.full_name) { %>
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <% } else { %>
+                              <i class="fas fa-circle text-gray-300"></i>
+                              <% } %>
+                        </span>
+                      </div>
+
+                      <div
+                        class="flex items-center justify-between p-3 glass-futuristic rounded-xl border border-white/50">
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-6 h-6 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
+                            <i class="fas fa-envelope text-emerald-600 text-[8px]"></i>
+                          </div>
+                          <span class="text-[9px] font-bold text-emerald-700">Email</span>
+                        </div>
+                        <span class="font-extrabold text-xs text-gray-900">
+                          <%= affiliateProfile.email || '-' %>
+                        </span>
+                        <span id="field-email" class="text-xs">
+                          <% if (affiliateProfile.email) { %>
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <% } else { %>
+                              <i class="fas fa-circle text-gray-300"></i>
+                              <% } %>
+                        </span>
+                      </div>
+
+                      <div
+                        class="flex items-center justify-between p-3 glass-futuristic rounded-xl border border-white/50">
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-6 h-6 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
+                            <i class="fab fa-whatsapp text-emerald-600 text-[8px]"></i>
+                          </div>
+                          <span class="text-[9px] font-bold text-emerald-700">WhatsApp</span>
+                        </div>
+                        <span class="font-extrabold text-xs text-gray-900">
+                          <%= affiliateProfile.phone || '-' %>
+                        </span>
+                        <span id="field-phone" class="text-xs">
+                          <% if (affiliateProfile.phone) { %>
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <% } else { %>
+                              <i class="fas fa-circle text-gray-300"></i>
+                              <% } %>
+                        </span>
+                      </div>
+
+                      <div
+                        class="flex items-center justify-between p-3 glass-futuristic rounded-xl border border-white/50">
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-6 h-6 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
+                            <i class="fas fa-university text-emerald-600 text-[8px]"></i>
+                          </div>
+                          <span class="text-[9px] font-bold text-emerald-700">Bank</span>
+                        </div>
+                        <span class="font-extrabold text-xs text-gray-900">
+                          <%= affiliateProfile.bank_name || '-' %>
+                        </span>
+                        <span id="field-bank_name" class="text-xs">
+                          <% if (affiliateProfile.bank_name) { %>
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <% } else { %>
+                              <i class="fas fa-circle text-gray-300"></i>
+                              <% } %>
+                        </span>
+                      </div>
+
+                      <div
+                        class="flex items-center justify-between p-3 glass-futuristic rounded-xl border border-white/50">
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-6 h-6 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
+                            <i class="fas fa-credit-card text-emerald-600 text-[8px]"></i>
+                          </div>
+                          <span class="text-[9px] font-bold text-emerald-700">No. Rekening</span>
+                        </div>
+                        <span class="font-extrabold text-xs text-gray-900">
+                          <%= affiliateProfile.bank_account_number || '-' %>
+                        </span>
+                        <span id="field-bank_account_number" class="text-xs">
+                          <% if (affiliateProfile.bank_account_number) { %>
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <% } else { %>
+                              <i class="fas fa-circle text-gray-300"></i>
+                              <% } %>
+                        </span>
+                      </div>
+
+                      <div
+                        class="flex items-center justify-between p-3 glass-futuristic rounded-xl border border-white/50">
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-6 h-6 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
+                            <i class="fas fa-user text-emerald-600 text-[8px]"></i>
+                          </div>
+                          <span class="text-[9px] font-bold text-emerald-700">Atas Nama</span>
+                        </div>
+                        <span class="font-extrabold text-xs text-gray-900">
+                          <%= affiliateProfile.bank_account_name || '-' %>
+                        </span>
+                        <span id="field-bank_account_name" class="text-xs">
+                          <% if (affiliateProfile.bank_account_name) { %>
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <% } else { %>
+                              <i class="fas fa-circle text-gray-300"></i>
+                              <% } %>
+                        </span>
+                      </div>
+                    </div>
+                    <% } %>
+
+                      <% if (serverProfilePercent < 100) { %>
+                        <div id="profileIncompleteWarning"
+                          class="text-[9px] text-amber-700 bg-amber-50/80 backdrop-blur px-3 py-2 rounded-lg border border-amber-200/50 mt-4">
+                          <i class="fas fa-exclamation-triangle mr-1"></i>
+                          Belum ada data profil. Silakan lengkapi data bank untuk proses payout.
+                        </div>
+                        <% } %>
+
+                          <div class="mt-5">
+                            <a href="/profile"
+                              class="w-full btn-info text-[9px] py-3 flex items-center justify-center gap-1">
+                              <i class="fas fa-edit"></i>
+                              Lengkapi/Edit Profil
+                            </a>
+                          </div>
+
+                          <div class="mt-4 text-[8px] text-gray-500 bg-white/60 p-3 rounded-lg border border-white/60">
+                            <i class="fas fa-info-circle mr-1 text-emerald-400"></i>
+                            Komisi dihitung otomatis berdasarkan transaksi dan verifikasi. Finance memproses payout
+                            manual.
+                          </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Events & Links Section Premium -->
+          <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden mb-7">
+            <div class="gradient-purple px-5 py-4 flex items-center justify-between border-b border-white/30">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
+                  <i class="fas fa-link text-white"></i>
+                </div>
+                <div>
+                  <h4 class="text-base font-extrabold text-white">Event & Affiliate Links</h4>
+                  <p class="text-purple-100 text-[10px] font-medium mt-0.5">Generate link untuk setiap event</p>
+                </div>
+              </div>
+              <span
+                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                <i class="fas fa-bolt mr-1"></i>
+                Live
+              </span>
+            </div>
+
+            <div class="p-5 bg-white/30 backdrop-blur">
+              <!-- Loading state -->
+              <div id="eventsLoading" class="text-center py-8">
+                <div class="flex flex-col items-center">
+                  <div class="relative">
+                    <div
+                      class="w-16 h-16 gradient-purple rounded-full flex items-center justify-center mb-4 shadow-xl float-slow">
+                      <i class="fas fa-spinner fa-spin text-white text-xl"></i>
+                    </div>
+                    <div
+                      class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                      <span class="w-2 h-2 bg-purple-500 rounded-full pulse-premium"></span>
+                    </div>
+                  </div>
+                  <p class="text-base font-extrabold text-gray-900">Memuat event...</p>
+                </div>
+              </div>
+
+              <!-- Events container -->
+              <div id="eventsContainer" class="hidden space-y-4">
+                <!-- Events will be loaded here dynamically -->
+              </div>
+
+              <!-- No events state -->
+              <div id="noEvents" class="hidden text-center py-8">
+                <div class="flex flex-col items-center">
+                  <div class="relative">
+                    <div
+                      class="w-20 h-20 bg-white/60 backdrop-blur rounded-full flex items-center justify-center mb-4 border-4 border-white/50 float-slow">
+                      <i class="fas fa-calendar-times text-3xl text-emerald-300"></i>
+                    </div>
+                    <div
+                      class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                      <span class="w-2 h-2 bg-amber-500 rounded-full pulse-premium"></span>
+                    </div>
+                  </div>
+                  <p class="text-base font-extrabold text-gray-900 mb-2">Belum ada event aktif</p>
+                  <p class="text-xs text-emerald-700 font-medium">Saat ini belum ada event yang tersedia</p>
+                </div>
+              </div>
+
+              <!-- Not approved message -->
+              <div id="notApprovedMessage"
+                class="hidden glass-futuristic rounded-xl p-6 text-center border border-amber-200/50 bg-amber-50/30">
+                <div class="flex flex-col items-center">
+                  <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-exclamation-triangle text-amber-600 text-xl"></i>
+                  </div>
+                  <h5 class="text-sm font-extrabold text-amber-800 mb-2">Akun Affiliate Belum Di-Approve</h5>
+                  <p class="text-xs text-amber-700">Anda belum bisa generate link affiliate. Silakan tunggu approval
+                    dari admin.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- History: >7 days (all leads) Premium -->
+          <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
+            <div class="gradient-info px-5 py-4 flex items-center justify-between border-b border-white/30">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
+                  <i class="fas fa-history text-white"></i>
+                </div>
+                <div>
+                  <h4 class="text-base font-extrabold text-white">Riwayat (lebih dari 7 hari)</h4>
+                  <p class="text-blue-100 text-[10px] font-medium mt-0.5">Menampilkan semua lead yang sudah lebih dari 7
+                    hari lalu atau lead yang statusnya tidak berubah selama 7 hari</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-5 bg-white/30 backdrop-blur">
+              <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+                <form method="GET" action="/affiliate/dashboard" class="flex flex-wrap items-center gap-2">
+                  <div class="relative">
+                    <i
+                      class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-400 text-xs"></i>
+                    <input type="search" name="historySearch" placeholder="Cari..."
+                      value="<%= typeof historySearch !== 'undefined' ? historySearch : '' %>"
+                      class="pl-8 pr-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 placeholder-gray-400 text-xs font-medium" />
+                  </div>
+
+                  <div class="relative">
+                    <select name="leadStatus" onchange="this.form.submit()"
+                      class="appearance-none pl-3 pr-8 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
+                      <option value="" <%=(typeof leadStatusFilter==='undefined' || !leadStatusFilter) ? 'selected' : ''
+                        %>>Semua Lead Status</option>
+                      <option value="LEAD BARU" <%=leadStatusFilter==='LEAD BARU' ? 'selected' : '' %>>LEAD BARU
+                      </option>
+                      <option value="SEDANG DI PROSPEK" <%=leadStatusFilter==='SEDANG DI PROSPEK' ? 'selected' : '' %>
+                        >SEDANG DI PROSPEK</option>
+                      <option value="HOT" <%=leadStatusFilter==='HOT' ? 'selected' : '' %>>HOT</option>
+                      <option value="DP" <%=leadStatusFilter==='DP' ? 'selected' : '' %>>DP</option>
+                      <option value="LUNAS" <%=leadStatusFilter==='LUNAS' ? 'selected' : '' %>>LUNAS</option>
+                      <option value="SEDANG BERANGKAT" <%=leadStatusFilter==='SEDANG BERANGKAT' ? 'selected' : '' %>
+                        >SEDANG BERANGKAT</option>
+                    </select>
+                    <i
+                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                  </div>
+
+                  <div class="relative">
+                    <select name="historyStatus" onchange="this.form.submit()"
+                      class="appearance-none pl-3 pr-8 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
+                      <option value="all" <%=(typeof historyFilter==='undefined' || historyFilter==='all' ) ? 'selected'
+                        : '' %>>Semua</option>
+                      <option value="pending" <%=historyFilter==='pending' ? 'selected' : '' %>>Verifikasi 1</option>
+                      <option value="stage_1_approved" <%=historyFilter==='stage_1_approved' ? 'selected' : '' %>
+                        >Verifikasi 2</option>
+                      <option value="stage_2_approved" <%=historyFilter==='stage_2_approved' ? 'selected' : '' %>
+                        >Verifikasi 3</option>
+                      <option value="completed" <%=historyFilter==='completed' ? 'selected' : '' %>>Complete</option>
+                      <option value="rejected" <%=historyFilter==='rejected' ? 'selected' : '' %>>Rejected</option>
+                    </select>
+                    <i
+                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                  </div>
                 </form>
               </div>
-            </div>
 
-            <div class="overflow-x-auto">
-              <table class="w-full text-left text-sm divide-y divide-gray-100">
-                <thead>
-                  <tr class="text-gray-500">
-                    <th class="py-2 font-medium">Nama</th>
-                    <th class="py-2 font-medium">Email</th>
-                    <th class="py-2 font-medium">WhatsApp</th>
-                    <th class="py-2 font-medium">Event</th>
-                    <th class="py-2 font-medium">Status</th>
-                    <th class="py-2 font-medium">Tanggal</th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white">
-                  <% if (Array.isArray(leads) && leads.length > 0) { leads.forEach(function(l){ %>
-                    <tr class="hover:bg-gray-50">
-                      <td class="py-3"><%= l.name || '-' %></td>
-                      <td class="py-3"><%= l.email || '-' %></td>
-                      <td class="py-3"><%= l.phone || '-' %></td>
-                      <td class="py-3"><%= l.event_title || '-' %></td>
-                      <td class="py-3">
-                        <% 
-                          // Prefer explicit lead_status (set by sales) when present
-                          let statusLabel = '';
-                          let statusColor = '';
-                          const leadStatus = l.lead_status;
-                          if (leadStatus) {
-                            // Map custom lead statuses to labels/colors
-                            if (leadStatus === 'LEAD BARU') {
-                              statusLabel = 'Lead Baru';
-                              statusColor = 'text-gray-700 bg-gray-100';
-                            } else if (leadStatus === 'SEDANG DI PROSPEK') {
-                              statusLabel = 'Sedang di Prospek';
-                              statusColor = 'text-yellow-700 bg-yellow-100';
-                            } else if (leadStatus === 'HOT') {
-                              statusLabel = 'HOT';
-                              statusColor = 'text-red-700 bg-red-100';
-                            } else if (leadStatus === 'DP') {
-                              statusLabel = 'DP';
-                              statusColor = 'text-indigo-700 bg-indigo-100';
-                            } else if (leadStatus === 'LUNAS') {
-                              statusLabel = 'LUNAS';
-                              statusColor = 'text-green-700 bg-green-100';
-                            } else if (leadStatus === 'SEDANG BERANGKAT') {
-                              statusLabel = 'Sedang Berangkat';
-                              statusColor = 'text-blue-700 bg-blue-100';
-                            } else {
-                              statusLabel = leadStatus;
-                              statusColor = 'text-gray-700 bg-gray-100';
-                            }
-                          } else {
-                            // Fallback to transaction status mapping
-                            if (l.status === 'rejected') {
-                              statusLabel = 'Rejected';
-                              statusColor = 'text-red-700 bg-red-100';
-                            } else if (l.status === 'completed') {
-                              statusLabel = 'Complete';
-                              statusColor = 'text-green-700 bg-green-100';
-                            } else if (l.status === 'stage_2_approved') {
-                              statusLabel = 'Verifikasi 3';
-                              statusColor = 'text-blue-700 bg-blue-100';
-                            } else if (l.status === 'stage_1_approved') {
-                              statusLabel = 'Verifikasi 2';
-                              statusColor = 'text-purple-700 bg-purple-100';
-                            } else {
-                              // pending status = stage 1
-                              statusLabel = 'Verifikasi 1';
-                              statusColor = 'text-yellow-700 bg-yellow-100';
-                            }
-                          }
-                        %>
-                        <span class="inline-block px-2 py-0.5 rounded text-xs font-medium <%= statusColor %>">
-                          <%= statusLabel %>
-                        </span>
-                      </td>
-                      <td class="py-3"><%= l.created_at ? new Date(l.created_at).toLocaleString() : '-' %></td>
-                    </tr>
-                  <% }) } else { %>
+              <div class="overflow-x-auto modern-scrollbar">
+                <table class="w-full text-left">
+                  <thead class="bg-white/10 backdrop-blur border-b border-white/30">
                     <tr>
-                      <td class="py-8 text-center text-gray-400" colspan="6">Belum ada lead.</td>
+                      <th class="py-3 px-4 text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">Nama
+                      </th>
+                      <th class="py-3 px-4 text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">Email
+                      </th>
+                      <th class="py-3 px-4 text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                        WhatsApp</th>
+                      <th class="py-3 px-4 text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">Event
+                      </th>
+                      <th class="py-3 px-4 text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">Status
+                      </th>
+                      <th class="py-3 px-4 text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">Tanggal
+                      </th>
                     </tr>
-                  <% } %>
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody class="divide-y divide-white/30 bg-white/20 backdrop-blur">
+                    <% if (Array.isArray(history) && history.length> 0) {
+                      history.forEach(function(h, index){
+                      let statusClass = '';
+                      let statusLabel = '';
 
-            <!-- Pagination -->
-            <div class="mt-4 flex items-center justify-between">
-              <div class="text-sm text-gray-600">Halaman <%= currentPage %> dari <%= totalPages %></div>
-              <div class="flex items-center gap-2">
-                <% const baseUrl = '/affiliate/dashboard'; %>
-                <% const sf = typeof statusFilter !== 'undefined' ? statusFilter : 'all'; %>
-                <% if (currentPage > 1) { %>
-                  <a href="<%= baseUrl %>?page=<%= currentPage - 1 %>&status=<%= sf %>" class="px-3 py-1 bg-gray-100 rounded">&laquo; Prev</a>
-                <% } %>
-                <% for (let p = 1; p <= totalPages; p++) { %>
-                  <% if (p === currentPage) { %>
-                    <span class="px-3 py-1 bg-purple-600 text-white rounded"><%= p %></span>
-                  <% } else { %>
-                    <a href="<%= baseUrl %>?page=<%= p %>&status=<%= sf %>" class="px-3 py-1 bg-gray-100 rounded"><%= p %></a>
-                  <% } %>
-                <% } %>
-                <% if (currentPage < totalPages) { %>
-                  <a href="<%= baseUrl %>?page=<%= currentPage + 1 %>&status=<%= sf %>" class="px-3 py-1 bg-gray-100 rounded">Next &raquo;</a>
-                <% } %>
-              </div>
-            </div>
-          </div>
-
-          <!-- Profile & Bank (right column) -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Profil & Data Bank</h3>
-            
-            <!-- Profile Completion Indicator -->
-            <div class="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm font-medium text-gray-700">Kelengkapan Profil</span>
-                <span class="text-sm font-bold text-blue-600" id="profileCompletionPercent">0%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                <div id="profileCompletionBar" class="h-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-500" style="width: 0%"></div>
-              </div>
-              <p class="text-xs text-gray-600 mt-2">
-                <i class="fas fa-info-circle mr-1"></i>
-                Lengkapi semua data untuk aktifkan fitur generate link
-              </p>
-            </div>
-
-            <% 
-              // Server-side calculation of profile completion percentage (kept in sync with client-side rules)
-              const _requiredFields = ['full_name','email','phone','bank_name','bank_account_number','bank_account_name'];
-              let _filledCount = 0;
-              if (typeof affiliateProfile !== 'undefined' && affiliateProfile) {
-                _requiredFields.forEach(function(f){ if (affiliateProfile[f] && String(affiliateProfile[f]).trim() !== '') _filledCount++; });
-              }
-              const serverProfilePercent = Math.round((_filledCount / _requiredFields.length) * 100);
-            %>
-
-            <% if (typeof affiliateProfile !== 'undefined' && affiliateProfile) { %>
-              <div class="space-y-2 text-sm text-gray-700">
-                <div class="flex items-center justify-between">
-                  <div><strong>Nama:</strong> <span class="font-medium"><%= affiliateProfile.full_name || '-' %></span></div>
-                  <span id="field-name" class="text-xs">
-                    <% if (affiliateProfile.full_name) { %>
-                      <i class="fas fa-check-circle text-green-500"></i>
-                    <% } else { %>
-                      <i class="fas fa-circle text-gray-300"></i>
-                    <% } %>
-                  </span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div><strong>Email:</strong> <span class="font-medium"><%= affiliateProfile.email || '-' %></span></div>
-                  <span id="field-email" class="text-xs">
-                    <% if (affiliateProfile.email) { %>
-                      <i class="fas fa-check-circle text-green-500"></i>
-                    <% } else { %>
-                      <i class="fas fa-circle text-gray-300"></i>
-                    <% } %>
-                  </span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div><strong>WhatsApp:</strong> <span class="font-medium"><%= affiliateProfile.phone || '-' %></span></div>
-                  <span id="field-phone" class="text-xs">
-                    <% if (affiliateProfile.phone) { %>
-                      <i class="fas fa-check-circle text-green-500"></i>
-                    <% } else { %>
-                      <i class="fas fa-circle text-gray-300"></i>
-                    <% } %>
-                  </span>
-                </div>
-                <div class="flex items-center justify-between border-t border-gray-200 pt-2 mt-2">
-                  <div><strong>Bank:</strong> <span class="font-medium"><%= affiliateProfile.bank_name || '-' %></span></div>
-                  <span id="field-bank_name" class="text-xs">
-                    <% if (affiliateProfile.bank_name) { %>
-                      <i class="fas fa-check-circle text-green-500"></i>
-                    <% } else { %>
-                      <i class="fas fa-circle text-gray-300"></i>
-                    <% } %>
-                  </span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div><strong>No. Rek:</strong> <span class="font-medium"><%= affiliateProfile.bank_account_number || '-' %></span></div>
-                  <span id="field-bank_account_number" class="text-xs">
-                    <% if (affiliateProfile.bank_account_number) { %>
-                      <i class="fas fa-check-circle text-green-500"></i>
-                    <% } else { %>
-                      <i class="fas fa-circle text-gray-300"></i>
-                    <% } %>
-                  </span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div><strong>Atas Nama:</strong> <span class="font-medium"><%= affiliateProfile.bank_account_name || '-' %></span></div>
-                  <span id="field-bank_account_name" class="text-xs">
-                    <% if (affiliateProfile.bank_account_name) { %>
-                      <i class="fas fa-check-circle text-green-500"></i>
-                    <% } else { %>
-                      <i class="fas fa-circle text-gray-300"></i>
-                    <% } %>
-                  </span>
-                </div>
-              </div>
-            <% } %>
-
-            <% if (serverProfilePercent < 100) { %>
-              <div id="profileIncompleteWarning" class="text-sm text-gray-500">Belum ada data profil. Silakan lengkapi data bank untuk proses payout.</div>
-            <% } %>
-
-            <div class="mt-4 pt-4 border-t border-gray-200">
-              <a href="/profile" class="text-sm text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-2">
-                <i class="fas fa-edit"></i>
-                Lengkapi/Edit Profil
-              </a>
-            </div>
-
-            <div class="mt-4 text-xs text-gray-500">Catatan: Komisi dihitung otomatis berdasarkan transaksi dan verifikasi. Finance memproses payout manual.</div>
-          </div>
-        </div>
-
-        <!-- Events & Links Section -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <div class="flex items-center justify-between mb-4">
-            <h4 class="text-lg font-semibold text-gray-900">
-              <i class="fas fa-link mr-2 text-purple-600"></i>Event & Affiliate Links
-            </h4>
-            <div id="affiliateStatusBadge" class="hidden">
-              <!-- Status badge will be shown here -->
-            </div>
-          </div>
-
-          <!-- Loading state -->
-          <div id="eventsLoading" class="text-center py-8">
-            <i class="fas fa-spinner fa-spin text-2xl text-purple-600 mb-2"></i>
-            <p class="text-gray-500">Memuat event...</p>
-          </div>
-
-          <!-- Events container -->
-          <div id="eventsContainer" class="hidden space-y-4">
-            <!-- Events will be loaded here dynamically -->
-          </div>
-
-          <!-- No events state -->
-          <div id="noEvents" class="hidden text-center py-8 text-gray-400">
-            <i class="fas fa-calendar-times text-4xl mb-2"></i>
-            <p>Belum ada event aktif saat ini</p>
-          </div>
-
-          <!-- Not approved message -->
-          <div id="notApprovedMessage" class="hidden bg-yellow-50 border border-yellow-200 rounded-xl p-6 text-center">
-            <i class="fas fa-exclamation-triangle text-yellow-600 text-3xl mb-3"></i>
-            <h5 class="font-semibold text-yellow-800 mb-2">Akun Affiliate Belum Di-Approve</h5>
-            <p class="text-sm text-yellow-700">Anda belum bisa generate link affiliate. Silakan tunggu approval dari admin.</p>
-          </div>
-        </div>
-
-        <!-- Legacy Referral Link card (hidden by default, shown as fallback) -->
-        <div id="legacyReferralCard" class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hidden">
-          <h4 class="text-sm font-medium text-gray-700 mb-2">Link Referral Global</h4>
-          <div class="flex gap-3 items-center">
-            <input id="refLinkInput" class="flex-1 px-3 py-2 border rounded-md bg-gray-50" readonly value="<%= typeof referralLink !== 'undefined' && referralLink ? referralLink : (typeof siteUrl !== 'undefined' && typeof sampleRefCode !== 'undefined' ? siteUrl + '/?ref=' + sampleRefCode : '') %>" aria-label="Referral link" />
-            <button id="copyRefBtn" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">Copy</button>
-          </div>
-        </div>
-
-        <!-- History: >7 days (all leads) -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mt-6">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <h4 class="text-lg font-semibold text-gray-900">Riwayat (lebih dari 7 hari)</h4>
-                <p class="text-sm text-gray-500">Menampilkan semua lead yang sudah lebih dari 7 hari lalu atau lead yang statusnya tidak berubah selama 7 hari</p>
-              </div>
-              <div class="flex items-center gap-4">
-                <form method="GET" action="/affiliate/dashboard" class="flex items-center gap-2">
-                  <label class="text-sm text-gray-500">Search:</label>
-                  <input type="search" name="historySearch" placeholder="nama, email, whatsapp, event, status, tanggal" value="<%= typeof historySearch !== 'undefined' ? historySearch : '' %>" class="px-3 py-1 border rounded" />
-
-                  <label class="text-sm text-gray-500">Filter Status Lead:</label>
-                  <select name="leadStatus" onchange="this.form.submit()" class="px-2 py-1 border rounded">
-                    <option value="" <%= (typeof leadStatusFilter === 'undefined' || !leadStatusFilter) ? 'selected' : '' %>>Semua Lead Status</option>
-                    <option value="LEAD BARU" <%= leadStatusFilter === 'LEAD BARU' ? 'selected' : '' %>>LEAD BARU</option>
-                    <option value="SEDANG DI PROSPEK" <%= leadStatusFilter === 'SEDANG DI PROSPEK' ? 'selected' : '' %>>SEDANG DI PROSPEK</option>
-                    <option value="HOT" <%= leadStatusFilter === 'HOT' ? 'selected' : '' %>>HOT</option>
-                    <option value="DP" <%= leadStatusFilter === 'DP' ? 'selected' : '' %>>DP</option>
-                    <option value="LUNAS" <%= leadStatusFilter === 'LUNAS' ? 'selected' : '' %>>LUNAS</option>
-                    <option value="SEDANG BERANGKAT" <%= leadStatusFilter === 'SEDANG BERANGKAT' ? 'selected' : '' %>>SEDANG BERANGKAT</option>
-                  </select>
-
-                  <label class="text-sm text-gray-500">Verifikasi:</label>
-                  <select name="historyStatus" onchange="this.form.submit()" class="px-2 py-1 border rounded">
-                    <option value="all" <%= (typeof historyFilter === 'undefined' || historyFilter === 'all') ? 'selected' : '' %>>Semua</option>
-                    <option value="pending" <%= historyFilter === 'pending' ? 'selected' : '' %>>Verifikasi 1</option>
-                    <option value="stage_1_approved" <%= historyFilter === 'stage_1_approved' ? 'selected' : '' %>>Verifikasi 2</option>
-                    <option value="stage_2_approved" <%= historyFilter === 'stage_2_approved' ? 'selected' : '' %>>Verifikasi 3</option>
-                    <option value="completed" <%= historyFilter === 'completed' ? 'selected' : '' %>>Complete</option>
-                    <option value="rejected" <%= historyFilter === 'rejected' ? 'selected' : '' %>>Rejected</option>
-                  </select>
-
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm divide-y divide-gray-100">
-              <thead>
-                <tr class="text-gray-500">
-                  <th class="py-2 font-medium">Nama</th>
-                  <th class="py-2 font-medium">Email</th>
-                  <th class="py-2 font-medium">WhatsApp</th>
-                  <th class="py-2 font-medium">Event</th>
-                  <th class="py-2 font-medium">Status</th>
-                  <th class="py-2 font-medium">Tanggal</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white">
-                <% if (Array.isArray(history) && history.length > 0) { history.forEach(function(h){ %>
-                  <tr class="hover:bg-gray-50">
-                    <td class="py-3"><%= h.name || '-' %></td>
-                    <td class="py-3"><%= h.email || '-' %></td>
-                    <td class="py-3"><%= h.phone || '-' %></td>
-                    <td class="py-3"><%= h.event_title || '-' %></td>
-                    <td class="py-3">
-                      <% 
-                        let statusLabel = '';
-                        let statusColor = '';
-                        
-                        // Determine verification stage based on transaction status
-                        if (h.status === 'rejected') {
-                          statusLabel = 'Rejected';
-                          statusColor = 'text-red-700 bg-red-100';
-                        } else if (h.status === 'completed') {
-                          statusLabel = 'Complete';
-                          statusColor = 'text-green-700 bg-green-100';
-                        } else if (h.status === 'stage_2_approved') {
-                          statusLabel = 'Verifikasi 3';
-                          statusColor = 'text-blue-700 bg-blue-100';
-                        } else if (h.status === 'stage_1_approved') {
-                          statusLabel = 'Verifikasi 2';
-                          statusColor = 'text-purple-700 bg-purple-100';
-                        } else {
-                          // pending status = stage 1
-                          statusLabel = 'Verifikasi 1';
-                          statusColor = 'text-yellow-700 bg-yellow-100';
-                        }
+                      if (h.status === 'rejected') {
+                      statusLabel = 'Rejected';
+                      statusClass = 'status-rejected';
+                      } else if (h.status === 'completed') {
+                      statusLabel = 'Complete';
+                      statusClass = 'status-lunas';
+                      } else if (h.status === 'stage_2_approved') {
+                      statusLabel = 'Verifikasi 3';
+                      statusClass = 'status-berangkat';
+                      } else if (h.status === 'stage_1_approved') {
+                      statusLabel = 'Verifikasi 2';
+                      statusClass = 'status-info';
+                      } else {
+                      statusLabel = 'Verifikasi 1';
+                      statusClass = 'status-pending';
+                      }
                       %>
-                      <span class="inline-block px-2 py-0.5 rounded text-xs font-medium <%= statusColor %>">
-                        <%= statusLabel %>
-                      </span>
-                    </td>
-                    <td class="py-3"><%= h.created_at ? new Date(h.created_at).toLocaleString() : '-' %></td>
-                  </tr>
-                <% }) } else { %>
-                  <tr>
-                    <td class="py-8 text-center text-gray-400" colspan="6">Belum ada riwayat.</td>
-                  </tr>
-                <% } %>
-              </tbody>
-            </table>
+                      <tr
+                        class="table-row hover:bg-white/40 transition-all duration-300 border-b border-white/30 last:border-b-0 fade-in"
+                        style="animation-delay: <%= index * 0.03 %>s">
+                        <td class="py-3 px-4">
+                          <div class="flex items-center gap-2">
+                            <div
+                              class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
+                              <i class="fas fa-user text-emerald-600 text-xs"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-900">
+                              <%= h.name || '-' %>
+                            </span>
+                          </div>
+                        </td>
+                        <td class="py-3 px-4 text-xs text-gray-700">
+                          <%= h.email || '-' %>
+                        </td>
+                        <td class="py-3 px-4 text-xs text-gray-700">
+                          <%= h.phone || '-' %>
+                        </td>
+                        <td class="py-3 px-4 text-xs text-gray-700">
+                          <%= h.event_title || '-' %>
+                        </td>
+                        <td class="py-3 px-4">
+                          <span
+                            class="px-2 py-1 rounded-lg text-[8px] font-extrabold <%= statusClass %> text-white border border-white/30">
+                            <%= statusLabel %>
+                          </span>
+                        </td>
+                        <td class="py-3 px-4">
+                          <span class="text-xs text-gray-600">
+                            <%= h.created_at ? new Date(h.created_at).toLocaleString() : '-' %>
+                          </span>
+                        </td>
+                      </tr>
+                      <% }) } else { %>
+                        <tr>
+                          <td colspan="6" class="py-12 px-4 text-center">
+                            <div class="flex flex-col items-center justify-center">
+                              <div class="relative">
+                                <div
+                                  class="w-20 h-20 bg-white/60 backdrop-blur rounded-full flex items-center justify-center mb-4 border-4 border-white/50 float-slow">
+                                  <i class="fas fa-history text-3xl text-emerald-300"></i>
+                                </div>
+                                <div
+                                  class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                                  <span class="w-2 h-2 bg-amber-500 rounded-full pulse-premium"></span>
+                                </div>
+                              </div>
+                              <p class="text-base font-extrabold text-gray-900 mb-2">Belum ada riwayat</p>
+                              <p class="text-xs text-emerald-700 font-medium">Riwayat akan muncul di sini</p>
+                            </div>
+                          </td>
+                        </tr>
+                        <% } %>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Pagination for history -->
+              <div class="mt-4 flex items-center justify-between">
+                <div
+                  class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                  Halaman <%= historyPage %> dari <%= historyTotalPages %>
+                </div>
+                <div class="flex items-center gap-2">
+                  <% const baseUrlHist='/affiliate/dashboard' ; %>
+                    <% const hf=typeof historyFilter !=='undefined' ? historyFilter : 'all' ; %>
+                      <% const hs=typeof historySearch !=='undefined' ? encodeURIComponent(historySearch) : '' ; %>
+                        <% const lf=typeof leadStatusFilter !=='undefined' ? encodeURIComponent(leadStatusFilter) : '' ;
+                          %>
+                          <% if (historyPage> 1) { %>
+                            <a href="<%= baseUrlHist %>?historyPage=<%= historyPage - 1 %>&historyStatus=<%= hf %>&historySearch=<%= hs %>&leadStatus=<%= lf %>"
+                              class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all">
+                              <i class="fas fa-chevron-left text-xs"></i>
+                            </a>
+                            <% } %>
+                              <% for (let p=1; p <=historyTotalPages; p++) { %>
+                                <% if (p===historyPage) { %>
+                                  <span
+                                    class="w-8 h-8 rounded-lg gradient-primary text-white flex items-center justify-center text-xs font-bold shadow-lg">
+                                    <%= p %>
+                                  </span>
+                                  <% } else { %>
+                                    <a href="<%= baseUrlHist %>?historyPage=<%= p %>&historyStatus=<%= hf %>&historySearch=<%= hs %>&leadStatus=<%= lf %>"
+                                      class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">
+                                      <%= p %>
+                                    </a>
+                                    <% } %>
+                                      <% } %>
+                                        <% if (historyPage < historyTotalPages) { %>
+                                          <a href="<%= baseUrlHist %>?historyPage=<%= historyPage + 1 %>&historyStatus=<%= hf %>&historySearch=<%= hs %>&leadStatus=<%= lf %>"
+                                            class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all">
+                                            <i class="fas fa-chevron-right text-xs"></i>
+                                          </a>
+                                          <% } %>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Pagination for history -->
-          <div class="mt-4 flex items-center justify-between">
-            <div class="text-sm text-gray-600">Halaman <%= historyPage %> dari <%= historyTotalPages %></div>
+          <!-- Pagination Premium -->
+          <div class="mt-8 flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <% const baseUrlHist = '/affiliate/dashboard'; %>
-              <% const hf = typeof historyFilter !== 'undefined' ? historyFilter : 'all'; %>
-              <% const hs = typeof historySearch !== 'undefined' ? encodeURIComponent(historySearch) : ''; %>
-              <% const lf = typeof leadStatusFilter !== 'undefined' ? encodeURIComponent(leadStatusFilter) : ''; %>
-              <% if (historyPage > 1) { %>
-                <a href="<%= baseUrlHist %>?historyPage=<%= historyPage - 1 %>&historyStatus=<%= hf %>&historySearch=<%= hs %>&leadStatus=<%= lf %>" class="px-3 py-1 bg-gray-100 rounded">&laquo; Prev</a>
-              <% } %>
-              <% for (let p = 1; p <= historyTotalPages; p++) { %>
-                <% if (p === historyPage) { %>
-                  <span class="px-3 py-1 bg-purple-600 text-white rounded"><%= p %></span>
-                <% } else { %>
-                  <a href="<%= baseUrlHist %>?historyPage=<%= p %>&historyStatus=<%= hf %>&historySearch=<%= hs %>&leadStatus=<%= lf %>" class="px-3 py-1 bg-gray-100 rounded"><%= p %></a>
-                <% } %>
-              <% } %>
-              <% if (historyPage < historyTotalPages) { %>
-                <a href="<%= baseUrlHist %>?historyPage=<%= historyPage + 1 %>&historyStatus=<%= hf %>&historySearch=<%= hs %>&leadStatus=<%= lf %>" class="px-3 py-1 bg-gray-100 rounded">Next &raquo;</a>
-              <% } %>
+              <span
+                class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                Menampilkan data lead dan riwayat Anda
+              </span>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </main>
+      </main>
 
-  <script>
-    // Affiliate user status from server - fallback, will be updated from API
-    let userStatus = '<%= typeof userStatus !== "undefined" ? userStatus : "inactive" %>';
-    let profileCompletionPercent = 0;
-    console.debug('User status from server (initial):', userStatus);
+      <script>
+        // Affiliate user status from server - fallback, will be updated from API
+        let userStatus = '<%= typeof userStatus !== "undefined" ? userStatus : "inactive" %>';
+        let profileCompletionPercent = 0;
+        console.debug('User status from server (initial):', userStatus);
 
-    // Calculate profile completion percentage
-    function calculateProfileCompletion() {
-      // First, try to get updated profile from localStorage (from profile page update)
-      let updatedProfileFromStorage = null;
-      try {
-        const stored = localStorage.getItem('affiliateProfileUpdate');
-        if (stored) {
-          updatedProfileFromStorage = JSON.parse(stored);
-          console.debug('Using profile data from localStorage:', updatedProfileFromStorage);
-        }
-      } catch (e) {
-        console.debug('No profile data in localStorage or invalid JSON');
-      }
+        // Calculate profile completion percentage
+        function calculateProfileCompletion() {
+          // First, try to get updated profile from localStorage (from profile page update)
+          let updatedProfileFromStorage = null;
+          try {
+            const stored = localStorage.getItem('affiliateProfileUpdate');
+            if (stored) {
+              updatedProfileFromStorage = JSON.parse(stored);
+              console.debug('Using profile data from localStorage:', updatedProfileFromStorage);
+            }
+          } catch (e) {
+            console.debug('No profile data in localStorage or invalid JSON');
+          }
 
-      // Get affiliate profile data from template
-      let affiliateProfile = {
-        full_name: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.full_name : "" %>',
-        email: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.email : "" %>',
-        phone: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.phone : "" %>',
-        bank_name: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.bank_name : "" %>',
-        bank_account_number: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.bank_account_number : "" %>',
-        bank_account_name: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.bank_account_name : "" %>'
-      };
+          // Get affiliate profile data from template
+          let affiliateProfile = {
+            full_name: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.full_name : "" %>',
+            email: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.email : "" %>',
+            phone: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.phone : "" %>',
+            bank_name: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.bank_name : "" %>',
+            bank_account_number: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.bank_account_number : "" %>',
+            bank_account_name: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.bank_account_name : "" %>'
+          };
 
-      // If we have updated data from storage, merge it
-      if (updatedProfileFromStorage) {
-        affiliateProfile = {
-          full_name: updatedProfileFromStorage.full_name || affiliateProfile.full_name,
-          email: updatedProfileFromStorage.email || affiliateProfile.email,
-          phone: updatedProfileFromStorage.phone || affiliateProfile.phone,
-          bank_name: updatedProfileFromStorage.bank_name || affiliateProfile.bank_name,
-          bank_account_number: updatedProfileFromStorage.bank_account_number || affiliateProfile.bank_account_number,
-          bank_account_name: updatedProfileFromStorage.bank_account_name || affiliateProfile.bank_account_name
-        };
-      }
+          // If we have updated data from storage, merge it
+          if (updatedProfileFromStorage) {
+            affiliateProfile = {
+              full_name: updatedProfileFromStorage.full_name || affiliateProfile.full_name,
+              email: updatedProfileFromStorage.email || affiliateProfile.email,
+              phone: updatedProfileFromStorage.phone || affiliateProfile.phone,
+              bank_name: updatedProfileFromStorage.bank_name || affiliateProfile.bank_name,
+              bank_account_number: updatedProfileFromStorage.bank_account_number || affiliateProfile.bank_account_number,
+              bank_account_name: updatedProfileFromStorage.bank_account_name || affiliateProfile.bank_account_name
+            };
+          }
 
-      // Count fields that need to be filled
-      const requiredFields = ['full_name', 'email', 'phone', 'bank_name', 'bank_account_number', 'bank_account_name'];
-      let filledCount = 0;
-      
-      requiredFields.forEach(field => {
-        if (affiliateProfile[field] && String(affiliateProfile[field]).trim() !== '') {
-          filledCount++;
-        }
-      });
+          const requiredFields = ['full_name', 'email', 'phone', 'bank_name', 'bank_account_number', 'bank_account_name'];
+          let filledCount = 0;
 
-      profileCompletionPercent = Math.round((filledCount / requiredFields.length) * 100);
-      
-      // Update UI
-      updateProfileCompletionUI();
-      
-      console.debug('Profile completion:', profileCompletionPercent + '%', 'Filled:', filledCount, 'Total:', requiredFields.length);
-      return profileCompletionPercent;
-    }
+          requiredFields.forEach(field => {
+            if (affiliateProfile[field] && String(affiliateProfile[field]).trim() !== '') {
+              filledCount++;
+            }
+          });
 
-    function updateProfileCompletionUI() {
-      const percentElement = document.getElementById('profileCompletionPercent');
-      const barElement = document.getElementById('profileCompletionBar');
-      
-      if (percentElement) {
-        percentElement.textContent = profileCompletionPercent + '%';
-      }
-      
-      if (barElement) {
-        barElement.style.width = profileCompletionPercent + '%';
-        // Change color based on percentage
-        if (profileCompletionPercent === 100) {
-          barElement.className = 'h-2.5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full transition-all duration-500';
-        } else if (profileCompletionPercent >= 70) {
-          barElement.className = 'h-2.5 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-full transition-all duration-500';
-        } else {
-          barElement.className = 'h-2.5 bg-gradient-to-r from-red-500 to-pink-600 rounded-full transition-all duration-500';
+          profileCompletionPercent = Math.round((filledCount / requiredFields.length) * 100);
+
+          // Update UI
+          updateProfileCompletionUI();
+
+          console.debug('Profile completion:', profileCompletionPercent + '%', 'Filled:', filledCount, 'Total:', requiredFields.length);
+          return profileCompletionPercent;
         }
 
-        // Toggle server-side warning visibility if present
-        const warnEl = document.getElementById('profileIncompleteWarning');
-        if (warnEl) {
-          warnEl.style.display = (profileCompletionPercent < 100) ? 'block' : 'none';
-        }
-      }
-    }
+        function updateProfileCompletionUI() {
+          const percentElement = document.getElementById('profileCompletionPercent');
+          const barElement = document.getElementById('profileCompletionBar');
 
-    // Listen for profile updates from other pages (via localStorage)
-    window.addEventListener('storage', function(event) {
-      if (event.key === 'affiliateProfileUpdate_ts' || event.key === 'affiliateProfileUpdate') {
-        console.debug('Profile update detected from another page, recalculating...');
-        // Reload full profile data from API to ensure accuracy
-        refreshProfileCompletion();
-      }
-    });
+          if (percentElement) {
+            percentElement.textContent = profileCompletionPercent + '%';
+          }
 
-    // Also setup periodic check for profile updates (as fallback)
-    let lastProfileUpdateTime = parseInt(localStorage.getItem('affiliateProfileUpdate_ts') || '0');
-    setInterval(() => {
-      const currentUpdateTime = parseInt(localStorage.getItem('affiliateProfileUpdate_ts') || '0');
-      if (currentUpdateTime > lastProfileUpdateTime) {
-        console.debug('Profile update detected via polling, recalculating...');
-        lastProfileUpdateTime = currentUpdateTime;
-        refreshProfileCompletion();
-      }
-    }, 1000); // Check every 1 second
+          if (barElement) {
+            barElement.style.width = profileCompletionPercent + '%';
+            // Change color based on percentage
+            if (profileCompletionPercent === 100) {
+              barElement.className = 'profile-bar-fill green';
+            } else if (profileCompletionPercent >= 70) {
+              barElement.className = 'profile-bar-fill yellow';
+            } else {
+              barElement.className = 'profile-bar-fill red';
+            }
 
-    // Refresh profile completion by fetching latest data
-    async function refreshProfileCompletion() {
-      try {
-        // Get updated profile from localStorage if available
-        const updatedProfile = localStorage.getItem('affiliateProfileUpdate');
-        if (updatedProfile) {
-          const profileData = JSON.parse(updatedProfile);
-          console.debug('Using updated profile from storage:', profileData);
-          
-          // Recalculate with new data
-          const newPercent = calculateProfileCompletionFromData(profileData);
-          
-          // Only update if percentage changed
-          if (newPercent !== profileCompletionPercent) {
-            profileCompletionPercent = newPercent;
-            updateProfileCompletionUI();
-            
-            // Re-render events if already loaded (to update button states)
-            const eventsContainer = document.getElementById('eventsContainer');
-            if (eventsContainer && !eventsContainer.classList.contains('hidden')) {
-              console.debug('Reloading events due to profile completion change');
-              await loadEventsAndLinks();
+            // Toggle server-side warning visibility if present
+            const warnEl = document.getElementById('profileIncompleteWarning');
+            if (warnEl) {
+              warnEl.style.display = (profileCompletionPercent < 100) ? 'block' : 'none';
             }
           }
         }
-      } catch (error) {
-        console.error('Error refreshing profile completion:', error);
-      }
-    }
 
-    // Calculate completion percentage from given data object
-    function calculateProfileCompletionFromData(profileData) {
-      const requiredFields = ['full_name', 'email', 'phone', 'bank_name', 'bank_account_number', 'bank_account_name'];
-      let filledCount = 0;
-      
-      requiredFields.forEach(field => {
-        const value = profileData[field];
-        if (value && String(value).trim() !== '') {
-          filledCount++;
-        }
-      });
-
-      const percent = Math.round((filledCount / requiredFields.length) * 100);
-      console.debug('Profile completion recalculated:', percent + '%', 'Filled:', filledCount, 'Data:', profileData);
-      return percent;
-    }
-
-    // Load events on page load
-    document.addEventListener('DOMContentLoaded', async function() {
-      console.debug('DOM loaded, loading events...');
-
-      // Calculate profile completion
-      calculateProfileCompletion();
-
-      // First, fetch user status from API
-      await fetchUserStatus();
-
-      // Then load events and links
-      await loadEventsAndLinks();
-
-      // Initialize SSE to receive commission_awarded events in real-time
-      initCommissionSSE();
-
-      // Setup periodic polling for commission updates (fallback)
-      setInterval(async () => {
-        await fetchUserStatus();
-      }, 10000); // Update every 10 seconds
-    });
-
-    // Fetch current user status from API
-    async function fetchUserStatus() {
-      try {
-        console.debug('Fetching user status from /affiliate/api/status...');
-        const response = await fetch('/affiliate/api/status');
-        const data = await response.json();
-
-        console.debug('User status API response:', data);
-
-        if (data.success && data.data) {
-          userStatus = data.data.affiliate_status || data.data.status || 'inactive';
-          console.debug('Updated userStatus:', userStatus);
-
-          // Update total commission if available
-          if (data.data.totalCommission !== undefined) {
-            const totalCommissionDisplay = document.getElementById('totalCommissionDisplay');
-            if (totalCommissionDisplay) {
-              const commissionValue = parseFloat(data.data.totalCommission) || 0;
-              totalCommissionDisplay.textContent = 'Rp ' + commissionValue.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            }
+        // Listen for profile updates from other pages (via localStorage)
+        window.addEventListener('storage', function (event) {
+          if (event.key === 'affiliateProfileUpdate_ts' || event.key === 'affiliateProfileUpdate') {
+            console.debug('Profile update detected from another page, recalculating...');
+            refreshProfileCompletion();
           }
+        });
 
-          // Update status badge if exists
-          const affiliateStatusBadge = document.getElementById('affiliateStatusBadge');
-          if (affiliateStatusBadge) {
-            const statusConfig = {
-              'approved': { bg: 'bg-green-100', text: 'text-green-700', icon: '✓ Approved' },
-              'pending': { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: '⏳ Pending' },
-              'rejected': { bg: 'bg-red-100', text: 'text-red-700', icon: '✗ Rejected' },
-              'inactive': { bg: 'bg-gray-100', text: 'text-gray-700', icon: '○ Inactive' }
-            }[userStatus] || { bg: 'bg-gray-100', text: 'text-gray-700', icon: '? Unknown' };
+        let lastProfileUpdateTime = parseInt(localStorage.getItem('affiliateProfileUpdate_ts') || '0');
+        setInterval(() => {
+          const currentUpdateTime = parseInt(localStorage.getItem('affiliateProfileUpdate_ts') || '0');
+          if (currentUpdateTime > lastProfileUpdateTime) {
+            console.debug('Profile update detected via polling, recalculating...');
+            lastProfileUpdateTime = currentUpdateTime;
+            refreshProfileCompletion();
+          }
+        }, 1000);
 
-            affiliateStatusBadge.innerHTML = `
-              <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusConfig.bg} ${statusConfig.text}">
-                ${statusConfig.icon}
+        async function refreshProfileCompletion() {
+          try {
+            const updatedProfile = localStorage.getItem('affiliateProfileUpdate');
+            if (updatedProfile) {
+              const profileData = JSON.parse(updatedProfile);
+              console.debug('Using updated profile from storage:', profileData);
+
+              const newPercent = calculateProfileCompletionFromData(profileData);
+
+              if (newPercent !== profileCompletionPercent) {
+                profileCompletionPercent = newPercent;
+                updateProfileCompletionUI();
+
+                const eventsContainer = document.getElementById('eventsContainer');
+                if (eventsContainer && !eventsContainer.classList.contains('hidden')) {
+                  console.debug('Reloading events due to profile completion change');
+                  await loadEventsAndLinks();
+                }
+              }
+            }
+          } catch (error) {
+            console.error('Error refreshing profile completion:', error);
+          }
+        }
+
+        function calculateProfileCompletionFromData(profileData) {
+          const requiredFields = ['full_name', 'email', 'phone', 'bank_name', 'bank_account_number', 'bank_account_name'];
+          let filledCount = 0;
+
+          requiredFields.forEach(field => {
+            const value = profileData[field];
+            if (value && String(value).trim() !== '') {
+              filledCount++;
+            }
+          });
+
+          const percent = Math.round((filledCount / requiredFields.length) * 100);
+          console.debug('Profile completion recalculated:', percent + '%', 'Filled:', filledCount, 'Data:', profileData);
+          return percent;
+        }
+
+        // Load events on page load
+        document.addEventListener('DOMContentLoaded', async function () {
+          console.debug('DOM loaded, loading events...');
+
+          // Calculate profile completion
+          calculateProfileCompletion();
+
+          // First, fetch user status from API
+          await fetchUserStatus();
+
+          // Then load events and links
+          await loadEventsAndLinks();
+
+          // Initialize SSE to receive commission_awarded events in real-time
+          initCommissionSSE();
+
+          // Setup periodic polling for commission updates (fallback)
+          setInterval(async () => {
+            await fetchUserStatus();
+          }, 10000);
+        });
+
+        // Fetch current user status from API
+        async function fetchUserStatus() {
+          try {
+            console.debug('Fetching user status from /affiliate/api/status...');
+            const response = await fetch('/affiliate/api/status');
+            const data = await response.json();
+
+            console.debug('User status API response:', data);
+
+            if (data.success && data.data) {
+              userStatus = data.data.affiliate_status || data.data.status || 'inactive';
+              console.debug('Updated userStatus:', userStatus);
+
+              // Update total commission if available
+              if (data.data.totalCommission !== undefined) {
+                const totalCommissionDisplay = document.getElementById('totalCommissionDisplay');
+                if (totalCommissionDisplay) {
+                  const commissionValue = parseFloat(data.data.totalCommission) || 0;
+                  totalCommissionDisplay.textContent = 'Rp ' + commissionValue.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                }
+              }
+
+              // Update status badge if exists
+              const affiliateStatusBadge = document.getElementById('affiliateStatusBadge');
+              if (affiliateStatusBadge) {
+                const statusConfig = {
+                  'approved': { bg: 'status-approved', icon: 'fa-check-circle', label: 'Approved' },
+                  'pending': { bg: 'status-pending', icon: 'fa-clock', label: 'Pending' },
+                  'rejected': { bg: 'status-rejected', icon: 'fa-times-circle', label: 'Rejected' },
+                  'inactive': { bg: 'bg-gray-500', icon: 'fa-circle', label: 'Inactive' }
+                }[userStatus] || { bg: 'bg-gray-500', icon: 'fa-circle', label: 'Unknown' };
+
+                affiliateStatusBadge.innerHTML = `
+              <span class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold ${statusConfig.bg} text-white flex items-center gap-1 border border-white/30">
+                <i class="fas ${statusConfig.icon}"></i>
+                ${statusConfig.label}
               </span>
             `;
-            affiliateStatusBadge.classList.remove('hidden');
+                affiliateStatusBadge.classList.remove('hidden');
+              }
+            }
+          } catch (error) {
+            console.error('Error fetching user status:', error);
           }
         }
-      } catch (error) {
-        console.error('Error fetching user status:', error);
-        // Keep using the server-rendered status as fallback
-      }
-    }
 
-    // Helper: get token from localStorage or cookies
-    function getToken() {
-      try {
-        const stored = localStorage.getItem('authToken');
-        if (stored) return stored;
-        const m = document.cookie.match(/(?:^|; )token=([^;]+)/);
-        if (m) return decodeURIComponent(m[1]);
-      } catch (e) {
-        console.debug('getToken error', e);
-      }
-      return '';
-    }
-
-    // Initialize SSE for commission updates (affiliate)
-    function initCommissionSSE() {
-      if (!('EventSource' in window)) return;
-      const localToken = getToken();
-      // Attach token to SSE query if available
-      const esUrl = '/affiliate/commission-events' + (localToken ? '?token=' + encodeURIComponent(localToken) : '');
-      const es = new EventSource(esUrl);
-      es.onopen = () => console.debug('Commission SSE connected');
-      es.onerror = (e) => {
-        console.error('Commission SSE error', e);
-        setTimeout(() => {
+        function getToken() {
           try {
-            const newEs = new EventSource(esUrl);
-            newEs.onmessage = es.onmessage;
-            newEs.onerror = es.onerror;
-            newEs.onopen = es.onopen;
-          } catch (err) {
-            console.error('Failed to reconnect SSE', err);
+            const stored = localStorage.getItem('authToken');
+            if (stored) return stored;
+            const m = document.cookie.match(/(?:^|; )token=([^;]+)/);
+            if (m) return decodeURIComponent(m[1]);
+          } catch (e) {
+            console.debug('getToken error', e);
           }
-        }, 3000);
-      };
-      es.addEventListener('commission_awarded', async (e) => {
-        try {
-          const data = JSON.parse(e.data);
-          const currentAffiliateId = <%= typeof userId !== 'undefined' ? userId : 'null' %>;
-          if (!data || Number(data.affiliate_id) !== Number(currentAffiliateId)) return;
-          // update totals from API (safer) and show toast
-          await fetchUserStatus();
-          showCommissionToast(data.amount, data.transaction_id);
-        } catch (err) {
-          console.error('commission_awarded handler error', err);
-        }
-      });
-    }
-
-    function showCommissionToast(amount, transactionId) {
-      try {
-        const msg = `Komisi Rp ${Number(amount || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} telah ditambahkan`;
-        const el = document.createElement('div');
-        el.className = 'fixed bottom-6 right-6 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-50';
-        el.textContent = msg;
-        document.body.appendChild(el);
-        setTimeout(() => el.classList.add('opacity-0'), 3500);
-        setTimeout(() => el.remove(), 4000);
-      } catch (e) { console.error(e); }
-    }
-
-    async function loadEventsAndLinks() {
-      const eventsLoading = document.getElementById('eventsLoading');
-      const eventsContainer = document.getElementById('eventsContainer');
-      const noEvents = document.getElementById('noEvents');
-      const notApprovedMessage = document.getElementById('notApprovedMessage');
-      const affiliateStatusBadge = document.getElementById('affiliateStatusBadge');
-
-      console.debug('Fetching events from /affiliate/api/events...');
-
-      try {
-        const response = await fetch('/affiliate/api/events');
-        const data = await response.json();
-
-        console.debug('API Response:', data);
-
-        eventsLoading.classList.add('hidden');
-
-        if (!data.success) {
-          console.error('API Error:', data.message);
-          // Check if error is due to not approved
-          if (data.message && data.message.includes('belum di-approve')) {
-            notApprovedMessage.classList.remove('hidden');
-            return;
-          }
-          throw new Error(data.message || 'Failed to load events');
+          return '';
         }
 
-        console.debug('Events loaded:', data.data.length, 'events');
-
-        // Update active programs count (number of active events returned by API)
-        const activeCountEl = document.getElementById('activeProgramsCount');
-        if (activeCountEl) activeCountEl.textContent = data.data.length;
-
-        if (data.data.length === 0) {
-          noEvents.classList.remove('hidden');
-          return;
+        function initCommissionSSE() {
+          if (!('EventSource' in window)) return;
+          const localToken = getToken();
+          const esUrl = '/affiliate/commission-events' + (localToken ? '?token=' + encodeURIComponent(localToken) : '');
+          const es = new EventSource(esUrl);
+          es.onopen = () => console.debug('Commission SSE connected');
+          es.onerror = (e) => {
+            console.error('Commission SSE error', e);
+            setTimeout(() => {
+              try {
+                const newEs = new EventSource(esUrl);
+                newEs.onmessage = es.onmessage;
+                newEs.onerror = es.onerror;
+                newEs.onopen = es.onopen;
+              } catch (err) {
+                console.error('Failed to reconnect SSE', err);
+              }
+            }, 3000);
+          };
+          es.addEventListener('commission_awarded', async (e) => {
+            try {
+              const data = JSON.parse(e.data);
+              const currentAffiliateId = <%= typeof userId !== 'undefined' ? userId : 'null' %>;
+              if (!data || Number(data.affiliate_id) !== Number(currentAffiliateId)) return;
+              await fetchUserStatus();
+              showCommissionToast(data.amount, data.transaction_id);
+            } catch (err) {
+              console.error('commission_awarded handler error', err);
+            }
+          });
         }
 
-        eventsContainer.classList.remove('hidden');
-        displayEvents(data.data);
-
-        // Show status badge
-        if (affiliateStatusBadge) {
-          const statusConfig = {
-            'approved': { bg: 'bg-green-100', text: 'text-green-700', icon: '✓ Approved', label: 'Approved' },
-            'pending': { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: '⏳ Pending', label: 'Pending' },
-            'rejected': { bg: 'bg-red-100', text: 'text-red-700', icon: '✗ Rejected', label: 'Rejected' },
-            'inactive': { bg: 'bg-gray-100', text: 'text-gray-700', icon: '○ Inactive', label: 'Inactive' }
-          }[userStatus] || { bg: 'bg-gray-100', text: 'text-gray-700', icon: '? Unknown', label: 'Unknown' };
-
-          affiliateStatusBadge.innerHTML = `
-            <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusConfig.bg} ${statusConfig.text}">
-              ${statusConfig.icon}
-            </span>
-          `;
-          affiliateStatusBadge.classList.remove('hidden');
-        }
-
-      } catch (error) {
-        console.error('Error loading events:', error);
-        // Reset active programs count when failing to load events
-        const activeCountEl = document.getElementById('activeProgramsCount');
-        if (activeCountEl) activeCountEl.textContent = '0';
-
-        eventsLoading.classList.add('hidden');
-        eventsContainer.innerHTML = `
-          <div class="text-center py-8 text-red-500">
-            <i class="fas fa-exclamation-circle text-2xl mb-2"></i>
-            <p>Gagal memuat event: ${error.message}</p>
+        function showCommissionToast(amount, transactionId) {
+          try {
+            const msg = `Komisi Rp ${Number(amount || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} telah ditambahkan`;
+            const toast = document.createElement('div');
+            toast.className = 'notification-toast glass-futuristic rounded-xl p-4 shadow-2xl border-l-4 border-green-500 max-w-sm';
+            toast.innerHTML = `
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 gradient-success rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-coins text-white text-lg"></i>
+            </div>
+            <div class="flex-1">
+              <p class="font-extrabold text-gray-900 text-sm">Komisi Baru!</p>
+              <p class="text-xs text-gray-600 mt-1">${msg}</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+              <i class="fas fa-times text-xs"></i>
+            </button>
           </div>
         `;
-        eventsContainer.classList.remove('hidden');
-      }
-    }
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
+          } catch (e) { console.error(e); }
+        }
 
-    function displayEvents(events) {
-      const container = document.getElementById('eventsContainer');
-      container.innerHTML = '';
+        async function loadEventsAndLinks() {
+          const eventsLoading = document.getElementById('eventsLoading');
+          const eventsContainer = document.getElementById('eventsContainer');
+          const noEvents = document.getElementById('noEvents');
+          const notApprovedMessage = document.getElementById('notApprovedMessage');
+          const affiliateStatusBadge = document.getElementById('affiliateStatusBadge');
 
-      console.debug('Displaying events:', events);
-      console.debug('User status:', userStatus);
-      console.debug('Profile completion:', profileCompletionPercent + '%');
+          console.debug('Fetching events from /affiliate/api/events...');
 
-      events.forEach((event, index) => {
-        console.debug(`Event ${index}:`, event);
+          try {
+            const response = await fetch('/affiliate/api/events');
+            const data = await response.json();
 
-        const startDate = event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
-        const endDate = event.end_date ? new Date(event.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+            console.debug('API Response:', data);
 
-        const eventCard = document.createElement('div');
-        eventCard.className = 'border border-gray-200 rounded-xl p-4 hover:border-purple-300 transition-all';
+            eventsLoading.classList.add('hidden');
 
-        const isApproved = userStatus === 'approved';
-        const hasLink = event.has_link;
-        const isProfileComplete = profileCompletionPercent === 100;
+            if (!data.success) {
+              console.error('API Error:', data.message);
+              if (data.message && data.message.includes('belum di-approve')) {
+                notApprovedMessage.classList.remove('hidden');
+                return;
+              }
+              throw new Error(data.message || 'Failed to load events');
+            }
 
-        console.debug(`Event: ${event.title}, hasLink: ${hasLink}, isApproved: ${isApproved}, profileComplete: ${isProfileComplete}`);
+            console.debug('Events loaded:', data.data.length, 'events');
 
-        let buttonHTML = '';
-        if (hasLink) {
-          buttonHTML = `
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            const activeCountEl = document.getElementById('activeProgramsCount');
+            if (activeCountEl) activeCountEl.textContent = data.data.length;
+
+            if (data.data.length === 0) {
+              noEvents.classList.remove('hidden');
+              return;
+            }
+
+            eventsContainer.classList.remove('hidden');
+            displayEvents(data.data);
+
+            if (affiliateStatusBadge) {
+              const statusConfig = {
+                'approved': { bg: 'status-approved', icon: 'fa-check-circle', label: 'Approved' },
+                'pending': { bg: 'status-pending', icon: 'fa-clock', label: 'Pending' },
+                'rejected': { bg: 'status-rejected', icon: 'fa-times-circle', label: 'Rejected' },
+                'inactive': { bg: 'bg-gray-500', icon: 'fa-circle', label: 'Inactive' }
+              }[userStatus] || { bg: 'bg-gray-500', icon: 'fa-circle', label: 'Unknown' };
+
+              affiliateStatusBadge.innerHTML = `
+            <span class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold ${statusConfig.bg} text-white flex items-center gap-1 border border-white/30">
+              <i class="fas ${statusConfig.icon}"></i>
+              ${statusConfig.label}
+            </span>
+          `;
+              affiliateStatusBadge.classList.remove('hidden');
+            }
+
+          } catch (error) {
+            console.error('Error loading events:', error);
+            const activeCountEl = document.getElementById('activeProgramsCount');
+            if (activeCountEl) activeCountEl.textContent = '0';
+
+            eventsLoading.classList.add('hidden');
+            eventsContainer.innerHTML = `
+          <div class="text-center py-8">
+            <div class="flex flex-col items-center">
+              <div class="relative">
+                <div class="w-16 h-16 bg-white/60 backdrop-blur rounded-full flex items-center justify-center mb-4 border-4 border-white/50 float-slow">
+                  <i class="fas fa-exclamation-circle text-3xl text-red-300"></i>
+                </div>
+                <div class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                  <span class="w-2 h-2 bg-red-500 rounded-full pulse-premium"></span>
+                </div>
+              </div>
+              <p class="text-base font-extrabold text-gray-900 mb-2">Gagal memuat event</p>
+              <p class="text-xs text-emerald-700 font-medium">${error.message}</p>
+            </div>
+          </div>
+        `;
+            eventsContainer.classList.remove('hidden');
+          }
+        }
+
+        function displayEvents(events) {
+          const container = document.getElementById('eventsContainer');
+          container.innerHTML = '';
+
+          console.debug('Displaying events:', events);
+          console.debug('User status:', userStatus);
+          console.debug('Profile completion:', profileCompletionPercent + '%');
+
+          events.forEach((event, index) => {
+            console.debug(`Event ${index}:`, event);
+
+            const startDate = event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+            const endDate = event.end_date ? new Date(event.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+
+            const eventCard = document.createElement('div');
+            eventCard.className = 'glass-futuristic rounded-xl p-4 hover:bg-white/40 transition-all duration-300 border border-white/50 fade-in';
+            eventCard.style.animationDelay = (index * 0.1) + 's';
+
+            const isApproved = userStatus === 'approved';
+            const hasLink = event.has_link;
+            const isProfileComplete = profileCompletionPercent === 100;
+
+            console.debug(`Event: ${event.title}, hasLink: ${hasLink}, isApproved: ${isApproved}, profileComplete: ${isProfileComplete}`);
+
+            let buttonHTML = '';
+            if (hasLink) {
+              buttonHTML = `
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <div class="text-xs text-gray-500 mb-1">Form (Checkout)</div>
+                <div class="text-[9px] font-bold text-emerald-700 mb-1">Form (Checkout)</div>
                 <div class="flex items-center gap-2">
                   <input type="text"
-                    class="w-56 px-3 py-2 text-sm border border-gray-300 rounded-lg bg-gray-50"
+                    class="flex-1 px-3 py-2 text-xs bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900"
                     readonly
                     value="${event.affiliate_link?.url_checkout || event.affiliate_link?.url || ''}"
                     id="link-checkout-${event.id}"
                   />
                   <button onclick="copyLink('link-checkout-${event.id}', this)"
-                    class="px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors">
+                    class="px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white text-xs rounded-lg hover:opacity-90 transition-all duration-300 flex items-center gap-1">
                     <i class="fas fa-copy"></i>
                   </button>
                 </div>
               </div>
 
               <div>
-                <div class="text-xs text-gray-500 mb-1">Landing Page (LP)</div>
+                <div class="text-[9px] font-bold text-emerald-700 mb-1">Landing Page (LP)</div>
                 <div class="flex items-center gap-2">
                   <input type="text"
-                    class="w-56 px-3 py-2 text-sm border border-gray-300 rounded-lg bg-gray-50"
+                    class="flex-1 px-3 py-2 text-xs bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900"
                     readonly
                     value="${event.affiliate_link?.url_lp || event.affiliate_link?.url || ''}"
                     id="link-lp-${event.id}"
                   />
                   <button onclick="copyLink('link-lp-${event.id}', this)"
-                    class="px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">
+                    class="px-3 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs rounded-lg hover:opacity-90 transition-all duration-300 flex items-center gap-1">
                     <i class="fas fa-copy"></i>
                   </button>
                 </div>
               </div>
             </div>
           `;
-        } else if (!isApproved) {
-          buttonHTML = `
+            } else if (!isApproved) {
+              buttonHTML = `
             <button disabled
-              class="px-4 py-2 bg-gray-300 text-gray-500 text-sm rounded-lg cursor-not-allowed flex items-center gap-2"
+              class="px-4 py-2 bg-gray-300 text-gray-500 text-xs rounded-lg cursor-not-allowed flex items-center gap-2"
               title="Akun Anda belum di-approve">
               <i class="fas fa-lock"></i>
               Generate Link
             </button>
           `;
-        } else if (!isProfileComplete) {
-          buttonHTML = `
+            } else if (!isProfileComplete) {
+              buttonHTML = `
             <button disabled
-              class="px-4 py-2 bg-orange-300 text-orange-700 text-sm rounded-lg cursor-not-allowed flex items-center gap-2 font-medium"
+              class="px-4 py-2 btn-warning text-xs rounded-lg cursor-not-allowed flex items-center gap-2 opacity-70"
               title="Lengkapi profil terlebih dahulu (${profileCompletionPercent}%)">
               <i class="fas fa-exclamation-circle"></i>
               Lengkapi Profil
             </button>
           `;
-        } else {
-          buttonHTML = `
+            } else {
+              buttonHTML = `
             <button onclick="generateLink(${event.id}, '${event.title.replace(/'/g, "\\'")}')"
-              class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg transition-colors flex items-center gap-2">
+              class="btn-purple text-xs flex items-center gap-2">
               <i class="fas fa-plus"></i>
               Generate Link
             </button>
           `;
-        }
+            }
 
-        eventCard.innerHTML = `
+            eventCard.innerHTML = `
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex-1">
               <div class="flex items-center gap-2 mb-2">
-                <h5 class="font-semibold text-gray-900">${event.title}</h5>
-                <span class="px-2 py-0.5 rounded text-xs font-medium ${event.event_type === 'gratis' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}">
+                <h5 class="font-extrabold text-sm text-gray-900">${event.title}</h5>
+                <span class="px-2 py-0.5 rounded-lg text-[8px] font-extrabold ${event.event_type === 'gratis' ? 'gradient-info' : 'gradient-purple'} text-white border border-white/30">
                   ${event.event_type === 'gratis' ? '🎁 Gratis' : '💎 Berbayar'}
                 </span>
               </div>
-              <div class="text-sm text-gray-600 space-y-1">
+              <div class="text-[10px] text-gray-600 space-y-1">
                 ${event.description ? `<p class="line-clamp-1">${event.description}</p>` : ''}
-                <div class="flex items-center gap-4 text-xs text-gray-500">
-                  <span><i class="fas fa-calendar-alt mr-1"></i>${startDate} - ${endDate}</span>
+                <div class="flex items-center gap-4 text-[9px] text-gray-500">
+                  <span><i class="fas fa-calendar-alt text-emerald-400 mr-1"></i>${startDate} - ${endDate}</span>
                   ${event.event_type === 'berbayar' ? `
-                    <span class="text-green-600 font-semibold">
+                    <span class="text-emerald-600 font-extrabold">
                       Rp ${parseInt(event.price_promo || 0).toLocaleString('id-ID')}
                     </span>
                   ` : ''}
@@ -940,111 +2074,86 @@
           </div>
         `;
 
-        container.appendChild(eventCard);
-      });
-    }
-
-    async function generateLink(eventId, eventTitle) {
-      console.debug('generateLink called with eventId:', eventId, 'userStatus:', userStatus, 'profileCompletion:', profileCompletionPercent);
-
-      // Validasi user approved
-      if (userStatus !== 'approved') {
-        alert('Anda belum di-approve sebagai affiliate. Silakan tunggu approval dari admin.');
-        return;
-      }
-
-      // Validasi profil lengkap
-      if (profileCompletionPercent < 100) {
-        alert(`Profil Anda belum lengkap (${profileCompletionPercent}%). Silakan lengkapi semua data terlebih dahulu sebelum generate link.\n\nKlik "Lengkapi/Edit Profil" di bagian Profil & Data Bank.`);
-        return;
-      }
-
-      const btn = event.target;
-      const originalContent = btn.innerHTML;
-
-      try {
-        // Show loading state
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Generating...';
-
-        console.debug('Sending request to /affiliate/api/generate-link...');
-
-        const response = await fetch('/affiliate/api/generate-link', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ eventId })
-        });
-
-        const data = await response.json();
-
-        console.debug('Generate link response:', data);
-
-        if (!data.success) {
-          throw new Error(data.message || 'Failed to generate link');
+            container.appendChild(eventCard);
+          });
         }
 
-        console.debug('Link generated successfully:', data.data.url);
+        async function generateLink(eventId, eventTitle) {
+          console.debug('generateLink called with eventId:', eventId, 'userStatus:', userStatus, 'profileCompletion:', profileCompletionPercent);
 
-        // Reload events to show the new link
-        await loadEventsAndLinks();
+          if (userStatus !== 'approved') {
+            alert('Anda belum di-approve sebagai affiliate. Silakan tunggu approval dari admin.');
+            return;
+          }
 
-        // Show success message with both links
-        const checkoutUrlMsg = data.data.url_checkout || data.data.url || '';
-        const lpUrlMsg = data.data.url_lp || '';
-        alert(`Link berhasil dibuat untuk event: ${eventTitle}\n\nForm (Checkout): ${checkoutUrlMsg}\nLanding Page: ${lpUrlMsg}`);
+          if (profileCompletionPercent < 100) {
+            alert(`Profil Anda belum lengkap (${profileCompletionPercent}%). Silakan lengkapi semua data terlebih dahulu sebelum generate link.\n\nKlik "Lengkapi/Edit Profil" di bagian Profil & Data Bank.`);
+            return;
+          }
 
-      } catch (error) {
-        console.error('Error generating link:', error);
-        alert(`Gagal generate link: ${error.message}`);
-        btn.disabled = false;
-        btn.innerHTML = originalContent;
-      }
-    }
+          const btn = event.target;
+          const originalContent = btn.innerHTML;
 
-    function copyLink(inputId, btn) {
-      const input = document.getElementById(inputId);
-      input.select();
-      input.setSelectionRange(0, 99999);
+          try {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Generating...';
 
-      try {
-        navigator.clipboard.writeText(input.value);
+            console.debug('Sending request to /affiliate/api/generate-link...');
 
-        // Show feedback
-        const originalHTML = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-check"></i>';
-        btn.classList.remove('bg-green-600');
-        btn.classList.add('bg-green-500');
+            const response = await fetch('/affiliate/api/generate-link', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ eventId })
+            });
 
-        setTimeout(() => {
-          btn.innerHTML = originalHTML;
-          btn.classList.remove('bg-green-500');
-          btn.classList.add('bg-green-600');
-        }, 1500);
-      } catch (err) {
-        // Fallback for older browsers
-        document.execCommand('copy');
-        alert('Link berhasil disalin!');
-      }
-    }
+            const data = await response.json();
 
-    // Legacy copy button handler (if shown)
-    const copyBtn = document.getElementById('copyRefBtn');
-    const refInput = document.getElementById('refLinkInput');
-    if (copyBtn && refInput) {
-      copyBtn.addEventListener('click', function(){
-        refInput.select();
-        refInput.setSelectionRange(0, 99999);
-        try {
-          navigator.clipboard.writeText(refInput.value);
-          copyBtn.textContent = 'Copied';
-          setTimeout(()=> copyBtn.textContent = 'Copy', 1500);
-        } catch(e) {
-          document.execCommand('copy');
+            console.debug('Generate link response:', data);
+
+            if (!data.success) {
+              throw new Error(data.message || 'Failed to generate link');
+            }
+
+            console.debug('Link generated successfully:', data.data.url);
+
+            await loadEventsAndLinks();
+
+            const checkoutUrlMsg = data.data.url_checkout || data.data.url || '';
+            const lpUrlMsg = data.data.url_lp || '';
+            alert(`Link berhasil dibuat untuk event: ${eventTitle}\n\nForm (Checkout): ${checkoutUrlMsg}\nLanding Page: ${lpUrlMsg}`);
+
+          } catch (error) {
+            console.error('Error generating link:', error);
+            alert(`Gagal generate link: ${error.message}`);
+            btn.disabled = false;
+            btn.innerHTML = originalContent;
+          }
         }
-      });
-    }
-  </script>
+
+        function copyLink(inputId, btn) {
+          const input = document.getElementById(inputId);
+          input.select();
+          input.setSelectionRange(0, 99999);
+
+          try {
+            navigator.clipboard.writeText(input.value);
+
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            btn.classList.add('copy-btn-copied');
+
+            setTimeout(() => {
+              btn.innerHTML = originalHTML;
+              btn.classList.remove('copy-btn-copied');
+            }, 1500);
+          } catch (err) {
+            document.execCommand('copy');
+            alert('Link berhasil disalin!');
+          }
+        }
+      </script>
 </body>
+
 </html>

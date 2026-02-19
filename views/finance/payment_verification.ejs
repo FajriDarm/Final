@@ -8,247 +8,912 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 0%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        linear-gradient(145deg, #f0fdf4 0%, #ecfdf5 50%, #e6f7ec 100%);
+    }
+
+    /* Premium Glassmorphism */
+    .glass-premium {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 35px -10px rgba(0, 100, 0, 0.05),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
     }
 
     .glass-card {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+        0 0 15px rgba(16, 185, 129, 0.05);
     }
 
+    /* Premium Gradients */
     .gradient-primary {
-      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
+    }
+
+    .gradient-secondary {
+      background: linear-gradient(165deg, #047857 0%, #059669 50%, #10b981 100%);
     }
 
     .gradient-success {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
     }
 
     .gradient-danger {
-      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
     }
 
-    .card-hover {
-      transition: all 0.3s ease;
+    .gradient-warning {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
     }
 
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.1), 0 10px 10px -5px rgba(59, 130, 246, 0.04);
+    .gradient-info {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
     }
 
-    .status-badge {
-      transition: all 0.2s ease;
+    .gradient-purple {
+      background: linear-gradient(165deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
     }
 
-    .status-badge:hover {
-      transform: scale(1.05);
+    .gradient-amber {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
     }
 
-    .data-cell {
+    .gradient-blue {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    }
+
+    /* Status Badges */
+    .badge-hot {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+      color: white;
+    }
+
+    .badge-dp {
+      background: linear-gradient(165deg, #f97316 0%, #fb923c 50%, #fdba74 100%);
+      color: white;
+    }
+
+    .badge-lunas {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      color: white;
+    }
+
+    .badge-pending {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+      color: white;
+    }
+
+    /* Card Effects */
+    .card-luxury {
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .card-luxury:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 30px 45px -15px rgba(16, 185, 129, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    }
+
+    /* Badge 3D Effect */
+    .badge-3d {
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .badge-3d:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    /* Pulse Animation */
+    .pulse-premium {
+      animation: pulsePremium 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulsePremium {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.2),
+          0 0 0 0 rgba(16, 185, 129, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 0 0 15px rgba(16, 185, 129, 0),
+          0 0 0 30px rgba(16, 185, 129, 0);
+      }
+    }
+
+    /* Custom Scrollbar */
+    .modern-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-track {
+      background: rgba(16, 185, 129, 0.05);
+      border-radius: 10px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-thumb {
+      background: linear-gradient(145deg, #10b981, #059669);
+      border-radius: 10px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(145deg, #059669, #047857);
+    }
+
+    /* Floating Animation */
+    .float-slow {
+      animation: float 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Shimmer Effect */
+    .shimmer {
       position: relative;
       overflow: hidden;
     }
 
-    /* Table column helpers */
-    .truncate-col { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .wrap-col { max-width: 340px; white-space: normal; word-break: break-word; }
-    .action-cell .btn { min-width: 96px; }
+    .shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent);
+      animation: shimmer 5s infinite;
+    }
 
-    .data-cell::after {
+    @keyframes shimmer {
+      100% {
+        left: 200%;
+      }
+    }
+
+    /* Glow Text */
+    .glow-text {
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.3),
+        0 0 20px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Grid Background */
+    .bg-grid-premium {
+      background-image: linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Neomorphism */
+    .neomorph {
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 20px 20px 40px rgba(16, 185, 129, 0.05),
+        -20px -20px 40px rgba(255, 255, 255, 0.8),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.8),
+        inset -1px -1px 2px rgba(16, 185, 129, 0.05);
+    }
+
+    /* Data Cell */
+    .data-cell-modern {
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    .data-cell-modern::before {
       content: '';
       position: absolute;
       bottom: 0;
-      left: 0;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981, #059669);
+      transition: all 0.4s ease;
+      transform: translateX(-50%);
+    }
+
+    .data-cell-modern:hover::before {
       width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
     }
 
-    .gradient-primary:hover {
-      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2);
+    /* Animations */
+    .animate-slide-in {
+      animation: slideIn 0.6s ease-out;
     }
 
-    .gradient-success:hover {
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .animate-scale-in {
+      animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+
+    /* Ultra Modern Glassmorphism */
+    .glass-futuristic {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    }
+
+    /* Gradient Orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+      opacity: 0.4;
+      animation: float-orb 10s ease-in-out infinite;
+    }
+
+    @keyframes float-orb {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      25% {
+        transform: translate(10px, -15px) scale(1.1);
+      }
+
+      50% {
+        transform: translate(-5px, -20px) scale(0.9);
+      }
+
+      75% {
+        transform: translate(-15px, 5px) scale(1.05);
+      }
+    }
+
+    /* Card Futuristic */
+    .card-futuristic {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-futuristic::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.7s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card-futuristic:hover::before {
+      left: 100%;
+    }
+
+    .card-futuristic:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 30px 60px -15px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Border Gradient */
+    .border-gradient {
+      border: double 1px transparent;
+      background-image: linear-gradient(white, white),
+        linear-gradient(135deg, #059669, #10b981, #34d399);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+
+    /* Pulse Glow */
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        filter: blur(60px);
+      }
+
+      50% {
+        opacity: 0.8;
+        filter: blur(70px);
+      }
+    }
+
+    .animate-pulse-glow {
+      animation: pulse-glow 4s ease-in-out infinite;
+    }
+
+    /* Rotate Slow */
+    @keyframes rotate-slow {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .animate-rotate-slow {
+      animation: rotate-slow 20s linear infinite;
+    }
+
+    /* Table Row Styles */
+    .table-row {
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(5px);
+    }
+
+    .table-row:hover {
+      background: rgba(255, 255, 255, 0.6);
+      transform: scale(1.01);
+      box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.15);
+    }
+
+    /* Tab Styles */
+    .tab-active {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      color: white;
       box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
     }
 
-    .gradient-danger:hover {
+    .tab-inactive {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      color: #4b5563;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .tab-inactive:hover {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Select Styles */
+    .status-select {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 0.75rem;
+      padding: 0.5rem 2rem 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #374151;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2310b981' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.25rem;
+    }
+
+    .status-select:focus {
+      outline: none;
+      ring: 2px solid rgba(16, 185, 129, 0.5);
+      border-color: transparent;
+    }
+
+    /* Button Styles */
+    .btn-success {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-success:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    .btn-danger {
+      background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
       box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.2);
+    }
+
+    .btn-danger:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      color: #374151;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Truncate helpers */
+    .truncate-col {
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .wrap-col {
+      max-width: 250px;
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    .action-cell {
+      min-width: 280px;
     }
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-emerald-50 to-green-50">
+<body class="bg-grid-premium relative overflow-x-hidden">
+  <!-- Ultra Modern Decorative Orbs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="orb w-[500px] h-[500px] bg-emerald-400 top-[-100px] left-[-100px] animate-pulse-glow"></div>
+    <div
+      class="orb w-[600px] h-[600px] bg-green-400 bottom-[-200px] right-[-200px] animate-pulse-glow animation-delay-2000">
+    </div>
+    <div
+      class="orb w-[400px] h-[400px] bg-teal-400 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-glow animation-delay-4000">
+    </div>
+
+    <!-- Animated Grid Lines -->
+    <svg class="absolute top-0 left-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#10b981" stroke-width="0.5" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+
+    <!-- Floating Particles -->
+    <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-30"></div>
+    <div
+      class="absolute top-3/4 right-1/3 w-3 h-3 bg-green-400 rounded-full animate-ping opacity-30 animation-delay-2000">
+    </div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-1.5 h-1.5 bg-teal-400 rounded-full animate-ping opacity-30 animation-delay-4000">
+    </div>
+  </div>
+
   <!-- Navbar -->
   <%- include('../navbar/navbar.ejs', { name: 'Finance' }) %>
+
     <!-- Sidebar -->
     <%- include('../sidebar/finance.ejs') %>
 
       <!-- Main Content -->
-      <main class="ml-64 pt-16 min-h-screen">
+      <main class="ml-64 pt-16 min-h-screen relative z-10">
         <div class="p-6">
-          <!-- Page Header -->
-          <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
-            <div class="mb-4 md:mb-0">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-check-circle text-white text-xl"></i>
+          <!-- Premium Page Header - Sesuai dengan dashboard -->
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
+            <div class="mb-4 lg:mb-0">
+              <div class="flex items-center gap-4">
+                <div class="relative">
+                  <div
+                    class="w-16 h-16 gradient-primary rounded-xl flex items-center justify-center shadow-2xl float-slow">
+                    <i class="fas fa-check-circle text-white text-2xl"></i>
+                  </div>
+                  <div
+                    class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <span class="w-2 h-2 bg-green-500 rounded-full pulse-premium"></span>
+                  </div>
                 </div>
                 <div>
-                  <!-- Table Footer -->
-                  <p class="text-gray-600 mt-1">Verifikasi dan setujui pembayaran pelanggan</p>
+                  <div class="flex items-center gap-2 mb-1">
+                    <h1
+                      class="text-3xl font-extrabold bg-gradient-to-r from-emerald-900 via-green-800 to-emerald-900 bg-clip-text text-transparent">
+                      Payment Verification
+                    </h1>
+                    <span
+                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                      FINANCE
+                    </span>
+                  </div>
+                  <p class="text-sm text-emerald-700 font-medium">Verifikasi dan setujui pembayaran pelanggan</p>
                 </div>
+              </div>
+            </div>
+
+            <!-- Premium Date & Live Status -->
+            <div class="flex items-center gap-3">
+              <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
+                <div class="w-8 h-8 gradient-secondary rounded-lg flex items-center justify-center shadow-lg">
+                  <i class="fas fa-calendar-alt text-white text-sm"></i>
+                </div>
+                <div>
+                  <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                    <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
+                  </p>
+                </div>
+              </div>
+
+              <div class="gradient-primary rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-xl relative shimmer">
+                <div class="relative">
+                  <i class="fas fa-bell text-white text-sm"></i>
+                  <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></span>
+                  <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
+                </div>
+                <div>
+                  <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                  <p class="text-xs font-bold text-white">Updates Real-time</p>
+                </div>
+              </div>
+
+              <div
+                class="px-4 py-2.5 gradient-warning rounded-xl text-white shadow-lg flex items-center gap-2 border border-white/30">
+                <i class="fas fa-clock"></i>
+                <span class="text-xs font-extrabold">Pending: <%= pendingPayments ? pendingPayments.length : 0 %></span>
               </div>
             </div>
           </div>
 
-          <!-- Main Table Container -->
-          <div class="glass-card rounded-2xl shadow-lg border border-green-100 overflow-hidden">
+          <!-- Premium Stats Summary -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-7 animate-scale-in">
+            <div class="glass-futuristic rounded-2xl p-4 flex items-center gap-3 border border-white/50">
+              <div class="w-12 h-12 gradient-warning rounded-xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-clock text-white"></i>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Menunggu</p>
+                <p class="text-2xl font-extrabold text-gray-900">
+                  <%= pendingPayments ? pendingPayments.length : 0 %>
+                </p>
+              </div>
+            </div>
+
+            <div class="glass-futuristic rounded-2xl p-4 flex items-center gap-3 border border-white/50">
+              <div class="w-12 h-12 gradient-amber rounded-xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-fire text-white"></i>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">HOT</p>
+                <p class="text-2xl font-extrabold text-gray-900" id="hotCount">0</p>
+              </div>
+            </div>
+
+            <div class="glass-futuristic rounded-2xl p-4 flex items-center gap-3 border border-white/50">
+              <div class="w-12 h-12 gradient-blue rounded-xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-money-bill-wave text-white"></i>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">DP</p>
+                <p class="text-2xl font-extrabold text-gray-900" id="dpCount">0</p>
+              </div>
+            </div>
+
+            <div class="glass-futuristic rounded-2xl p-4 flex items-center gap-3 border border-white/50">
+              <div class="w-12 h-12 gradient-success rounded-xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-check-circle text-white"></i>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Lunas</p>
+                <p class="text-2xl font-extrabold text-gray-900" id="lunasCount">0</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Table Container Premium -->
+          <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
             <!-- Table Header -->
-            <div class="px-6 py-4 gradient-primary">
-              <div class="flex items-center justify-between">
-                <div>
-                  <h2 class="text-lg font-semibold text-white">Pembayaran Menunggu Verifikasi</h2>
-                  <p class="text-green-100 text-sm mt-1">Review dan verifikasi pembayaran pelanggan</p>
+            <div class="gradient-primary px-5 py-4 flex items-center justify-between border-b border-white/30">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
+                  <i class="fas fa-money-bill-wave text-white"></i>
                 </div>
+                <div>
+                  <h2 class="text-base font-extrabold text-white">Pembayaran Menunggu Verifikasi</h2>
+                  <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Review dan verifikasi pembayaran pelanggan
+                  </p>
+                </div>
+              </div>
+              <span
+                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                <i class="fas fa-bolt mr-1"></i>
+                Live
+              </span>
+            </div>
+
+            <!-- Premium Tabs -->
+            <div class="px-5 py-3 bg-white/20 backdrop-blur border-b border-white/30 flex items-center gap-2">
+              <button
+                class="status-tab tab-active px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2 transition-all duration-300"
+                data-status="HOT">
+                <i class="fas fa-fire"></i>
+                <span>HOT</span>
+                <span class="ml-1 bg-white/30 px-2 py-0.5 rounded-lg text-[9px] badge-count" data-for="HOT">0</span>
+              </button>
+              <button
+                class="status-tab tab-inactive px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2 transition-all duration-300"
+                data-status="DP">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>DP</span>
+                <span class="ml-1 bg-white/30 px-2 py-0.5 rounded-lg text-[9px] badge-count" data-for="DP">0</span>
+              </button>
+              <div class="ml-auto text-[10px] font-medium text-emerald-700">Pilih tab untuk melihat lead sesuai status
               </div>
             </div>
 
             <!-- Table Content -->
-            <div class="overflow-x-auto">
-              <!-- Tabs -->
-              <div class="px-6 py-4 bg-green-50 border-b border-green-100 flex items-center gap-4">
-                <button class="status-tab px-3 py-2 rounded-md font-medium bg-white shadow-sm" data-status="HOT">HOT <span class="ml-2 text-xs text-gray-500 badge-count" data-for="HOT">0</span></button>
-                <button class="status-tab px-3 py-2 rounded-md font-medium bg-transparent text-green-800" data-status="DP">DP <span class="ml-2 text-xs text-gray-500 badge-count" data-for="DP">0</span></button>
-                <div class="ml-auto text-sm text-gray-600">Pilih tab untuk melihat lead sesuai status</div>
-              </div>
-
-              <div class="overflow-auto">
-                <table class="min-w-full divide-y divide-green-100 table-auto">
-                <thead class="bg-green-50">
+            <div class="overflow-x-auto modern-scrollbar bg-white/30 backdrop-blur">
+              <table class="w-full">
+                <thead class="bg-white/10 backdrop-blur border-b border-white/30">
                   <tr>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">ID</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Customer</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Affiliate</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Event</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Jumlah</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Metode</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900">Komisi</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Lead Status</th>
-                    <th class="py-3 px-4 text-left text-sm font-semibold text-green-900 whitespace-nowrap">Aksi</th>
+                    <th
+                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      ID</th>
+                    <th
+                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      Customer</th>
+                    <th
+                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      Affiliate</th>
+                    <th
+                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      Event</th>
+                    <th
+                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      Jumlah</th>
+                    <th
+                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      Metode</th>
+                    <th
+                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      Komisi</th>
+                    <th
+                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      Status</th>
+                    <th
+                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      Aksi</th>
                   </tr>
                 </thead>
-                <tbody id="paymentsTableBody" class="divide-y divide-green-100">
-                  <% if (pendingPayments && pendingPayments.length===0) { %>
-                    <tr>
-                      <td colspan="9" class="px-6 text-center">
-                        <div class="flex flex-col items-center justify-center min-h-[300px] h-full w-full py-10">
-                          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                            <i class="fas fa-inbox text-green-600 text-xl"></i>
+                <tbody id="paymentsTableBody" class="divide-y divide-white/30">
+                  <% if (!pendingPayments || pendingPayments.length===0) { %>
+                    <tr class="placeholder-row">
+                      <td colspan="9" class="py-12 px-4 text-center">
+                        <div class="flex flex-col items-center justify-center">
+                          <div class="relative">
+                            <div
+                              class="w-20 h-20 bg-white/60 backdrop-blur rounded-full flex items-center justify-center mb-4 border-4 border-white/50 float-slow">
+                              <i class="fas fa-inbox text-3xl text-emerald-300"></i>
+                            </div>
+                            <div
+                              class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                              <span class="w-2 h-2 bg-amber-500 rounded-full pulse-premium"></span>
+                            </div>
                           </div>
-                          <p class="text-gray-600 font-medium">Tidak ada pembayaran pending</p>
-                          <p class="text-sm text-gray-500 mt-2">Semua pembayaran sudah diverifikasi</p>
+                          <h3 class="text-lg font-extrabold text-gray-900 mb-2">Tidak ada pembayaran pending</h3>
+                          <p class="text-sm text-emerald-700 font-medium">Semua pembayaran sudah diverifikasi</p>
                         </div>
                       </td>
                     </tr>
-                    <% } else if (pendingPayments) { %>
+                    <% } else { %>
                       <% pendingPayments.forEach(function(payment, index) { %>
-                        <tr class="hover:bg-green-50 transition-colors data-cell" data-delay="<%= index * 50 %>" data-lead-status="<%= (payment.lead_status || '').toUpperCase() %>">
-                          <td class="py-3 px-4 align-top whitespace-nowrap">
-                            <span class="text-sm font-medium text-gray-900">#<%= payment.id %></span>
+                        <tr
+                          class="table-row hover:bg-white/40 transition-all duration-300 border-b border-white/30 last:border-b-0 bg-white/20 backdrop-blur fade-in"
+                          data-delay="<%= index * 50 %>"
+                          data-lead-status="<%= (payment.lead_status || '').toUpperCase() %>">
+                          <td class="py-4 px-4 align-top whitespace-nowrap">
+                            <span class="font-extrabold text-xs text-gray-900">#<%= payment.id %></span>
                           </td>
-                          <td class="py-3 px-4 align-top">
+                          <td class="py-4 px-4 align-top">
                             <div class="flex items-start gap-3">
-                              <div class="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-user text-green-600"></i>
+                              <div
+                                class="w-10 h-10 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl flex items-center justify-center border border-white/60 flex-shrink-0">
+                                <i class="fas fa-user text-emerald-600"></i>
                               </div>
                               <div class="min-w-0">
-                                <div class="font-medium text-gray-900 truncate-col"> <%= payment.customer_name %> </div>
-                                <div class="text-xs text-gray-500">Customer</div>
+                                <div class="font-extrabold text-sm text-gray-900 truncate-col">
+                                  <%= payment.customer_name || 'Unknown' %>
+                                </div>
+                                <div class="text-[8px] font-medium text-emerald-700">Customer</div>
                               </div>
                             </div>
                           </td>
-                          <td class="py-3 px-4 align-top">
-                            <div class="font-medium text-gray-900 truncate-col"><%= payment.affiliate_name || '-' %></div>
-                            <div class="text-xs text-gray-500">Affiliate</div>
-                          </td>
-                          <td class="py-3 px-4 align-top">
-                            <div class="font-medium text-gray-900 wrap-col"><%= payment.event_name || ('#'+payment.event_id) || '-' %></div>
-                            <div class="text-xs text-gray-500">Event</div>
-                          </td>
-                          <td class="py-3 px-4 align-top whitespace-nowrap">
-                            <span class="font-bold text-green-700">Rp <%= parseInt(payment.total_amount || 0).toLocaleString('id-ID') %></span>
-                          </td>
-                          <td class="py-3 px-4 align-top whitespace-nowrap">
-                            <div class="flex items-center gap-2">
-                              <% if (payment.payment_method==='transfer' ) { %>
-                                <i class="fas fa-bank text-green-600"></i>
-                              <% } else { %>
-                                <i class="fas fa-money-bill-wave text-green-600"></i>
-                              <% } %>
-                              <span class="text-sm font-medium text-gray-700 truncate-col"><%= payment.payment_method ? payment.payment_method.toUpperCase() : 'N/A' %></span>
+                          <td class="py-4 px-4 align-top">
+                            <div class="font-extrabold text-sm text-gray-900 truncate-col">
+                              <%= payment.affiliate_name || '-' %>
                             </div>
+                            <div class="text-[8px] font-medium text-emerald-700">Affiliate</div>
                           </td>
-                          <td class="py-3 px-4 align-top wrap-col">
-                            <% if (typeof payment.commission_amount !== 'undefined' && payment.commission_amount > 0) { %>
-                              <span class="font-semibold text-green-700">Rp <%= Number(payment.commission_amount).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
-                            <% } else if (payment.projected_commission) { %>
-                              <span class="font-semibold text-green-700">Rp <%= parseFloat(payment.projected_commission).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
-                              <% if (payment.projected_stage && payment.projected_stage !== 2) { %>
-                                <div class="text-xs text-gray-400 mt-1">(aktif pada stage <%= payment.projected_stage %>)</div>
-                              <% } %>
-                            <% } else { %>
-                              <span class="text-gray-400">-</span>
-                            <% } %>
-                          </td>
-                          <td class="py-3 px-4 align-top whitespace-nowrap">
-                            <div class="flex items-center gap-2">
-                              <div class="text-sm text-gray-600"><%= payment.lead_status || '—' %></div>
-                              <% if ((payment.lead_status || '').toUpperCase() === 'DP') { %>
-                                <div class="px-2 py-0.5 rounded-full text-xs font-semibold text-amber-800 bg-amber-100">DP</div>
-                              <% } else if ((payment.lead_status || '').toUpperCase() === 'HOT') { %>
-                                <div class="px-2 py-0.5 rounded-full text-xs font-semibold text-green-800 bg-green-100">HOT</div>
-                              <% } %>
+                          <td class="py-4 px-4 align-top">
+                            <div class="font-extrabold text-sm text-gray-900 wrap-col">
+                              <%= payment.event_name || ('#' + payment.event_id) || '-' %>
                             </div>
+                            <div class="text-[8px] font-medium text-emerald-700">Event</div>
                           </td>
-
-                          <td class="py-3 px-4 align-top whitespace-nowrap">
-                            <span class="px-3 py-1.5 rounded-full text-xs font-medium border border-yellow-200 bg-yellow-100 text-yellow-800 status-badge">
-                              <i class="fas fa-hourglass-half mr-1.5"></i>
-                              <%= payment.payment_status ? payment.payment_status.toUpperCase() : 'PENDING' %>
+                          <td class="py-4 px-4 align-top whitespace-nowrap">
+                            <span class="font-extrabold text-sm text-emerald-700">
+                              Rp <%= parseInt(payment.total_amount || 0).toLocaleString('id-ID') %>
                             </span>
                           </td>
-                          <td class="py-3 px-4 align-top action-cell">
-                            <div class="flex flex-col md:flex-row md:items-center gap-2">
-                              <div class="text-sm text-gray-600">Lead Status: <span class="font-medium text-gray-800"><%= payment.lead_status || '—' %></span></div>
-                              <div class="flex items-center gap-2">
-                                <form data-action="set-lead-status" action="/finance/payment-verification/<%= payment.id %>/set-lead-status" method="POST" class="inline-flex items-center gap-2 finance-action-form">
-                                  <select name="lead_status" class="px-2 py-1 border rounded text-sm">
-                                    <option value="">-- pilih aksi --</option>
-                                    <% if ((payment.lead_status || '').toUpperCase() === 'DP') { %>
-                                      <option value="DP" disabled>DP (sudah DP)</option>
+                          <td class="py-4 px-4 align-top whitespace-nowrap">
+                            <div class="flex items-center gap-2">
+                              <% if (payment.payment_method==='transfer' ) { %>
+                                <i class="fas fa-university text-emerald-500 text-xs"></i>
+                                <% } else { %>
+                                  <i class="fas fa-money-bill-wave text-emerald-500 text-xs"></i>
+                                  <% } %>
+                                    <span class="text-xs font-medium text-gray-700 truncate-col">
+                                      <%= payment.payment_method ? payment.payment_method.toUpperCase() : 'N/A' %>
+                                    </span>
+                            </div>
+                          </td>
+                          <td class="py-4 px-4 align-top wrap-col">
+                            <% if (typeof payment.commission_amount !=='undefined' && payment.commission_amount> 0) { %>
+                              <span class="font-extrabold text-xs text-purple-700">
+                                Rp <%= Number(payment.commission_amount).toLocaleString('id-ID', {
+                                  minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                              </span>
+                              <% } else if (payment.projected_commission) { %>
+                                <span class="font-extrabold text-xs text-amber-600">
+                                  Rp <%= parseFloat(payment.projected_commission).toLocaleString('id-ID', {
+                                    minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                </span>
+                                <% if (payment.projected_stage && payment.projected_stage !==2) { %>
+                                  <div class="text-[8px] text-gray-500 mt-1">(stage <%= payment.projected_stage %>)
+                                  </div>
+                                  <% } %>
                                     <% } else { %>
-                                      <option value="DP">DP</option>
-                                    <% } %>
-                                    <option value="LUNAS">LUNAS</option>
-                                  </select>
-                                  <button type="submit" class="px-3 py-2 gradient-success text-white rounded-lg text-xs font-medium hover:shadow-lg transition inline-flex items-center gap-1 btn" data-confirm="Simpan perubahan status?">
-                                    <i class="fas fa-check-circle"></i>
-                                    Simpan
-                                  </button>
-                                </form>
-                                <form data-action="reject" action="/finance/payment-verification/<%= payment.id %>/reject" method="POST" class="inline finance-action-form">
-                                  <button type="submit" class="px-3 py-2 gradient-danger text-white rounded-lg text-xs font-medium hover:shadow-lg transition inline-flex items-center gap-1 btn" data-confirm="Tolak pembayaran ini?">
-                                    <i class="fas fa-times-circle"></i>
-                                    Reject
-                                  </button>
-                                </form>
+                                      <span class="text-xs text-gray-400">-</span>
+                                      <% } %>
+                          </td>
+                          <td class="py-4 px-4 align-top whitespace-nowrap">
+                            <div class="flex items-center gap-2">
+                              <span
+                                class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold badge-pending text-white flex items-center gap-1 border border-white/30">
+                                <i class="fas fa-hourglass-half text-[7px]"></i>
+                                <%= payment.payment_status ? payment.payment_status.toUpperCase() : 'PENDING' %>
+                              </span>
+                              <% if ((payment.lead_status || '' ).toUpperCase()==='HOT' ) { %>
+                                <span
+                                  class="px-2 py-0.5 rounded-lg text-[8px] font-extrabold badge-hot text-white">HOT</span>
+                                <% } else if ((payment.lead_status || '' ).toUpperCase()==='DP' ) { %>
+                                  <span
+                                    class="px-2 py-0.5 rounded-lg text-[8px] font-extrabold badge-dp text-white">DP</span>
+                                  <% } %>
+                            </div>
+                          </td>
+                          <td class="py-4 px-4 align-top action-cell">
+                            <div class="flex flex-col gap-2">
+                              <div class="flex items-center gap-2">
+                                <span class="text-[8px] font-medium text-gray-500">Lead Status:</span>
+                                <span class="text-[9px] font-extrabold text-gray-700">
+                                  <%= payment.lead_status || '—' %>
+                                </span>
                               </div>
+                              <form data-action="set-lead-status"
+                                action="/finance/payment-verification/<%= payment.id %>/set-lead-status" method="POST"
+                                class="finance-action-form flex items-center gap-2">
+                                <div class="relative">
+                                  <select name="lead_status" class="status-select min-w-[100px]">
+                                    <option value="">-- pilih aksi --</option>
+                                    <% if ((payment.lead_status || '' ).toUpperCase()==='DP' ) { %>
+                                      <option value="DP" disabled>DP (sudah DP)</option>
+                                      <% } else { %>
+                                        <option value="DP">DP</option>
+                                        <% } %>
+                                          <option value="LUNAS">LUNAS</option>
+                                  </select>
+                                </div>
+                                <button type="submit" class="btn-success text-[8px] px-3 py-1.5"
+                                  data-confirm="Simpan perubahan status?">
+                                  <i class="fas fa-check-circle mr-1"></i>
+                                  Simpan
+                                </button>
+                              </form>
+                              <form data-action="reject" action="/finance/payment-verification/<%= payment.id %>/reject"
+                                method="POST" class="finance-action-form">
+                                <button type="submit" class="btn-danger text-[8px] px-3 py-1.5 w-full"
+                                  data-confirm="Tolak pembayaran ini?">
+                                  <i class="fas fa-times-circle mr-1"></i>
+                                  Reject
+                                </button>
+                              </form>
                             </div>
                           </td>
                         </tr>
@@ -259,138 +924,199 @@
             </div>
 
             <!-- Table Footer -->
-            <div class="px-6 py-4 bg-green-50 border-t border-green-100 rounded-b-2xl">
-              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 text-sm">
-                <div class="text-green-700 font-medium">
-                  Total menunggu verifikasi: <span class="font-semibold text-green-700">
-                    <%= pendingPayments ? pendingPayments.length : 0 %>
-                  </span> pembayaran
+            <div class="px-5 py-4 bg-white/30 backdrop-blur border-t border-white/30 rounded-b-2xl">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span
+                    class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                    Total menunggu verifikasi: <span class="font-extrabold">
+                      <%= pendingPayments ? pendingPayments.length : 0 %>
+                    </span> pembayaran
+                  </span>
                 </div>
-                <span class="text-gray-600">Terakhir diperbarui: Sekarang</span>
+                <span
+                  class="text-[9px] font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                  <i class="fas fa-clock mr-1"></i>
+                  Terakhir diperbarui: Sekarang
+                </span>
               </div>
+            </div>
+          </div>
+
+          <!-- Pagination Premium -->
+          <div class="mt-8 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span
+                class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                Menampilkan 1 - <%= pendingPayments ? pendingPayments.length : 0 %> dari <%= pendingPayments ?
+                    pendingPayments.length : 0 %> pembayaran
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all disabled:opacity-50"
+                disabled>
+                <i class="fas fa-chevron-left text-xs"></i>
+              </button>
+              <button
+                class="w-8 h-8 rounded-lg gradient-primary text-white flex items-center justify-center text-xs font-bold shadow-lg">1</button>
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">2</button>
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">3</button>
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all">
+                <i class="fas fa-chevron-right text-xs"></i>
+              </button>
             </div>
           </div>
         </div>
       </main>
-  <script>
-    // Apply animation delay values from data-delay attributes (avoids EJS in inline style)
-    document.querySelectorAll('[data-delay]').forEach(function(el){
-      try { el.style.animationDelay = (el.dataset.delay || '0') + 'ms'; } catch(e){}
-    });
 
-    // Intercept finance forms and submit via fetch (keeps same-origin cookies and avoids page redirect issues)
-    document.addEventListener('submit', function(e){
-      const form = e.target;
-      if (!form.classList.contains('finance-action-form')) return; // ignore other forms
-      e.preventDefault();
-
-      const confirmMsg = form.querySelector('[data-confirm]')?.getAttribute('data-confirm');
-      if (confirmMsg && !confirm(confirmMsg)) return;
-
-      const action = form.getAttribute('action');
-      const method = (form.getAttribute('method') || 'POST').toUpperCase();
-      const formData = new URLSearchParams(new FormData(form));
-
-      // disable controls while request is in-flight
-      const controls = form.querySelectorAll('select, button');
-      controls.forEach(c => c.disabled = true);
-      fetch(action, {
-        method,
-        body: formData,
-        credentials: 'same-origin',
-        headers: {
-          'Accept': 'text/html, application/json'
-        }
-      }).then(async res => {
-        controls.forEach(c => c.disabled = false);
-        if (res.ok || res.status === 302) {
-          // reload to reflect new changes
-          window.location.reload();
-        } else {
-          let msg = res.statusText;
+      <script>
+        // Apply animation delay values from data-delay attributes
+        document.querySelectorAll('[data-delay]').forEach(function (el) {
           try {
-            const json = await res.json();
-            msg = json && json.message ? json.message : JSON.stringify(json);
-          } catch (e) {
-            // not json
-            try { msg = await res.text(); } catch (e2) {}
+            const delay = el.getAttribute('data-delay') || '0';
+            el.style.animationDelay = delay + 'ms';
+          } catch (e) { }
+        });
+
+        // Intercept finance forms and submit via fetch
+        document.addEventListener('submit', function (e) {
+          const form = e.target;
+          if (!form.classList.contains('finance-action-form')) return;
+          e.preventDefault();
+
+          const confirmMsg = form.querySelector('[data-confirm]')?.getAttribute('data-confirm');
+          if (confirmMsg && !confirm(confirmMsg)) return;
+
+          const action = form.getAttribute('action');
+          const method = (form.getAttribute('method') || 'POST').toUpperCase();
+          const formData = new URLSearchParams(new FormData(form));
+
+          const controls = form.querySelectorAll('select, button');
+          controls.forEach(c => c.disabled = true);
+
+          fetch(action, {
+            method,
+            body: formData,
+            credentials: 'same-origin',
+            headers: {
+              'Accept': 'text/html, application/json'
+            }
+          }).then(async res => {
+            controls.forEach(c => c.disabled = false);
+            if (res.ok || res.status === 302) {
+              window.location.reload();
+            } else {
+              let msg = res.statusText;
+              try {
+                const json = await res.json();
+                msg = json && json.message ? json.message : JSON.stringify(json);
+              } catch (e) {
+                try { msg = await res.text(); } catch (e2) { }
+              }
+              alert('Gagal menyimpan: ' + (msg || res.statusText));
+              console.error('Save error', res.status, msg);
+            }
+          }).catch(err => {
+            controls.forEach(c => c.disabled = false);
+            console.error(err);
+            alert('Gagal menyimpan: ' + err.message);
+          });
+        });
+
+        // Debug: fetch current user info to assist troubleshooting
+        fetch('/api/whoami', { credentials: 'same-origin' }).then(r => r.json()).then(j => {
+          console.log('whoami:', j);
+          const role = j && j.user && j.user.role;
+
+          // Disable non-finance actions
+          if (role !== 'finance') {
+            document.querySelectorAll('.finance-action-form').forEach(f => {
+              f.querySelectorAll('select, button').forEach(el => el.disabled = true);
+            });
+            const notice = document.createElement('div');
+            notice.className = 'text-[10px] text-red-600 bg-red-50/80 backdrop-blur px-4 py-2 rounded-lg border border-red-200/50 mt-2';
+            notice.textContent = 'Anda tidak memiliki izin mengubah status pada halaman ini. Silakan login sebagai Finance.';
+            const container = document.querySelector('.glass-futuristic .px-5.py-4');
+            if (container) container.insertAdjacentElement('afterend', notice);
           }
-          alert('Gagal menyimpan: ' + (msg || res.statusText));
-          console.error('Save error', res.status, msg);
-        }
-      }).catch(err => {
-        controls.forEach(c => c.disabled = false);
-        console.error(err);
-        alert('Gagal menyimpan: ' + err.message);
-      });
-    });
 
-    // Debug: fetch current user info to assist troubleshooting and disable actions for non-finance
-    fetch('/api/whoami', { credentials: 'same-origin' }).then(r => r.json()).then(j => {
-      console.log('whoami:', j);
-      const role = j && j.user && j.user.role;
-      // Disable non-finance actions
-      if (role !== 'finance') {
-        document.querySelectorAll('.finance-action-form').forEach(f => {
-          f.querySelectorAll('select, button').forEach(el => el.disabled = true);
-        });
-        const notice = document.createElement('div');
-        notice.className = 'text-sm text-red-600 mt-2';
-        notice.textContent = 'Anda tidak memiliki izin mengubah status pada halaman ini. Silakan login sebagai Finance.';
-        const container = document.querySelector('.glass-card .px-6.py-4') || document.querySelector('.glass-card');
-        if (container) container.insertBefore(notice, container.firstChild);
-      }
+          // Set up tabs
+          function updateTabs(active) {
+            document.querySelectorAll('.status-tab').forEach(btn => {
+              if (btn.dataset.status === active) {
+                btn.classList.remove('tab-inactive');
+                btn.classList.add('tab-active');
+              } else {
+                btn.classList.remove('tab-active');
+                btn.classList.add('tab-inactive');
+              }
+            });
 
-      // Set up tabs: show HOT by default
-      function updateTabs(active){
-        document.querySelectorAll('.status-tab').forEach(btn => {
-          const s = btn.dataset.status;
-          btn.classList.toggle('bg-white', s===active);
-          btn.classList.toggle('text-green-800', s!==active);
-          btn.classList.toggle('bg-transparent', s!==active);
-        });
-        // Show/hide rows
-        document.querySelectorAll('#paymentsTableBody tr[data-lead-status]').forEach(tr => {
-          const s = tr.dataset.leadStatus || '';
-          tr.style.display = (s === active) ? '' : 'none';
-        });
-      }
-
-      document.querySelectorAll('.status-tab').forEach(btn => {
-        btn.addEventListener('click', function(){ updateTabs(this.dataset.status); });
-      });
-
-      // initialize counts and default tab
-      const counts = { HOT:0, DP:0 };
-      document.querySelectorAll('#paymentsTableBody tr[data-lead-status]').forEach(tr => {
-        const s = (tr.dataset.leadStatus || '').toUpperCase();
-        if (counts[s] !== undefined) counts[s]++;
-      });
-      Object.keys(counts).forEach(k => {
-        const el = document.querySelector('.badge-count[data-for="'+k+'"]'); if (el) el.textContent = counts[k];
-      });
-      updateTabs('HOT');
-
-      // Polling: when HOT tab active, poll every 10s and reload if result changed
-      let lastIds = Array.from(document.querySelectorAll('#paymentsTableBody tr[data-lead-status]')).map(r => r.dataset.leadStatus + ':' + r.querySelector('.text-sm.font-medium')?.textContent.trim()).join(',');
-      setInterval(async ()=>{
-        const activeTab = document.querySelector('.status-tab.bg-white')?.dataset.status || 'HOT';
-        if (activeTab !== 'HOT') return; // only poll when HOT active
-        try {
-          const res = await fetch('/finance/payment-verification/api', { credentials: 'same-origin' });
-          if (!res.ok) return;
-          const j = await res.json();
-          const ids = (j && j.pendingPayments || []).filter(p=> (p.lead_status||'').toUpperCase()==='HOT').map(p=> 'HOT:'+p.id).join(',');
-          if (ids !== lastIds) {
-            // reload page to reflect new items
-            console.log('pending HOT changed, reloading...');
-            window.location.reload();
+            // Show/hide rows
+            document.querySelectorAll('#paymentsTableBody tr[data-lead-status]').forEach(tr => {
+              const s = tr.dataset.leadStatus || '';
+              tr.style.display = (s === active) ? '' : 'none';
+            });
           }
-        } catch (e) { console.error('poll error', e); }
-      }, 10000);
 
-    }).catch(()=>{});
-  </script>
+          document.querySelectorAll('.status-tab').forEach(btn => {
+            btn.addEventListener('click', function () { updateTabs(this.dataset.status); });
+          });
+
+          // Initialize counts and default tab
+          const counts = { HOT: 0, DP: 0 };
+          document.querySelectorAll('#paymentsTableBody tr[data-lead-status]').forEach(tr => {
+            const s = (tr.dataset.leadStatus || '').toUpperCase();
+            if (counts[s] !== undefined) counts[s]++;
+          });
+
+          Object.keys(counts).forEach(k => {
+            const el = document.querySelector('.badge-count[data-for="' + k + '"]');
+            if (el) el.textContent = counts[k];
+
+            // Update stats summary
+            if (k === 'HOT') document.getElementById('hotCount').textContent = counts[k];
+            if (k === 'DP') document.getElementById('dpCount').textContent = counts[k];
+          });
+
+          // Count LUNAS
+          let lunasCount = 0;
+          document.querySelectorAll('#paymentsTableBody tr[data-lead-status]').forEach(tr => {
+            const s = (tr.dataset.leadStatus || '').toUpperCase();
+            if (s === 'LUNAS') lunasCount++;
+          });
+          document.getElementById('lunasCount').textContent = lunasCount;
+
+          updateTabs('HOT');
+
+          // Polling: when HOT tab active, poll every 10s and reload if result changed
+          let lastIds = Array.from(document.querySelectorAll('#paymentsTableBody tr[data-lead-status]'))
+            .map(r => r.dataset.leadStatus + ':' + r.querySelector('.font-extrabold.text-xs')?.textContent.trim()).join(',');
+
+          setInterval(async () => {
+            const activeTab = document.querySelector('.status-tab.tab-active')?.dataset.status || 'HOT';
+            if (activeTab !== 'HOT') return; // only poll when HOT active
+            try {
+              const res = await fetch('/finance/payment-verification/api', { credentials: 'same-origin' });
+              if (!res.ok) return;
+              const j = await res.json();
+              const ids = (j && j.pendingPayments || [])
+                .filter(p => (p.lead_status || '').toUpperCase() === 'HOT')
+                .map(p => 'HOT:' + p.id)
+                .join(',');
+              if (ids !== lastIds) {
+                console.log('pending HOT changed, reloading...');
+                window.location.reload();
+              }
+            } catch (e) { console.error('poll error', e); }
+          }, 10000);
+
+        }).catch(() => { });
+      </script>
 </body>
 
 </html>

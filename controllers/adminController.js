@@ -73,15 +73,114 @@ const getDashboardStats = async (req, res) => {
       'SELECT COALESCE(SUM(total_amount), 0) as revenue FROM transactions WHERE status = "completed"',
     );
 
-    // Total Paid (from payment_status = 'paid')
-    const [[{ totalPaid }]] = await db.query(
-      `SELECT COALESCE(SUM(total_amount), 0) as totalPaid FROM transactions WHERE payment_status = 'paid'`,
+    // Revenue trend --- last 14 days (we'll split into this week / previous week)
+    const [revenueRows] = await db.query(
+      `SELECT DATE(created_at) as day, COALESCE(SUM(total_amount), 0) as revenue
+       FROM transactions
+       WHERE status = 'completed' AND created_at >= DATE_SUB(CURDATE(), INTERVAL 13 DAY)
+       GROUP BY DATE(created_at)`,
     );
+
+    // Build maps for quick lookup
+    const revenueMap = {};
+    revenueRows.forEach(r => {
+      const key = (r.day instanceof Date) ? r.day.toISOString().slice(0, 10) : r.day;
+      revenueMap[key] = Number(r.revenue);
+    });
+
+    const revenueThisWeek = [];
+    const revenueLastWeek = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      revenueThisWeek.push(revenueMap[key] || 0);
+    }
+    for (let i = 13; i >= 7; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      revenueLastWeek.push(revenueMap[key] || 0);
+    }
+
+    // Traffic sources (heuristic using available tables over last 30 days)
+    const [directCount] = await db.query(
+      `SELECT COUNT(*) as cnt FROM transactions WHERE (affiliate_id IS NULL OR affiliate_id = 0) AND created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
+    );
+
+    const [referralCount] = await db.query(
+      `SELECT COUNT(*) as cnt FROM transactions WHERE (affiliate_id IS NOT NULL AND affiliate_id != 0) AND created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
+    );
+
+    const [clicksSum] = await db.query(
+      `SELECT COALESCE(SUM(clicks),0) as clicks FROM affiliate_links WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
+    );
+
+    const [emailSignups] = await db.query(
+      `SELECT COUNT(*) as cnt FROM customers WHERE email IS NOT NULL AND email <> '' AND created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
+    );
+
+    const trafficSources = {
+      direct: Number(directCount[0].cnt) || 0,
+      social: Number(clicksSum[0].clicks) || 0,
+      email: Number(emailSignups[0].cnt) || 0,
+      referral: Number(referralCount[0].cnt) || 0,
+    };
 
     // Pending Payouts
     const [pendingPayouts] = await db.query(
       'SELECT COUNT(*) as count FROM payouts WHERE status = "pending"',
     );
+
+    // Top affiliates by total approved/paid commissions (last 90 days)
+    const [topAffiliatesRows] = await db.query(
+      `SELECT u.id, u.name, COALESCE(SUM(c.amount),0) as total_commission
+       FROM commissions c
+       LEFT JOIN users u ON c.affiliate_id = u.id
+       WHERE c.commission_status IN ('approved','paid')
+         AND c.created_at >= DATE_SUB(CURDATE(), INTERVAL 90 DAY)
+       GROUP BY u.id, u.name
+       ORDER BY total_commission DESC
+       LIMIT 3`,
+    );
+
+    const topAffiliates = topAffiliatesRows.map(r => ({
+      id: r.id,
+      name: r.name || '—',
+      total: Number(r.total_commission || 0),
+    }));
+
+    // Popular events (by transactions in last 30 days)
+    const [popularEventsRows] = await db.query(
+      `SELECT e.id, e.title, COUNT(t.id) as tx_count
+       FROM events e
+       LEFT JOIN transactions t ON t.event_id = e.id AND t.created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+       GROUP BY e.id, e.title
+       ORDER BY tx_count DESC
+       LIMIT 3`,
+    );
+
+    const popularEvents = popularEventsRows.map(r => ({
+      id: r.id,
+      title: r.title,
+      count: Number(r.tx_count || 0),
+    }));
+
+    // System health (simple heuristics)
+    // activeSessions := distinct users appearing in activity_logs in last 30 minutes
+    const [activeSessionsRows] = await db.query(
+      `SELECT COUNT(DISTINCT user_id_val) as cnt FROM (
+         SELECT approved_by as user_id_val, created_at FROM activity_logs WHERE approved_by IS NOT NULL AND created_at >= DATE_SUB(NOW(), INTERVAL 30 MINUTE)
+         UNION ALL
+         SELECT target_user_id as user_id_val, created_at FROM activity_logs WHERE target_user_id IS NOT NULL AND created_at >= DATE_SUB(NOW(), INTERVAL 30 MINUTE)
+       ) t`,
+    );
+
+    const systemHealth = {
+      serverResponseMs: 98, // static estimate (ms)
+      uptimePct: '99.9%',
+      activeSessions: Number(activeSessionsRows[0]?.cnt || 0),
+    };
 
     // Recent Transactions
     const [recentTransactions] = await db.query(
@@ -118,11 +217,18 @@ const getDashboardStats = async (req, res) => {
         totalTransactions: totalTransactions[0].count,
         completedTransactions: completedTransactions[0].count,
         totalRevenue: totalRevenue[0].revenue,
-        totalPaid: totalPaid || 0,
         pendingPayouts: pendingPayouts[0].count,
       },
+      // added chart data
+      revenueThisWeek,
+      revenueLastWeek,
+      trafficSources,
       recentTransactions,
       recentActivities,
+      // new dashboard blocks
+      topAffiliates,
+      popularEvents,
+      systemHealth,
     });
   } catch (error) {
     console.error("Get dashboard stats error:", error);
@@ -530,57 +636,23 @@ const getWithdrawalApprovalsPage = async (req, res) => {
   }
 };
 
-// Get pending withdrawals for approval (supports status filter: pending/approved/rejected/paid)
+// Get pending withdrawals for approval
 const getPendingWithdrawalsForApproval = async (req, res) => {
   try {
     const status = req.query.status || "pending";
 
-    // Use an enriched query similar to financeController to include submitter/approver names
-    let query = `
-      SELECT
-        p.id,
-        p.affiliate_id,
-        u.name as affiliate_name,
-        u.email as affiliate_email,
-        p.total_amount,
-        p.status,
-        u.bank_name AS bank_name,
-        u.bank_account_number AS bank_account_number,
-        u.bank_account_name AS bank_account_name,
-        COUNT(DISTINCT pd.commission_id) as commission_count,
-        p.created_at,
-        p.paid_at,
-        p.finance_note,
-        p.admin_note,
-        p.submitted_by,
-        p.submitted_at,
-        p.admin_approved_by,
-        p.admin_approved_at,
-        su.name AS submitted_by_name,
-        au.name AS admin_approved_name
-      FROM payouts p
-      JOIN users u ON p.affiliate_id = u.id
-      LEFT JOIN users su ON p.submitted_by = su.id
-      LEFT JOIN users au ON p.admin_approved_by = au.id
-      LEFT JOIN payout_details pd ON p.id = pd.payout_id
-      WHERE 1=1
-    `;
-
-    const params = [];
-    if (status && status !== "all") {
-      // If requesting approved, include both 'approved' and 'paid' so already-paid items also appear
-      if (status === "approved") {
-        query += ` AND p.status IN (?, ?)`;
-        params.push("approved", "paid");
-      } else {
-        query += ` AND p.status = ?`;
-        params.push(status);
-      }
-    }
-
-    query += ` GROUP BY p.id ORDER BY p.created_at DESC`;
-
-    const [withdrawals] = await db.query(query, params);
+    // Query untuk get withdrawals berdasarkan status
+    const [withdrawals] = await db.query(
+      `SELECT p.id, p.affiliate_id, u.name as affiliate_name, u.email as affiliate_email,
+              p.total_amount, p.status, p.created_at, COUNT(pd.commission_id) as commission_count
+       FROM payouts p
+       JOIN users u ON p.affiliate_id = u.id
+       LEFT JOIN payout_details pd ON p.id = pd.payout_id
+       WHERE p.status = ?
+       GROUP BY p.id
+       ORDER BY p.created_at DESC`,
+      [status],
+    );
 
     res.json({
       success: true,
@@ -608,13 +680,9 @@ const getWithdrawalDetailForApproval = async (req, res) => {
               u.email as affiliate_email,
               u.bank_name,
               u.bank_account_number,
-              u.bank_account_name,
-              su.name as submitted_by_name,
-              au.name as admin_approved_name
+              u.bank_account_name
        FROM payouts p
        JOIN users u ON p.affiliate_id = u.id
-       LEFT JOIN users su ON p.submitted_by = su.id
-       LEFT JOIN users au ON p.admin_approved_by = au.id
        WHERE p.id = ?`,
       [payoutId],
     );
@@ -643,22 +711,12 @@ const getWithdrawalDetailForApproval = async (req, res) => {
       [payoutId],
     );
 
-    // Get payment proof if exists
-    const [proofRows] = await db.query(
-      `SELECT proof_file FROM payment_proofs WHERE payout_id = ? AND proof_type = 'payout_transfer' LIMIT 1`,
-      [payoutId],
-    );
-
-    const proof_file =
-      proofRows && proofRows.length > 0 ? proofRows[0].proof_file : null;
-
     res.json({
       success: true,
       data: {
         ...payout,
         commission_count: commissions.length,
         commissions: commissions,
-        proof_file: proof_file,
       },
     });
   } catch (error) {

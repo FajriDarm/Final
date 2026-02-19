@@ -6,197 +6,642 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | Affillink</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-        @keyframes notif-progress {
-          0% { width: 0%; }
-          100% { width: 100%; }
-        }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
 
-        .animate-notif-progress {
-          width: 0%;
-          animation: notif-progress 1.2s linear forwards;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.08rem; /* default 16px x 1.08 = 17.3px */
+      background: radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 0%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        linear-gradient(145deg, #f0fdf4 0%, #ecfdf5 50%, #e6f7ec 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .gradient-bg {
-      background: linear-gradient(135deg, #1E3A5F 0%, #4CAF50 100%);
+    /* Premium Glassmorphism */
+    .glass-premium {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 35px -10px rgba(0, 100, 0, 0.05),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
     }
 
-    .glass-effect {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      animation: fadeInUp 1s cubic-bezier(0.23, 1, 0.32, 1);
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+        0 0 15px rgba(16, 185, 129, 0.05);
     }
 
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(40px) scale(0.98);
-      }
+    /* Premium Gradients */
+    .gradient-primary {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
+    }
 
+    .gradient-secondary {
+      background: linear-gradient(165deg, #047857 0%, #059669 50%, #10b981 100%);
+    }
+
+    .gradient-accent {
+      background: linear-gradient(165deg, #065f46 0%, #047857 50%, #059669 100%);
+    }
+
+    .gradient-warning {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+    }
+
+    .gradient-info {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+    }
+
+    .gradient-danger {
+      background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+    }
+
+    /* Card Effects */
+    .card-luxury {
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .card-luxury:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 30px 45px -15px rgba(16, 185, 129, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    }
+
+    /* Pulse Animation */
+    .pulse-premium {
+      animation: pulsePremium 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulsePremium {
+
+      0%,
       100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.2),
+          0 0 0 0 rgba(16, 185, 129, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 0 0 15px rgba(16, 185, 129, 0),
+          0 0 0 30px rgba(16, 185, 129, 0);
       }
     }
 
-    .input-focus:focus {
-      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-      border-color: #4CAF50;
+    /* Floating Animation */
+    .float-slow {
+      animation: float 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-      animation: bounceIn 0.8s 0.2s both;
-    }
+    @keyframes float {
 
-    @keyframes bounceIn {
-      0% {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-
-      60% {
-        opacity: 1;
-        transform: scale(1.05);
-      }
-
-      80% {
-        transform: scale(0.97);
-      }
-
+      0%,
       100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Shimmer Effect */
+    .shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent);
+      animation: shimmer 5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% {
+        left: 200%;
+      }
+    }
+
+    /* Grid Background */
+    .bg-grid-premium {
+      background-image: linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Neomorphism */
+    .neomorph {
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 20px 20px 40px rgba(16, 185, 129, 0.05),
+        -20px -20px 40px rgba(255, 255, 255, 0.8),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.8),
+        inset -1px -1px 2px rgba(16, 185, 129, 0.05);
+    }
+
+    /* Animations */
+    .animate-slide-in {
+      animation: slideIn 0.6s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .animate-scale-in {
+      animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
         transform: scale(1);
       }
     }
 
+    .fade-in {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .slide-up {
+      animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+
+    /* Ultra Modern Glassmorphism */
+    .glass-futuristic {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    }
+
+    /* Gradient Orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+      opacity: 0.4;
+      animation: float-orb 10s ease-in-out infinite;
+    }
+
+    @keyframes float-orb {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      25% {
+        transform: translate(10px, -15px) scale(1.1);
+      }
+
+      50% {
+        transform: translate(-5px, -20px) scale(0.9);
+      }
+
+      75% {
+        transform: translate(-15px, 5px) scale(1.05);
+      }
+    }
+
+    /* Card Futuristic */
+    .card-futuristic {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-futuristic::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.7s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card-futuristic:hover::before {
+      left: 100%;
+    }
+
+    .card-futuristic:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 30px 60px -15px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Border Gradient */
+    .border-gradient {
+      border: double 1px transparent;
+      background-image: linear-gradient(white, white),
+        linear-gradient(135deg, #059669, #10b981, #34d399);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+
+    /* Pulse Glow */
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        filter: blur(60px);
+      }
+
+      50% {
+        opacity: 0.8;
+        filter: blur(70px);
+      }
+    }
+
+    .animate-pulse-glow {
+      animation: pulse-glow 4s ease-in-out infinite;
+    }
+
+    /* Rotate Slow */
+    @keyframes rotate-slow {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .animate-rotate-slow {
+      animation: rotate-slow 20s linear infinite;
+    }
+
+    /* Hover Lift */
+    .hover-lift {
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Input Focus Effects */
+    .input-container:focus-within .input-icon {
+      color: #10b981;
+      transform: translateY(-1px);
+    }
+
+    .input-container:focus-within input {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+      transform: translateY(-1px);
+    }
+
+    /* Modern focus animation */
+    .input-container input:focus {
+      transition: box-shadow 0.3s cubic-bezier(0.4,0,0.2,1), border-color 0.3s, transform 0.2s;
+      box-shadow: 0 0 0 4px rgba(16,185,129,0.18), 0 2px 8px rgba(16,185,129,0.08);
+      border-color: #10b981;
+      outline: none;
+    }
+
+    /* Shake animation for error */
+    .shake {
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes shake {
+      10%, 90% { transform: translateX(-2px); }
+      20%, 80% { transform: translateX(4px); }
+      30%, 50%, 70% { transform: translateX(-8px); }
+      40%, 60% { transform: translateX(8px); }
+    }
+
+    /* Button shimmer when loading */
+    .btn-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shimmer::after {
+      content: '';
+      position: absolute;
+      left: -60%;
+      top: 0;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer-btn 1.2s linear infinite;
+      z-index: 1;
+    }
+    @keyframes shimmer-btn {
+      100% { left: 120%; }
+    }
+
+    /* Button hover modern */
+    .btn-primary {
+      transition: all 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s;
+    }
     .btn-primary:hover {
-      transform: translateY(-2px) scale(1.04) rotate(-1deg);
-      box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+      transform: scale(1.035) translateY(-2px);
+      box-shadow: 0 18px 32px -8px rgba(16,185,129,0.18);
+    }
+
+    /* Animate form in (fade+slide) */
+    .animate-form-in {
+      animation: formIn 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+    @keyframes formIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Notification Progress */
+    @keyframes notif-progress {
+      0% {
+        width: 0%;
+      }
+
+      100% {
+        width: 100%;
+      }
+    }
+
+    .animate-notif-progress {
+      width: 0%;
+      animation: notif-progress 1.2s linear forwards;
+    }
+
+    /* Button Styles */
+    .btn-primary {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 15px 25px -5px rgba(16, 185, 129, 0.5);
     }
 
     .btn-primary:active {
-      transform: translateY(0) scale(0.98);
-    }
-
-    .eye-icon {
-      cursor: pointer;
-      color: #999;
-    }
-
-    .eye-icon:hover {
-      color: #4CAF50;
+      transform: translateY(0);
     }
   </style>
 </head>
 
-<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
-  <!-- Notification Modal -->
-  <div id="notif-modal" class="fixed top-6 right-6 z-50 min-w-[260px] max-w-xs bg-green-100 border-l-4 border-green-500 shadow-lg rounded-lg flex items-center px-5 py-3 text-green-800 text-sm font-medium transition-all duration-500 opacity-0 pointer-events-none" style="box-shadow: 0 2px 12px rgba(76,175,80,0.15);">
-    <svg class="animate-spin mr-2 h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-    <span id="notif-text">Mengalihkan ke halaman dashboard...</span>
-    <div class="absolute left-0 bottom-0 w-full h-1 overflow-hidden">
-      <div id="notif-progress" class="h-full bg-green-500 animate-notif-progress"></div>
+<body class="bg-grid-premium relative overflow-x-hidden">
+  <!-- Ultra Modern Decorative Orbs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="orb w-[500px] h-[500px] bg-emerald-400 top-[-100px] left-[-100px] animate-pulse-glow"></div>
+    <div
+      class="orb w-[600px] h-[600px] bg-green-400 bottom-[-200px] right-[-200px] animate-pulse-glow animation-delay-2000">
+    </div>
+    <div
+      class="orb w-[400px] h-[400px] bg-teal-400 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-glow animation-delay-4000">
+    </div>
+
+    <!-- Animated Grid Lines -->
+    <svg class="absolute top-0 left-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#10b981" stroke-width="0.5" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+
+    <!-- Floating Particles -->
+    <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-30"></div>
+    <div
+      class="absolute top-3/4 right-1/3 w-3 h-3 bg-green-400 rounded-full animate-ping opacity-30 animation-delay-2000">
+    </div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-1.5 h-1.5 bg-teal-400 rounded-full animate-ping opacity-30 animation-delay-4000">
     </div>
   </div>
-  <div class="w-full max-w-md">
-    <!-- Card -->
-    <div class="glass-effect rounded-2xl shadow-2xl p-8 md:p-10">
+
+  <!-- Notification Modal Premium -->
+  <div id="notif-modal"
+    class="fixed top-6 right-6 z-50 min-w-[280px] max-w-sm transition-all duration-500 opacity-0 pointer-events-none">
+    <div class="glass-futuristic rounded-xl p-4 border-l-4 border-green-500 border border-white/50 shadow-2xl">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+            </path>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="font-extrabold text-gray-900 text-sm">Proses Login</p>
+          <p id="notif-text" class="text-xs text-gray-600 mt-0.5">Mengalihkan ke dashboard...</p>
+        </div>
+      </div>
+      <div class="mt-2 w-full bg-white/30 rounded-full h-1 overflow-hidden">
+        <div id="notif-progress"
+          class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full animate-notif-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative z-10 w-full max-w-md px-4">
+  <!-- Card Premium -->
+  <div class="glass-futuristic rounded-2xl p-8 md:p-10 border border-white/50 hover-lift animate-form-in" id="loginCard">
       <!-- Logo & Header -->
       <div class="text-center mb-8">
-        <div class="flex justify-center mb-1">
+        <div class="flex justify-center mb-4">
           <img src="/images/logoAffilllink2.png" alt="Affillink Logo" class="w-52 h-auto object-contain">
         </div>
-        <p class="text-gray-600 text-sm">Welcome Back!</p>
-        <p class="text-gray-500 text-xs">Please log in to your account</p>
+        <!-- Logo image removed as requested -->
+        <!-- Affillink text removed as requested -->
+        <p class="text-base text-emerald-700 font-semibold">Welcome Back!</p>
+        <p class="text-sm text-gray-500 mt-1">Please log in to your account</p>
       </div>
 
-      <!-- Error/Success Messages -->
+      <!-- Error/Success Messages Premium -->
       <% if (typeof error !=='undefined' ) { %>
-        <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-sm animate-pulse">
-          <%= error %>
+        <div class="mb-6 glass-futuristic rounded-xl p-4 border-l-4 border-red-500 fade-in shake" id="errorBox">
+          <div class="flex items-start gap-3">
+            <div
+              class="w-8 h-8 bg-gradient-to-r from-red-600 to-rose-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-exclamation-circle text-white text-sm"></i>
+            </div>
+            <div class="flex-1">
+              <p class="font-extrabold text-gray-900 text-xs">Error</p>
+              <p class="text-[10px] text-gray-600 mt-0.5">
+                <%= error %>
+              </p>
+            </div>
+          </div>
         </div>
         <% } %>
 
           <% if (typeof registered !=='undefined' && registered) { %>
-            <div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg text-sm">
-              Registration successful. Please log in with your new account.
+            <div class="mb-6 glass-futuristic rounded-xl p-4 border-l-4 border-green-500 fade-in">
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-8 h-8 bg-gradient-to-r from-green-600 to-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-check-circle text-white text-sm"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="font-extrabold text-gray-900 text-xs">Success</p>
+                  <p class="text-[10px] text-gray-600 mt-0.5">Registration successful. Please log in with your new
+                    account.</p>
+                </div>
+              </div>
             </div>
             <% } %>
 
               <!-- Form -->
               <form id="loginForm" action="/api/auth/login" method="POST" class="space-y-5">
-              
-
                 <!-- Email Input -->
                 <div>
-                  <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                  <label for="email" class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                    <i class="fas fa-envelope text-emerald-600 text-xs mr-1"></i>
                     Email Address
                   </label>
-                  <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                        </path>
-                      </svg>
+                  <div class="input-container relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="fas fa-envelope text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
                     </div>
                     <input type="email" id="email" name="email" placeholder="your@email.com"
-                      class="input-focus w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg transition focus:outline-none"
+                      class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
                       required value="<%= typeof email !== 'undefined' ? email : '' %>">
                   </div>
-                  <span class="error-email text-red-500 text-sm mt-1 hidden"></span>
+                  <span class="error-email text-red-500 text-[10px] mt-1 hidden flex items-center gap-1">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span></span>
+                  </span>
                 </div>
 
                 <!-- Password Input -->
                 <div>
-                  <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                  <label for="password"
+                    class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                    <i class="fas fa-lock text-emerald-600 text-xs mr-1"></i>
                     Password
                   </label>
-                  <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                        </path>
-                      </svg>
+                  <div class="input-container relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="fas fa-lock text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
                     </div>
                     <input type="password" id="password" name="password" placeholder="••••••••"
-                      class="input-focus w-full pl-12 pr-12 py-3 border-2 border-gray-200 rounded-lg transition focus:outline-none"
+                      class="block w-full pl-9 pr-10 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
                       required minlength="8">
-                    <button type="button" class="eye-icon absolute inset-y-0 right-0 pr-4 flex items-center"
+                    <button type="button"
+                      class="absolute inset-y-0 right-0 pr-3 flex items-center text-emerald-400 hover:text-emerald-600 transition-colors"
                       onclick="togglePassword()">
-                      <svg class="toggle-eye-icon w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                          d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm4-4H7V4h12v14z" />
-                      </svg>
+                      <i class="toggle-eye-icon fas fa-eye"></i>
                     </button>
                   </div>
-                  <span class="error-password text-red-500 text-sm mt-1 hidden"></span>
+                  <span class="error-password text-red-500 text-[10px] mt-1 hidden flex items-center gap-1">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span></span>
+                  </span>
                 </div>
 
                 <!-- Remember Me & Forgot Password -->
                 <div class="flex items-center justify-between">
                   <label class="flex items-center cursor-pointer group">
-                    <input type="checkbox" name="remember" class="w-4 h-4 rounded border-gray-300 accent-green-500">
-                    <span class="ml-2 text-sm text-gray-700 group-hover:text-gray-900">Remember me</span>
+                    <input type="checkbox" name="remember" class="w-4 h-4 rounded border-gray-300 accent-emerald-500">
+                      <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-900">Remember
+                        me</span>
                   </label>
-                  <a href="/forgot-password" class="text-sm text-gray-600 hover:text-green-600 transition font-medium">
+                  <a href="/forgot-password"
+                    class="text-sm font-bold text-emerald-700 hover:text-emerald-800 transition flex items-center gap-1">
+                    <i class="fas fa-key"></i>
                     Forgot password?
                   </a>
                 </div>
 
                 <!-- Submit Button -->
                 <button type="submit" id="loginBtn"
-                  class="btn-primary w-full py-3 rounded-lg text-white font-semibold text-lg mt-6 transition flex items-center justify-center">
+                  class="btn-primary w-full py-3.5 rounded-xl font-extrabold text-base mt-6 transition flex items-center justify-center gap-2">
                   <span id="btnText">Log In</span>
-                  <svg id="loadingSpinner" class="hidden w-5 h-5 ml-2 text-white animate-spin"
+                  <svg id="loadingSpinner" class="hidden w-4 h-4 text-white animate-spin"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor"
@@ -207,16 +652,18 @@
               </form>
 
               <!-- Sign Up Link -->
-              <p class="text-center text-gray-600 text-sm mt-6">
+              <p class="text-center text-sm text-gray-600 mt-6">
                 Don't have an account?
-                <a href="/register" class="text-green-600 hover:text-green-700 font-semibold transition">
+                <a href="/register"
+                  class="font-extrabold text-emerald-700 hover:text-emerald-800 transition inline-flex items-center gap-1">
                   Sign Up
+                  <i class="fas fa-arrow-right text-xs"></i>
                 </a>
               </p>
     </div>
 
     <!-- Footer -->
-    <p class="text-center text-gray-300 text-xs mt-8">
+    <p class="text-center text-xs text-gray-500 mt-8">
       © <%= new Date().getFullYear() %> Affillink. All rights reserved.
     </p>
   </div>
@@ -228,12 +675,35 @@
 
       if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
-        toggleEyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+        toggleEyeIcon.classList.remove('fa-eye');
+        toggleEyeIcon.classList.add('fa-eye-slash');
       } else {
         passwordInput.type = 'password';
-        toggleEyeIcon.innerHTML = '<path d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm4-4H7V4h12v14z"/>';
+        toggleEyeIcon.classList.remove('fa-eye-slash');
+        toggleEyeIcon.classList.add('fa-eye');
       }
     };
+
+    // Show notification modal function
+    function showNotifModal(message) {
+      const modal = document.getElementById('notif-modal');
+      const text = document.getElementById('notif-text');
+      const progress = document.getElementById('notif-progress');
+
+      text.textContent = message;
+      modal.style.opacity = '1';
+      modal.style.pointerEvents = 'auto';
+
+      // Reset progress bar animation
+      progress.classList.remove('animate-notif-progress');
+      void progress.offsetWidth; // force reflow
+      progress.classList.add('animate-notif-progress');
+
+      setTimeout(() => {
+        modal.style.opacity = '0';
+        modal.style.pointerEvents = 'none';
+      }, 2000);
+    }
 
     // Handle form submission
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -245,15 +715,20 @@
       const btnText = document.getElementById('btnText');
       const loadingSpinner = document.getElementById('loadingSpinner');
 
+      // Clear previous error messages
+      document.querySelector('.error-email').classList.add('hidden');
+      document.querySelector('.error-password').classList.add('hidden');
+
       // Show loading state
       loginBtn.disabled = true;
       btnText.textContent = 'Logging in...';
       loadingSpinner.classList.remove('hidden');
+      loginBtn.classList.add('btn-shimmer');
 
       try {
         const response = await fetch('/api/auth/login', {
           method: 'POST',
-          credentials: 'include', // needed so browser stores Set-Cookie from server
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': document.querySelector('input[name="_token"]')?.value || '',
@@ -263,71 +738,81 @@
 
         const data = await response.json();
 
-          if (response.ok) {
-          // Store token in localStorage and cookie (so server-side auth middleware can read it)
+        if (response.ok) {
+          // Store token in localStorage and cookie
           localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
-          // set cookie (not HttpOnly) so subsequent full-page requests include token
           document.cookie = 'token=' + encodeURIComponent(data.token) + '; path=/';
 
-          // Redirect berdasarkan role
-          // Show notification modal before redirect
-          showNotifModal('Mengalihkan ke halaman dashboard...');
+          // Show notification before redirect
+          showNotifModal('Mengalihkan ke dashboard...');
+
           setTimeout(() => {
             if (data.user && data.user.role === 'affiliate') {
               window.location.href = '/affiliate/dashboard';
             } else if (data.user && (data.user.role === 'admin' || data.user.role === 'superadmin')) {
-              window.location.href = '/dashboard_admin' ;
+              window.location.href = '/dashboard_admin';
             } else {
               window.location.href = '/dashboard';
             }
           }, 1200);
-            // Show notification modal function
-            function showNotifModal(message) {
-              const modal = document.getElementById('notif-modal');
-              const text = document.getElementById('notif-text');
-              const progress = document.getElementById('notif-progress');
-              text.textContent = message;
-              modal.style.opacity = '1';
-              modal.style.pointerEvents = 'auto';
-              // Reset progress bar animation
-              progress.classList.remove('animate-notif-progress');
-              void progress.offsetWidth; // force reflow
-              progress.classList.add('animate-notif-progress');
-              setTimeout(() => {
-                modal.style.opacity = '0';
-                modal.style.pointerEvents = 'none';
-              }, 2000);
-            }
         } else {
           // Reset button state
           loginBtn.disabled = false;
           btnText.textContent = 'Log In';
           loadingSpinner.classList.add('hidden');
+          loginBtn.classList.remove('btn-shimmer');
 
           // Show error
           if (data.errors) {
             Object.keys(data.errors).forEach(field => {
               const errorElement = document.querySelector(`.error-${field}`);
+              const inputElement = document.getElementById(field);
               if (errorElement) {
-                errorElement.textContent = data.errors[field][0];
+                const errorSpan = errorElement.querySelector('span');
+                if (errorSpan) {
+                  errorSpan.textContent = data.errors[field][0];
+                }
                 errorElement.classList.remove('hidden');
+                // Shake input
+                if (inputElement) {
+                  inputElement.classList.add('shake');
+                  setTimeout(() => inputElement.classList.remove('shake'), 500);
+                }
               }
             });
+            // Shake form
+            document.getElementById('loginForm').classList.add('shake');
+            setTimeout(() => document.getElementById('loginForm').classList.remove('shake'), 500);
           } else if (data.message) {
-            // Show general error
+            // Create error modal
             const errorDiv = document.createElement('div');
-            errorDiv.className = 'mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-sm animate-pulse';
-            errorDiv.textContent = data.message;
+            errorDiv.className = 'mb-6 glass-futuristic rounded-xl p-4 border-l-4 border-red-500 fade-in shake';
+            errorDiv.innerHTML = `
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 bg-gradient-to-r from-red-600 to-rose-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-exclamation-circle text-white text-sm"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="font-extrabold text-gray-900 text-xs">Error</p>
+                  <p class="text-[10px] text-gray-600 mt-0.5">${data.message}</p>
+                </div>
+              </div>
+            `;
 
-            // Insert after messages or before form
+            // Insert after existing error or before form
             const form = document.getElementById('loginForm');
-            const existingError = document.querySelector('.bg-red-100');
+            const existingError = document.querySelector('.mb-6.glass-futuristic.border-l-4.border-red-500');
             if (existingError) {
               existingError.replaceWith(errorDiv);
             } else {
               form.parentNode.insertBefore(errorDiv, form);
             }
+            // Remove shake after animation
+            setTimeout(() => errorDiv.classList.remove('shake'), 500);
+            // Shake form
+            form.classList.add('shake');
+            setTimeout(() => form.classList.remove('shake'), 500);
           }
         }
       } catch (error) {
@@ -337,9 +822,42 @@
         loginBtn.disabled = false;
         btnText.textContent = 'Log In';
         loadingSpinner.classList.add('hidden');
+        loginBtn.classList.remove('btn-shimmer');
 
-        // Show error message
-        alert('Terjadi kesalahan. Silakan coba lagi.');
+        // Show error modal
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'mb-6 glass-futuristic rounded-xl p-4 border-l-4 border-red-500 fade-in shake';
+        errorDiv.innerHTML = `
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 bg-gradient-to-r from-red-600 to-rose-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-exclamation-circle text-white text-sm"></i>
+            </div>
+            <div class="flex-1">
+              <p class="font-extrabold text-gray-900 text-xs">Error</p>
+              <p class="text-[10px] text-gray-600 mt-0.5">Terjadi kesalahan. Silakan coba lagi.</p>
+            </div>
+          </div>
+        `;
+
+        const form = document.getElementById('loginForm');
+        const existingError = document.querySelector('.mb-6.glass-futuristic.border-l-4.border-red-500');
+        if (existingError) {
+          existingError.replaceWith(errorDiv);
+        } else {
+          form.parentNode.insertBefore(errorDiv, form);
+        }
+        // Remove shake after animation
+        setTimeout(() => errorDiv.classList.remove('shake'), 500);
+          // Remove shake class after animation for server-rendered error
+          window.addEventListener('DOMContentLoaded', () => {
+            const errorBox = document.getElementById('errorBox');
+            if (errorBox) {
+              setTimeout(() => errorBox.classList.remove('shake'), 500);
+            }
+          });
+        // Shake form
+        form.classList.add('shake');
+        setTimeout(() => form.classList.remove('shake'), 500);
       }
     });
 
@@ -352,11 +870,11 @@
       document.querySelector('.error-password').classList.add('hidden');
     });
 
-        // Pre-fill email if it exists in the template
-        <% if (typeof email !== 'undefined' && email) { %>
+    // Pre-fill email if it exists in the template
+    <% if (typeof email !== 'undefined' && email) { %>
       document.getElementById('email').value = '<%= email %>';
-        <% } %>
+    <% } %>
   </script>
-</body> 
+</body>
 
 </html>

@@ -8,84 +8,482 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 0%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
+        linear-gradient(145deg, #f0fdf4 0%, #ecfdf5 50%, #e6f7ec 100%);
+    }
+
+    /* Premium Glassmorphism */
+    .glass-premium {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 35px -10px rgba(0, 100, 0, 0.05),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
     }
 
     .glass-card {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+        0 0 15px rgba(16, 185, 129, 0.05);
     }
 
+    /* Premium Gradients */
     .gradient-primary {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
     }
+
     .gradient-secondary {
-      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      background: linear-gradient(165deg, #047857 0%, #059669 50%, #10b981 100%);
     }
+
     .gradient-accent {
-      background: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%);
-    }
-    .gradient-dark {
-      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+      background: linear-gradient(165deg, #065f46 0%, #047857 50%, #059669 100%);
     }
 
-    .card-hover {
-      transition: all 0.3s ease;
+    .gradient-purple {
+      background: linear-gradient(165deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
     }
 
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 25px -5px rgba(5, 150, 105, 0.1), 0 10px 10px -5px rgba(5, 150, 105, 0.04);
+    .gradient-blue {
+      background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
     }
 
-    .status-badge {
-      transition: all 0.2s ease;
+    .gradient-amber {
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
     }
 
-    .status-badge:hover {
-      transform: scale(1.05);
+    .gradient-teal {
+      background: linear-gradient(165deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%);
     }
 
-    .pulse-animation {
-      animation: pulse 2s infinite;
+    /* Card Effects */
+    .card-luxury {
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
-      }
+    .card-luxury:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 30px 45px -15px rgba(16, 185, 129, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    }
 
-      70% {
-        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
-      }
+    /* Badge 3D Effect */
+    .badge-3d {
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05);
+    }
 
+    .badge-3d:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    /* Pulse Animation */
+    .pulse-premium {
+      animation: pulsePremium 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulsePremium {
+
+      0%,
       100% {
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.2),
+          0 0 0 0 rgba(16, 185, 129, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 0 0 15px rgba(16, 185, 129, 0),
+          0 0 0 30px rgba(16, 185, 129, 0);
       }
     }
 
-    .data-cell {
+    /* Custom Scrollbar */
+    .modern-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-track {
+      background: rgba(16, 185, 129, 0.05);
+      border-radius: 10px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-thumb {
+      background: linear-gradient(145deg, #10b981, #059669);
+      border-radius: 10px;
+    }
+
+    .modern-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(145deg, #059669, #047857);
+    }
+
+    /* Floating Animation */
+    .float-slow {
+      animation: float 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Shimmer Effect */
+    .shimmer {
       position: relative;
       overflow: hidden;
     }
 
-    .data-cell::after {
+    .shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent);
+      animation: shimmer 5s infinite;
+    }
+
+    @keyframes shimmer {
+      100% {
+        left: 200%;
+      }
+    }
+
+    /* Glow Text */
+    .glow-text {
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.3),
+        0 0 20px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Grid Background */
+    .bg-grid-premium {
+      background-image: linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Neomorphism */
+    .neomorph {
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 20px 20px 40px rgba(16, 185, 129, 0.05),
+        -20px -20px 40px rgba(255, 255, 255, 0.8),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.8),
+        inset -1px -1px 2px rgba(16, 185, 129, 0.05);
+    }
+
+    /* Data Cell */
+    .data-cell-modern {
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    .data-cell-modern::before {
       content: '';
       position: absolute;
       bottom: 0;
-      left: 0;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981, #059669);
+      transition: all 0.4s ease;
+      transform: translateX(-50%);
+    }
+
+    .data-cell-modern:hover::before {
       width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
+    }
+
+    /* Animations */
+    .animate-slide-in {
+      animation: slideIn 0.6s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .animate-scale-in {
+      animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+
+    /* Ultra Modern Glassmorphism */
+    .glass-futuristic {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    }
+
+    /* Gradient Orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+      opacity: 0.4;
+      animation: float-orb 10s ease-in-out infinite;
+    }
+
+    @keyframes float-orb {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      25% {
+        transform: translate(10px, -15px) scale(1.1);
+      }
+
+      50% {
+        transform: translate(-5px, -20px) scale(0.9);
+      }
+
+      75% {
+        transform: translate(-15px, 5px) scale(1.05);
+      }
+    }
+
+    /* Card Futuristic */
+    .card-futuristic {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-futuristic::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.7s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card-futuristic:hover::before {
+      left: 100%;
+    }
+
+    .card-futuristic:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 30px 60px -15px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Border Gradient */
+    .border-gradient {
+      border: double 1px transparent;
+      background-image: linear-gradient(white, white), linear-gradient(135deg, white, white, white);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+
+    /* Pulse Glow */
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        filter: blur(60px);
+      }
+
+      50% {
+        opacity: 0.8;
+        filter: blur(70px);
+      }
+    }
+
+    .animate-pulse-glow {
+      animation: pulse-glow 4s ease-in-out infinite;
+    }
+
+    /* Rotate Slow */
+    @keyframes rotate-slow {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .animate-rotate-slow {
+      animation: rotate-slow 20s linear infinite;
+    }
+
+    /* Table Row Styles */
+    .table-row {
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(5px);
+    }
+
+    .table-row:hover {
+      background: rgba(255, 255, 255, 0.6);
+      transform: scale(1.01);
+      box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.15);
+    }
+
+    /* Progress Bar Styles */
+    .progress-bar {
+      height: 0.375rem;
+      border-radius: 9999px;
+      overflow: hidden;
+      background: rgba(229, 231, 235, 0.5);
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-bar-fill.high {
+      background: linear-gradient(90deg, #10b981, #059669);
+    }
+
+    .progress-bar-fill.medium {
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+
+    .progress-bar-fill.low {
+      background: linear-gradient(90deg, #ef4444, #dc2626);
+    }
+
+    /* Glitch Effect */
+    .glitch-text {
+      position: relative;
+      animation: glitch 3s infinite;
+    }
+
+    @keyframes glitch {
+
+      0%,
+      100% {
+        transform: translate(0);
+      }
+
+      33% {
+        transform: translate(-2px, 1px);
+      }
+
+      66% {
+        transform: translate(2px, -1px);
+      }
     }
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-emerald-50 to-green-50">
+<body class="bg-grid-premium relative overflow-x-hidden">
+  <!-- Ultra Modern Decorative Orbs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="orb w-[500px] h-[500px] bg-emerald-400 top-[-100px] left-[-100px] animate-pulse-glow"></div>
+    <div
+      class="orb w-[600px] h-[600px] bg-green-400 bottom-[-200px] right-[-200px] animate-pulse-glow animation-delay-2000">
+    </div>
+    <div
+      class="orb w-[400px] h-[400px] bg-teal-400 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-glow animation-delay-4000">
+    </div>
+
+    <!-- Animated Grid Lines -->
+    <svg class="absolute top-0 left-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#10b981" stroke-width="0.5" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+
+    <!-- Floating Particles -->
+    <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full animate-ping opacity-30"></div>
+    <div
+      class="absolute top-3/4 right-1/3 w-3 h-3 bg-green-400 rounded-full animate-ping opacity-30 animation-delay-2000">
+    </div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-1.5 h-1.5 bg-teal-400 rounded-full animate-ping opacity-30 animation-delay-4000">
+    </div>
+  </div>
+
   <!-- Navbar -->
   <%- include('../navbar/navbar.ejs', { name: 'Sales' }) %>
 
@@ -93,291 +491,564 @@
     <%- include('../sidebar/sales.ejs') %>
 
       <!-- Main Content -->
-      <main class="ml-64 pt-16 min-h-screen">
+      <main class="ml-64 pt-16 min-h-screen relative z-10">
         <div class="p-6">
-          <!-- Page Header -->
-          <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
-            <div class="mb-4 md:mb-0">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-user-check text-white text-xl"></i>
+          <!-- Premium Page Header - Sesuai dengan dashboard -->
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
+            <div class="mb-4 lg:mb-0">
+              <div class="flex items-center gap-4">
+                <div class="relative">
+                  <div
+                    class="w-16 h-16 gradient-primary rounded-xl flex items-center justify-center shadow-2xl float-slow">
+                    <i class="fas fa-user-check text-white text-2xl"></i>
+                  </div>
+                  <div
+                    class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <span class="w-2 h-2 bg-green-500 rounded-full pulse-premium"></span>
+                  </div>
                 </div>
                 <div>
-                  <h1 class="text-3xl font-bold text-gray-900">Monitoring Affiliate</h1>
-                  <p class="text-gray-600 mt-1">Analisis dan monitoring performa affiliate sales</p>
+                  <div class="flex items-center gap-2 mb-1">
+                    <h1
+                      class="text-3xl font-extrabold bg-gradient-to-r from-emerald-900 via-green-800 to-emerald-900 bg-clip-text text-transparent">
+                      Monitoring Affiliate
+                    </h1>
+                    <span
+                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                      SALES
+                    </span>
+                  </div>
+                  <p class="text-sm text-emerald-700 font-medium">Analisis dan monitoring performa affiliate sales</p>
                 </div>
               </div>
             </div>
-            <div class="flex items-center gap-4">
-              <div class="hidden md:block px-4 py-2 bg-white rounded-lg shadow-sm border border-green-100">
-                <div class="flex items-center gap-2">
-                  <i class="fas fa-calendar-alt text-green-600"></i>
-                  <span class="text-sm font-medium text-gray-700">
-                    <%= new Date().toLocaleDateString('id-ID', { weekday: 'long' , year: 'numeric' , month: 'long' ,
-                      day: 'numeric' }) %>
-                  </span>
+
+            <!-- Premium Date & Live Status -->
+            <div class="flex items-center gap-3">
+              <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
+                <div class="w-8 h-8 gradient-secondary rounded-lg flex items-center justify-center shadow-lg">
+                  <i class="fas fa-calendar-alt text-white text-sm"></i>
+                </div>
+                <div>
+                  <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                    <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
+                  </p>
                 </div>
               </div>
-              <div class="px-4 py-2 gradient-secondary rounded-lg shadow-lg text-white pulse-animation">
-                <div class="flex items-center gap-2">
-                  <i class="fas fa-user-tie text-white text-lg"></i>
-                  <span class="text-sm font-medium">Total: <%= affiliates.length || 0 %> Affiliate</span>
+
+              <div class="gradient-primary rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-xl relative shimmer">
+                <div class="relative">
+                  <i class="fas fa-bell text-white text-sm"></i>
+                  <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></span>
+                  <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
                 </div>
+                <div>
+                  <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                  <p class="text-xs font-bold text-white">Updates Real-time</p>
+                </div>
+              </div>
+
+              <div
+                class="px-4 py-2.5 gradient-amber rounded-xl text-white shadow-lg flex items-center gap-2 border border-white/30">
+                <i class="fas fa-user-tie"></i>
+                <span class="text-xs font-extrabold">Total: <%= affiliates.length || 0 %> Affiliate</span>
               </div>
             </div>
           </div>
 
-          <!-- Stats Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <!-- Premium Stats Cards - Ultra Modern -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-7 animate-scale-in">
             <!-- Total Affiliates -->
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Total Affiliates</p>
-                  <p class="text-3xl font-bold text-gray-900 mb-2">
-                    <%= affiliates.length || 0 %>
-                  </p>
-                  <div class="flex items-center gap-2">
-                    <span class="text-xs text-gray-500">aktif dalam sistem</span>
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-400/20 to-green-400/20 rounded-full -mr-10 -mt-10 animate-rotate-slow">
+              </div>
+              <div
+                class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-teal-400/20 to-emerald-400/20 rounded-full -ml-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Total Affiliates</p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900">
+                        <%= affiliates.length || 0 %>
+                      </p>
+                      <span class="text-xs font-bold text-emerald-600">affiliates</span>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                    <i class="fas fa-user-tie text-white text-xl"></i>
                   </div>
                 </div>
-                <div class="w-14 h-14 gradient-secondary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-user-tie text-white text-2xl"></i>
+
+                <div class="mt-4 pt-3 border-t border-emerald-100/50">
+                  <div class="flex items-center gap-1.5">
+                    <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                      <i class="fas fa-check-circle text-emerald-600 text-[10px]"></i>
+                    </div>
+                    <div>
+                      <span class="text-[8px] font-medium text-gray-500">Aktif dalam sistem</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             <!-- Total Sales -->
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Total Penjualan</p>
-                  <p class="text-3xl font-bold text-gray-900 mb-2">
-                    Rp <% let totalSales=0; if (affiliates && affiliates.length> 0) {
-                      affiliates.forEach(a => {
-                      totalSales += parseFloat(a.total_penjualan) || 0;
-                      });
-                      }
-                      %>
-                      <%= totalSales.toLocaleString('id-ID') %>
-                  </p>
-                  <div class="flex items-center gap-2">
-                    <span class="text-xs text-gray-500">nilai total penjualan</span>
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-emerald-400/20 to-green-400/20 rounded-full -ml-10 -mt-10 animate-rotate-slow">
+              </div>
+              <div
+                class="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tr from-teal-400/20 to-emerald-400/20 rounded-full -mr-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Total Penjualan</p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900">
+                        Rp <% let totalSales=0; if (affiliates && affiliates.length> 0) {
+                          affiliates.forEach(a => {
+                          totalSales += parseFloat(a.total_penjualan) || 0;
+                          });
+                          }
+                          %>
+                          <%= totalSales.toLocaleString('id-ID') %>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500">
+                    <i class="fas fa-money-bill-wave text-white text-xl"></i>
                   </div>
                 </div>
-                <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-money-bill-wave text-white text-2xl"></i>
+
+                <div class="mt-4 pt-3 border-t border-emerald-100/50">
+                  <div class="flex items-center gap-1.5">
+                    <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                      <i class="fas fa-chart-line text-emerald-600 text-[10px]"></i>
+                    </div>
+                    <div>
+                      <span class="text-[8px] font-medium text-gray-500">Nilai total penjualan</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             <!-- Avg. Success Rate -->
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Avg. Success Rate</p>
-                  <p class="text-3xl font-bold text-gray-900 mb-2">
-                    <% let totalSuccessRate=0; let affiliateCount=0; if (affiliates && affiliates.length> 0) {
-                      affiliates.forEach(a => {
-                      if (a.total_transaksi > 0) {
-                      const successRate = (a.transaksi_selesai / a.total_transaksi) * 100;
-                      totalSuccessRate += successRate;
-                      affiliateCount++;
-                      }
-                      });
-                      const avgSuccessRate = affiliateCount > 0 ? totalSuccessRate / affiliateCount : 0;
-                      %>
-                      <%= avgSuccessRate.toFixed(1) %>%
-                        <% } else { %>
-                          0%
-                          <% } %>
-                  </p>
-                  <div class="flex items-center gap-2">
-                    <span class="text-xs text-gray-500">rata-rata keberhasilan</span>
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-indigo-400/20 rounded-full -mr-10 -mt-10 animate-rotate-slow">
+              </div>
+              <div
+                class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-indigo-400/20 to-purple-400/20 rounded-full -ml-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Avg. Success Rate</p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900">
+                        <% let totalSuccessRate=0; let affiliateCount=0; if (affiliates && affiliates.length> 0) {
+                          affiliates.forEach(a => {
+                          if (a.total_transaksi > 0) {
+                          const successRate = (a.transaksi_selesai / a.total_transaksi) * 100;
+                          totalSuccessRate += successRate;
+                          affiliateCount++;
+                          }
+                          });
+                          const avgSuccessRate = affiliateCount > 0 ? totalSuccessRate / affiliateCount : 0;
+                          %>
+                          <%= avgSuccessRate.toFixed(1) %>%
+                            <% } else { %>
+                              0%
+                              <% } %>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+                    <i class="fas fa-chart-pie text-white text-xl"></i>
                   </div>
                 </div>
-                <div class="w-14 h-14 gradient-secondary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-chart-line text-white text-2xl"></i>
+
+                <div class="mt-4 pt-3 border-t border-emerald-100/50">
+                  <div class="flex items-center gap-1.5">
+                    <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                      <i class="fas fa-check-circle text-emerald-600 text-[10px]"></i>
+                    </div>
+                    <div>
+                      <span class="text-[8px] font-medium text-gray-500">Rata-rata keberhasilan</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             <!-- Avg. Sales per Affiliate -->
-            <div class="glass-card rounded-2xl shadow-lg p-6 border border-green-100 card-hover">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-gray-600 text-sm font-medium mb-1">Avg. Sales/Affiliate</p>
-                  <p class="text-3xl font-bold text-gray-900 mb-2">
-                    Rp <% let totalAllSales=0; if (affiliates && affiliates.length> 0) {
-                      affiliates.forEach(a => {
-                      totalAllSales += parseFloat(a.total_penjualan) || 0;
-                      });
-                      const avgSales = totalAllSales / affiliates.length;
-                      %>
-                      <%= avgSales.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                        <% } else { %>
-                          0
-                          <% } %>
-                  </p>
-                  <div class="flex items-center gap-2">
-                    <span class="text-xs text-gray-500">penjualan rata-rata</span>
+            <div
+              class="glass-futuristic rounded-2xl p-5 card-futuristic group relative overflow-hidden border-gradient">
+              <div
+                class="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-amber-400/20 to-orange-400/20 rounded-full -ml-10 -mt-10 animate-rotate-slow">
+              </div>
+              <div
+                class="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tr from-orange-400/20 to-amber-400/20 rounded-full -mr-8 -mb-8 animate-rotate-slow animation-delay-2000">
+              </div>
+
+              <div class="relative z-10">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="relative flex h-2 w-2">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                      </span>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Avg. Sales/Affiliate
+                      </p>
+                    </div>
+
+                    <div class="flex items-baseline gap-1">
+                      <p class="text-4xl font-black text-gray-900">
+                        Rp <% let totalAllSales=0; if (affiliates && affiliates.length> 0) {
+                          affiliates.forEach(a => {
+                          totalAllSales += parseFloat(a.total_penjualan) || 0;
+                          });
+                          const avgSales = totalAllSales / affiliates.length;
+                          %>
+                          <%= avgSales.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                            %>
+                            <% } else { %>
+                              0
+                              <% } %>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:-rotate-6 transition-all duration-500">
+                    <i class="fas fa-calculator text-white text-xl"></i>
                   </div>
                 </div>
-                <div class="w-14 h-14 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-                  <i class="fas fa-user-tie text-white text-2xl"></i>
+
+                <div class="mt-4 pt-3 border-t border-emerald-100/50">
+                  <div class="flex items-center gap-1.5">
+                    <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                      <i class="fas fa-user-tie text-emerald-600 text-[10px]"></i>
+                    </div>
+                    <div>
+                      <span class="text-[8px] font-medium text-gray-500">Penjualan rata-rata</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Affiliate Monitoring Table -->
-          <div class="glass-card rounded-2xl shadow-lg border border-green-100 overflow-hidden">
-            <div class="px-6 py-4 gradient-primary">
-              <div class="flex items-center justify-between">
-                <div>
-                  <h2 class="text-lg font-semibold text-white">Monitoring Performa Affiliate</h2>
-                  <p class="text-green-100 text-sm mt-1">Analisis detail performa setiap affiliate</p>
+          <!-- Search and Filter Section -->
+          <div class="glass-futuristic rounded-2xl p-4 border border-white/50 mb-6 relative overflow-hidden group">
+            <div
+              class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-200/20 to-green-300/20 rounded-full blur-3xl -mr-20 -mt-20">
+            </div>
+            <div
+              class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-teal-200/20 to-emerald-200/20 rounded-full blur-3xl -ml-20 -mb-20">
+            </div>
+
+            <div class="relative z-10">
+              <div class="flex flex-col md:flex-row md:items-center gap-3">
+                <div class="relative flex-1">
+                  <i
+                    class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400 text-sm"></i>
+                  <input type="text" id="searchInput" placeholder="Cari affiliate berdasarkan nama atau email..."
+                    class="w-full pl-10 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 placeholder-gray-400 text-xs font-medium" />
                 </div>
-                <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                  <i class="fas fa-chart-bar text-white"></i>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-medium text-emerald-700">Urutkan:</span>
+                  <select id="sortSelect"
+                    class="px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
+                    <option value="name">Nama</option>
+                    <option value="total">Total Transaksi</option>
+                    <option value="completed">Transaksi Selesai</option>
+                    <option value="sales">Total Penjualan</option>
+                    <option value="rate">Success Rate</option>
+                  </select>
+                  <button id="sortDirectionBtn"
+                    class="w-10 h-10 bg-white/60 backdrop-blur border border-white/50 rounded-xl flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all">
+                    <i class="fas fa-sort-amount-down"></i>
+                  </button>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="overflow-x-auto">
+          <!-- Affiliate Monitoring Table Premium -->
+          <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
+            <div class="gradient-primary px-5 py-4 flex items-center justify-between border-b border-white/30">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
+                  <i class="fas fa-chart-bar text-white"></i>
+                </div>
+                <div>
+                  <h2 class="text-base font-extrabold text-white">Monitoring Performa Affiliate</h2>
+                  <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Analisis detail performa setiap affiliate
+                  </p>
+                </div>
+              </div>
+              <span
+                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                <i class="fas fa-bolt mr-1"></i>
+                Live
+              </span>
+            </div>
+
+            <div class="overflow-x-auto modern-scrollbar bg-white/30 backdrop-blur">
               <table class="w-full">
-                <thead>
-                  <tr class="bg-green-50">
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Nama</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Email</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Total Transaksi</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Transaksi Selesai</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Total Penjualan</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Success Rate</th>
-                    <th class="py-4 px-6 text-left text-sm font-semibold text-green-900">Avg. Transaction</th>
+                <thead class="bg-white/10 backdrop-blur border-b border-white/30">
+                  <tr>
+                    <th
+                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider cursor-pointer hover:text-emerald-700">
+                      Nama</th>
+                    <th
+                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider cursor-pointer hover:text-emerald-700">
+                      Email</th>
+                    <th
+                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider cursor-pointer hover:text-emerald-700">
+                      Total Transaksi</th>
+                    <th
+                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider cursor-pointer hover:text-emerald-700">
+                      Transaksi Selesai</th>
+                    <th
+                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider cursor-pointer hover:text-emerald-700">
+                      Total Penjualan</th>
+                    <th
+                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider cursor-pointer hover:text-emerald-700">
+                      Success Rate</th>
+                    <th
+                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider cursor-pointer hover:text-emerald-700">
+                      Avg. Transaction</th>
                   </tr>
                 </thead>
-                <tbody id="affiliatesTableBody" class="divide-y divide-green-100">
+                <tbody id="affiliatesTableBody" class="divide-y divide-white/30">
                   <% if (!affiliates || affiliates.length===0) { %>
-                    <tr style="height:320px;">
+                    <tr class="placeholder-row">
                       <td colspan="7" class="py-12 px-6 text-center">
                         <div class="flex flex-col items-center justify-center">
-                          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                            <i class="fas fa-user-tie text-green-600 text-2xl"></i>
+                          <div class="relative">
+                            <div
+                              class="w-20 h-20 bg-white/60 backdrop-blur rounded-full flex items-center justify-center mb-4 border-4 border-white/50 float-slow">
+                              <i class="fas fa-user-tie text-3xl text-emerald-300"></i>
+                            </div>
+                            <div
+                              class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-lg">
+                              <span class="w-2 h-2 bg-amber-500 rounded-full pulse-premium"></span>
+                            </div>
                           </div>
-                          <p class="text-gray-600 font-medium">Belum ada affiliate</p>
-                          <p class="text-sm text-gray-500 mt-2">Data affiliate akan muncul di sini</p>
+                          <h3 class="text-lg font-extrabold text-gray-900 mb-2">Belum ada affiliate</h3>
+                          <p class="text-sm text-emerald-700 font-medium">Data affiliate akan muncul di sini</p>
                         </div>
                       </td>
                     </tr>
                     <% } else { %>
                       <% affiliates.forEach(function(a, index) { %>
-                        <tr class="hover:bg-green-50 transition-colors data-cell"
-                          style="animation-delay: <%= index * 50 %>ms">
-                          <td class="py-4 px-6">
-                            <div class="flex items-center gap-3">
-                              <div
-                                class="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-user-tie text-green-600 text-lg"></i>
-                              </div>
-                              <div>
-                                <div class="font-medium text-gray-900">
-                                  <%= a.name %>
+                        <% let successRate=0; let successClass='low' ; let progressColor='low' ; if (a.total_transaksi>
+                          0) {
+                          successRate = (a.transaksi_selesai / a.total_transaksi) * 100;
+
+                          if (successRate >= 80) {
+                          successClass = 'high';
+                          progressColor = 'high';
+                          } else if (successRate >= 60) {
+                          successClass = 'medium';
+                          progressColor = 'medium';
+                          } else {
+                          successClass = 'low';
+                          progressColor = 'low';
+                          }
+                          }
+
+                          const salesAmount = parseInt(a.total_penjualan || 0);
+                          const isHighValue = salesAmount > 5000000;
+
+                          let avgTransaction = 0;
+                          if (a.total_transaksi > 0) {
+                          avgTransaction = salesAmount / a.total_transaksi;
+                          }
+                          %>
+                          <tr
+                            class="table-row hover:bg-white/40 transition-all duration-300 border-b border-white/30 last:border-b-0 bg-white/20 backdrop-blur fade-in"
+                            data-name="<%= a.name.toLowerCase() %>" data-email="<%= a.email.toLowerCase() %>"
+                            data-total="<%= a.total_transaksi %>" data-completed="<%= a.transaksi_selesai %>"
+                            data-sales="<%= salesAmount %>" data-rate="<%= successRate %>"
+                            style="animation-delay: <%= index * 0.05 %>s">
+                            <td class="py-4 px-6">
+                              <div class="flex items-center gap-3">
+                                <div
+                                  class="w-10 h-10 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl flex items-center justify-center border border-white/60">
+                                  <i class="fas fa-user-tie text-emerald-600"></i>
                                 </div>
-                                <div class="text-xs text-gray-500">Affiliate</div>
+                                <div>
+                                  <div class="font-extrabold text-sm text-gray-900">
+                                    <%= a.name %>
+                                  </div>
+                                  <div class="text-[8px] font-medium text-emerald-700">Affiliate</div>
+                                </div>
                               </div>
-                            </div>
-                          </td>
-                          <td class="py-4 px-6">
-                            <div class="flex items-center gap-2">
-                              <div
-                                class="w-8 h-8 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-envelope text-green-600 text-sm"></i>
+                            </td>
+                            <td class="py-4 px-6">
+                              <div class="flex items-center gap-2">
+                                <div
+                                  class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
+                                  <i class="fas fa-envelope text-emerald-600 text-xs"></i>
+                                </div>
+                                <span class="text-xs font-medium text-gray-700">
+                                  <%= a.email %>
+                                </span>
                               </div>
-                              <span class="text-sm text-gray-700">
-                                <%= a.email %>
-                              </span>
-                            </div>
-                          </td>
-                          <td class="py-4 px-6">
-                            <div class="flex flex-col">
-                              <span class="font-bold text-lg text-gray-900">
-                                <%= a.total_transaksi %>
-                              </span>
-                              <span class="text-xs text-gray-500">Total</span>
-                            </div>
-                          </td>
-                          <td class="py-4 px-6">
-                            <div class="flex flex-col">
-                              <span class="font-medium text-green-700">
-                                <%= a.transaksi_selesai %>
-                              </span>
-                              <span class="text-xs text-gray-500">Completed</span>
-                            </div>
-                          </td>
-                          <td class="py-4 px-6">
-                            <div class="flex flex-col">
-                              <% const salesAmount=parseInt(a.total_penjualan || 0); const isHighValue=salesAmount>
-                                5000000;
-                                %>
-                                <span class="font-bold <%= isHighValue ? 'text-green-700 text-lg' : 'text-gray-900' %>">
+                            </td>
+                            <td class="py-4 px-6">
+                              <div class="flex flex-col">
+                                <span class="font-extrabold text-base text-gray-900">
+                                  <%= a.total_transaksi %>
+                                </span>
+                                <span class="text-[8px] font-medium text-gray-500">Total</span>
+                              </div>
+                            </td>
+                            <td class="py-4 px-6">
+                              <div class="flex flex-col">
+                                <span class="font-extrabold text-base text-emerald-700">
+                                  <%= a.transaksi_selesai %>
+                                </span>
+                                <span class="text-[8px] font-medium text-gray-500">Completed</span>
+                              </div>
+                            </td>
+                            <td class="py-4 px-6">
+                              <div class="flex flex-col">
+                                <span
+                                  class="font-extrabold text-base <%= isHighValue ? 'text-emerald-700' : 'text-gray-900' %>">
                                   Rp <%= salesAmount.toLocaleString('id-ID') %>
                                 </span>
-                                <span class="text-xs text-gray-500">Total Sales</span>
-                            </div>
-                          </td>
-                          <td class="py-4 px-6">
-                            <div class="flex flex-col">
-                              <% let successRate=0; let successClass='text-gray-500' ; if (a.total_transaksi> 0) {
-                                successRate = (a.transaksi_selesai / a.total_transaksi) * 100;
-
-                                if (successRate >= 80) {
-                                successClass = 'text-green-600';
-                                } else if (successRate >= 60) {
-                                successClass = 'text-yellow-600';
-                                } else {
-                                successClass = 'text-red-600';
-                                }
-                                }
-                                %>
-                                <span class="font-medium <%= successClass %>">
+                                <span class="text-[8px] font-medium text-gray-500">Total Sales</span>
+                              </div>
+                            </td>
+                            <td class="py-4 px-6">
+                              <div class="flex flex-col gap-1">
+                                <span class="font-extrabold text-sm <%= 
+                                successRate >= 80 ? 'text-emerald-700' : 
+                                successRate >= 60 ? 'text-amber-600' : 
+                                'text-red-600' %>">
                                   <%= successRate.toFixed(1) %>%
                                 </span>
-                                <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
-                                  <div class="<%= successClass.replace('text-', 'bg-') %> h-1.5 rounded-full"
+                                <div class="progress-bar">
+                                  <div class="progress-bar-fill <%= progressColor %>"
                                     style="width: <%= Math.min(successRate, 100) %>%"></div>
                                 </div>
-                            </div>
-                          </td>
-                          <td class="py-4 px-6">
-                            <div class="flex flex-col">
-                              <% let avgTransaction=0; if (a.total_transaksi> 0) {
-                                avgTransaction = salesAmount / a.total_transaksi;
-                                }
-                                %>
-                                <span class="font-medium text-green-700">
+                              </div>
+                            </td>
+                            <td class="py-4 px-6">
+                              <div class="flex flex-col">
+                                <span class="font-extrabold text-sm text-purple-700">
                                   Rp <%= avgTransaction.toLocaleString('id-ID', { minimumFractionDigits: 2,
                                     maximumFractionDigits: 2 }) %>
                                 </span>
-                                <span class="text-xs text-gray-500">per transaksi</span>
-                            </div>
-                          </td>
-                        </tr>
-                        <% }); %>
-                          <% } %>
+                                <span class="text-[8px] font-medium text-gray-500">per transaksi</span>
+                              </div>
+                            </td>
+                          </tr>
+                          <% }); %>
+                            <% } %>
                 </tbody>
               </table>
             </div>
 
-            <div class="px-6 py-4 bg-green-50 border-t border-green-100 rounded-b-2xl">
-              <div class="flex items-center gap-4 justify-between text-sm">
-                <span class="text-gray-600">
-                  Menampilkan <span class="font-medium">
-                    <%= affiliates.length || 0 %>
-                  </span> affiliate
-                </span>
-                <span class="text-gray-600">Terakhir diperbarui: Sekarang</span>
+            <div class="px-6 py-4 bg-white/30 backdrop-blur border-t border-white/30 rounded-b-2xl">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span
+                    class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                    Menampilkan <span class="font-extrabold">
+                      <%= affiliates.length || 0 %>
+                    </span> affiliate
+                  </span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button onclick="exportAffiliateData()"
+                    class="px-4 py-2 gradient-primary text-white rounded-lg hover:opacity-90 transition-all duration-300 text-xs font-extrabold shadow-lg flex items-center gap-2">
+                    <i class="fas fa-download"></i>
+                    Export CSV
+                  </button>
+                  <span
+                    class="text-[9px] font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                    <i class="fas fa-clock mr-1"></i>
+                    Terakhir diperbarui: Sekarang
+                  </span>
+                </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Pagination Premium -->
+          <div class="mt-8 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span
+                class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                Menampilkan 1 - <%= affiliates.length || 0 %> dari <%= affiliates.length || 0 %> affiliate
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all disabled:opacity-50"
+                disabled>
+                <i class="fas fa-chevron-left text-xs"></i>
+              </button>
+              <button
+                class="w-8 h-8 rounded-lg gradient-primary text-white flex items-center justify-center text-xs font-bold shadow-lg">1</button>
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">2</button>
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">3</button>
+              <button
+                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all">
+                <i class="fas fa-chevron-right text-xs"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -385,69 +1056,164 @@
 
       <script>
         document.addEventListener('DOMContentLoaded', function () {
-          // Add hover effects to table rows
-          const tableRows = document.querySelectorAll('tbody tr[style*="animation-delay"]');
-          tableRows.forEach(row => {
-            row.addEventListener('mouseenter', function () {
-              this.style.backgroundColor = '#faf5ff';
-            });
-            row.addEventListener('mouseleave', function () {
-              this.style.backgroundColor = '';
-            });
-          });
+          // Search functionality
+          const searchInput = document.getElementById('searchInput');
+          const sortSelect = document.getElementById('sortSelect');
+          const sortDirectionBtn = document.getElementById('sortDirectionBtn');
+          let sortAscending = true;
 
-          // Sort table by columns
-          const tableHeaders = document.querySelectorAll('thead th');
-          tableHeaders.forEach((header, index) => {
-            header.style.cursor = 'pointer';
-            header.addEventListener('click', function () {
-              sortTable(index);
+          if (searchInput) {
+            searchInput.addEventListener('keyup', filterTable);
+          }
+
+          if (sortSelect) {
+            sortSelect.addEventListener('change', sortTable);
+          }
+
+          if (sortDirectionBtn) {
+            sortDirectionBtn.addEventListener('click', function () {
+              sortAscending = !sortAscending;
+              const icon = this.querySelector('i');
+              if (sortAscending) {
+                icon.className = 'fas fa-sort-amount-down';
+              } else {
+                icon.className = 'fas fa-sort-amount-up';
+              }
+              sortTable();
             });
-          });
+          }
 
-          function sortTable(columnIndex) {
-            const table = document.getElementById('affiliatesTableBody');
-            const rows = Array.from(table.querySelectorAll('tr:not([style*="height:320px"])'));
+          function filterTable() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const rows = document.querySelectorAll('#affiliatesTableBody tr.table-row');
 
-            const isAscending = !table.getAttribute('data-sort-asc') || table.getAttribute('data-sort-asc') === 'false';
+            rows.forEach(row => {
+              const name = row.getAttribute('data-name') || '';
+              const email = row.getAttribute('data-email') || '';
+
+              if (name.includes(searchTerm) || email.includes(searchTerm)) {
+                row.style.display = '';
+              } else {
+                row.style.display = 'none';
+              }
+            });
+
+            updateVisibleCount();
+          }
+
+          function sortTable() {
+            const tbody = document.getElementById('affiliatesTableBody');
+            const rows = Array.from(document.querySelectorAll('#affiliatesTableBody tr.table-row'));
+            const sortBy = sortSelect.value;
 
             rows.sort((a, b) => {
-              const aValue = a.cells[columnIndex].textContent.trim();
-              const bValue = b.cells[columnIndex].textContent.trim();
+              let aVal, bVal;
 
-              // Handle numeric values
-              const aNum = parseFloat(aValue.replace(/[^0-9.-]+/g, ''));
-              const bNum = parseFloat(bValue.replace(/[^0-9.-]+/g, ''));
-
-              if (!isNaN(aNum) && !isNaN(bNum)) {
-                return isAscending ? aNum - bNum : bNum - aNum;
+              switch (sortBy) {
+                case 'name':
+                  aVal = a.getAttribute('data-name') || '';
+                  bVal = b.getAttribute('data-name') || '';
+                  return sortAscending ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+                case 'total':
+                  aVal = parseFloat(a.getAttribute('data-total')) || 0;
+                  bVal = parseFloat(b.getAttribute('data-total')) || 0;
+                  return sortAscending ? aVal - bVal : bVal - aVal;
+                case 'completed':
+                  aVal = parseFloat(a.getAttribute('data-completed')) || 0;
+                  bVal = parseFloat(b.getAttribute('data-completed')) || 0;
+                  return sortAscending ? aVal - bVal : bVal - aVal;
+                case 'sales':
+                  aVal = parseFloat(a.getAttribute('data-sales')) || 0;
+                  bVal = parseFloat(b.getAttribute('data-sales')) || 0;
+                  return sortAscending ? aVal - bVal : bVal - aVal;
+                case 'rate':
+                  aVal = parseFloat(a.getAttribute('data-rate')) || 0;
+                  bVal = parseFloat(b.getAttribute('data-rate')) || 0;
+                  return sortAscending ? aVal - bVal : bVal - aVal;
+                default:
+                  return 0;
               }
-
-              // Handle percentage values
-              if (aValue.includes('%') && bValue.includes('%')) {
-                const aPct = parseFloat(aValue);
-                const bPct = parseFloat(bValue);
-                return isAscending ? aPct - bPct : bPct - aPct;
-              }
-
-              // Default string comparison
-              return isAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
             });
 
             // Reorder rows
-            rows.forEach(row => table.appendChild(row));
-            table.setAttribute('data-sort-asc', isAscending);
+            rows.forEach(row => tbody.appendChild(row));
           }
 
-          // Export data function
-          window.exportAffiliateData = function () {
-            const confirmExport = confirm('Apakah Anda ingin mengekspor data affiliate ke CSV?');
-            if (confirmExport) {
-              alert('Data berhasil diekspor! (Simulasi)');
-              // In a real implementation, this would trigger a download
+          function updateVisibleCount() {
+            const visibleRows = document.querySelectorAll('#affiliatesTableBody tr.table-row[style=""]').length;
+            const totalRows = document.querySelectorAll('#affiliatesTableBody tr.table-row').length;
+
+            // Update pagination info if needed
+            const infoSpan = document.querySelector('.flex.items-center.gap-2 span');
+            if (infoSpan) {
+              infoSpan.textContent = `Menampilkan ${visibleRows} dari ${totalRows} affiliate`;
             }
-          };
+          }
+
+          // Add hover effects to table headers
+          const tableHeaders = document.querySelectorAll('thead th');
+          tableHeaders.forEach(header => {
+            header.addEventListener('click', function () {
+              const column = this.textContent.trim().toLowerCase();
+              let sortValue = '';
+
+              if (column.includes('nama')) sortValue = 'name';
+              else if (column.includes('email')) sortValue = 'name';
+              else if (column.includes('total transaksi')) sortValue = 'total';
+              else if (column.includes('transaksi selesai')) sortValue = 'completed';
+              else if (column.includes('total penjualan')) sortValue = 'sales';
+              else if (column.includes('success rate')) sortValue = 'rate';
+
+              if (sortValue && sortSelect) {
+                sortSelect.value = sortValue;
+                sortTable();
+              }
+            });
+          });
         });
+
+        // Export function
+        function exportAffiliateData() {
+          const confirmExport = confirm('Apakah Anda ingin mengekspor data affiliate ke CSV?');
+          if (confirmExport) {
+            // Get all visible rows
+            const rows = document.querySelectorAll('#affiliatesTableBody tr.table-row');
+
+            if (rows.length === 0) {
+              alert('Tidak ada data untuk diekspor');
+              return;
+            }
+
+            // Create CSV content
+            let csv = 'Nama,Email,Total Transaksi,Transaksi Selesai,Total Penjualan,Success Rate,Avg Transaction\n';
+
+            rows.forEach(row => {
+              const cells = row.querySelectorAll('td');
+              const name = cells[0]?.textContent.trim().replace(/,/g, '') || '';
+              const email = cells[1]?.textContent.trim().replace(/,/g, '') || '';
+              const total = cells[2]?.textContent.trim() || '0';
+              const completed = cells[3]?.textContent.trim() || '0';
+              const sales = cells[4]?.textContent.trim().replace(/[^0-9,]/g, '') || '0';
+              const rate = cells[5]?.textContent.trim() || '0%';
+              const avg = cells[6]?.textContent.trim().replace(/[^0-9,]/g, '') || '0';
+
+              csv += `${name},${email},${total},${completed},${sales},${rate},${avg}\n`;
+            });
+
+            // Create download link
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `affiliate_data_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            alert('Data berhasil diekspor!');
+          }
+        }
       </script>
 </body>
 
