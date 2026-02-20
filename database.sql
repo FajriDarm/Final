@@ -140,6 +140,7 @@ CREATE TABLE transactions (
         'pending',
         'stage_1_approved',
         'stage_2_approved',
+        'stage_3_approved',
         'completed',
         'rejected'
     ) DEFAULT 'pending',
