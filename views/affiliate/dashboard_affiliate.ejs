@@ -51,40 +51,44 @@
       box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
     }
 
-    .gradient-secondary {
-      background: linear-gradient(165deg, #047857 0%, #059669 50%, #10b981 100%);
-    }
-
-    .gradient-accent {
-      background: linear-gradient(165deg, #065f46 0%, #047857 50%, #059669 100%);
+    .gradient-success {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
     }
 
     .gradient-warning {
       background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+      box-shadow: 0 10px 20px -8px rgba(245, 158, 11, 0.4);
     }
 
     .gradient-info {
       background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+      box-shadow: 0 10px 20px -8px rgba(59, 130, 246, 0.4);
     }
 
     .gradient-danger {
       background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+      box-shadow: 0 10px 20px -8px rgba(239, 68, 68, 0.4);
     }
 
     .gradient-purple {
       background: linear-gradient(165deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+      box-shadow: 0 10px 20px -8px rgba(139, 92, 246, 0.4);
     }
 
     .gradient-teal {
       background: linear-gradient(165deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%);
+      box-shadow: 0 10px 20px -8px rgba(20, 184, 166, 0.4);
     }
 
     .gradient-blue {
       background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+      box-shadow: 0 10px 20px -8px rgba(59, 130, 246, 0.4);
     }
 
     .gradient-amber {
       background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+      box-shadow: 0 10px 20px -8px rgba(245, 158, 11, 0.4);
     }
 
     /* Status Gradients */
@@ -488,6 +492,23 @@
       transform: scale(1.05);
     }
 
+    .btn-success {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-success:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
     .btn-secondary {
       background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(10px);
@@ -608,6 +629,198 @@
       }
     }
 
+    /* Modal Notification Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      max-width: 400px;
+      width: 90%;
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 50px 100px -20px rgba(16, 185, 129, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modal-overlay.show .modal-content {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      animation: modalIconPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes modalIconPop {
+      0% {
+        transform: scale(0) rotate(-180deg);
+      }
+
+      100% {
+        transform: scale(1) rotate(0);
+      }
+    }
+
+    .modal-icon.success {
+      background: linear-gradient(165deg, #059669, #10b981);
+      box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.5);
+    }
+
+    .modal-icon.warning {
+      background: linear-gradient(165deg, #d97706, #f59e0b);
+      box-shadow: 0 15px 30px -10px rgba(245, 158, 11, 0.5);
+    }
+
+    .modal-icon.error {
+      background: linear-gradient(165deg, #b91c1c, #dc2626);
+      box-shadow: 0 15px 30px -10px rgba(239, 68, 68, 0.5);
+    }
+
+    .modal-icon.info {
+      background: linear-gradient(165deg, #2563eb, #3b82f6);
+      box-shadow: 0 15px 30px -10px rgba(59, 130, 246, 0.5);
+    }
+
+    .modal-icon i {
+      color: white;
+      font-size: 2.5rem;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .modal-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 0.75rem;
+      color: #1f2937;
+      animation: modalFadeIn 0.5s ease 0.1s both;
+    }
+
+    .modal-message {
+      font-size: 1rem;
+      color: #4b5563;
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      animation: modalFadeIn 0.5s ease 0.2s both;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      animation: modalFadeIn 0.5s ease 0.3s both;
+    }
+
+    .modal-btn {
+      padding: 0.875rem 2rem;
+      border-radius: 1rem;
+      font-size: 0.875rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      min-width: 120px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-btn-primary {
+      background: linear-gradient(165deg, #059669, #10b981);
+      color: white;
+      box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+    }
+
+    .modal-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.5);
+    }
+
+    .modal-btn-secondary {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      color: #374151;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-3px);
+    }
+
+    .modal-progress {
+      height: 4px;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 2px;
+      margin-top: 2rem;
+      overflow: hidden;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .modal-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #34d399);
+      width: 100%;
+      animation: progress 3s linear forwards;
+    }
+
+    @keyframes progress {
+      0% {
+        width: 100%;
+      }
+
+      100% {
+        width: 0%;
+      }
+    }
+
     /* Line Clamp */
     .line-clamp-1 {
       display: -webkit-box;
@@ -656,6 +869,24 @@
     </div>
   </div>
 
+  <!-- Premium Modal System -->
+  <div id="notificationModal" class="modal-overlay">
+    <div class="modal-content">
+      <div id="modalIcon" class="modal-icon success">
+        <i id="modalIconIcon" class="fas fa-check"></i>
+      </div>
+      <h3 id="modalTitle" class="modal-title">Notifikasi</h3>
+      <p id="modalMessage" class="modal-message">Pesan notifikasi akan muncul di sini</p>
+      <div class="modal-buttons">
+        <button id="modalConfirmBtn" class="modal-btn modal-btn-primary">OK</button>
+        <button id="modalCancelBtn" class="modal-btn modal-btn-secondary" style="display: none;">Batal</button>
+      </div>
+      <div id="modalProgress" class="modal-progress">
+        <div class="modal-progress-bar"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Navbar -->
   <%- include('../navbar/navbar.ejs', { name: typeof name !=='undefined' ? name : '' }) %>
 
@@ -700,12 +931,12 @@
             <!-- Premium Date & Live Status -->
             <div class="flex items-center gap-3">
               <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
-                <div class="w-8 h-8 gradient-secondary rounded-lg flex items-center justify-center shadow-lg">
+                <div class="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center shadow-lg">
                   <i class="fas fa-calendar-alt text-white text-sm"></i>
                 </div>
                 <div>
                   <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
-                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                  <p class="text-xs font-bold text-emerald-700 whitespace-nowrap">
                     <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                   </p>
                 </div>
@@ -1107,7 +1338,7 @@
 
             <!-- Profile & Bank (right column) -->
             <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
-              <div class="gradient-secondary px-5 py-4 border-b border-white/30">
+              <div class="gradient-primary px-5 py-4 border-b border-white/30">
                 <div class="flex items-center gap-3">
                   <div
                     class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
@@ -1125,12 +1356,12 @@
                 <div class="mb-6 glass-futuristic rounded-xl p-4 border border-blue-200/50 bg-blue-50/30">
                   <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-extrabold text-emerald-800">Kelengkapan Profil</span>
-                    <span class="text-sm font-extrabold text-blue-600" id="profileCompletionPercent">0%</span>
+                    <span class="text-sm font-extrabold text-emerald-700" id="profileCompletionPercent">0%</span>
                   </div>
                   <div class="profile-bar">
-                    <div id="profileCompletionBar" class="profile-bar-fill" style="width: 0%"></div>
+                    <div id="profileCompletionBar" class="profile-bar-fill green" style="width: 0%"></div>
                   </div>
-                  <p class="text-[9px] text-gray-600 mt-2 flex items-center gap-1">
+                  <p class="text-[9px] text-emerald-700 mt-2 flex items-center gap-1">
                     <i class="fas fa-info-circle text-emerald-400"></i>
                     Lengkapi semua data untuk aktifkan fitur generate link
                   </p>
@@ -1594,6 +1825,109 @@
       </main>
 
       <script>
+        // ============================================================
+        // FUNGSI MODAL NOTIFICATION
+        // ============================================================
+
+        const Modal = {
+          element: document.getElementById('notificationModal'),
+          icon: document.getElementById('modalIcon'),
+          iconIcon: document.getElementById('modalIconIcon'),
+          title: document.getElementById('modalTitle'),
+          message: document.getElementById('modalMessage'),
+          confirmBtn: document.getElementById('modalConfirmBtn'),
+          cancelBtn: document.getElementById('modalCancelBtn'),
+          progress: document.getElementById('modalProgress'),
+
+          show: function (options) {
+            const {
+              type = 'info',
+              title,
+              message,
+              onConfirm,
+              onCancel,
+              confirmText = 'OK',
+              cancelText = 'Batal',
+              autoClose = true,
+              closeTime = 3000
+            } = options;
+
+            // Reset classes
+            this.icon.className = 'modal-icon';
+            this.icon.classList.add(type);
+
+            // Set icon based on type
+            const icons = {
+              success: 'fa-check',
+              warning: 'fa-exclamation-triangle',
+              error: 'fa-times-circle',
+              info: 'fa-info-circle'
+            };
+            this.iconIcon.className = `fas ${icons[type] || 'fa-info-circle'}`;
+
+            // Set content
+            this.title.textContent = title || 'Notifikasi';
+            this.message.textContent = message || '';
+
+            // Show modal
+            this.element.classList.add('show');
+
+            // Handle confirm button
+            if (onConfirm) {
+              this.confirmBtn.style.display = 'block';
+              this.confirmBtn.textContent = confirmText;
+              this.confirmBtn.onclick = () => {
+                this.hide();
+                if (onConfirm) onConfirm();
+              };
+            } else {
+              this.confirmBtn.style.display = 'block';
+              this.confirmBtn.textContent = 'OK';
+              this.confirmBtn.onclick = () => this.hide();
+            }
+
+            // Handle cancel button
+            if (onCancel) {
+              this.cancelBtn.style.display = 'block';
+              this.cancelBtn.textContent = cancelText;
+              this.cancelBtn.onclick = () => {
+                this.hide();
+                if (onCancel) onCancel();
+              };
+            } else {
+              this.cancelBtn.style.display = 'none';
+            }
+
+            // Auto close
+            if (autoClose) {
+              this.progress.style.display = 'block';
+              const progressBar = this.progress.querySelector('.modal-progress-bar');
+              progressBar.style.animation = 'none';
+              progressBar.offsetHeight; // Trigger reflow
+              progressBar.style.animation = `progress ${closeTime / 1000}s linear forwards`;
+
+              setTimeout(() => {
+                this.hide();
+              }, closeTime);
+            } else {
+              this.progress.style.display = 'none';
+            }
+          },
+
+          hide: function () {
+            this.element.classList.remove('show');
+          }
+        };
+
+        // Override alert
+        window.alert = function (message) {
+          Modal.show({
+            type: 'warning',
+            title: 'Peringatan',
+            message: message
+          });
+        };
+
         // Affiliate user status from server - fallback, will be updated from API
         let userStatus = '<%= typeof userStatus !== "undefined" ? userStatus : "inactive" %>';
         let profileCompletionPercent = 0;
@@ -2082,12 +2416,20 @@
           console.debug('generateLink called with eventId:', eventId, 'userStatus:', userStatus, 'profileCompletion:', profileCompletionPercent);
 
           if (userStatus !== 'approved') {
-            alert('Anda belum di-approve sebagai affiliate. Silakan tunggu approval dari admin.');
+            Modal.show({
+              type: 'warning',
+              title: 'Belum Di-approve',
+              message: 'Anda belum di-approve sebagai affiliate. Silakan tunggu approval dari admin.'
+            });
             return;
           }
 
           if (profileCompletionPercent < 100) {
-            alert(`Profil Anda belum lengkap (${profileCompletionPercent}%). Silakan lengkapi semua data terlebih dahulu sebelum generate link.\n\nKlik "Lengkapi/Edit Profil" di bagian Profil & Data Bank.`);
+            Modal.show({
+              type: 'warning',
+              title: 'Profil Belum Lengkap',
+              message: `Profil Anda belum lengkap (${profileCompletionPercent}%). Silakan lengkapi semua data terlebih dahulu sebelum generate link.\n\nKlik "Lengkapi/Edit Profil" di bagian Profil & Data Bank.`
+            });
             return;
           }
 
@@ -2122,11 +2464,21 @@
 
             const checkoutUrlMsg = data.data.url_checkout || data.data.url || '';
             const lpUrlMsg = data.data.url_lp || '';
-            alert(`Link berhasil dibuat untuk event: ${eventTitle}\n\nForm (Checkout): ${checkoutUrlMsg}\nLanding Page: ${lpUrlMsg}`);
+
+            Modal.show({
+              type: 'success',
+              title: 'Link Berhasil Dibuat',
+              message: `Link berhasil dibuat untuk event: ${eventTitle}\n\nForm (Checkout): ${checkoutUrlMsg}\nLanding Page: ${lpUrlMsg}`,
+              autoClose: false
+            });
 
           } catch (error) {
             console.error('Error generating link:', error);
-            alert(`Gagal generate link: ${error.message}`);
+            Modal.show({
+              type: 'error',
+              title: 'Gagal Generate Link',
+              message: `Gagal generate link: ${error.message}`
+            });
             btn.disabled = false;
             btn.innerHTML = originalContent;
           }
@@ -2148,9 +2500,23 @@
               btn.innerHTML = originalHTML;
               btn.classList.remove('copy-btn-copied');
             }, 1500);
+
+            Modal.show({
+              type: 'success',
+              title: 'Berhasil',
+              message: 'Link berhasil disalin!',
+              autoClose: true,
+              closeTime: 1500
+            });
           } catch (err) {
             document.execCommand('copy');
-            alert('Link berhasil disalin!');
+            Modal.show({
+              type: 'success',
+              title: 'Berhasil',
+              message: 'Link berhasil disalin!',
+              autoClose: true,
+              closeTime: 1500
+            });
           }
         }
       </script>

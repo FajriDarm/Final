@@ -450,6 +450,211 @@
         transform: translate(2px, -1px);
       }
     }
+
+    /* Modal Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      max-width: 400px;
+      width: 90%;
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 50px 100px -20px rgba(16, 185, 129, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modal-overlay.show .modal-content {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      position: relative;
+      animation: modalIconPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes modalIconPop {
+      0% {
+        transform: scale(0);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .modal-icon.success {
+      background: linear-gradient(165deg, #059669, #10b981);
+    }
+
+    .modal-icon.warning {
+      background: linear-gradient(165deg, #d97706, #f59e0b);
+    }
+
+    .modal-icon.error {
+      background: linear-gradient(165deg, #b91c1c, #dc2626);
+    }
+
+    .modal-icon.info {
+      background: linear-gradient(165deg, #2563eb, #3b82f6);
+    }
+
+    .modal-icon.question {
+      background: linear-gradient(165deg, #7c3aed, #8b5cf6);
+    }
+
+    .modal-icon i {
+      color: white;
+      font-size: 2rem;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 0.75rem;
+      color: #1f2937;
+      animation: modalFadeIn 0.5s ease 0.1s both;
+    }
+
+    .modal-message {
+      font-size: 1rem;
+      color: #4b5563;
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+      animation: modalFadeIn 0.5s ease 0.2s both;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      animation: modalFadeIn 0.5s ease 0.3s both;
+    }
+
+    .modal-btn {
+      padding: 0.875rem 2rem;
+      border-radius: 1rem;
+      font-size: 0.875rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      min-width: 120px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-btn-primary {
+      background: linear-gradient(165deg, #059669, #10b981);
+      color: white;
+      box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+    }
+
+    .modal-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.5);
+    }
+
+    .modal-btn-secondary {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      color: #374151;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-3px);
+    }
+
+    .modal-btn-danger {
+      background: linear-gradient(165deg, #b91c1c, #dc2626);
+      color: white;
+      box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4);
+    }
+
+    .modal-btn-danger:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.5);
+    }
+
+    /* Progress Bar for Auto-close */
+    .modal-progress {
+      height: 4px;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 2px;
+      margin-top: 2rem;
+      overflow: hidden;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .modal-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #34d399);
+      width: 100%;
+      animation: progress 3s linear forwards;
+    }
+
+    @keyframes progress {
+      0% {
+        width: 100%;
+      }
+
+      100% {
+        width: 0%;
+      }
+    }
   </style>
 </head>
 
@@ -481,6 +686,25 @@
     </div>
     <div
       class="absolute bottom-1/4 right-1/4 w-1.5 h-1.5 bg-teal-400 rounded-full animate-ping opacity-30 animation-delay-4000">
+    </div>
+  </div>
+
+  <!-- Premium Modal System -->
+  <div id="premiumModal" class="modal-overlay">
+    <div class="modal-content" id="modalContent">
+      <div class="modal-icon success" id="modalIcon">
+        <i class="fas fa-check" id="modalIconIcon"></i>
+      </div>
+      <h3 class="modal-title" id="modalTitle">Notifikasi</h3>
+      <p class="modal-message" id="modalMessage">Pesan notifikasi akan muncul di sini</p>
+      <div class="modal-buttons">
+        <button class="modal-btn modal-btn-primary" id="modalConfirmBtn">OK</button>
+        <button class="modal-btn modal-btn-secondary" id="modalCancelBtn" style="display: none;">Batal</button>
+        <button class="modal-btn modal-btn-danger" id="modalDangerBtn" style="display: none;">Hapus</button>
+      </div>
+      <div class="modal-progress" id="modalProgress">
+        <div class="modal-progress-bar"></div>
+      </div>
     </div>
   </div>
 
@@ -978,7 +1202,8 @@
                                   <%= successRate.toFixed(1) %>%
                                 </span>
                                 <div class="progress-bar">
-                                  <div class="progress-bar-fill <%= progressColor %>" data-width="<%= Math.min(successRate, 100) %>"></div>
+                                  <div class="progress-bar-fill <%= progressColor %>"
+                                    data-width="<%= Math.min(successRate, 100) %>"></div>
                                 </div>
                               </div>
                             </td>
@@ -1054,6 +1279,179 @@
       </main>
 
       <script>
+        // ============================================================
+        // FUNGSI MODAL
+        // ============================================================
+
+        const Modal = {
+          element: document.getElementById('premiumModal'),
+          icon: document.getElementById('modalIcon'),
+          iconIcon: document.getElementById('modalIconIcon'),
+          title: document.getElementById('modalTitle'),
+          message: document.getElementById('modalMessage'),
+          confirmBtn: document.getElementById('modalConfirmBtn'),
+          cancelBtn: document.getElementById('modalCancelBtn'),
+          dangerBtn: document.getElementById('modalDangerBtn'),
+          progress: document.getElementById('modalProgress'),
+
+          show: function (options) {
+            const {
+              type = 'info',
+              title,
+              message,
+              onConfirm,
+              onCancel,
+              onDanger,
+              confirmText = 'OK',
+              cancelText = 'Batal',
+              dangerText = 'Hapus',
+              autoClose = true,
+              closeTime = 3000,
+              showDanger = false
+            } = options;
+
+            // Reset classes
+            this.icon.className = 'modal-icon';
+            this.icon.classList.add(type);
+
+            // Set icon berdasarkan type
+            const icons = {
+              success: 'fa-check',
+              warning: 'fa-exclamation-triangle',
+              error: 'fa-times-circle',
+              info: 'fa-info-circle',
+              question: 'fa-question-circle'
+            };
+            this.iconIcon.className = `fas ${icons[type] || 'fa-info-circle'} text-white text-2xl`;
+
+            // Set content
+            this.title.textContent = title || 'Notifikasi';
+            this.message.textContent = message || '';
+
+            // Show modal
+            this.element.classList.add('show');
+
+            // Handle buttons
+            // Confirm button
+            if (onConfirm) {
+              this.confirmBtn.style.display = 'block';
+              this.confirmBtn.textContent = confirmText;
+              this.confirmBtn.onclick = () => {
+                this.hide();
+                onConfirm();
+              };
+            } else {
+              this.confirmBtn.style.display = 'block';
+              this.confirmBtn.textContent = 'OK';
+              this.confirmBtn.onclick = () => this.hide();
+            }
+
+            // Cancel button
+            if (onCancel) {
+              this.cancelBtn.style.display = 'block';
+              this.cancelBtn.textContent = cancelText;
+              this.cancelBtn.onclick = () => {
+                this.hide();
+                onCancel();
+              };
+            } else {
+              this.cancelBtn.style.display = 'none';
+            }
+
+            // Danger button
+            if (showDanger && onDanger) {
+              this.dangerBtn.style.display = 'block';
+              this.dangerBtn.textContent = dangerText;
+              this.dangerBtn.onclick = () => {
+                this.hide();
+                onDanger();
+              };
+            } else {
+              this.dangerBtn.style.display = 'none';
+            }
+
+            // Auto close
+            if (autoClose) {
+              this.progress.style.display = 'block';
+              const progressBar = this.progress.querySelector('.modal-progress-bar');
+              progressBar.style.animation = 'none';
+              progressBar.offsetHeight;
+              progressBar.style.animation = `progress ${closeTime / 1000}s linear forwards`;
+
+              setTimeout(() => {
+                this.hide();
+              }, closeTime);
+            } else {
+              this.progress.style.display = 'none';
+            }
+          },
+
+          hide: function () {
+            this.element.classList.remove('show');
+          }
+        };
+
+        // Fungsi untuk menampilkan modal
+        function showModal(options) {
+          Modal.show(options);
+        }
+
+        // Fungsi untuk konfirmasi (Promise-based)
+        function showConfirm(options) {
+          return new Promise((resolve) => {
+            Modal.show({
+              type: options.type || 'question',
+              title: options.title || 'Konfirmasi',
+              message: options.message,
+              confirmText: options.confirmText || 'Ya',
+              cancelText: options.cancelText || 'Tidak',
+              onConfirm: () => resolve(true),
+              onCancel: () => resolve(false),
+              autoClose: false
+            });
+          });
+        }
+
+        // Fungsi untuk konfirmasi dengan opsi hapus
+        function showConfirmWithDanger(options) {
+          return new Promise((resolve) => {
+            Modal.show({
+              type: options.type || 'warning',
+              title: options.title || 'Konfirmasi',
+              message: options.message,
+              confirmText: options.confirmText || 'Ya',
+              cancelText: options.cancelText || 'Tidak',
+              dangerText: options.dangerText || 'Hapus',
+              onConfirm: () => resolve('confirm'),
+              onCancel: () => resolve('cancel'),
+              onDanger: () => resolve('danger'),
+              showDanger: true,
+              autoClose: false
+            });
+          });
+        }
+
+        // Override alert bawaan
+        window.alert = function (message) {
+          showModal({
+            type: 'warning',
+            title: 'Peringatan',
+            message: message
+          });
+        };
+
+        // Override confirm bawaan
+        window.confirm = async function (message) {
+          return await showConfirm({
+            title: 'Konfirmasi',
+            message: message
+          });
+        };
+
+        // ============================================================
+        // FUNGSI UTAMA
+        // ============================================================
+
         document.addEventListener('DOMContentLoaded', function () {
           // Search functionality
           const searchInput = document.getElementById('searchInput');
@@ -1100,18 +1498,18 @@
             updateVisibleCount();
           }
 
-          // apply animation-delay values from data-delay attributes (prevents Problems linter errors)
+          // apply animation-delay values from data-delay attributes
           document.querySelectorAll('[data-delay]').forEach(el => {
             const v = el.getAttribute('data-delay');
             const n = parseFloat(v);
             if (!isNaN(n)) el.style.animationDelay = n + 's';
           });
 
-          // apply width values from data-width (avoid inline EJS % in style)
+          // apply width values from data-width
           document.querySelectorAll('[data-width]').forEach(el => {
             const v = el.getAttribute('data-width');
             const n = parseFloat(v);
-            el.style.width = (!isNaN(n) ? (Math.min(n,100) + '%') : '0%');
+            el.style.width = (!isNaN(n) ? (Math.min(n, 100) + '%') : '0%');
           });
 
           function sortTable() {
@@ -1185,46 +1583,94 @@
           });
         });
 
-        // Export function
-        function exportAffiliateData() {
-          const confirmExport = confirm('Apakah Anda ingin mengekspor data affiliate ke CSV?');
-          if (confirmExport) {
-            // Get all visible rows
-            const rows = document.querySelectorAll('#affiliatesTableBody tr.table-row');
+        // Export function dengan modal
+        async function exportAffiliateData() {
+          const confirmed = await showConfirm({
+            type: 'question',
+            title: 'Konfirmasi Export',
+            message: 'Apakah Anda ingin mengekspor data affiliate ke CSV?',
+            confirmText: 'Ya, Export',
+            cancelText: 'Batal'
+          });
 
-            if (rows.length === 0) {
-              alert('Tidak ada data untuk diekspor');
-              return;
-            }
+          if (!confirmed) return;
 
-            // Create CSV content
-            let csv = 'Nama,Email,Total Transaksi,Transaksi Selesai,Total Penjualan,Success Rate,Avg Transaction\n';
+          // Get all visible rows
+          const rows = document.querySelectorAll('#affiliatesTableBody tr.table-row');
 
-            rows.forEach(row => {
-              const cells = row.querySelectorAll('td');
-              const name = cells[0]?.textContent.trim().replace(/,/g, '') || '';
-              const email = cells[1]?.textContent.trim().replace(/,/g, '') || '';
-              const total = cells[2]?.textContent.trim() || '0';
-              const completed = cells[3]?.textContent.trim() || '0';
-              const sales = cells[4]?.textContent.trim().replace(/[^0-9,]/g, '') || '0';
-              const rate = cells[5]?.textContent.trim() || '0%';
-              const avg = cells[6]?.textContent.trim().replace(/[^0-9,]/g, '') || '0';
-
-              csv += `${name},${email},${total},${completed},${sales},${rate},${avg}\n`;
+          if (rows.length === 0) {
+            await showModal({
+              type: 'warning',
+              title: 'Tidak Ada Data',
+              message: 'Tidak ada data untuk diekspor'
             });
+            return;
+          }
 
-            // Create download link
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', `affiliate_data_${new Date().toISOString().split('T')[0]}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+          // Create CSV content
+          let csv = 'Nama,Email,Total Transaksi,Transaksi Selesai,Total Penjualan,Success Rate,Avg Transaction\n';
 
-            alert('Data berhasil diekspor!');
+          rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const name = cells[0]?.textContent.trim().replace(/,/g, '') || '';
+            const email = cells[1]?.textContent.trim().replace(/,/g, '') || '';
+            const total = cells[2]?.textContent.trim() || '0';
+            const completed = cells[3]?.textContent.trim() || '0';
+            const sales = cells[4]?.textContent.trim().replace(/[^0-9,]/g, '') || '0';
+            const rate = cells[5]?.textContent.trim() || '0%';
+            const avg = cells[6]?.textContent.trim().replace(/[^0-9,]/g, '') || '0';
+
+            csv += `${name},${email},${total},${completed},${sales},${rate},${avg}\n`;
+          });
+
+          // Create download link
+          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+          const link = document.createElement('a');
+          const url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', `affiliate_data_${new Date().toISOString().split('T')[0]}.csv`);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          await showModal({
+            type: 'success',
+            title: 'Berhasil',
+            message: 'Data berhasil diekspor!',
+            autoClose: true,
+            closeTime: 2000
+          });
+        }
+
+        // Contoh fungsi lain yang menggunakan modal
+        async function showAffiliateDetails(affiliateName) {
+          await showModal({
+            type: 'info',
+            title: 'Detail Affiliate',
+            message: `Menampilkan detail untuk affiliate: ${affiliateName}`,
+            autoClose: true,
+            closeTime: 3000
+          });
+        }
+
+        async function confirmDeleteAffiliate(affiliateName) {
+          const result = await showConfirmWithDanger({
+            type: 'warning',
+            title: 'Hapus Affiliate',
+            message: `Apakah Anda yakin ingin menghapus affiliate "${affiliateName}"?\n\nTindakan ini tidak dapat dibatalkan!`,
+            confirmText: 'Ya, Hapus',
+            cancelText: 'Batal',
+            dangerText: 'Hapus Permanen'
+          });
+
+          if (result === 'confirm' || result === 'danger') {
+            await showModal({
+              type: 'success',
+              title: 'Berhasil',
+              message: `Affiliate "${affiliateName}" telah dihapus`,
+              autoClose: true
+            });
           }
         }
       </script>

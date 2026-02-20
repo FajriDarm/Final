@@ -51,6 +51,12 @@
       box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
     }
 
+
+    .gradient-success {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
+    }
+
     .gradient-secondary {
       background: linear-gradient(165deg, #047857 0%, #059669 50%, #10b981 100%);
     }
@@ -61,30 +67,37 @@
 
     .gradient-warning {
       background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+      box-shadow: 0 10px 20px -8px rgba(245, 158, 11, 0.4);
     }
 
     .gradient-info {
       background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+      box-shadow: 0 10px 20px -8px rgba(59, 130, 246, 0.4);
     }
 
     .gradient-danger {
       background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+      box-shadow: 0 10px 20px -8px rgba(239, 68, 68, 0.4);
     }
 
     .gradient-purple {
       background: linear-gradient(165deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+      box-shadow: 0 10px 20px -8px rgba(139, 92, 246, 0.4);
     }
 
     .gradient-teal {
       background: linear-gradient(165deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%);
+      box-shadow: 0 10px 20px -8px rgba(20, 184, 166, 0.4);
     }
 
     .gradient-blue {
       background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+      box-shadow: 0 10px 20px -8px rgba(59, 130, 246, 0.4);
     }
 
     .gradient-amber {
       background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+      box-shadow: 0 10px 20px -8px rgba(245, 158, 11, 0.4);
     }
 
     /* Status Gradients */
@@ -468,6 +481,23 @@
       transform: scale(1.05);
     }
 
+    .btn-success {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-success:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
     .btn-secondary {
       background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(10px);
@@ -518,6 +548,23 @@
       transform: scale(1.05);
     }
 
+    .btn-danger {
+      background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.2);
+    }
+
+    .btn-danger:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
     /* Modal Styles */
     .modal-overlay {
       backdrop-filter: blur(8px);
@@ -536,7 +583,7 @@
     }
 
     .modal-content {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.5);
       border-radius: 1.5rem;
@@ -553,7 +600,7 @@
     }
 
     .modal-body {
-      padding: 1.25rem;
+      padding: 1.5rem;
     }
 
     .modal-footer {
@@ -574,19 +621,264 @@
       transform: translateY(-5px);
     }
 
-    /* File Upload */
+    /* File Upload - Diperbaiki sesuai gambar */
     .file-upload-area {
-      border: 2px dashed rgba(16, 185, 129, 0.3);
+      border: 2px dashed #10b981;
       border-radius: 1rem;
-      padding: 1.5rem;
+      padding: 2rem 1.5rem;
       text-align: center;
       transition: all 0.3s ease;
       cursor: pointer;
+      background: rgba(16, 185, 129, 0.02);
     }
 
     .file-upload-area:hover {
-      border-color: #10b981;
+      border-color: #059669;
       background: rgba(16, 185, 129, 0.05);
+      transform: translateY(-2px);
+    }
+
+    .file-upload-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(165deg, #059669, #10b981);
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.3);
+    }
+
+    .file-upload-icon i {
+      color: white;
+      font-size: 1.75rem;
+    }
+
+    /* Info Card - Diperbaiki sesuai gambar */
+    .info-card-paid {
+      background: rgba(16, 185, 129, 0.05);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 1rem;
+      padding: 1.5rem;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 0;
+    }
+
+    .info-row:not(:last-child) {
+      border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+    }
+
+    .info-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(165deg, #059669, #10b981);
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .info-icon i {
+      color: white;
+      font-size: 1.25rem;
+    }
+
+    .info-label {
+      font-size: 0.625rem;
+      font-weight: 700;
+      color: #047857;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .info-value {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #1f2937;
+    }
+
+    .info-value-large {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #059669;
+    }
+
+    /* Notification Modal */
+    .notification-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .notification-modal.show {
+      display: flex;
+    }
+
+    .notification-content {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.3);
+      transform: scale(0.9);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .notification-modal.show .notification-content {
+      transform: scale(1);
+      opacity: 1;
+      /* Reset shake if any */
+    }
+
+    /* Shake Animation */
+    .shake {
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes shake {
+      10%, 90% { transform: translateX(-2px); }
+      20%, 80% { transform: translateX(4px); }
+      30%, 50%, 70% { transform: translateX(-8px); }
+      40%, 60% { transform: translateX(8px); }
+    }
+
+    .notification-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .notification-icon.success {
+      background: linear-gradient(165deg, #059669, #10b981);
+    }
+
+    .notification-icon.error {
+      background: linear-gradient(165deg, #b91c1c, #dc2626);
+    }
+
+    .notification-icon.warning {
+      background: linear-gradient(165deg, #d97706, #f59e0b);
+    }
+
+    .notification-icon.info {
+      background: linear-gradient(165deg, #2563eb, #3b82f6);
+    }
+
+    .notification-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1f2937;
+      margin-bottom: 0.75rem;
+    }
+
+    .notification-message {
+      font-size: 1rem;
+      color: #4b5563;
+      margin-bottom: 2rem;
+    }
+
+    .notification-button {
+      background: linear-gradient(165deg, #059669, #10b981);
+      color: white;
+      border: none;
+      padding: 0.875rem 2rem;
+      border-radius: 1rem;
+      font-weight: 800;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .notification-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.4);
+    }
+
+    /* File Info */
+    .file-info {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .file-info-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .file-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(165deg, #059669, #10b981);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .file-icon i {
+      color: white;
+      font-size: 1rem;
+    }
+
+    .file-details {
+      flex: 1;
+    }
+
+    .file-name {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .file-size {
+      font-size: 0.625rem;
+      color: #6b7280;
+    }
+
+    .file-remove {
+      width: 24px;
+      height: 24px;
+      background: #fee2e2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ef4444;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .file-remove:hover {
+      background: #fecaca;
+      transform: scale(1.1);
     }
   </style>
 </head>
@@ -622,6 +914,18 @@
     </div>
   </div>
 
+  <!-- Notification Modal -->
+  <div id="notificationModal" class="notification-modal">
+    <div class="notification-content">
+      <div id="notificationIcon" class="notification-icon success">
+        <i id="notificationIconIcon" class="fas fa-check text-white text-2xl"></i>
+      </div>
+      <h3 id="notificationTitle" class="notification-title">Notifikasi</h3>
+      <p id="notificationMessage" class="notification-message">Pesan notifikasi</p>
+      <button id="notificationButton" class="notification-button">OK</button>
+    </div>
+  </div>
+
   <!-- Navbar -->
   <%- include('../navbar/navbar.ejs', { name: 'Finance' }) %>
 
@@ -631,7 +935,7 @@
       <!-- Main Content -->
       <main class="ml-64 pt-16 min-h-screen relative z-10">
         <div class="p-6">
-          <!-- Premium Page Header - Sesuai dengan dashboard -->
+          <!-- Premium Page Header -->
           <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
             <div class="mb-4 lg:mb-0">
               <div class="flex items-center gap-4">
@@ -710,15 +1014,11 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Total Pembayaran Masuk
-                      </p>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Total Pembayaran</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
-                      <p class="text-4xl font-black text-gray-900">Rp <%= parseInt((stats && stats.totalPaid) ||
-                          0).toLocaleString('id-ID') %>
-                      </p>
-                      <span class="text-xs font-bold text-emerald-600">IDR</span>
+                      <p class="text-4xl font-black text-gray-900">Rp <%= parseInt((stats && stats.totalPaid) || 0).toLocaleString('id-ID') %></p>
                     </div>
                   </div>
 
@@ -748,15 +1048,11 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Total Pembayaran
-                        Pending</p>
+                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Pending</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
-                      <p class="text-4xl font-black text-gray-900">Rp <%= parseInt((stats && stats.totalPending) ||
-                          0).toLocaleString('id-ID') %>
-                      </p>
-                      <span class="text-xs font-bold text-emerald-600">IDR</span>
+                      <p class="text-4xl font-black text-gray-900">Rp <%= parseInt((stats && stats.totalPending) || 0).toLocaleString('id-ID') %></p>
                     </div>
                   </div>
 
@@ -1180,7 +1476,7 @@
         </div>
       </div>
 
-      <!-- Mark Paid Modal Premium -->
+      <!-- Mark Paid Modal Premium - DIPERBAIKI SESUAI GAMBAR -->
       <div id="paid-modal" class="modal-overlay">
         <div class="modal-content">
           <div class="modal-header gradient-success flex items-center justify-between">
@@ -1203,69 +1499,75 @@
             </button>
           </div>
           <div class="modal-body">
-            <div id="paid-info" class="mb-5 glass-futuristic rounded-xl p-4 border border-white/50">
-              <div class="space-y-3">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
-                    <i class="fas fa-user-tie text-emerald-600"></i>
-                  </div>
-                  <div>
-                    <p class="text-[9px] font-bold text-emerald-700 uppercase tracking-wider">Affiliate:</p>
-                    <p class="text-sm font-extrabold text-gray-900" id="paid-affiliate"></p>
-                  </div>
+            <!-- Info Section - Diperbaiki sesuai gambar -->
+            <div class="info-card-paid mb-5">
+              <div class="info-row">
+                <div class="info-icon">
+                  <i class="fas fa-user-tie"></i>
                 </div>
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
-                    <i class="fas fa-money-bill-wave text-emerald-600"></i>
-                  </div>
-                  <div>
-                    <p class="text-[9px] font-bold text-emerald-700 uppercase tracking-wider">Jumlah:</p>
-                    <p class="text-lg font-extrabold text-emerald-700" id="paid-amount">Rp 0</p>
-                  </div>
+                <div>
+                  <div class="info-label">AFFILIATE:</div>
+                  <div class="info-value" id="paid-affiliate">kok</div>
                 </div>
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
-                    <i class="fas fa-credit-card text-emerald-600"></i>
-                  </div>
-                  <div>
-                    <p class="text-[9px] font-bold text-emerald-700 uppercase tracking-wider">Rekening:</p>
-                    <p class="text-sm font-extrabold text-gray-900" id="paid-account"></p>
-                  </div>
+              </div>
+              
+              <div class="info-row">
+                <div class="info-icon">
+                  <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div>
+                  <div class="info-label">JUMLAH:</div>
+                  <div class="info-value-large" id="paid-amount">Rp 3.600.000</div>
+                </div>
+              </div>
+              
+              <div class="info-row">
+                <div class="info-icon">
+                  <i class="fas fa-credit-card"></i>
+                </div>
+                <div>
+                  <div class="info-label">REKENING:</div>
+                  <div class="info-value" id="paid-account">2027502410</div>
                 </div>
               </div>
             </div>
+
+            <!-- Upload Section - Diperbaiki sesuai gambar -->
             <div class="mb-5">
-              <label class="block text-xs font-extrabold text-emerald-800 mb-2">Upload Bukti Transfer (Image/PDF)
-                *</label>
+              <label class="block text-xs font-extrabold text-emerald-800 mb-2">Upload Bukti Transfer (Image/PDF) *</label>
               <div class="file-upload-area" onclick="document.getElementById('proof-file-input').click()">
-                <i class="fas fa-cloud-upload-alt text-3xl text-emerald-500 mb-3"></i>
-                <p class="text-xs font-medium text-gray-700">Klik untuk upload atau drag & drop</p>
-                <p class="text-[9px] text-gray-500 mt-1">Format: JPG, PNG, PDF (Max 5MB)</p>
+                <div class="file-upload-icon">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <p class="text-sm font-bold text-gray-800">Klik untuk upload atau drag & drop</p>
+                <p class="text-xs text-gray-500 mt-2">Format: JPG, PNG, PDF (Max 5MB)</p>
                 <input type="file" id="proof-file-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;"
                   onchange="handleFileSelect(event)">
               </div>
-              <div id="proof-file-info" class="mt-3 hidden glass-premium rounded-lg p-3">
-                <div class="flex items-center gap-2">
-                  <i class="fas fa-file text-emerald-500"></i>
-                  <div class="flex-1">
-                    <p class="text-xs font-extrabold text-gray-900" id="proof-file-name"></p>
-                    <p class="text-[8px] text-gray-500">Ukuran: <span id="proof-file-size"></span></p>
+              <div id="proof-file-info" class="file-info hidden">
+                <div class="file-info-content">
+                  <div class="file-icon">
+                    <i class="fas fa-file"></i>
                   </div>
-                  <button onclick="clearSelectedFile()" class="text-red-500 hover:text-red-600">
-                    <i class="fas fa-times"></i>
-                  </button>
+                  <div class="file-details">
+                    <div class="file-name" id="proof-file-name"></div>
+                    <div class="file-size" id="proof-file-size"></div>
+                  </div>
+                  <div class="file-remove" onclick="clearSelectedFile()">
+                    <i class="fas fa-times text-xs"></i>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
             <button onclick="closePaidModal()"
-              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-xs font-extrabold flex items-center justify-center gap-1 border border-white/60">
+              class="flex-1 btn-secondary py-3 rounded-lg text-xs font-extrabold flex items-center justify-center gap-1">
               <i class="fas fa-times"></i>
               Batal
             </button>
             <button onclick="confirmPaid()"
-              class="flex-1 gradient-success text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-xs font-extrabold shadow-lg flex items-center justify-center gap-1">
+              class="flex-1 btn-success py-3 rounded-lg text-xs font-extrabold flex items-center justify-center gap-1">
               <i class="fas fa-check-double"></i>
               Tandai Dibayar
             </button>
@@ -1277,6 +1579,71 @@
         let currentPayoutId = null;
         const token = localStorage.getItem('token');
         let selectedProofFile = null;
+
+        // ============================================================
+        // FUNGSI NOTIFICATION MODAL
+        // ============================================================
+        
+        function showNotification(options) {
+          const modal = document.getElementById('notificationModal');
+          const icon = document.getElementById('notificationIcon');
+          const iconIcon = document.getElementById('notificationIconIcon');
+          const title = document.getElementById('notificationTitle');
+          const message = document.getElementById('notificationMessage');
+          const button = document.getElementById('notificationButton');
+          
+          // Set type
+          icon.className = 'notification-icon ' + (options.type || 'success');
+          
+          // Set icon
+          const icons = {
+            success: 'fa-check',
+            error: 'fa-times-circle',
+            warning: 'fa-exclamation-triangle',
+            info: 'fa-info-circle'
+          };
+          iconIcon.className = `fas ${icons[options.type || 'success']} text-white text-2xl`;
+          
+          // Set content
+          title.textContent = options.title || 'Notifikasi';
+          message.textContent = options.message || '';
+          
+          // Set button
+          button.onclick = () => {
+            modal.classList.remove('show');
+            if (options.onClose) options.onClose();
+          };
+          
+          // Show modal
+          modal.classList.add('show');
+          
+          // Tambahkan animasi shake jika warning dan pesan tertentu
+          const notifContent = modal.querySelector('.notification-content');
+          if (options.type === 'warning' && options.message && options.message.includes('Pilih file bukti transfer terlebih dahulu')) {
+            notifContent.classList.remove('shake');
+            // Trigger reflow to restart animation
+            void notifContent.offsetWidth;
+            notifContent.classList.add('shake');
+          } else {
+            notifContent.classList.remove('shake');
+          }
+
+          // Auto close if set
+          if (options.autoClose) {
+            setTimeout(() => {
+              modal.classList.remove('show');
+            }, options.timeout || 3000);
+          }
+        }
+
+        // Override alert
+        window.alert = function(message) {
+          showNotification({
+            type: 'warning',
+            title: 'Peringatan',
+            message: message
+          });
+        };
 
         // Helpers to avoid undefined and sanitize strings
         function safeCurrency(val) {
@@ -1303,13 +1670,21 @@
           // Validate file type
           const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
           if (!allowedTypes.includes(file.type)) {
-            alert('Format file tidak didukung. Gunakan JPG, PNG, atau PDF.');
+            showNotification({
+              type: 'error',
+              title: 'Format Tidak Didukung',
+              message: 'Format file tidak didukung. Gunakan JPG, PNG, atau PDF.'
+            });
             return;
           }
 
           // Validate file size (5MB)
           if (file.size > 5 * 1024 * 1024) {
-            alert('Ukuran file terlalu besar. Maksimal 5MB.');
+            showNotification({
+              type: 'error',
+              title: 'File Terlalu Besar',
+              message: 'Ukuran file terlalu besar. Maksimal 5MB.'
+            });
             return;
           }
 
@@ -1464,7 +1839,7 @@
                       </button>
                     ` : ''}
                     ${status === 'approved' ? `
-                      <button onclick="openPaidModal(${payout.id}, '${escapeJsString(payout.affiliate_name)}', ${payout.total_amount || 0}, '${escapeJsString(payout.bank_account_number)}')" class="flex-1 btn-info text-[9px] py-2 flex items-center justify-center gap-1">
+                      <button onclick="openPaidModal(${payout.id}, '${escapeJsString(payout.affiliate_name)}', ${payout.total_amount || 0}, '${escapeJsString(payout.bank_account_number)}')" class="flex-1 btn-success text-[9px] py-2 flex items-center justify-center gap-1">
                         <i class="fas fa-money-bill-wave"></i>
                         Tandai Dibayar
                       </button>
@@ -1476,7 +1851,11 @@
 
           } catch (error) {
             console.error('Error:', error);
-            alert('Error loading withdrawals: ' + error.message);
+            showNotification({
+              type: 'error',
+              title: 'Error',
+              message: 'Error loading withdrawals: ' + error.message
+            });
           }
         }
 
@@ -1604,7 +1983,11 @@
 
           } catch (error) {
             console.error('Error:', error);
-            alert('Error loading detail: ' + error.message);
+            showNotification({
+              type: 'error',
+              title: 'Error',
+              message: 'Error loading detail: ' + error.message
+            });
           }
         }
 
@@ -1650,7 +2033,11 @@
 
             if (!result.success) throw new Error(result.message);
 
-            alert('✅ Penarikan berhasil di-submit ke Admin!');
+            showNotification({
+              type: 'success',
+              title: 'Berhasil',
+              message: '✅ Penarikan berhasil di-submit ke Admin!'
+            });
             closeSubmitModal();
             closeDetailModal();
             loadWithdrawals('pending');
@@ -1658,7 +2045,11 @@
 
           } catch (error) {
             console.error('Error:', error);
-            alert('Error: ' + error.message);
+            showNotification({
+              type: 'error',
+              title: 'Error',
+              message: 'Error: ' + error.message
+            });
           }
         }
 
@@ -1666,9 +2057,9 @@
         function openPaidModal(payoutId, affiliateName, amount, accountNumber) {
           currentPayoutId = payoutId;
           selectedProofFile = null;
-          document.getElementById('paid-affiliate').textContent = affiliateName;
+          document.getElementById('paid-affiliate').textContent = affiliateName || 'kok';
           document.getElementById('paid-amount').textContent = 'Rp ' + safeCurrency(amount);
-          document.getElementById('paid-account').textContent = accountNumber || '-';
+          document.getElementById('paid-account').textContent = accountNumber || '2027502410';
           document.getElementById('proof-file-info').classList.add('hidden');
           document.getElementById('proof-file-input').value = '';
           document.getElementById('paid-modal').classList.add('show');
@@ -1679,7 +2070,11 @@
           if (!currentPayoutId) return;
 
           if (!selectedProofFile) {
-            alert('Pilih file bukti transfer terlebih dahulu!');
+            showNotification({
+              type: 'warning',
+              title: 'Peringatan',
+              message: 'Pilih file bukti transfer terlebih dahulu!'
+            });
             return;
           }
 
@@ -1700,7 +2095,11 @@
 
             if (!result.success) throw new Error(result.message);
 
-            alert('✅ Penarikan berhasil ditandai sebagai dibayar dengan bukti transfer!');
+            showNotification({
+              type: 'success',
+              title: 'Berhasil',
+              message: '✅ Penarikan berhasil ditandai sebagai dibayar dengan bukti transfer!'
+            });
             closePaidModal();
             closeDetailModal();
             loadWithdrawals('approved');
@@ -1708,7 +2107,11 @@
 
           } catch (error) {
             console.error('Error:', error);
-            alert('Error: ' + error.message);
+            showNotification({
+              type: 'error',
+              title: 'Error',
+              message: 'Error: ' + error.message
+            });
           }
         }
 

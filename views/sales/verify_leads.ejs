@@ -419,37 +419,208 @@
       background: rgba(255, 255, 255, 0.8);
     }
 
-    /* Undo Toast */
-    #undoToast {
+    /* Modal Styles */
+    .modal-overlay {
       display: none;
       position: fixed;
-      right: 1.5rem;
-      bottom: 1.5rem;
-      z-index: 9999;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
       background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      padding: 0.75rem 1rem;
-      border-radius: 1rem;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      animation: slideInRight 0.3s ease-out;
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      max-width: 400px;
+      width: 90%;
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 50px 100px -20px rgba(16, 185, 129, 0.3);
+      position: relative;
+      overflow: hidden;
     }
 
-    #undoToast.show {
+    .modal-overlay.show .modal-content {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      position: relative;
+      animation: modalIconPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    @keyframes slideInRight {
+    @keyframes modalIconPop {
+      0% {
+        transform: scale(0);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .modal-icon.success {
+      background: linear-gradient(165deg, #059669, #10b981);
+    }
+
+    .modal-icon.warning {
+      background: linear-gradient(165deg, #d97706, #f59e0b);
+    }
+
+    .modal-icon.error {
+      background: linear-gradient(165deg, #b91c1c, #dc2626);
+    }
+
+    .modal-icon.info {
+      background: linear-gradient(165deg, #2563eb, #3b82f6);
+    }
+
+    .modal-icon.question {
+      background: linear-gradient(165deg, #7c3aed, #8b5cf6);
+    }
+
+    .modal-icon i {
+      color: white;
+      font-size: 2rem;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 0.75rem;
+      color: #1f2937;
+      animation: modalFadeIn 0.5s ease 0.1s both;
+    }
+
+    .modal-message {
+      font-size: 1rem;
+      color: #4b5563;
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+      animation: modalFadeIn 0.5s ease 0.2s both;
+    }
+
+    @keyframes modalFadeIn {
       from {
         opacity: 0;
-        transform: translateX(20px);
+        transform: translateY(10px);
       }
 
       to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0);
+      }
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      animation: modalFadeIn 0.5s ease 0.3s both;
+    }
+
+    .modal-btn {
+      padding: 0.875rem 2rem;
+      border-radius: 1rem;
+      font-size: 0.875rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      min-width: 120px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-btn-primary {
+      background: linear-gradient(165deg, #059669, #10b981);
+      color: white;
+      box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+    }
+
+    .modal-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.5);
+    }
+
+    .modal-btn-secondary {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      color: #374151;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-3px);
+    }
+
+    .modal-btn-danger {
+      background: linear-gradient(165deg, #b91c1c, #dc2626);
+      color: white;
+      box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4);
+    }
+
+    .modal-btn-danger:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.5);
+    }
+
+    /* Progress Bar for Auto-close */
+    .modal-progress {
+      height: 4px;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 2px;
+      margin-top: 2rem;
+      overflow: hidden;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .modal-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #34d399);
+      width: 100%;
+      animation: progress 3s linear forwards;
+    }
+
+    @keyframes progress {
+      0% {
+        width: 100%;
+      }
+
+      100% {
+        width: 0%;
       }
     }
 
@@ -465,6 +636,7 @@
       font-weight: 500;
       color: #374151;
       transition: all 0.2s ease;
+      width: 100%;
     }
 
     .lead-status-select:focus,
@@ -588,6 +760,11 @@
       opacity: 0.5;
       cursor: not-allowed;
     }
+
+    /* Hide original undo toast since we use modal */
+    #undoToast {
+      display: none !important;
+    }
   </style>
 </head>
 
@@ -622,13 +799,31 @@
     </div>
   </div>
 
+  <!-- Premium Modal System -->
+  <div id="premiumModal" class="modal-overlay">
+    <div class="modal-content" id="modalContent">
+      <div class="modal-icon success" id="modalIcon">
+        <i class="fas fa-check" id="modalIconIcon"></i>
+      </div>
+      <h3 class="modal-title" id="modalTitle">Notifikasi</h3>
+      <p class="modal-message" id="modalMessage">Pesan notifikasi akan muncul di sini</p>
+      <div class="modal-buttons">
+        <button class="modal-btn modal-btn-primary" id="modalConfirmBtn">OK</button>
+        <button class="modal-btn modal-btn-secondary" id="modalCancelBtn" style="display: none;">Batal</button>
+      </div>
+      <div class="modal-progress" id="modalProgress">
+        <div class="modal-progress-bar"></div>
+      </div>
+    </div>
+  </div>
+
   <%- include('../navbar/navbar.ejs', { name: 'Sales' }) %>
     <%- include('../sidebar/sales.ejs') %>
       <% const isSales=(typeof user !=='undefined' && user.role==='sales' ); %>
 
         <main class="ml-64 pt-16 min-h-screen relative z-10">
           <div class="p-6">
-            <!-- Premium Page Header - Sesuai dengan dashboard -->
+            <!-- Premium Page Header -->
             <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
               <div class="mb-4 lg:mb-0">
                 <div class="flex items-center gap-4">
@@ -859,7 +1054,8 @@
                           </td>
                         </tr>
                         <% } else { %>
-                          <% transactions.forEach(function(trx){ if (trx.lead_status !== 'SEDANG BERANGKAT' && trx.lead_status !== 'REJECTED') { %>
+                          <% transactions.forEach(function(trx){ if (trx.lead_status !=='SEDANG BERANGKAT' &&
+                            trx.lead_status !=='REJECTED' ) { %>
                             <tr class="table-row <%= trx.lead_status === 'LEAD BARU' ? 'new-lead-row' : '' %>">
                               <td class="p-3">
                                 <span class="font-extrabold text-xs text-gray-900">#<%= trx.id %></span>
@@ -964,7 +1160,7 @@
                               </td>
                             </tr>
                             <% } }); %>
-                          <% } %>
+                              <% } %>
                     </tbody>
                   </table>
                 </div>
@@ -1116,38 +1312,152 @@
           </div>
         </main>
 
-        <!-- Undo Toast Premium -->
-        <div id="undoToast" aria-live="polite">
-          <div class="flex items-center gap-3">
-            <div
-              class="w-8 h-8 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg flex items-center justify-center">
-              <i class="fas fa-undo-alt text-white text-xs"></i>
-            </div>
-            <div id="undoMessage" class="text-xs font-medium text-gray-700">Lead ditolak</div>
-          </div>
-          <div class="flex items-center gap-2">
-            <button id="undoBtn" class="px-3 py-1.5 btn-primary text-[10px]">Undo</button>
-            <button id="dismissUndo" class="px-3 py-1.5 btn-secondary text-[10px]">Tutup</button>
-          </div>
-        </div>
+        <!-- Undo Toast Premium (Hidden - using modal instead) -->
+        <div id="undoToast" style="display: none !important;"></div>
 
         <script>
+          // ============================================================
+          // FUNGSI MODAL
+          // ============================================================
+
+          const Modal = {
+            element: document.getElementById('premiumModal'),
+            icon: document.getElementById('modalIcon'),
+            iconIcon: document.getElementById('modalIconIcon'),
+            title: document.getElementById('modalTitle'),
+            message: document.getElementById('modalMessage'),
+            confirmBtn: document.getElementById('modalConfirmBtn'),
+            cancelBtn: document.getElementById('modalCancelBtn'),
+            progress: document.getElementById('modalProgress'),
+
+            show: function (options) {
+              const {
+                type = 'info',
+                title,
+                message,
+                onConfirm,
+                onCancel,
+                confirmText = 'OK',
+                cancelText = 'Batal',
+                autoClose = true,
+                closeTime = 3000
+              } = options;
+
+              // Reset classes
+              this.icon.className = 'modal-icon';
+              this.icon.classList.add(type);
+
+              // Set icon berdasarkan type
+              const icons = {
+                success: 'fa-check',
+                warning: 'fa-exclamation-triangle',
+                error: 'fa-times-circle',
+                info: 'fa-info-circle',
+                question: 'fa-question-circle'
+              };
+              this.iconIcon.className = `fas ${icons[type] || 'fa-info-circle'} text-white text-2xl`;
+
+              // Set content
+              this.title.textContent = title || 'Notifikasi';
+              this.message.textContent = message || '';
+
+              // Show modal
+              this.element.classList.add('show');
+
+              // Handle buttons
+              if (onConfirm) {
+                this.confirmBtn.style.display = 'block';
+                this.confirmBtn.textContent = confirmText;
+                this.confirmBtn.onclick = () => {
+                  this.hide();
+                  onConfirm();
+                };
+              } else {
+                this.confirmBtn.style.display = 'block';
+                this.confirmBtn.textContent = 'OK';
+                this.confirmBtn.onclick = () => this.hide();
+              }
+
+              if (onCancel) {
+                this.cancelBtn.style.display = 'block';
+                this.cancelBtn.textContent = cancelText;
+                this.cancelBtn.onclick = () => {
+                  this.hide();
+                  onCancel();
+                };
+              } else {
+                this.cancelBtn.style.display = 'none';
+              }
+
+              // Auto close
+              if (autoClose) {
+                this.progress.style.display = 'block';
+                const progressBar = this.progress.querySelector('.modal-progress-bar');
+                progressBar.style.animation = 'none';
+                progressBar.offsetHeight;
+                progressBar.style.animation = `progress ${closeTime / 1000}s linear forwards`;
+
+                setTimeout(() => {
+                  this.hide();
+                }, closeTime);
+              } else {
+                this.progress.style.display = 'none';
+              }
+            },
+
+            hide: function () {
+              this.element.classList.remove('show');
+            }
+          };
+
+          // Fungsi untuk menampilkan modal
+          function showModal(options) {
+            Modal.show(options);
+          }
+
+          // Fungsi untuk konfirmasi (Promise-based)
+          function showConfirm(options) {
+            return new Promise((resolve) => {
+              Modal.show({
+                type: options.type || 'question',
+                title: options.title || 'Konfirmasi',
+                message: options.message,
+                confirmText: options.confirmText || 'Ya',
+                cancelText: options.cancelText || 'Tidak',
+                onConfirm: () => resolve(true),
+                onCancel: () => resolve(false),
+                autoClose: false
+              });
+            });
+          }
+
+          // Override alert bawaan
+          window.alert = function (message) {
+            showModal({
+              type: 'warning',
+              title: 'Peringatan',
+              message: message
+            });
+          };
+
           // ============================================================
           // FUNGSI UTAMA
           // ============================================================
 
           // Tab handling
-          document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', function () {
-            document.querySelectorAll('.tab-btn').forEach(b => {
-              b.classList.remove('tab-active');
-              b.classList.add('tab-inactive');
+          document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+              document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('tab-inactive');
+              });
+              this.classList.add('tab-active');
+              this.classList.remove('tab-inactive');
+              const tab = this.dataset.tab;
+              document.getElementById('tab-leads').classList.toggle('hidden', tab !== 'leads');
+              document.getElementById('tab-history').classList.toggle('hidden', tab !== 'history');
             });
-            this.classList.add('tab-active');
-            this.classList.remove('tab-inactive');
-            const tab = this.dataset.tab;
-            document.getElementById('tab-leads').classList.toggle('hidden', tab !== 'leads');
-            document.getElementById('tab-history').classList.toggle('hidden', tab !== 'history');
-          }));
+          });
 
           // Setup lead-status selects with conditional Save/Reject UI and regression guard
           const getStageLevel = (s) => {
@@ -1172,7 +1482,7 @@
           }
 
           // Delegated change handler for dynamically inserted selects
-          document.addEventListener('change', function (e) {
+          document.addEventListener('change', async function (e) {
             const sel = e.target;
             if (!sel || !sel.matches('.lead-status-select')) return;
             const id = sel.dataset.id;
@@ -1185,9 +1495,14 @@
             const currentDbStatus = statusEl ? statusEl.textContent.replace('Status DB:', '').trim() : (sel.dataset.prev || '');
             const curLevel = getStageLevel(currentDbStatus);
             const targetLevel = getStageLevel(val);
+
             // Prevent downgrading to an earlier/lower stage
             if (curLevel > targetLevel) {
-              alert('Tidak diperbolehkan menurunkan status ke tahap sebelumnya.');
+              await showModal({
+                type: 'warning',
+                title: 'Tidak Diizinkan',
+                message: 'Tidak diperbolehkan menurunkan status ke tahap sebelumnya.'
+              });
               sel.value = sel.dataset.prev || '';
               return;
             }
@@ -1199,26 +1514,47 @@
             }
 
             // Otherwise auto-save like before and update DB time
-            fetch('/sales/update-lead-status', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: `id=${encodeURIComponent(id)}&lead_status=${encodeURIComponent(val)}`
-            }).then(res => res.json()).then(json => {
+            try {
+              const resp = await fetch('/sales/update-lead-status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `id=${encodeURIComponent(id)}&lead_status=${encodeURIComponent(val)}`
+              });
+              const json = await resp.json();
+
               if (json && json.success) {
                 const prev = sel.closest('td').querySelector('.text-gray-500');
                 if (prev) prev.textContent = 'Status DB: ' + val;
-                // update time cell if backend returned updated_at
                 const timeCell = sel.closest('tr').querySelector('td:nth-child(8)');
                 if (timeCell) {
                   timeCell.textContent = json.updated_at ? new Date(json.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
                 }
                 sel.dataset.prev = val;
                 updateStats();
+
+                await showModal({
+                  type: 'success',
+                  title: 'Berhasil',
+                  message: 'Status lead berhasil diperbarui',
+                  autoClose: true
+                });
               } else {
-                alert('Gagal menyimpan status');
+                await showModal({
+                  type: 'error',
+                  title: 'Gagal',
+                  message: 'Gagal menyimpan status'
+                });
                 sel.value = sel.dataset.prev || '';
               }
-            }).catch(() => { alert('Gagal menyimpan status'); sel.value = sel.dataset.prev || ''; });
+            } catch (err) {
+              console.error(err);
+              await showModal({
+                type: 'error',
+                title: 'Error',
+                message: 'Gagal menyimpan status'
+              });
+              sel.value = sel.dataset.prev || '';
+            }
           });
 
           // Delegate clicks for save/reject buttons
@@ -1228,29 +1564,59 @@
               const id = area.dataset.id;
               const select = document.querySelector('.lead-status-select[data-id="' + id + '"]');
               const val = select.value;
+
               if (!val) return;
+
+              // KONFIRMASI KHUSUS UNTUK STATUS SEDANG BERANGKAT
+              if (val === 'SEDANG BERANGKAT') {
+                const confirmed = await showConfirm({
+                  type: 'warning',
+                  title: 'Konfirmasi Status Berangkat',
+                  message: 'Apakah Anda yakin ingin menandai lead ini sebagai SEDANG BERANGKAT?\n\nLead akan dipindahkan ke tab Riwayat dan tidak dapat diubah kembali ke status sebelumnya tanpa melalui proses Restore.',
+                  confirmText: 'Ya, Berangkat',
+                  cancelText: 'Batal'
+                });
+
+                if (!confirmed) {
+                  // Batal, kembalikan ke status sebelumnya
+                  select.value = select.dataset.prev || '';
+                  area.querySelectorAll('.save-btn, .reject-btn').forEach(b => b.classList.add('hidden'));
+                  return;
+                }
+              }
+
               try {
                 const resp = await fetch('/sales/update-lead-status', {
-                  method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: `id=${encodeURIComponent(id)}&lead_status=${encodeURIComponent(val)}`
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: `id=${encodeURIComponent(id)}&lead_status=${encodeURIComponent(val)}`
                 });
                 const j = await resp.json();
+
                 if (j && j.success) {
-                  // update UI
-                  const prev = select.closest('td').querySelector('.text-gray-500'); if (prev) prev.textContent = 'Status DB: ' + (j.status || val);
+                  const prev = select.closest('td').querySelector('.text-gray-500');
+                  if (prev) prev.textContent = 'Status DB: ' + (j.status || val);
                   const prevStatus = select.dataset.prev || '';
                   select.dataset.prev = j.status || val;
-                  // update time cell
+
                   const timeCell = select.closest('tr').querySelector('td:nth-child(8)');
                   if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
+
                   area.querySelectorAll('.save-btn, .reject-btn').forEach(b => b.classList.add('hidden'));
-                  // adjust NEW badge/count
+
                   if (prevStatus === 'LEAD BARU' && (j.status || val) !== 'LEAD BARU') {
-                    const row = select.closest('tr'); row.classList.remove('new-lead-row'); const badge = row.querySelector('.pulse-badge'); if (badge) badge.remove(); updateNewLeadsCount(-1);
+                    const row = select.closest('tr');
+                    row.classList.remove('new-lead-row');
+                    const badge = row.querySelector('.pulse-badge');
+                    if (badge) badge.remove();
+                    updateNewLeadsCount(-1);
                   } else if (prevStatus !== 'LEAD BARU' && (j.status || val) === 'LEAD BARU') {
-                    const row = select.closest('tr'); row.classList.add('new-lead-row'); updateNewLeadsCount(1);
+                    const row = select.closest('tr');
+                    row.classList.add('new-lead-row');
+                    updateNewLeadsCount(1);
                   }
 
-                  // If status becomes SEDANG BERANGKAT, move the row into History tab (dedupe/update existing)
+                  // If status becomes SEDANG BERANGKAT, move the row into History tab
                   if ((j.status || val) === 'SEDANG BERANGKAT') {
                     try {
                       const row = select.closest('tr');
@@ -1261,12 +1627,15 @@
                       if (histTbody) {
                         const existing = histTbody.querySelector('tr.history-row[data-id="' + id + '"]');
                         if (existing) {
-                          // update existing history row instead of inserting duplicate
                           try {
-                            const amt = existing.querySelector('td:nth-child(5) .font-extrabold'); if (amt && (j.total_amount !== undefined && j.total_amount !== null)) amt.textContent = 'Rp ' + ((Number(j.total_amount) || 0).toLocaleString('id-ID'));
-                            const statusCell = existing.querySelector('td:nth-child(6) span'); if (statusCell) statusCell.textContent = 'SEDANG BERANGKAT';
-                            const timeCell = existing.querySelector('td:nth-child(7) span'); if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
-                            const sel = existing.querySelector('.history-status-select'); if (sel) sel.value = 'SEDANG BERANGKAT';
+                            const amt = existing.querySelector('td:nth-child(5) .font-extrabold');
+                            if (amt && (j.total_amount !== undefined && j.total_amount !== null)) amt.textContent = 'Rp ' + ((Number(j.total_amount) || 0).toLocaleString('id-ID'));
+                            const statusCell = existing.querySelector('td:nth-child(6) span');
+                            if (statusCell) statusCell.textContent = 'SEDANG BERANGKAT';
+                            const timeCell = existing.querySelector('td:nth-child(7) span');
+                            if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
+                            const sel = existing.querySelector('.history-status-select');
+                            if (sel) sel.value = 'SEDANG BERANGKAT';
                           } catch (err) { console.error('update existing history on move error', err); }
                         } else {
                           const tr = document.createElement('tr');
@@ -1279,7 +1648,7 @@
                                 <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
                                   <i class="fas fa-user text-emerald-600 text-xs"></i>
                                 </div>
-                                <span class="font-medium text-xs text-gray-900">${(j.customer_name || fallbackCustomer)}</span>
+                                <span class="font-medium text-xs text-gray-900">${j.customer_name || '-'}</span>
                               </div>
                             </td>
                             <td class="p-3">
@@ -1287,11 +1656,11 @@
                                 <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
                                   <i class="fas fa-user-tie text-purple-600 text-xs"></i>
                                 </div>
-                                <span class="font-medium text-xs text-gray-900">${(j.affiliate_name || fallbackAffiliate)}</span>
+                                <span class="font-medium text-xs text-gray-900">${j.affiliate_name || '-'}</span>
                               </div>
                             </td>
-                            <td class="p-3"><span class="text-xs text-gray-900">${(j.event_name || fallbackEvent || ('#' + (j.event_id || '')))}</span></td>
-                            <td class="p-3"><span class="font-extrabold text-xs text-gray-900">${(j.total_amount !== undefined && j.total_amount !== null) ? ('Rp ' + (Number(j.total_amount) || 0).toLocaleString('id-ID')) : fallbackAmountText}</span></td>
+                            <td class="p-3"><span class="text-xs text-gray-900">${j.event_name || ('#' + (j.event_id || ''))}</span></td>
+                            <td class="p-3"><span class="font-extrabold text-xs text-gray-900">Rp ${(Number(j.total_amount) || 0).toLocaleString('id-ID')}</span></td>
                             <td class="p-3"><span class="text-xs text-gray-600">SEDANG BERANGKAT</span></td>
                             <td class="p-3"><span class="text-xs text-gray-600">${j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID')}</span></td>
                             <td class="p-3">
@@ -1317,44 +1686,80 @@
                   }
 
                   updateStats();
-                  alert('Status disimpan. Jika ada komisi untuk stage ini, akan ditambahkan ke dashboard affiliate.');
+
+                  await showModal({
+                    type: 'success',
+                    title: 'Berhasil',
+                    message: val === 'SEDANG BERANGKAT'
+                      ? 'Status lead berhasil diperbarui menjadi SEDANG BERANGKAT. Lead telah dipindahkan ke tab Riwayat.'
+                      : 'Status lead berhasil diperbarui. Komisi akan ditambahkan ke dashboard affiliate.'
+                  });
                 } else {
-                  alert('Gagal menyimpan status');
+                  await showModal({
+                    type: 'error',
+                    title: 'Gagal',
+                    message: 'Gagal menyimpan status'
+                  });
                 }
-              } catch (err) { console.error(err); alert('Gagal menyimpan status'); }
+              } catch (err) {
+                console.error(err);
+                await showModal({
+                  type: 'error',
+                  title: 'Error',
+                  message: 'Gagal menyimpan status'
+                });
+              }
             }
 
             if (e.target.matches('.reject-btn')) {
               const area = e.target.closest('.action-area');
               const id = area.dataset.id;
               const select = document.querySelector('.lead-status-select[data-id="' + id + '"]');
-              // revert to previous
               select.value = select.dataset.prev || '';
               area.querySelectorAll('.save-btn, .reject-btn').forEach(b => b.classList.add('hidden'));
             }
 
             if (e.target.matches('.reject-row-btn')) {
               const id = e.target.dataset.id;
-              if (!confirm('Tandai lead ini sebagai REJECTED?')) return;
+
+              const confirmed = await showConfirm({
+                type: 'warning',
+                title: 'Konfirmasi Reject',
+                message: 'Apakah Anda yakin ingin menandai lead ini sebagai REJECTED?\n\nLead akan dipindahkan ke tab Riwayat.',
+                confirmText: 'Ya, Reject',
+                cancelText: 'Batal'
+              });
+
+              if (!confirmed) return;
+
               try {
                 const resp = await fetch('/sales/update-lead-status', {
-                  method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: `id=${encodeURIComponent(id)}&lead_status=REJECTED`
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: `id=${encodeURIComponent(id)}&lead_status=REJECTED`
                 });
                 const j = await resp.json();
+
                 if (j && j.success) {
                   const select = document.querySelector('.lead-status-select[data-id="' + id + '"]');
                   const prevStatus = select ? (select.dataset.prev || '') : '';
                   if (select) { select.value = 'REJECTED'; select.dataset.prev = 'REJECTED'; }
+
                   const row = document.querySelector('tr td .action-area[data-id="' + id + '"]')?.closest('tr');
                   if (row) {
-                    const statusEl = row.querySelector('.text-gray-500'); if (statusEl) statusEl.textContent = 'Status DB: ' + (j.status || 'REJECTED');
-                    const timeCell = row.querySelector('td:nth-child(8)'); if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
-                    // remove NEW indicator if it was new
+                    const statusEl = row.querySelector('.text-gray-500');
+                    if (statusEl) statusEl.textContent = 'Status DB: ' + (j.status || 'REJECTED');
+                    const timeCell = row.querySelector('td:nth-child(8)');
+                    if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
+
                     if (prevStatus === 'LEAD BARU') {
-                      row.classList.remove('new-lead-row'); const badge = row.querySelector('.pulse-badge'); if (badge) badge.remove(); updateNewLeadsCount(-1);
+                      row.classList.remove('new-lead-row');
+                      const badge = row.querySelector('.pulse-badge');
+                      if (badge) badge.remove();
+                      updateNewLeadsCount(-1);
                     }
 
-                    // move rejected row into History tab (update if already present)
+                    // move rejected row into History tab
                     try {
                       const leadsTbody = document.querySelector('#leadsTable tbody');
                       if (row && leadsTbody) row.remove();
@@ -1364,8 +1769,10 @@
                         const existing = histTbody.querySelector('tr.history-row[data-id="' + id + '"]');
                         if (existing) {
                           try {
-                            const statusCell = existing.querySelector('td:nth-child(6) span'); if (statusCell) statusCell.textContent = 'REJECTED';
-                            const timeCell = existing.querySelector('td:nth-child(7) span'); if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
+                            const statusCell = existing.querySelector('td:nth-child(6) span');
+                            if (statusCell) statusCell.textContent = 'REJECTED';
+                            const timeCell = existing.querySelector('td:nth-child(7) span');
+                            if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
                           } catch (err) { console.error('update existing history rejected error', err); }
                         } else {
                           const tr = document.createElement('tr');
@@ -1378,7 +1785,7 @@
                                 <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
                                   <i class="fas fa-user text-emerald-600 text-xs"></i>
                                 </div>
-                                <span class="font-medium text-xs text-gray-900">${j.customer_name || (row.querySelector('td:nth-child(2)')?.textContent.trim() || '-')}</span>
+                                <span class="font-medium text-xs text-gray-900">${j.customer_name || '-'}</span>
                               </div>
                             </td>
                             <td class="p-3">
@@ -1386,10 +1793,10 @@
                                 <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
                                   <i class="fas fa-user-tie text-purple-600 text-xs"></i>
                                 </div>
-                                <span class="font-medium text-xs text-gray-900">${j.affiliate_name || (row.querySelector('td:nth-child(3)')?.textContent.trim() || '-')}</span>
+                                <span class="font-medium text-xs text-gray-900">${j.affiliate_name || '-'}</span>
                               </div>
                             </td>
-                            <td class="p-3"><span class="text-xs text-gray-900">${j.event_name || ('#' + (j.event_id || '')) || (row.querySelector('td:nth-child(4)')?.textContent.trim() || '-')}</span></td>
+                            <td class="p-3"><span class="text-xs text-gray-900">${j.event_name || ('#' + (j.event_id || ''))}</span></td>
                             <td class="p-3"><span class="font-extrabold text-xs text-gray-900">Rp ${(Number(j.total_amount) || 0).toLocaleString('id-ID')}</span></td>
                             <td class="p-3"><span class="text-xs text-gray-600">REJECTED</span></td>
                             <td class="p-3"><span class="text-xs text-gray-600">${j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID')}</span></td>
@@ -1413,11 +1820,51 @@
                   }
 
                   updateStats();
-                  // show undo option
-                  showUndoToast(id, prevStatus);
-                  alert('Lead ditandai REJECTED');
-                } else { alert('Gagal menolak lead'); }
-              } catch (err) { console.error(err); alert('Gagal menolak lead'); }
+
+                  // Show undo option in modal
+                  const undoConfirmed = await showConfirm({
+                    type: 'warning',
+                    title: 'Lead Ditolak',
+                    message: `Lead #${id} telah ditandai REJECTED. Batalkan?`,
+                    confirmText: 'Ya, Batalkan',
+                    cancelText: 'Tidak'
+                  });
+
+                  if (undoConfirmed) {
+                    try {
+                      const undoResp = await fetch('/sales/update-lead-status', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: `id=${encodeURIComponent(id)}&lead_status=${encodeURIComponent(prevStatus || 'LEAD BARU')}`
+                      });
+                      const undoJ = await undoResp.json();
+                      if (undoJ && undoJ.success) {
+                        await showModal({
+                          type: 'success',
+                          title: 'Berhasil',
+                          message: 'Perubahan berhasil dibatalkan'
+                        });
+                        location.reload();
+                      }
+                    } catch (err) {
+                      console.error(err);
+                    }
+                  }
+                } else {
+                  await showModal({
+                    type: 'error',
+                    title: 'Gagal',
+                    message: 'Gagal menolak lead'
+                  });
+                }
+              } catch (err) {
+                console.error(err);
+                await showModal({
+                  type: 'error',
+                  title: 'Error',
+                  message: 'Gagal menolak lead'
+                });
+              }
             }
 
             if (e.target.matches('.history-restore-btn')) {
@@ -1427,115 +1874,152 @@
               const id = match ? match[1] : null;
               const sel = row.querySelector('.history-status-select');
               const newStatus = sel ? sel.value : '';
-              // capture displayed values from the history row as fallbacks (preserve before any DOM removal)
-              const customerNameDisplay = row.querySelector('td:nth-child(2) .font-medium')?.textContent.trim() || row.querySelector('td:nth-child(2)')?.textContent.trim() || '';
-              const affiliateNameDisplay = row.querySelector('td:nth-child(3) .font-medium')?.textContent.trim() || row.querySelector('td:nth-child(3)')?.textContent.trim() || '';
-              const eventDisplay = row.querySelector('td:nth-child(4) .text-xs')?.textContent.trim() || row.querySelector('td:nth-child(4)')?.textContent.trim() || '';
-              const amountDisplay = row.querySelector('td:nth-child(5) .font-extrabold')?.textContent.trim() || row.querySelector('td:nth-child(5)')?.textContent.trim() || '';
-              const commissionDisplay = row.querySelector('td:nth-child(6) .text-xs')?.textContent.trim() || row.querySelector('td:nth-child(6)')?.textContent.trim() || '';
-              const timeDisplay = row.querySelector('td:nth-child(8) span')?.textContent.trim() || row.querySelector('td:nth-child(7) span')?.textContent.trim() || '';
-              if (!id || !newStatus) { alert('Pilih status baru terlebih dahulu'); return; }
-              if (!confirm('Ubah status lead #' + id + ' menjadi ' + newStatus + ' ?')) return;
+
+              if (!id || !newStatus) {
+                await showModal({
+                  type: 'warning',
+                  title: 'Pilih Status',
+                  message: 'Pilih status baru terlebih dahulu'
+                });
+                return;
+              }
+
+              // KONFIRMASI KHUSUS UNTUK RESTORE
+              const confirmed = await showConfirm({
+                type: 'question',
+                title: 'Konfirmasi Restore',
+                message: `Apakah Anda yakin ingin mengembalikan lead #${id} dengan status ${newStatus}?\n\nLead akan dipindahkan kembali ke tab Leads.`,
+                confirmText: 'Ya, Restore',
+                cancelText: 'Batal'
+              });
+
+              if (!confirmed) return;
+
               try {
                 const resp = await fetch('/sales/update-lead-status', {
-                  method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: `id=${encodeURIComponent(id)}&lead_status=${encodeURIComponent(newStatus)}`
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: `id=${encodeURIComponent(id)}&lead_status=${encodeURIComponent(newStatus)}`
                 });
                 const j = await resp.json();
+
                 if (j && j.success) {
-                  // if restoring to SEDANG BERANGKAT or REJECTED, keep/update the row in History — don't move to Leads
                   if (newStatus === 'SEDANG BERANGKAT' || newStatus === 'REJECTED') {
-                    // update the existing history row's status/time (row still references the history row)
+                    // Update existing history row
                     try {
                       const statusCell = row.querySelector('td:nth-child(6) span');
                       if (statusCell) statusCell.textContent = newStatus;
                       const timeCell = row.querySelector('td:nth-child(7) span');
                       if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
-                      const sel = row.querySelector('.history-status-select'); if (sel) sel.value = newStatus;
+                      const sel = row.querySelector('.history-status-select');
+                      if (sel) sel.value = newStatus;
                       applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' });
                       updateStats();
-                      alert('Status diperbarui (tetap di Riwayat).');
-                    } catch (err) { console.error('update history row error', err); alert('Perubahan berhasil namun pembaruan tampilan gagal'); }
+
+                      await showModal({
+                        type: 'success',
+                        title: 'Berhasil',
+                        message: 'Status berhasil diperbarui'
+                      });
+                    } catch (err) {
+                      console.error('update history row error', err);
+                    }
                   } else {
-                    // remove from history and add to Leads (only for non-HISTORY statuses)
-                    // preserve displayed values for use if server response omits them
-                    const preserved = { customer_name: customerNameDisplay, affiliate_name: affiliateNameDisplay, event_name: eventDisplay, total_amount_text: amountDisplay, commission_text: commissionDisplay, updated_at_text: timeDisplay };
+                    // Remove from history and add to leads
                     row.remove();
                     try {
                       const leadsTbody = document.querySelector('#leadsTable tbody');
-                      if (leadsTbody) {
-                        // avoid inserting duplicate lead row
-                        if (!leadsTbody.querySelector('.action-area[data-id="' + id + '"]')) {
-                          const tr = document.createElement('tr'); tr.className = 'border-t hover:bg-white/40 transition-all duration-300 border-b border-white/30 bg-white/20 backdrop-blur';
-                          tr.innerHTML = `
-                    <td class="p-3">
-                      <span class="font-extrabold text-xs text-gray-900">#${id}</span>
-                    </td>
-                    <td class="p-3">
-                      <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
-                          <i class="fas fa-user text-emerald-600 text-xs"></i>
-                        </div>
-                        <span class="font-medium text-xs text-gray-900">${(j.customer_name || preserved.customer_name || '-')}</span>
-                      </div>
-                    </td>
-                    <td class="p-3">
-                      <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
-                          <i class="fas fa-user-tie text-purple-600 text-xs"></i>
-                        </div>
-                        <span class="font-medium text-xs text-gray-900">${(j.affiliate_name || preserved.affiliate_name || '-')}</span>
-                      </div>
-                    </td>
-                    <td class="p-3">
-                      <span class="text-xs text-gray-900">${(j.event_name || preserved.event_name || ('#' + (j.event_id || '')))}</span>
-                    </td>
-                    <td class="p-3">
-                      <span class="font-extrabold text-xs text-gray-900">${(j.total_amount !== undefined && j.total_amount !== null) ? ('Rp ' + (Number(j.total_amount) || 0).toLocaleString('id-ID')) : (preserved.total_amount_text || 'Rp 0')}</span>
-                    </td>
-                    <td class="p-3">
-                      <span class="text-xs text-gray-400">-</span>
-                    </td>
-                    <td class="p-3">
-                      <select class="lead-status-select" data-id="${id}" data-prev="${newStatus}">
-                        <option value="">-- pilih status --</option>
-                        <option value="LEAD BARU" ${newStatus === 'LEAD BARU' ? 'selected' : ''}>LEAD BARU</option>
-                        <option value="SEDANG DI PROSPEK" ${newStatus === 'SEDANG DI PROSPEK' ? 'selected' : ''}>SEDANG DI PROSPEK</option>
-                        <option value="HOT" ${newStatus === 'HOT' ? 'selected' : ''}>HOT</option>
-                        <option value="DP" ${newStatus === 'DP' ? 'selected' : ''}>DP</option>
-                        <option value="LUNAS" ${newStatus === 'LUNAS' ? 'selected' : ''}>LUNAS</option>
-                        <option value="SEDANG BERANGKAT" ${newStatus === 'SEDANG BERANGKAT' ? 'selected' : ''}>SEDANG BERANGKAT</option>
-                      </select>
-                      <div class="text-[8px] text-gray-500 mt-1">Status DB: ${newStatus}</div>
-                      <div class="mt-2 action-area flex gap-1" data-id="${id}">
-                        <button class="save-btn hidden px-3 py-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg text-[8px] font-extrabold">Simpan</button>
-                        <button class="reject-btn hidden px-3 py-1 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg text-[8px] font-extrabold">Reject</button>
-                      </div>
-                    </td>
-                    <td class="p-3">
-                      <span class="text-xs text-gray-600">${j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID')}</span>
-                    </td>
-                    <td class="p-3">
-                      <button class="reject-row-btn px-3 py-1.5 btn-danger text-[8px]" data-id="${id}">
-                        <i class="fas fa-times mr-1"></i> Reject
-                      </button>
-                    </td>
-                  `;
-                          leadsTbody.insertBefore(tr, leadsTbody.firstChild);
-                        }
-                        updateNewLeadsCount(newStatus === 'LEAD BARU' ? 1 : 0);
-                        applyFiltersAndPaginate({ tableSelector: '#leadsTable', searchInputId: 'leadsSearch', statusInputId: 'leadsStatusFilter', rowsPerPageId: 'leadsRowsPerPage', paginationId: 'leadsPagination', totalId: 'leadsTotal' });
+                      if (leadsTbody && !leadsTbody.querySelector('.action-area[data-id="' + id + '"]')) {
+                        const tr = document.createElement('tr');
+                        tr.className = 'border-t hover:bg-white/40 transition-all duration-300 border-b border-white/30 bg-white/20 backdrop-blur';
+                        tr.innerHTML = `
+                          <td class="p-3">
+                            <span class="font-extrabold text-xs text-gray-900">#${id}</span>
+                            ${newStatus === 'LEAD BARU' ? '<span class="ml-2 pulse-badge">NEW</span>' : ''}
+                          </td>
+                          <td class="p-3">
+                            <div class="flex items-center gap-2">
+                              <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
+                                <i class="fas fa-user text-emerald-600 text-xs"></i>
+                              </div>
+                              <span class="font-medium text-xs text-gray-900">${j.customer_name || '-'}</span>
+                            </div>
+                          </td>
+                          <td class="p-3">
+                            <div class="flex items-center gap-2">
+                              <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
+                                <i class="fas fa-user-tie text-purple-600 text-xs"></i>
+                              </div>
+                              <span class="font-medium text-xs text-gray-900">${j.affiliate_name || '-'}</span>
+                            </div>
+                          </td>
+                          <td class="p-3">
+                            <span class="text-xs text-gray-900">${j.event_name || ('#' + (j.event_id || ''))}</span>
+                          </td>
+                          <td class="p-3">
+                            <span class="font-extrabold text-xs text-gray-900">Rp ${(Number(j.total_amount) || 0).toLocaleString('id-ID')}</span>
+                          </td>
+                          <td class="p-3">
+                            <span class="text-xs text-gray-400">-</span>
+                          </td>
+                          <td class="p-3">
+                            <select class="lead-status-select" data-id="${id}" data-prev="${newStatus}">
+                              <option value="">-- pilih status --</option>
+                              <option value="LEAD BARU" ${newStatus === 'LEAD BARU' ? 'selected' : ''}>LEAD BARU</option>
+                              <option value="SEDANG DI PROSPEK" ${newStatus === 'SEDANG DI PROSPEK' ? 'selected' : ''}>SEDANG DI PROSPEK</option>
+                              <option value="HOT" ${newStatus === 'HOT' ? 'selected' : ''}>HOT</option>
+                              <option value="DP" ${newStatus === 'DP' ? 'selected' : ''}>DP</option>
+                              <option value="LUNAS" ${newStatus === 'LUNAS' ? 'selected' : ''}>LUNAS</option>
+                              <option value="SEDANG BERANGKAT" ${newStatus === 'SEDANG BERANGKAT' ? 'selected' : ''}>SEDANG BERANGKAT</option>
+                            </select>
+                            <div class="text-[8px] text-gray-500 mt-1">Status DB: ${newStatus}</div>
+                            <div class="mt-2 action-area flex gap-1" data-id="${id}">
+                              <button class="save-btn hidden px-3 py-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg text-[8px] font-extrabold">Simpan</button>
+                              <button class="reject-btn hidden px-3 py-1 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg text-[8px] font-extrabold">Reject</button>
+                            </div>
+                          </td>
+                          <td class="p-3">
+                            <span class="text-xs text-gray-600">${j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID')}</span>
+                          </td>
+                          <td class="p-3">
+                            <button class="reject-row-btn px-3 py-1.5 btn-danger text-[8px]" data-id="${id}">
+                              <i class="fas fa-times mr-1"></i> Reject
+                            </button>
+                          </td>
+                        `;
+                        leadsTbody.insertBefore(tr, leadsTbody.firstChild);
                       }
+                      updateNewLeadsCount(newStatus === 'LEAD BARU' ? 1 : 0);
+                      applyFiltersAndPaginate({ tableSelector: '#leadsTable', searchInputId: 'leadsSearch', statusInputId: 'leadsStatusFilter', rowsPerPageId: 'leadsRowsPerPage', paginationId: 'leadsPagination', totalId: 'leadsTotal' });
                     } catch (e) { console.error('add restored row error', e); }
                     updateStats();
                     applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' });
-                    alert('Status diperbarui dan lead dipindahkan ke tab Leads');
+
+                    await showModal({
+                      type: 'success',
+                      title: 'Berhasil',
+                      message: 'Status berhasil diperbarui dan lead dipindahkan ke tab Leads'
+                    });
                   }
-                } else { alert('Gagal memperbarui status'); }
-              } catch (err) { console.error(err); alert('Gagal memperbarui status'); }
+                } else {
+                  await showModal({
+                    type: 'error',
+                    title: 'Gagal',
+                    message: 'Gagal memperbarui status'
+                  });
+                }
+              } catch (err) {
+                console.error(err);
+                await showModal({
+                  type: 'error',
+                  title: 'Error',
+                  message: 'Gagal memperbarui status'
+                });
+              }
             }
           });
 
-          // --- Helper functions for NEW badge and Undo toast ---
+          // --- Helper functions for NEW badge ---
           function updateNewLeadsCount(delta) {
             try {
               const badge = document.getElementById('newLeadsBadge');
@@ -1578,135 +2062,12 @@
             updateStats();
           }
 
-          // Undo toast handling
-          let _undoTimer = null;
-          let _lastRejected = null; // { id, prevStatus }
-          function showUndoToast(id, prevStatus) {
-            _lastRejected = { id, prevStatus };
-            const toast = document.getElementById('undoToast');
-            const msg = document.getElementById('undoMessage');
-            msg.textContent = `Lead #${id} ditolak. Undo?`;
-            toast.classList.add('show');
-            if (_undoTimer) clearTimeout(_undoTimer);
-            _undoTimer = setTimeout(() => { hideUndoToast(); _lastRejected = null; }, 8000);
-          }
-          function hideUndoToast() { const toast = document.getElementById('undoToast'); toast.classList.remove('show'); if (_undoTimer) { clearTimeout(_undoTimer); _undoTimer = null; } }
-
-          document.getElementById('undoBtn')?.addEventListener('click', async function () {
-            if (!_lastRejected) return;
-            const id = _lastRejected.id; const prev = _lastRejected.prevStatus || 'LEAD BARU';
-            try {
-              const resp = await fetch('/sales/update-lead-status', {
-                method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: `id=${encodeURIComponent(id)}&lead_status=${encodeURIComponent(prev)}`
-              });
-              const j = await resp.json();
-              if (j && j.success) {
-                // update UI
-                const select = document.querySelector('.lead-status-select[data-id="' + id + '"]');
-                if (select) { select.value = prev; select.dataset.prev = prev; }
-
-                // try to update existing leads row, otherwise restore from History into Leads
-                let row = select ? select.closest('tr') : document.querySelector('tr .action-area[data-id="' + id + '"]')?.closest('tr');
-                if (!row) {
-                  // look for history row and move it back to leads (undo after move)
-                  const histRow = document.querySelector('#historyTable tbody tr.history-row[data-id="' + id + '"]');
-                  if (histRow) {
-                    try {
-                      const leadsTbody = document.querySelector('#leadsTable tbody');
-                      const restoredStatus = prev || 'LEAD BARU';
-                      const tr = document.createElement('tr');
-                      tr.className = 'table-row';
-                      tr.innerHTML = `
-                        <td class="p-3">
-                          <span class="font-extrabold text-xs text-gray-900">#${id}</span>
-                          ${restoredStatus === 'LEAD BARU' ? '<span class="ml-2 pulse-badge">NEW</span>' : ''}
-                        </td>
-                        <td class="p-3">
-                          <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
-                              <i class="fas fa-user text-emerald-600 text-xs"></i>
-                            </div>
-                            <span class="font-medium text-xs text-gray-900">${j.customer_name || (histRow.querySelector('td:nth-child(2)')?.textContent.trim() || '-')}</span>
-                          </div>
-                        </td>
-                        <td class="p-3">
-                          <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
-                              <i class="fas fa-user-tie text-purple-600 text-xs"></i>
-                            </div>
-                            <span class="font-medium text-xs text-gray-900">${j.affiliate_name || (histRow.querySelector('td:nth-child(3)')?.textContent.trim() || '-')}</span>
-                          </div>
-                        </td>
-                        <td class="p-3"><span class="text-xs text-gray-900">${j.event_name || ('#' + (j.event_id || '')) || (histRow.querySelector('td:nth-child(4)')?.textContent.trim() || '-')}</span></td>
-                        <td class="p-3"><span class="font-extrabold text-xs text-gray-900">Rp ${(Number(j.total_amount) || 0).toLocaleString('id-ID')}</span></td>
-                        <td class="p-3">
-                          <select class="lead-status-select" data-id="${id}" data-prev="${restoredStatus}">
-                            <option value="">-- pilih status --</option>
-                            <option value="LEAD BARU" ${restoredStatus === 'LEAD BARU' ? 'selected' : ''}>LEAD BARU</option>
-                            <option value="SEDANG DI PROSPEK" ${restoredStatus === 'SEDANG DI PROSPEK' ? 'selected' : ''}>SEDANG DI PROSPEK</option>
-                            <option value="HOT" ${restoredStatus === 'HOT' ? 'selected' : ''}>HOT</option>
-                            <option value="DP" ${restoredStatus === 'DP' ? 'selected' : ''}>DP</option>
-                            <option value="LUNAS" ${restoredStatus === 'LUNAS' ? 'selected' : ''}>LUNAS</option>
-                            <option value="SEDANG BERANGKAT" ${restoredStatus === 'SEDANG BERANGKAT' ? 'selected' : ''}>SEDANG BERANGKAT</option>
-                          </select>
-                          <div class="text-[8px] text-gray-500 mt-1">Status DB: ${restoredStatus}</div>
-                          <div class="mt-2 action-area flex gap-1" data-id="${id}">
-                            <button class="save-btn hidden px-3 py-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg text-[8px] font-extrabold">Simpan</button>
-                            <button class="reject-btn hidden px-3 py-1 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg text-[8px] font-extrabold">Reject</button>
-                          </div>
-                        </td>
-                        <td class="p-3"><span class="text-xs text-gray-600">${j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID')}</span></td>
-                        <td class="p-3">
-                          <button class="reject-row-btn px-3 py-1.5 btn-danger text-[8px]" data-id="${id}">
-                            <i class="fas fa-times mr-1"></i> Reject
-                          </button>
-                        </td>
-                      `;
-                      leadsTbody.insertBefore(tr, leadsTbody.firstChild);
-                      histRow.remove();
-                      applyFiltersAndPaginate({ tableSelector: '#leadsTable', searchInputId: 'leadsSearch', statusInputId: 'leadsStatusFilter', rowsPerPageId: 'leadsRowsPerPage', paginationId: 'leadsPagination', totalId: 'leadsTotal' });
-                      applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' });
-                      row = tr;
-                    } catch (e) { console.error('undo restore from history error', e); }
-                  }
-                }
-
-                if (row) {
-                  const statusEl = row.querySelector('.text-gray-500'); if (statusEl) statusEl.textContent = 'Status DB: ' + prev;
-                  const timeCell = row.querySelector('td:nth-child(8)'); if (timeCell) timeCell.textContent = j.updated_at ? new Date(j.updated_at).toLocaleString('id-ID') : (new Date()).toLocaleString('id-ID');
-                  // if returned to LEAD BARU, restore badge
-                  if (prev === 'LEAD BARU') {
-                    if (!row.classList.contains('new-lead-row')) {
-                      row.classList.add('new-lead-row');
-                      const td = row.querySelector('td');
-                      if (td && !td.querySelector('.pulse-badge')) {
-                        const sp = document.createElement('span'); sp.className = 'ml-2 pulse-badge'; sp.textContent = 'NEW';
-                        td.appendChild(sp);
-                      }
-                      updateNewLeadsCount(1);
-                    }
-                  }
-                }
-
-                updateStats();
-                hideUndoToast(); _lastRejected = null;
-                alert('Perubahan dibatalkan (undo).');
-              } else { alert('Gagal mengembalikan status'); }
-            } catch (err) { console.error(err); alert('Gagal mengembalikan status'); }
-          });
-
-          document.getElementById('dismissUndo')?.addEventListener('click', function () { hideUndoToast(); _lastRejected = null; });
-
-          // Initialize badge on page load
-          initNewLeadsBadge();
-
-          // --- Filtering & Pagination utilities for Leads & History ---
+          // --- Filtering & Pagination utilities ---
           function textMatch(row, query) {
             return row.textContent.toLowerCase().indexOf(query) !== -1;
           }
 
           function applyFiltersAndPaginate(opts) {
-            // opts: {tableSelector, searchInputId, statusInputId (optional), rowsPerPageId, paginationId, totalId, rowClass}
             const table = document.querySelector(opts.tableSelector);
             if (!table) return;
             const tbody = table.querySelector('tbody');
@@ -1714,11 +2075,10 @@
             const searchVal = (document.getElementById(opts.searchInputId)?.value || '').toLowerCase().trim();
             const statusVal = opts.statusInputId ? (document.getElementById(opts.statusInputId)?.value || '') : '';
 
-            // filter - special-case leads table to check specific columns/status reliably
             let filtered = rows.filter(r => !r.classList.contains('placeholder-row'));
+
             if (opts.tableSelector === '#leadsTable') {
               filtered = filtered.filter(r => {
-                // search across ID, customer, affiliate, event columns
                 const idCell = r.querySelector('td:nth-child(1)')?.textContent || '';
                 const customer = r.querySelector('td:nth-child(2)')?.textContent || '';
                 const affiliate = r.querySelector('td:nth-child(3)')?.textContent || '';
@@ -1730,7 +2090,6 @@
                   const hay = (idCell + ' ' + customer + ' ' + affiliate + ' ' + eventC).toLowerCase();
                   if (hay.indexOf(searchVal) === -1) return false;
                 }
-                // exclude rows that are already moved to History
                 if (['sedang berangkat', 'rejected'].includes(statusText)) return false;
                 if (statusVal) {
                   if (statusText.indexOf(statusVal.toLowerCase()) === -1) return false;
@@ -1738,14 +2097,12 @@
                 return true;
               });
             } else {
-              // generic table filter
               filtered = filtered.filter(r => {
                 if (searchVal) {
                   if (!textMatch(r, searchVal)) return false;
                 }
                 return true;
               });
-              // history doesn't use status filter
             }
 
             const rowsPerPage = parseInt(document.getElementById(opts.rowsPerPageId)?.value || '10', 10) || 10;
@@ -1756,136 +2113,212 @@
             if (currentPage < 1) currentPage = 1;
             table.dataset.page = String(currentPage);
 
-            // hide all rows, then show only filtered page
             rows.forEach(r => r.style.display = 'none');
             const start = (currentPage - 1) * rowsPerPage;
             const pageRows = filtered.slice(start, start + rowsPerPage);
             pageRows.forEach(r => r.style.display = 'table-row');
 
-            // if no filtered rows, show placeholder row (create if missing)
             if (filtered.length === 0) {
               let ph = tbody.querySelector('.placeholder-row');
               if (!ph) {
-                ph = document.createElement('tr'); ph.className = 'border-t placeholder-row';
-                // create correct number of cells based on header
+                ph = document.createElement('tr');
+                ph.className = 'border-t placeholder-row';
                 const thCount = table.querySelectorAll('thead th').length || 7;
-                for (let i = 0; i < thCount; i++) { const td = document.createElement('td'); td.className = 'p-2'; td.textContent = '-'; ph.appendChild(td); }
+                for (let i = 0; i < thCount; i++) {
+                  const td = document.createElement('td');
+                  td.className = 'p-2';
+                  td.textContent = '-';
+                  ph.appendChild(td);
+                }
                 tbody.appendChild(ph);
               }
               ph.style.display = 'table-row';
             } else {
-              const ph = tbody.querySelector('.placeholder-row'); if (ph) ph.style.display = 'none';
+              const ph = tbody.querySelector('.placeholder-row');
+              if (ph) ph.style.display = 'none';
             }
 
-            // render pagination controls
             const pag = document.getElementById(opts.paginationId);
             if (pag) {
               pag.innerHTML = '';
-              const prev = document.createElement('button'); prev.innerHTML = '<i class="fas fa-chevron-left text-xs"></i>'; prev.disabled = currentPage === 1; prev.className = 'pagination-btn px-3 py-1 mr-2';
-              prev.addEventListener('click', () => { table.dataset.page = String(Math.max(1, currentPage - 1)); applyFiltersAndPaginate(opts); });
+              const prev = document.createElement('button');
+              prev.innerHTML = '<i class="fas fa-chevron-left text-xs"></i>';
+              prev.disabled = currentPage === 1;
+              prev.className = 'pagination-btn px-3 py-1 mr-2';
+              prev.addEventListener('click', () => {
+                table.dataset.page = String(Math.max(1, currentPage - 1));
+                applyFiltersAndPaginate(opts);
+              });
               pag.appendChild(prev);
-              const span = document.createElement('span'); span.className = 'text-xs font-medium text-gray-700 px-2'; span.textContent = `Halaman ${currentPage} / ${totalPages}`;
+
+              const span = document.createElement('span');
+              span.className = 'text-xs font-medium text-gray-700 px-2';
+              span.textContent = `Halaman ${currentPage} / ${totalPages}`;
               pag.appendChild(span);
-              const next = document.createElement('button'); next.innerHTML = '<i class="fas fa-chevron-right text-xs"></i>'; next.disabled = currentPage === totalPages; next.className = 'pagination-btn px-3 py-1 ml-2';
-              next.addEventListener('click', () => { table.dataset.page = String(Math.min(totalPages, currentPage + 1)); applyFiltersAndPaginate(opts); });
+
+              const next = document.createElement('button');
+              next.innerHTML = '<i class="fas fa-chevron-right text-xs"></i>';
+              next.disabled = currentPage === totalPages;
+              next.className = 'pagination-btn px-3 py-1 ml-2';
+              next.addEventListener('click', () => {
+                table.dataset.page = String(Math.min(totalPages, currentPage + 1));
+                applyFiltersAndPaginate(opts);
+              });
               pag.appendChild(next);
             }
 
-            const totalEl = document.getElementById(opts.totalId); if (totalEl) totalEl.textContent = String(total);
+            const totalEl = document.getElementById(opts.totalId);
+            if (totalEl) totalEl.textContent = String(total);
           }
 
-          // Initialize table controls and wire events
+          // Initialize table controls
           function initTableControls() {
-            // leads
-            ['leadsSearch', 'leadsStatusFilter', 'leadsRowsPerPage'].forEach(id => document.getElementById(id)?.addEventListener('input', () => applyFiltersAndPaginate({ tableSelector: '#leadsTable', searchInputId: 'leadsSearch', statusInputId: 'leadsStatusFilter', rowsPerPageId: 'leadsRowsPerPage', paginationId: 'leadsPagination', totalId: 'leadsTotal' })));
-            // also support keyup on search for extra responsiveness
-            document.getElementById('leadsSearch')?.addEventListener('keyup', () => applyFiltersAndPaginate({ tableSelector: '#leadsTable', searchInputId: 'leadsSearch', statusInputId: 'leadsStatusFilter', rowsPerPageId: 'leadsRowsPerPage', paginationId: 'leadsPagination', totalId: 'leadsTotal' }));
-            document.getElementById('leadsRowsPerPage')?.addEventListener('change', () => applyFiltersAndPaginate({ tableSelector: '#leadsTable', searchInputId: 'leadsSearch', statusInputId: 'leadsStatusFilter', rowsPerPageId: 'leadsRowsPerPage', paginationId: 'leadsPagination', totalId: 'leadsTotal' }));
-            // history
-            document.getElementById('historySearch')?.addEventListener('input', () => applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' }));
-            document.getElementById('historyRowsPerPage')?.addEventListener('change', () => applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' }));
+            ['leadsSearch', 'leadsStatusFilter', 'leadsRowsPerPage'].forEach(id => {
+              document.getElementById(id)?.addEventListener('input', () => applyFiltersAndPaginate({
+                tableSelector: '#leadsTable',
+                searchInputId: 'leadsSearch',
+                statusInputId: 'leadsStatusFilter',
+                rowsPerPageId: 'leadsRowsPerPage',
+                paginationId: 'leadsPagination',
+                totalId: 'leadsTotal'
+              }));
+            });
 
-            // initial run
-            applyFiltersAndPaginate({ tableSelector: '#leadsTable', searchInputId: 'leadsSearch', statusInputId: 'leadsStatusFilter', rowsPerPageId: 'leadsRowsPerPage', paginationId: 'leadsPagination', totalId: 'leadsTotal' });
-            applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' });
+            document.getElementById('leadsSearch')?.addEventListener('keyup', () => applyFiltersAndPaginate({
+              tableSelector: '#leadsTable',
+              searchInputId: 'leadsSearch',
+              statusInputId: 'leadsStatusFilter',
+              rowsPerPageId: 'leadsRowsPerPage',
+              paginationId: 'leadsPagination',
+              totalId: 'leadsTotal'
+            }));
+
+            document.getElementById('leadsRowsPerPage')?.addEventListener('change', () => applyFiltersAndPaginate({
+              tableSelector: '#leadsTable',
+              searchInputId: 'leadsSearch',
+              statusInputId: 'leadsStatusFilter',
+              rowsPerPageId: 'leadsRowsPerPage',
+              paginationId: 'leadsPagination',
+              totalId: 'leadsTotal'
+            }));
+
+            document.getElementById('historySearch')?.addEventListener('input', () => applyFiltersAndPaginate({
+              tableSelector: '#historyTable',
+              searchInputId: 'historySearch',
+              rowsPerPageId: 'historyRowsPerPage',
+              paginationId: 'historyPagination',
+              totalId: 'historyTotal'
+            }));
+
+            document.getElementById('historyRowsPerPage')?.addEventListener('change', () => applyFiltersAndPaginate({
+              tableSelector: '#historyTable',
+              searchInputId: 'historySearch',
+              rowsPerPageId: 'historyRowsPerPage',
+              paginationId: 'historyPagination',
+              totalId: 'historyTotal'
+            }));
+
+            applyFiltersAndPaginate({
+              tableSelector: '#leadsTable',
+              searchInputId: 'leadsSearch',
+              statusInputId: 'leadsStatusFilter',
+              rowsPerPageId: 'leadsRowsPerPage',
+              paginationId: 'leadsPagination',
+              totalId: 'leadsTotal'
+            });
+
+            applyFiltersAndPaginate({
+              tableSelector: '#historyTable',
+              searchInputId: 'historySearch',
+              rowsPerPageId: 'historyRowsPerPage',
+              paginationId: 'historyPagination',
+              totalId: 'historyTotal'
+            });
           }
 
-          // call after DOM ready
+          // Initialize everything on DOM ready
           document.addEventListener('DOMContentLoaded', function () {
+            initNewLeadsBadge();
             initTableControls();
           });
 
           // --- Server-Sent Events (real-time updates) ---
           if (window.EventSource) {
             const es = new EventSource('/sales/lead-events');
+
             es.onopen = () => console.debug('SSE connected');
             es.onerror = (e) => console.error('SSE error', e);
 
             es.addEventListener('new_lead', function (e) {
               try {
                 const d = JSON.parse(e.data);
-                // prepend to leads table
                 const tbody = document.querySelector('#tab-leads table tbody');
                 if (tbody) {
                   const tr = document.createElement('tr');
                   tr.className = 'table-row new-lead-row';
                   tr.innerHTML = `
-                <td class="p-3">
-                  <span class="font-extrabold text-xs text-gray-900">#${d.id}</span>
-                  <span class="ml-2 pulse-badge">NEW</span>
-                </td>
-                <td class="p-3">
-                  <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
-                      <i class="fas fa-user text-emerald-600 text-xs"></i>
-                    </div>
-                    <span class="font-medium text-xs text-gray-900">${d.customer_name || '-'}</span>
-                  </div>
-                </td>
-                <td class="p-3">
-                  <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
-                      <i class="fas fa-user-tie text-purple-600 text-xs"></i>
-                    </div>
-                    <span class="font-medium text-xs text-gray-900">${d.affiliate_name || '-'}</span>
-                  </div>
-                </td>
-                <td class="p-3">
-                  <span class="text-xs text-gray-900">${d.event_name || ('#' + (d.event_id || ''))}</span>
-                </td>
-                <td class="p-3">
-                  <span class="font-extrabold text-xs text-gray-900">Rp ${(Number(d.total_amount || 0)).toLocaleString('id-ID')}</span>
-                </td>
-                <td class="p-3">
-                  <span class="text-xs text-gray-400">-</span>
-                </td>
-                <td class="p-3">
-                  <select class="lead-status-select" data-id="${d.id}" data-prev="LEAD BARU">
-                    <option value="">-- pilih status --</option>
-                    <option value="LEAD BARU" selected>LEAD BARU</option>
-                    <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
-                    <option value="HOT">HOT</option>
-                  </select>
-                  <div class="text-[8px] text-gray-500 mt-1">Status DB: LEAD BARU</div>
-                  <div class="mt-2 action-area flex gap-1" data-id="${d.id}">
-                    <button class="save-btn hidden px-3 py-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg text-[8px] font-extrabold">Simpan</button>
-                    <button class="reject-btn hidden px-3 py-1 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg text-[8px] font-extrabold">Reject</button>
-                  </div>
-                </td>
-                <td class="p-3">
-                  <span class="text-xs text-gray-600">${d.updated_at ? new Date(d.updated_at).toLocaleString('id-ID') : new Date().toLocaleString('id-ID')}</span>
-                </td>
-                <td class="p-3">
-                  <button class="reject-row-btn px-3 py-1.5 btn-danger text-[8px]" data-id="${d.id}">
-                    <i class="fas fa-times mr-1"></i> Reject
-                  </button>
-                </td>
-              `;
+                    <td class="p-3">
+                      <span class="font-extrabold text-xs text-gray-900">#${d.id}</span>
+                      <span class="ml-2 pulse-badge">NEW</span>
+                    </td>
+                    <td class="p-3">
+                      <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
+                          <i class="fas fa-user text-emerald-600 text-xs"></i>
+                        </div>
+                        <span class="font-medium text-xs text-gray-900">${d.customer_name || '-'}</span>
+                      </div>
+                    </td>
+                    <td class="p-3">
+                      <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
+                          <i class="fas fa-user-tie text-purple-600 text-xs"></i>
+                        </div>
+                        <span class="font-medium text-xs text-gray-900">${d.affiliate_name || '-'}</span>
+                      </div>
+                    </td>
+                    <td class="p-3">
+                      <span class="text-xs text-gray-900">${d.event_name || ('#' + (d.event_id || ''))}</span>
+                    </td>
+                    <td class="p-3">
+                      <span class="font-extrabold text-xs text-gray-900">Rp ${(Number(d.total_amount || 0)).toLocaleString('id-ID')}</span>
+                    </td>
+                    <td class="p-3">
+                      <span class="text-xs text-gray-400">-</span>
+                    </td>
+                    <td class="p-3">
+                      <select class="lead-status-select" data-id="${d.id}" data-prev="LEAD BARU">
+                        <option value="">-- pilih status --</option>
+                        <option value="LEAD BARU" selected>LEAD BARU</option>
+                        <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
+                        <option value="HOT">HOT</option>
+                      </select>
+                      <div class="text-[8px] text-gray-500 mt-1">Status DB: LEAD BARU</div>
+                      <div class="mt-2 action-area flex gap-1" data-id="${d.id}">
+                        <button class="save-btn hidden px-3 py-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg text-[8px] font-extrabold">Simpan</button>
+                        <button class="reject-btn hidden px-3 py-1 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg text-[8px] font-extrabold">Reject</button>
+                      </div>
+                    </td>
+                    <td class="p-3">
+                      <span class="text-xs text-gray-600">${d.updated_at ? new Date(d.updated_at).toLocaleString('id-ID') : new Date().toLocaleString('id-ID')}</span>
+                    </td>
+                    <td class="p-3">
+                      <button class="reject-row-btn px-3 py-1.5 btn-danger text-[8px]" data-id="${d.id}">
+                        <i class="fas fa-times mr-1"></i> Reject
+                      </button>
+                    </td>
+                  `;
                   tbody.insertBefore(tr, tbody.firstChild);
                   updateNewLeadsCount(1);
                   updateStats();
-                  // refresh filters/pagination
-                  applyFiltersAndPaginate({ tableSelector: '#leadsTable', searchInputId: 'leadsSearch', statusInputId: 'leadsStatusFilter', rowsPerPageId: 'leadsRowsPerPage', paginationId: 'leadsPagination', totalId: 'leadsTotal' });
+                  applyFiltersAndPaginate({
+                    tableSelector: '#leadsTable',
+                    searchInputId: 'leadsSearch',
+                    statusInputId: 'leadsStatusFilter',
+                    rowsPerPageId: 'leadsRowsPerPage',
+                    paginationId: 'leadsPagination',
+                    totalId: 'leadsTotal'
+                  });
                 }
               } catch (err) { console.error('new_lead parse error', err); }
             });
@@ -1893,9 +2326,7 @@
             es.addEventListener('history', function (e) {
               try {
                 const d = JSON.parse(e.data);
-                // remove from leads table if present
                 const leadsTbody = document.querySelector('#tab-leads table tbody');
-                // capture any displayed lead values from Leads before removing row so we can use as fallback
                 let fallbackCustomer = '-', fallbackAffiliate = '-', fallbackEvent = '-', fallbackAmountText = 'Rp 0';
                 if (leadsTbody) {
                   const row = leadsTbody.querySelector('.action-area[data-id="' + d.id + '"]')?.closest('tr');
@@ -1907,10 +2338,9 @@
                     row.remove();
                   }
                 }
-                // prepend to history table
+
                 const histTbody = document.querySelector('#tab-history table tbody');
                 if (histTbody) {
-                  // if an entry for this id already exists in History, update it instead of inserting duplicate
                   const existing = histTbody.querySelector('tr.history-row[data-id="' + d.id + '"]');
                   if (existing) {
                     try {
@@ -1931,7 +2361,7 @@
                           <div class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
                             <i class="fas fa-user text-emerald-600 text-xs"></i>
                           </div>
-                              <span class="font-medium text-xs text-gray-900">${(d.customer_name || fallbackCustomer || '-')}</span>
+                          <span class="font-medium text-xs text-gray-900">${(d.customer_name || fallbackCustomer || '-')}</span>
                         </div>
                       </td>
                       <td class="p-3">
@@ -1961,7 +2391,6 @@
                     `;
                     histTbody.insertBefore(tr, histTbody.firstChild);
                   }
-                  // refresh history pagination/filters
                   applyFiltersAndPaginate({ tableSelector: '#historyTable', searchInputId: 'historySearch', rowsPerPageId: 'historyRowsPerPage', paginationId: 'historyPagination', totalId: 'historyTotal' });
                 }
               } catch (err) { console.error('history parse error', err); }
@@ -1972,7 +2401,6 @@
                 const d = JSON.parse(e.data);
                 const leadsTbody = document.querySelector('#tab-leads table tbody');
 
-                // Update status/time cell if the row is present in Leads
                 if (leadsTbody) {
                   const row = leadsTbody.querySelector('.action-area[data-id="' + d.id + '"]')?.closest('tr');
                   if (row) {
@@ -1981,10 +2409,8 @@
                   }
                 }
 
-                // If backend status became SEDANG BERANGKAT or REJECTED, ensure the row is moved to History
                 if (d.status === 'SEDANG BERANGKAT' || d.status === 'REJECTED') {
-                    try {
-                    // remove from Leads (if present) but capture displayed values first for fallback
+                  try {
                     let fallbackCustomer2 = '-', fallbackAffiliate2 = '-', fallbackEvent2 = '-', fallbackAmountText2 = 'Rp 0';
                     if (leadsTbody) {
                       const existingRow = leadsTbody.querySelector('.action-area[data-id="' + d.id + '"]')?.closest('tr');
@@ -2046,11 +2472,6 @@
                 updateStats();
               } catch (err) { console.error('status_update parse error', err); }
             });
-          }
-
-          // Rebuild history from leads (7-day rule) - simplified
-          function rebuildHistoryFromLeads() {
-            // This would be handled by server, but we keep for compatibility
           }
 
           // Auto-refresh stats every 30 seconds

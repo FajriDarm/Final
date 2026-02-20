@@ -51,44 +51,49 @@
       box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
     }
 
-    .gradient-secondary {
-      background: linear-gradient(165deg, #047857 0%, #059669 50%, #10b981 100%);
-    }
-
-    .gradient-accent {
-      background: linear-gradient(165deg, #065f46 0%, #047857 50%, #059669 100%);
+    .gradient-success {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      box-shadow: 0 10px 20px -8px rgba(16, 185, 129, 0.4);
     }
 
     .gradient-warning {
       background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+      box-shadow: 0 10px 20px -8px rgba(245, 158, 11, 0.4);
     }
 
     .gradient-info {
       background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+      box-shadow: 0 10px 20px -8px rgba(59, 130, 246, 0.4);
     }
 
     .gradient-danger {
       background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+      box-shadow: 0 10px 20px -8px rgba(239, 68, 68, 0.4);
     }
 
     .gradient-purple {
       background: linear-gradient(165deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+      box-shadow: 0 10px 20px -8px rgba(139, 92, 246, 0.4);
     }
 
     .gradient-teal {
       background: linear-gradient(165deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%);
+      box-shadow: 0 10px 20px -8px rgba(20, 184, 166, 0.4);
     }
 
     .gradient-blue {
       background: linear-gradient(165deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+      box-shadow: 0 10px 20px -8px rgba(59, 130, 246, 0.4);
     }
 
     .gradient-amber {
       background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+      box-shadow: 0 10px 20px -8px rgba(245, 158, 11, 0.4);
     }
 
     .gradient-yellow {
       background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+      box-shadow: 0 10px 20px -8px rgba(245, 158, 11, 0.4);
     }
 
     /* Status Gradients */
@@ -476,6 +481,23 @@
       transform: scale(1.05);
     }
 
+    .btn-success {
+      background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-success:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
     .btn-secondary {
       background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(10px);
@@ -526,6 +548,23 @@
       transform: scale(1.05);
     }
 
+    .btn-danger {
+      background: linear-gradient(165deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+      color: white;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.2);
+    }
+
+    .btn-danger:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
     /* Modal Styles */
     .modal-overlay {
       backdrop-filter: blur(8px);
@@ -544,9 +583,9 @@
     }
 
     .modal-content {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.8);
       border-radius: 1.5rem;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       max-width: 32rem;
@@ -561,7 +600,7 @@
     }
 
     .modal-body {
-      padding: 1.25rem;
+      padding: 1.5rem;
     }
 
     .modal-footer {
@@ -575,9 +614,10 @@
 
     /* Checkbox Styles */
     .commission-checkbox {
-      width: 1rem;
-      height: 1rem;
+      width: 1.2rem;
+      height: 1.2rem;
       accent-color: #10b981;
+      border-radius: 0.25rem;
     }
 
     /* Toast Notification */
@@ -598,6 +638,261 @@
       to {
         opacity: 1;
         transform: translateX(0);
+      }
+    }
+
+    /* Info Card Styles - Diperbaiki sesuai gambar */
+    .info-card-commission {
+      background: rgba(16, 185, 129, 0.05);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 1rem;
+      padding: 1.5rem;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 0;
+    }
+
+    .info-row:not(:last-child) {
+      border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+    }
+
+    .info-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(165deg, #059669, #10b981);
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .info-icon i {
+      color: white;
+      font-size: 1.25rem;
+    }
+
+    .info-label {
+      font-size: 0.625rem;
+      font-weight: 700;
+      color: #047857;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .info-value {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #1f2937;
+    }
+
+    .info-value-large {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #059669;
+    }
+
+    /* Selection Card Styles */
+    .selection-card {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 1rem;
+      padding: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .selection-card:hover {
+      background: rgba(255, 255, 255, 0.8);
+      transform: translateY(-2px);
+    }
+
+    .selection-card.selected {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: #10b981;
+    }
+
+    /* Notification Modal */
+    .notification-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+    }
+
+    .notification-modal.show {
+      display: flex;
+    }
+
+    .notification-content {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.3);
+      transform: scale(0.9) translateY(20px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .notification-modal.show .notification-content {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+
+    .notification-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      animation: notificationIconPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes notificationIconPop {
+      0% {
+        transform: scale(0) rotate(-180deg);
+      }
+
+      100% {
+        transform: scale(1) rotate(0);
+      }
+    }
+
+    .notification-icon.success {
+      background: linear-gradient(165deg, #059669, #10b981);
+      box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.5);
+    }
+
+    .notification-icon.error {
+      background: linear-gradient(165deg, #b91c1c, #dc2626);
+      box-shadow: 0 15px 30px -10px rgba(239, 68, 68, 0.5);
+    }
+
+    .notification-icon.warning {
+      background: linear-gradient(165deg, #d97706, #f59e0b);
+      box-shadow: 0 15px 30px -10px rgba(245, 158, 11, 0.5);
+    }
+
+    .notification-icon.info {
+      background: linear-gradient(165deg, #2563eb, #3b82f6);
+      box-shadow: 0 15px 30px -10px rgba(59, 130, 246, 0.5);
+    }
+
+    .notification-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #1f2937;
+      margin-bottom: 0.75rem;
+      animation: notificationFadeIn 0.5s ease 0.1s both;
+    }
+
+    .notification-message {
+      font-size: 1rem;
+      color: #4b5563;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      animation: notificationFadeIn 0.5s ease 0.2s both;
+    }
+
+    @keyframes notificationFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .notification-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      animation: notificationFadeIn 0.5s ease 0.3s both;
+    }
+
+    .notification-btn {
+      padding: 0.875rem 2rem;
+      border-radius: 1rem;
+      font-size: 0.875rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      min-width: 120px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .notification-btn-primary {
+      background: linear-gradient(165deg, #059669, #10b981);
+      color: white;
+      box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+    }
+
+    .notification-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.5);
+    }
+
+    .notification-btn-secondary {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      color: #374151;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .notification-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-3px);
+    }
+
+    .notification-progress {
+      height: 4px;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 2px;
+      margin-top: 2rem;
+      overflow: hidden;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .notification-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #34d399);
+      width: 100%;
+      animation: notificationProgress 3s linear forwards;
+    }
+
+    @keyframes notificationProgress {
+      0% {
+        width: 100%;
+      }
+
+      100% {
+        width: 0%;
       }
     }
   </style>
@@ -631,6 +926,25 @@
     </div>
     <div
       class="absolute bottom-1/4 right-1/4 w-1.5 h-1.5 bg-teal-400 rounded-full animate-ping opacity-30 animation-delay-4000">
+    </div>
+  </div>
+
+  <!-- Notification Modal -->
+  <div id="notificationModal" class="notification-modal">
+    <div class="notification-content">
+      <div id="notificationIcon" class="notification-icon success">
+        <i id="notificationIconIcon" class="fas fa-check"></i>
+      </div>
+      <h3 id="notificationTitle" class="notification-title">Notifikasi</h3>
+      <p id="notificationMessage" class="notification-message">Pesan notifikasi akan muncul di sini</p>
+      <div class="notification-buttons">
+        <button id="notificationConfirmBtn" class="notification-btn notification-btn-primary">OK</button>
+        <button id="notificationCancelBtn" class="notification-btn notification-btn-secondary"
+          style="display: none;">Batal</button>
+      </div>
+      <div id="notificationProgress" class="notification-progress">
+        <div class="notification-progress-bar"></div>
+      </div>
     </div>
   </div>
 
@@ -676,12 +990,12 @@
             <!-- Premium Date & Live Status -->
             <div class="flex items-center gap-3">
               <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
-                <div class="w-8 h-8 gradient-secondary rounded-lg flex items-center justify-center shadow-lg">
+                <div class="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center shadow-lg">
                   <i class="fas fa-calendar-alt text-white text-sm"></i>
                 </div>
                 <div>
                   <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
-                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                  <p class="text-xs font-bold text-emerald-700 whitespace-nowrap">
                     <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                   </p>
                 </div>
@@ -1057,7 +1371,7 @@
         </div>
       </main>
 
-      <!-- Withdrawal Modal Premium -->
+      <!-- Withdrawal Modal Premium - Diperbaiki sesuai gambar -->
       <div id="withdrawalModal" class="modal-overlay">
         <div class="modal-content">
           <div class="modal-header gradient-primary flex items-center justify-between">
@@ -1081,10 +1395,17 @@
           </div>
 
           <div class="modal-body space-y-4">
-            <!-- Info Box -->
-            <div class="glass-futuristic rounded-xl p-4 border border-blue-200/50 bg-blue-50/30">
-              <p class="text-xs font-extrabold text-blue-800">Total Siap Ditarik:</p>
-              <p class="text-2xl font-extrabold text-blue-600" id="modalReadyAmount">Rp 0</p>
+            <!-- Info Box - Diperbaiki sesuai gambar -->
+            <div class="info-card-commission">
+              <div class="info-row">
+                <div class="info-icon">
+                  <i class="fas fa-coins"></i>
+                </div>
+                <div>
+                  <div class="info-label">TOTAL SIAP DITARIK</div>
+                  <div class="info-value-large" id="modalReadyAmount">Rp 0</div>
+                </div>
+              </div>
             </div>
 
             <!-- Selection Mode -->
@@ -1208,6 +1529,125 @@
         let selectedCommissionIds = [];
         let token = '';
 
+        // ============================================================
+        // FUNGSI NOTIFICATION MODAL
+        // ============================================================
+
+        const NotificationModal = {
+          element: document.getElementById('notificationModal'),
+          icon: document.getElementById('notificationIcon'),
+          iconIcon: document.getElementById('notificationIconIcon'),
+          title: document.getElementById('notificationTitle'),
+          message: document.getElementById('notificationMessage'),
+          confirmBtn: document.getElementById('notificationConfirmBtn'),
+          cancelBtn: document.getElementById('notificationCancelBtn'),
+          progress: document.getElementById('notificationProgress'),
+
+          show: function (options) {
+            const {
+              type = 'info',
+              title,
+              message,
+              onConfirm,
+              onCancel,
+              confirmText = 'OK',
+              cancelText = 'Batal',
+              autoClose = true,
+              closeTime = 3000
+            } = options;
+
+            // Reset classes
+            this.icon.className = 'notification-icon';
+            this.icon.classList.add(type);
+
+            // Set icon based on type
+            const icons = {
+              success: 'fa-check',
+              warning: 'fa-exclamation-triangle',
+              error: 'fa-times-circle',
+              info: 'fa-info-circle'
+            };
+            this.iconIcon.className = `fas ${icons[type] || 'fa-info-circle'}`;
+
+            // Set content
+            this.title.textContent = title || 'Notifikasi';
+            this.message.textContent = message || '';
+
+            // Show modal
+            this.element.classList.add('show');
+
+            // Handle confirm button
+            if (onConfirm) {
+              this.confirmBtn.style.display = 'block';
+              this.confirmBtn.textContent = confirmText;
+              this.confirmBtn.onclick = () => {
+                this.hide();
+                if (onConfirm) onConfirm();
+              };
+            } else {
+              this.confirmBtn.style.display = 'block';
+              this.confirmBtn.textContent = 'OK';
+              this.confirmBtn.onclick = () => this.hide();
+            }
+
+            // Handle cancel button
+            if (onCancel) {
+              this.cancelBtn.style.display = 'block';
+              this.cancelBtn.textContent = cancelText;
+              this.cancelBtn.onclick = () => {
+                this.hide();
+                if (onCancel) onCancel();
+              };
+            } else {
+              this.cancelBtn.style.display = 'none';
+            }
+
+            // Auto close
+            if (autoClose) {
+              this.progress.style.display = 'block';
+              const progressBar = this.progress.querySelector('.notification-progress-bar');
+              progressBar.style.animation = 'none';
+              progressBar.offsetHeight; // Trigger reflow
+              progressBar.style.animation = `notificationProgress ${closeTime / 1000}s linear forwards`;
+
+              setTimeout(() => {
+                this.hide();
+              }, closeTime);
+            } else {
+              this.progress.style.display = 'none';
+            }
+          },
+
+          hide: function () {
+            this.element.classList.remove('show');
+          }
+        };
+
+        // Override alert
+        window.alert = function (message) {
+          NotificationModal.show({
+            type: 'warning',
+            title: 'Peringatan',
+            message: message
+          });
+        };
+
+        // Override confirm
+        window.confirm = async function (message) {
+          return new Promise((resolve) => {
+            NotificationModal.show({
+              type: 'question',
+              title: 'Konfirmasi',
+              message: message,
+              confirmText: 'Ya',
+              cancelText: 'Tidak',
+              onConfirm: () => resolve(true),
+              onCancel: () => resolve(false),
+              autoClose: false
+            });
+          });
+        };
+
         // Get token from localStorage (set by login/session)
         function getToken() {
           const stored = localStorage.getItem('authToken');
@@ -1302,7 +1742,11 @@
             }
           } catch (error) {
             console.error('Error loading summary:', error);
-            alert('Gagal memuat ringkasan komisi');
+            NotificationModal.show({
+              type: 'error',
+              title: 'Error',
+              message: 'Gagal memuat ringkasan komisi'
+            });
           }
         }
 
@@ -1380,6 +1824,7 @@
             }
           } catch (error) {
             console.error('Error loading ready commissions:', error);
+            const container = document.getElementById('readyCommissionsContainer');
             container.innerHTML = `
               <div class="text-center py-12">
                 <div class="flex flex-col items-center">
@@ -1535,6 +1980,7 @@
             }
           } catch (error) {
             console.error('Error loading history:', error);
+            const container = document.getElementById('withdrawalHistoryContainer');
             container.innerHTML = `
               <div class="text-center py-12">
                 <div class="flex flex-col items-center">
@@ -1739,11 +2185,19 @@
 
               document.getElementById('proofModal').classList.add('show');
             } else {
-              alert('Bukti transfer tidak ditemukan');
+              NotificationModal.show({
+                type: 'warning',
+                title: 'Tidak Ditemukan',
+                message: 'Bukti transfer tidak ditemukan'
+              });
             }
           } catch (error) {
             console.error('Error loading proof:', error);
-            alert('Gagal memuat bukti transfer');
+            NotificationModal.show({
+              type: 'error',
+              title: 'Error',
+              message: 'Gagal memuat bukti transfer'
+            });
           }
         }
 
@@ -1776,7 +2230,11 @@
           const commissionIds = mode === 'select' ? selectedCommissionIds : null;
 
           if (mode === 'select' && commissionIds.length === 0) {
-            alert('Pilih minimal satu komisi');
+            NotificationModal.show({
+              type: 'warning',
+              title: 'Peringatan',
+              message: 'Pilih minimal satu komisi'
+            });
             return;
           }
 
@@ -1798,12 +2256,21 @@
             } catch (parseErr) {
               const text = await response.text();
               console.error('Non-JSON response from withdrawal request:', text);
-              alert('Gagal mengajukan penarikan: server merespon dengan teks tidak terduga');
+              NotificationModal.show({
+                type: 'error',
+                title: 'Error',
+                message: 'Gagal mengajukan penarikan: server merespon dengan teks tidak terduga'
+              });
               return;
             }
 
             if (data && data.success) {
-              alert(`✅ Permintaan penarikan berhasil!\nID: ${data.data.payout_id}\nJumlah: Rp ${data.data.total_amount.toLocaleString('id-ID')}\n${data.data.commission_count} komisi`);
+              NotificationModal.show({
+                type: 'success',
+                title: 'Berhasil',
+                message: `✅ Permintaan penarikan berhasil!\nID: ${data.data.payout_id}\nJumlah: Rp ${data.data.total_amount.toLocaleString('id-ID')}\n${data.data.commission_count} komisi`,
+                autoClose: false
+              });
               closeWithdrawalModal();
 
               setTimeout(async () => {
@@ -1812,11 +2279,19 @@
                 await loadWithdrawalHistory();
               }, 500);
             } else {
-              alert(`❌ Error: ${data.message}`);
+              NotificationModal.show({
+                type: 'error',
+                title: 'Error',
+                message: `❌ Error: ${data.message}`
+              });
             }
           } catch (error) {
             console.error('Error submitting withdrawal:', error);
-            alert('Gagal mengajukan penarikan');
+            NotificationModal.show({
+              type: 'error',
+              title: 'Error',
+              message: 'Gagal mengajukan penarikan'
+            });
           }
         }
 
@@ -1995,7 +2470,11 @@
             }
           } catch (error) {
             console.error('Error loading detail:', error);
-            alert('Gagal memuat detail');
+            NotificationModal.show({
+              type: 'error',
+              title: 'Error',
+              message: 'Gagal memuat detail'
+            });
           }
         }
 
