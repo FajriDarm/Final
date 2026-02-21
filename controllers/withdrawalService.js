@@ -1,4 +1,5 @@
 const db = require("../config/database");
+const whatsappService = require("../services/whatsappService");
 
 /**
  * Get affiliate's commissions yang ready_for_withdraw

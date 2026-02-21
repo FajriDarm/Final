@@ -1,4 +1,5 @@
 const db = require("../config/database");
+const whatsappService = require("../services/whatsappService");
 
 async function createTransaction(req, res) {
   try {
@@ -184,6 +185,17 @@ async function createTransaction(req, res) {
         e && (e.message || e),
       );
     }
+
+    // Send WhatsApp confirmation (fire-and-forget). Uses WA_FORCE_TO for dev testing.
+    whatsappService
+      .notifyCustomerCheckout(trxRes.insertId)
+      .catch((err) =>
+        console.warn(
+          "WA send failed for txn",
+          trxRes.insertId,
+          err && (err.message || err),
+        ),
+      );
 
     // 5) Optionally record affiliate_referral if affiliate present. Avoid duplicates by
     // checking whether a referral for this affiliate/event/customer already exists.

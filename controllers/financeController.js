@@ -1,4 +1,5 @@
 const db = require("../config/database");
+const whatsappService = require("../services/whatsappService");
 
 // Render Finance Dashboard
 exports.getFinanceDashboard = async (req, res) => {
@@ -386,6 +387,13 @@ exports.markWithdrawalAsPaidAPI = async (req, res) => {
       );
 
       await connection.commit();
+
+      // Send WA to affiliate (async)
+      whatsappService
+        .notifyPayoutPaid(id)
+        .catch((err) =>
+          console.warn("WA payout notification failed (API) for payout", id, err && (err.message || err)),
+        );
 
       res.json({
         success: true,
