@@ -241,6 +241,17 @@ app.get(
   adminController.getWithdrawalApprovalsPage,
 );
 
+// Monitoring Affiliate page
+const monitoringCtrl = require("./controllers/monitoringAffiliateController");
+app.get(
+  "/admin/monitoring_affiliate",
+  authMiddlewarePage,
+  (req, res) => {
+    // reuse controller to load data and render admin view
+    monitoringCtrl.getMonitoringAffiliate(req, res);
+  },
+);
+
 // Admin Pages (Protected)
 app.get("/dashboard_admin", (req, res) => {
   res.render("admin/dashboard_admin");

@@ -16,7 +16,11 @@ exports.getMonitoringAffiliate = async (req, res) => {
       GROUP BY u.id, u.name, u.email
       ORDER BY total_penjualan DESC
     `);
-    res.render('sales/monitoring_affiliate', { title: 'Monitoring Affiliate', affiliates });
+    // render admin-specific view if path contains /admin, otherwise keep legacy sales view
+    const viewPath = req.originalUrl && req.originalUrl.startsWith('/admin')
+      ? 'admin/monitoring_affiliate'
+      : 'sales/monitoring_affiliate';
+    res.render(viewPath, { title: 'Monitoring Affiliate', affiliates });
   } catch (err) {
     res.status(500).send('Error loading monitoring affiliate');
   }

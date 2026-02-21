@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monitoring Affiliate - Sales Affillink</title>
+  <title>Monitoring Affiliate - Affillink Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -709,10 +709,10 @@
   </div>
 
   <!-- Navbar -->
-  <%- include('../navbar/navbar.ejs', { name: 'Sales' }) %>
+  <%- include('../navbar/navbar.ejs', { name: 'Admin' }) %>
 
     <!-- Sidebar -->
-    <%- include('../sidebar/sales.ejs') %>
+    <%- include('../sidebar/admin.ejs') %>
 
       <!-- Main Content -->
       <main class="ml-64 pt-16 min-h-screen relative z-10">
@@ -739,10 +739,10 @@
                     </h1>
                     <span
                       class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
-                      SALES
+                      ADMIN
                     </span>
                   </div>
-                  <p class="text-sm text-emerald-700 font-medium">Analisis dan monitoring performa affiliate sales</p>
+                  <p class="text-sm text-emerald-700 font-medium">Analisis dan monitoring performa affiliate</p>
                 </div>
               </div>
             </div>
@@ -1237,7 +1237,7 @@
                   <button onclick="exportAffiliateData()"
                     class="px-4 py-2 gradient-primary text-white rounded-lg hover:opacity-90 transition-all duration-300 text-xs font-extrabold shadow-lg flex items-center gap-2">
                     <i class="fas fa-download"></i>
-                    Export CSV
+                    Export Excel
                   </button>
                   <span
                     class="text-[9px] font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
@@ -1583,97 +1583,214 @@
           });
         });
 
-        // Export function dengan modal
-        async function exportAffiliateData() {
-          const confirmed = await showConfirm({
-            type: 'question',
-            title: 'Konfirmasi Export',
-            message: 'Apakah Anda ingin mengekspor data affiliate ke CSV?',
-            confirmText: 'Ya, Export',
-            cancelText: 'Batal'
-          });
+  // Export function dengan format Excel yang lebih baik
+  function exportAffiliateData() {
+    const confirmExport = confirm('Apakah Anda ingin mengekspor data affiliate ke Excel?');
+    if (!confirmExport) return;
 
-          if (!confirmed) return;
+    // Get all visible rows
+    const rows = document.querySelectorAll('#affiliatesTableBody tr.table-row');
 
-          // Get all visible rows
-          const rows = document.querySelectorAll('#affiliatesTableBody tr.table-row');
+    if (rows.length === 0) {
+      alert('Tidak ada data untuk diekspor');
+      return;
+    }
 
-          if (rows.length === 0) {
-            await showModal({
-              type: 'warning',
-              title: 'Tidak Ada Data',
-              message: 'Tidak ada data untuk diekspor'
-            });
-            return;
+    // Format tanggal Indonesia
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    // Create HTML table untuk format Excel yang lebih baik
+    let htmlContent = `
+      <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+        <meta charset="UTF-8">
+        <style>
+          table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: 'Calibri', 'Arial', sans-serif;
           }
-
-          // Create CSV content
-          let csv = 'Nama,Email,Total Transaksi,Transaksi Selesai,Total Penjualan,Success Rate,Avg Transaction\n';
-
-          rows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            const name = cells[0]?.textContent.trim().replace(/,/g, '') || '';
-            const email = cells[1]?.textContent.trim().replace(/,/g, '') || '';
-            const total = cells[2]?.textContent.trim() || '0';
-            const completed = cells[3]?.textContent.trim() || '0';
-            const sales = cells[4]?.textContent.trim().replace(/[^0-9,]/g, '') || '0';
-            const rate = cells[5]?.textContent.trim() || '0%';
-            const avg = cells[6]?.textContent.trim().replace(/[^0-9,]/g, '') || '0';
-
-            csv += `${name},${email},${total},${completed},${sales},${rate},${avg}\n`;
-          });
-
-          // Create download link
-          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-          const link = document.createElement('a');
-          const url = URL.createObjectURL(blob);
-          link.setAttribute('href', url);
-          link.setAttribute('download', `affiliate_data_${new Date().toISOString().split('T')[0]}.csv`);
-          link.style.visibility = 'hidden';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-
-          await showModal({
-            type: 'success',
-            title: 'Berhasil',
-            message: 'Data berhasil diekspor!',
-            autoClose: true,
-            closeTime: 2000
-          });
-        }
-
-        // Contoh fungsi lain yang menggunakan modal
-        async function showAffiliateDetails(affiliateName) {
-          await showModal({
-            type: 'info',
-            title: 'Detail Affiliate',
-            message: `Menampilkan detail untuk affiliate: ${affiliateName}`,
-            autoClose: true,
-            closeTime: 3000
-          });
-        }
-
-        async function confirmDeleteAffiliate(affiliateName) {
-          const result = await showConfirmWithDanger({
-            type: 'warning',
-            title: 'Hapus Affiliate',
-            message: `Apakah Anda yakin ingin menghapus affiliate "${affiliateName}"?\n\nTindakan ini tidak dapat dibatalkan!`,
-            confirmText: 'Ya, Hapus',
-            cancelText: 'Batal',
-            dangerText: 'Hapus Permanen'
-          });
-
-          if (result === 'confirm' || result === 'danger') {
-            await showModal({
-              type: 'success',
-              title: 'Berhasil',
-              message: `Affiliate "${affiliateName}" telah dihapus`,
-              autoClose: true
-            });
+          .header {
+            background-color: #059669;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 16pt;
+            padding: 15px;
           }
-        }
-      </script>
+          .subheader {
+            background-color: #10b981;
+            color: white;
+            font-size: 10pt;
+            padding: 8px;
+            text-align: center;
+          }
+          th {
+            background-color: #d1fae5;
+            color: #065f46;
+            font-weight: bold;
+            border: 1px solid #059669;
+            padding: 10px;
+            text-align: left;
+            font-size: 11pt;
+          }
+          td {
+            border: 1px solid #a7f3d0;
+            padding: 8px;
+            font-size: 10pt;
+          }
+          .number {
+            text-align: right;
+          }
+          .currency {
+            text-align: right;
+            mso-number-format: "\\#\\,\\#\#0";
+          }
+          .percentage {
+            text-align: center;
+            mso-number-format: "0.0\\%";
+          }
+          .total-row {
+            background-color: #ecfdf5;
+            font-weight: bold;
+          }
+          .high-value {
+            background-color: #d1fae5;
+          }
+          .medium-value {
+            background-color: #fef3c7;
+          }
+          .low-value {
+            background-color: #fee2e2;
+          }
+          .footer {
+            background-color: #f0fdf4;
+            font-size: 9pt;
+            color: #065f46;
+            text-align: center;
+            padding: 10px;
+          }
+        </style>
+      </head>
+      <body>
+        <table>
+          <tr>
+            <td colspan="7" class="header">RINGKASAN LAPORAN MONITORING AFFILIATE</td>
+          </tr>
+          <tr>
+            <td colspan="7" class="subheader">Affillink Admin - ${dateStr}</td>
+          </tr>
+          <tr>
+            <th>No</th>
+            <th>Nama Affiliate</th>
+            <th>Email</th>
+            <th>Total Transaksi</th>
+            <th>Transaksi Selesai</th>
+            <th>Total Penjualan (Rp)</th>
+            <th>Success Rate (%)</th>
+            <th>Rata-rata per Transaksi (Rp)</th>
+          </tr>
+    `;
+
+    let totalTransaksi = 0;
+    let totalSelesai = 0;
+    let totalPenjualan = 0;
+    let totalSuccessRate = 0;
+
+    rows.forEach((row, index) => {
+      const cells = row.querySelectorAll('td');
+      const name = cells[0]?.textContent.trim().replace(/,/g, '') || '';
+      const email = cells[1]?.textContent.trim() || '';
+      const total = parseInt(cells[2]?.textContent.trim()) || 0;
+      const completed = parseInt(cells[3]?.textContent.trim()) || 0;
+      const salesText = cells[4]?.textContent.trim().replace(/[^0-9]/g, '') || '0';
+      const sales = parseInt(salesText) || 0;
+      const rateText = cells[5]?.textContent.trim().replace('%', '') || '0';
+      const rate = parseFloat(rateText) || 0;
+      const avgText = cells[6]?.textContent.trim().replace(/[^0-9]/g, '') || '0';
+      const avg = parseInt(avgText) || 0;
+
+      // Accumulate totals
+      totalTransaksi += total;
+      totalSelesai += completed;
+      totalPenjualan += sales;
+      totalSuccessRate += rate;
+
+      // Determine row color based on performance
+      let rowClass = '';
+      if (rate >= 80) rowClass = 'high-value';
+      else if (rate >= 60) rowClass = 'medium-value';
+      else if (rate < 60 && total > 0) rowClass = 'low-value';
+
+      htmlContent += `
+        <tr class="${rowClass}">
+          <td class="number">${index + 1}</td>
+          <td>${name}</td>
+          <td>${email}</td>
+          <td class="number">${total}</td>
+          <td class="number">${completed}</td>
+          <td class="currency">${sales.toLocaleString('id-ID')}</td>
+          <td class="percentage">${rate.toFixed(1)}</td>
+          <td class="currency">${avg.toLocaleString('id-ID')}</td>
+        </tr>
+      `;
+    });
+
+    // Calculate averages
+    const avgSuccessRate = rows.length > 0 ? (totalSuccessRate / rows.length).toFixed(1) : 0;
+    const avgPerTransaction = totalTransaksi > 0 ? Math.round(totalPenjualan / totalTransaksi) : 0;
+
+    // Add summary row
+    htmlContent += `
+          <tr class="total-row">
+            <td colspan="3" style="text-align: center; font-weight: bold;">TOTAL / RATA-RATA</td>
+            <td class="number">${totalTransaksi}</td>
+            <td class="number">${totalSelesai}</td>
+            <td class="currency">${totalPenjualan.toLocaleString('id-ID')}</td>
+            <td class="percentage">${avgSuccessRate}</td>
+            <td class="currency">${avgPerTransaction.toLocaleString('id-ID')}</td>
+          </tr>
+          <tr>
+            <td colspan="7" class="footer">
+              <strong>Ringkasan:</strong> Total ${rows.length} Affiliate |  
+              Success Rate Rata-rata: ${avgSuccessRate}% |  
+              Total Penjualan: Rp ${totalPenjualan.toLocaleString('id-ID')}
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `;
+
+    // Create download link with Excel MIME type
+    const blob = new Blob([htmlContent], { 
+      type: 'application/vnd.ms-excel;charset=utf-8;' 
+    });
+    
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const fileName = `Affiliate_Report_${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}.xls`;
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    URL.revokeObjectURL(url);
+    alert(`Data berhasil diekspor ke file: ${fileName}\n\nFile dapat dibuka langsung di Microsoft Excel dengan format yang rapi dan mudah dibaca.`);
+  }
+</script>
+</body>
+
+</html>      </script>
 </body>
 
 </html>
+

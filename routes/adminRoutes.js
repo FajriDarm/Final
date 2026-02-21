@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const adminController = require("../controllers/adminController");
+const monitoringCtrl = require("../controllers/monitoringAffiliateController");
 const authMiddleware = require("../middleware/auth");
 
 // Public endpoint for active events (no auth required)
@@ -29,6 +30,13 @@ router.put("/affiliates/:userId/reject", adminController.rejectAffiliate);
 
 // Activity Logs - Remove auth temporarily for development
 router.get("/activity-logs", adminController.getActivityLogs);
+
+// Monitoring Affiliate page (needs to load admin view)
+router.get(
+  "/monitoring_affiliate",
+  authMiddleware,
+  monitoringCtrl.getMonitoringAffiliate,
+);
 
 // Withdrawal Approvals
 router.get(
