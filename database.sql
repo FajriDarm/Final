@@ -323,5 +323,67 @@ CREATE TABLE commission_rules (
     FOREIGN KEY (event_id) REFERENCES events(id),
     FOREIGN KEY (created_by) REFERENCES users(id)
 );
+# ========================================= 
+-- PACKAGES
+-- =========================================
+CREATE TABLE packages (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  slug VARCHAR(100) NOT NULL,
+  logo_url TEXT DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY unique_slug (slug)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE events
+ADD COLUMN headline VARCHAR(255) DEFAULT NULL AFTER title,
+ADD COLUMN subheadline TEXT DEFAULT NULL AFTER headline,
+ADD COLUMN hero_media_type ENUM('image','video') DEFAULT NULL AFTER subheadline,
+ADD COLUMN hero_media_url TEXT DEFAULT NULL AFTER hero_media_type,
+ADD COLUMN hero_as_background TINYINT(1) DEFAULT 1 AFTER hero_media_url;
+
+CREATE TABLE event_packages (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  event_id BIGINT NOT NULL,
+  package_id BIGINT NOT NULL,
+  price DECIMAL(15,2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY unique_event_package (event_id, package_id),
+  FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+  FOREIGN KEY (package_id) REFERENCES packages(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE event_benefits (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  event_id BIGINT NOT NULL,
+  benefit_text VARCHAR(255) NOT NULL,
+  sort_order INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE event_problem_sections (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  event_id BIGINT NOT NULL,
+  title VARCHAR(150) DEFAULT NULL,
+  subtitle TEXT DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE event_pains (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  problem_section_id BIGINT NOT NULL,
+  pain_title VARCHAR(150) DEFAULT NULL,
+  pain_description TEXT DEFAULT NULL,
+  sort_order INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (problem_section_id) REFERENCES event_problem_sections(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- End of database.sql
