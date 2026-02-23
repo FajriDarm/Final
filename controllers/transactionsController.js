@@ -5,9 +5,7 @@ async function createTransaction(req, res) {
   try {
     let {
       customer_name,
-      customer_email,
       customer_phone,
-      payment_method,
       event_id,
       affiliate_ref,
     } = req.body;
@@ -31,59 +29,30 @@ async function createTransaction(req, res) {
     }
 
     // Basic validation
-    if (!customer_name || !customer_phone || !payment_method) {
+    if (!customer_name || !customer_phone) {
       return res.status(400).send("Missing required fields");
     }
 
-    // 1) Find or create customer. If found, update name/email if different.
+    // 1) Find or create customer. If found, update name if different.
     let rows;
-    // Prefer exact email match first (if provided), then fallback to phone.
-    if (customer_email) {
-      [rows] = await db.query(
-        "SELECT id, name, email FROM customers WHERE email = ? LIMIT 1",
-        [customer_email],
-      );
-      if (rows.length === 0) {
-        [rows] = await db.query(
-          "SELECT id, name, email FROM customers WHERE phone = ? LIMIT 1",
-          [customer_phone],
-        );
-      }
-    } else {
-      [rows] = await db.query(
-        "SELECT id, name, email FROM customers WHERE phone = ? LIMIT 1",
-        [customer_phone],
-      );
-    }
+    [rows] = await db.query(
+      "SELECT id, name FROM customers WHERE phone = ? LIMIT 1",
+      [customer_phone],
+    );
     let customerId;
     if (rows.length > 0) {
       customerId = rows[0].id;
-      // update name/email only if existing values are empty/null so we don't
-      // overwrite historical data with incoming values. This prevents replacing
-      // an existing customer's name/email when the new submission belongs to
-      // a different person that shares phone/email by coincidence.
       const existing = rows[0];
-      const updates = [];
-      const params = [];
       if (customer_name && (!existing.name || existing.name.trim() === "")) {
-        updates.push("name = ?");
-        params.push(customer_name);
-      }
-      if (customer_email && (!existing.email || existing.email.trim() === "")) {
-        updates.push("email = ?");
-        params.push(customer_email);
-      }
-      if (updates.length > 0) {
-        params.push(customerId);
         await db.query(
-          `UPDATE customers SET ${updates.join(", ")} WHERE id = ?`,
-          params,
+          `UPDATE customers SET name = ? WHERE id = ?`,
+          [customer_name, customerId],
         );
       }
     } else {
       const [resIns] = await db.query(
-        "INSERT INTO customers (name, email, phone) VALUES (?, ?, ?)",
-        [customer_name, customer_email || null, customer_phone],
+        "INSERT INTO customers (name, phone) VALUES (?, ?)",
+        [customer_name, customer_phone],
       );
       customerId = resIns.insertId;
     }
@@ -135,14 +104,13 @@ async function createTransaction(req, res) {
       }
     }
     const [trxRes] = await db.query(
-      `INSERT INTO transactions (event_id, affiliate_id, customer_id, customer_name, payment_method, payment_status, total_amount, status)
-       VALUES (?, ?, ?, ?, ?, 'pending', ?, 'pending')`,
+      `INSERT INTO transactions (event_id, affiliate_id, customer_id, customer_name, payment_status, total_amount, status)
+       VALUES (?, ?, ?, ?, 'pending', ?, 'pending')`,
       [
         resolvedEventId,
         affiliateId,
         customerId,
         customer_name || null,
-        payment_method,
         totalAmount,
       ],
     );

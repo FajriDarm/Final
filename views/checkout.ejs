@@ -565,21 +565,6 @@
                   </div>
                 </div>
 
-                <!-- Email -->
-                <div>
-                  <label class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
-                    <i class="fas fa-envelope text-emerald-600 text-xs mr-1"></i>
-                    Alamat Email
-                  </label>
-                  <div class="input-container relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <i class="fas fa-envelope text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
-                    </div>
-                    <input type="email" name="customer_email"
-                      class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
-                      placeholder="email@contoh.com" />
-                  </div>
-                </div>
 
                 <!-- No HP -->
                 <div>
@@ -599,28 +584,6 @@
                   </div>
                 </div>
 
-                <!-- Metode Pembayaran -->
-                <div>
-                  <label class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
-                    <i class="fas fa-credit-card text-emerald-600 text-xs mr-1"></i>
-                    Metode Pembayaran
-                    <span class="text-red-500 ml-1">*</span>
-                  </label>
-                  <div class="input-container relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <i class="fas fa-credit-card text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
-                    </div>
-                    <div class="relative">
-                      <select name="payment_method" required
-                        class="block w-full pl-9 pr-8 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium appearance-none">
-                        <option value="transfer">Transfer Bank</option>
-                        <option value="cash">Cash</option>
-                      </select>
-                      <i
-                        class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
-                    </div>
-                  </div>
-                </div>
 
                 <!-- Buttons -->
                 <div class="flex justify-end gap-3 pt-4">
@@ -636,6 +599,7 @@
                   </button>
                 </div>
               </form>
+                <!-- ...existing code... -->
             </div>
           </div>
 
@@ -703,16 +667,8 @@
               <span class="font-extrabold text-gray-900" id="confirmName">-</span>
             </div>
             <div class="flex justify-between items-center text-xs">
-              <span class="text-[9px] font-bold text-emerald-700">Email</span>
-              <span class="font-extrabold text-gray-900" id="confirmEmail">-</span>
-            </div>
-            <div class="flex justify-between items-center text-xs">
               <span class="text-[9px] font-bold text-emerald-700">No HP</span>
               <span class="font-extrabold text-gray-900" id="confirmPhone">-</span>
-            </div>
-            <div class="flex justify-between items-center text-xs">
-              <span class="text-[9px] font-bold text-emerald-700">Metode</span>
-              <span class="font-extrabold text-gray-900" id="confirmPayment">-</span>
             </div>
             <div class="flex justify-between items-center text-xs pt-2 border-t border-white/30">
               <span class="text-[9px] font-bold text-emerald-700">Total</span>
@@ -897,9 +853,7 @@
       // Get form data
       const formData = {
         customer_name: form.customer_name.value,
-        customer_email: form.customer_email?.value || null,
         customer_phone: form.customer_phone.value,
-        payment_method: form.payment_method.value,
         event_id: form.event_id.value,
         affiliate_ref: form.affiliate_ref?.value || null,
       };
@@ -912,10 +866,7 @@
 
       // Update confirmation modal with form data
       document.getElementById('confirmName').textContent = formData.customer_name;
-      document.getElementById('confirmEmail').textContent = formData.customer_email || '-';
       document.getElementById('confirmPhone').textContent = formData.customer_phone;
-      document.getElementById('confirmPayment').textContent =
-        formData.payment_method === 'transfer' ? 'Transfer Bank' : 'Cash';
       document.getElementById('confirmAmount').textContent = isFree ? 'Gratis' : 'Rp ' + totalAmount.toLocaleString('id-ID');
 
       // Store form data for later use
@@ -929,68 +880,8 @@
     document.getElementById('proceedConfirmBtn').addEventListener('click', async function () {
       hideConfirmationModal();
 
-      // Disable button and show loading
-      const originalBtnText = submitBtn ? submitBtn.textContent : 'Kirim';
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
-      }
-
-      try {
-        const res = await fetch('/transactions', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formDataCache)
-        });
-        const json = await res.json();
-
-        if (!json || !json.success) {
-          alert('Terjadi kesalahan saat menyimpan transaksi. Silakan coba lagi.');
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim';
-          }
-          return;
-        }
-
-        // Update success modal with bank info
-        const bank = json.bankInfo || {};
-        const whatsapp = json.whatsapp || {};
-
-        document.getElementById('modal_bank_name').textContent = bank.bank_name || '-';
-        document.getElementById('modal_bank_account_name').textContent = bank.bank_account_name || '-';
-        document.getElementById('modal_bank_account_number').textContent = bank.bank_account_number || '-';
-
-        // Show bank info if event is paid
-        const isFree = <%= event ? (!event.price_original || Number(event.price_original) === 0) : true %>;
-        if (!isFree && bank.bank_name) {
-          document.getElementById('bankInfoContainer').classList.remove('hidden');
-        }
-
-        // Show WhatsApp contact
-        if (whatsapp.number) {
-          document.getElementById('modal_whatsapp').textContent = whatsapp.number;
-          document.getElementById('whatsappLink').href = `https://wa.me/${whatsapp.number.replace(/[^0-9]/g, '')}`;
-          document.getElementById('whatsappContainer').classList.remove('hidden');
-        }
-
-        // Update button state
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = '<i class="fas fa-check"></i> Terkirim';
-        }
-
-        // Show success modal
-        showSuccessModal();
-
-      } catch (err) {
-        console.error('submit checkout error', err);
-        alert('Terjadi kesalahan, coba lagi.');
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim';
-        }
-      }
+      // Redirect langsung ke WhatsApp URL
+      window.location.href = 'https://konektor.id/wa/ishmah-waba';
     });
   </script>
 </body>
