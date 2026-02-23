@@ -386,4 +386,30 @@ CREATE TABLE event_pains (
   FOREIGN KEY (problem_section_id) REFERENCES event_problem_sections(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE event_faqs (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  event_id BIGINT NOT NULL,
+
+  question VARCHAR(255) NOT NULL,
+  answer TEXT NOT NULL,
+
+  sort_order INT DEFAULT 0,
+  is_active TINYINT(1) DEFAULT 1,
+
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (id),
+
+  KEY idx_event_id (event_id),
+
+  CONSTRAINT fk_event_faqs_event
+    FOREIGN KEY (event_id)
+    REFERENCES events(id)
+    ON DELETE CASCADE
+
+) ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
+
 -- End of database.sql
