@@ -16,9 +16,13 @@ router.put("/users/:id", adminController.updateUser);
 
 // Events - Remove auth temporarily for development
 router.get("/events", adminController.getEvents);
+router.get("/events/:eventId", adminController.getEventById); // detail for edit
 router.post("/events", adminController.createEvent);
 router.put("/events/:eventId", adminController.updateEvent);
 router.delete("/events/:eventId", adminController.deleteEvent);
+
+// Packages endpoint for frontend dropdown
+router.get("/packages", adminController.getPackages);
 
 // Admin: generate token for user (super_admin only)
 router.post("/tokens", authMiddleware, adminController.generateTokenForUser);
