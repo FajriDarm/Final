@@ -1238,7 +1238,14 @@
                     <input type="text" id="subheadline" class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium" placeholder="Subjudul landing page">
                   </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+                  <div>
+                    <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Sumber Media</label>
+                    <select id="hero_media_source" class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
+                      <option value="url">URL</option>
+                      <option value="upload">Upload File</option>
+                    </select>
+                  </div>
                   <div>
                     <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Media Type</label>
                     <select id="hero_media_type" class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
@@ -1247,14 +1254,14 @@
                       <option value="video">Video</option>
                     </select>
                   </div>
-                  <div>
+                  <div id="hero_url_wrapper" class="md:col-span-2">
                     <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Media URL</label>
                     <input type="text" id="hero_media_url" class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium" placeholder="https://...">
                   </div>
-                  <div>
+                  <div id="hero_upload_wrapper" class="hidden md:col-span-2">
                     <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Upload Foto</label>
                     <input type="file" id="hero_media_file" accept="image/*" class="w-full text-xs" />
-                    <p id="hero_upload_note" class="text-[9px] text-gray-500 mt-1">Pilih file untuk diunggah, atau isi URL di atas.</p>
+                    <p id="hero_upload_note" class="text-[9px] text-gray-500 mt-1">File akan diunggah lalu URL disimpan otomatis.</p>
                   </div>
                 </div>
                 <div id="hero_preview" class="mt-2"></div>
@@ -1313,8 +1320,32 @@
                 <button type="button" onclick="addFAQ('','')" class="text-[10px] font-bold text-blue-600 hover:underline">+ Tambah FAQ</button>
               </div>
 
-              <!-- Event Type Selection -->
-              <div>
+              <!-- Testimonials Section -->
+              <div id="testimonialsSection" class="space-y-3 bg-gradient-to-r from-amber-50/80 to-yellow-50/80 backdrop-blur p-4 rounded-xl border border-amber-200/50">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-7 h-7 bg-amber-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-quote-right text-amber-600 text-xs"></i>
+                  </div>
+                  <h5 class="text-sm font-extrabold text-amber-900">Testimoni (URL / File)</h5>
+                </div>
+                <div id="testimonialsList" class="space-y-3"></div>
+                <button type="button" onclick="addTestimonial()" class="text-[10px] font-bold text-amber-600 hover:underline">+ Tambah Testimoni</button>
+              </div>
+
+              <!-- Event Variants Section -->
+              <div id="variantsSection" class="space-y-3 bg-gradient-to-r from-fuchsia-50/80 to-pink-50/80 backdrop-blur p-4 rounded-xl border border-fuchsia-200/50">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-7 h-7 bg-fuchsia-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-layer-group text-fuchsia-600 text-xs"></i>
+                  </div>
+                  <h5 class="text-sm font-extrabold text-fuchsia-900">Varian Event (Bisa Lebih dari 1)</h5>
+                </div>
+                <div id="variantsList" class="space-y-3"></div>
+                <button type="button" onclick="addVariant()" class="text-[10px] font-bold text-fuchsia-600 hover:underline">+ Tambah Varian Event</button>
+              </div>
+
+              <!-- Event Type Selection (Legacy - hidden) -->
+              <div class="hidden">
                 <div class="flex items-center gap-2 mb-3">
                   <div class="w-7 h-7 bg-emerald-100 rounded-lg flex items-center justify-center">
                     <i class="fas fa-tags text-emerald-600 text-xs"></i>
@@ -1379,7 +1410,7 @@
                 <div class="mt-2 space-y-3">
                   <div>
                     <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Judul</label>
-                    <input type="text" id="title_gratis" required
+                    <input type="text" id="title_gratis"
                       class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
                   </div>
                   <div>
@@ -1397,11 +1428,11 @@
               </div>
 
               <!-- Berbayar Fields -->
-              <div id="berbayarFields" class="space-y-4">
+              <div id="berbayarFields" class="hidden space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
                     <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Judul</label>
-                    <input type="text" id="title" required
+                    <input type="text" id="title"
                       class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
                       placeholder="Judul event">
                   </div>
@@ -1456,18 +1487,42 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
                     <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Tanggal Mulai</label>
-                    <input type="date" id="start_date" required
+                    <input type="date" id="start_date"
                       class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
                   </div>
                   <div>
                     <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Tanggal Berakhir</label>
-                    <input type="date" id="end_date" required
+                    <input type="date" id="end_date"
                       class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
                   </div>
                 </div>
               </div>
 
               <!-- Admin WhatsApp -->
+              <div class="bg-gradient-to-r from-cyan-50/80 to-sky-50/80 backdrop-blur p-4 rounded-xl border border-cyan-200/50">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-7 h-7 bg-cyan-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-calendar-day text-cyan-600 text-xs"></i>
+                  </div>
+                  <div>
+                    <h5 class="text-sm font-extrabold text-cyan-900">Periode Event Utama</h5>
+                    <p class="text-[9px] font-medium text-cyan-700">Dipakai untuk event induk, tipe mengikuti varian pertama</p>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-[10px] font-extrabold text-cyan-800 mb-1">Tanggal Mulai</label>
+                    <input type="date" id="start_date_main"
+                      class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-extrabold text-cyan-800 mb-1">Tanggal Berakhir</label>
+                    <input type="date" id="end_date_main"
+                      class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
+                  </div>
+                </div>
+              </div>
+
               <div
                 class="bg-gradient-to-r from-green-50/80 to-emerald-50/80 backdrop-blur p-4 rounded-xl border border-green-200/50">
                 <div class="flex items-center gap-2 mb-2">
@@ -1541,7 +1596,7 @@
             <button type="submit" form="eventForm"
               class="flex-1 gradient-secondary text-white py-2.5 rounded-lg hover:opacity-90 transition-all duration-300 text-xs font-extrabold shadow-lg flex items-center justify-center gap-1">
               <i class="fas fa-save"></i>
-              <span id="submitButtonText">Simpan</span>
+              <span id="submitButtonText">Tambah Event</span>
             </button>
           </div>
         </div>
@@ -2134,25 +2189,32 @@
 
         function showCreateModal() {
           document.getElementById('modalTitleText').textContent = 'Buat Event';
-          document.getElementById('submitButtonText').textContent = 'Buat';
+          document.getElementById('submitButtonText').textContent = 'Tambah Event';
           document.getElementById('eventForm').reset();
           document.getElementById('eventId').value = '';
           // clear hero fields
           document.getElementById('headline').value = '';
           document.getElementById('subheadline').value = '';
+          document.getElementById('hero_media_source').value = 'url';
           document.getElementById('hero_media_type').value = '';
           document.getElementById('hero_media_url').value = '';
           document.getElementById('hero_media_file').value = '';
           document.getElementById('hero_preview').innerHTML = '';
           document.getElementById('hero_as_background').checked = false;
+          toggleHeroInputMode();
           // clear dynamic lists
           document.getElementById('benefitsList').innerHTML = '';
           document.getElementById('painsList').innerHTML = '';
           document.getElementById('faqsList').innerHTML = '';
+          document.getElementById('testimonialsList').innerHTML = '';
+          document.getElementById('variantsList').innerHTML = '';
           document.getElementById('problemTitle').value = '';
           document.getElementById('problemSubtitle').value = '';
+          document.getElementById('start_date_main').value = '';
+          document.getElementById('end_date_main').value = '';
+          addTestimonial();
+          addVariant();
           // package logic removed
-          toggleEventFields();
           document.getElementById('eventModal').classList.remove('hidden');
           document.getElementById('eventModal').classList.add('flex');
           document.body.style.overflow = 'hidden';
@@ -2167,14 +2229,8 @@
           }
 
           document.getElementById('modalTitleText').textContent = 'Edit Event';
-          document.getElementById('submitButtonText').textContent = 'Perbarui';
+          document.getElementById('submitButtonText').textContent = 'Perbarui Event';
           document.getElementById('eventId').value = event.id;
-
-          const eventTypeRadio = document.querySelector(`input[name="event_type"][value="${event.event_type}"]`);
-          if (eventTypeRadio) {
-            eventTypeRadio.checked = true;
-            toggleEventFields();
-          }
 
           // populate hero fields if present
           document.getElementById('headline').value = event.headline || '';
@@ -2182,6 +2238,8 @@
           document.getElementById('hero_media_type').value = event.hero_media_type || '';
           document.getElementById('hero_media_url').value = event.hero_media_url || '';
           document.getElementById('hero_media_file').value = ''; // reset file input
+          document.getElementById('hero_media_source').value = (event.hero_media_url && event.hero_media_url.startsWith('/uploads/')) ? 'upload' : 'url';
+          toggleHeroInputMode();
           const previewEl = document.getElementById('hero_preview');
           if (event.hero_media_url) {
             previewEl.innerHTML = `<img src="${event.hero_media_url}" class="mt-2 max-h-24 rounded-lg">`;
@@ -2210,21 +2268,25 @@
             event.faqs.forEach(f => addFAQ(f.question || '', f.answer || ''));
           }
 
-          // packages no longer applicable; event pricing handled separately
-
-          if (event.event_type === 'gratis') {
-            document.getElementById('title_gratis').value = event.title || '';
-            document.getElementById('slug_gratis').value = event.slug || '';
-            document.getElementById('description_gratis').value = event.description || '';
+          // testimonials
+          document.getElementById('testimonialsList').innerHTML = '';
+          if (event.testimonials && Array.isArray(event.testimonials) && event.testimonials.length) {
+            event.testimonials.forEach((t) => addTestimonial(t));
           } else {
-            document.getElementById('title').value = event.title || '';
-            document.getElementById('slug').value = event.slug || '';
-            document.getElementById('description').value = event.description || '';
-            document.getElementById('price_original').value = event.price_original || '';
-            document.getElementById('price_promo').value = event.price_promo || '';
-            document.getElementById('start_date').value = event.start_date || '';
-            document.getElementById('end_date').value = event.end_date || '';
+            addTestimonial();
           }
+
+          // variants
+          document.getElementById('variantsList').innerHTML = '';
+          if (event.variants && Array.isArray(event.variants) && event.variants.length) {
+            event.variants.forEach((v) => addVariant(v));
+          } else {
+            addVariant();
+          }
+
+          // packages no longer applicable; event pricing handled separately
+          document.getElementById('start_date_main').value = event.start_date || '';
+          document.getElementById('end_date_main').value = event.end_date || '';
 
           const statusRadio = document.querySelector(`input[name="status"][value="${event.status || 'draft'}"]`);
           if (statusRadio) {
@@ -2244,44 +2306,6 @@
           document.body.style.overflow = '';
         }
 
-        function toggleEventFields() {
-          const eventType = document.querySelector('input[name="event_type"]:checked').value;
-          const gratisFields = document.getElementById('gratisFields');
-          const berbayarFields = document.getElementById('berbayarFields');
-
-          if (eventType === 'gratis') {
-            gratisFields.classList.remove('hidden');
-            berbayarFields.classList.add('hidden');
-
-            document.getElementById('title_gratis').required = true;
-            document.getElementById('slug_gratis').required = false;
-            document.getElementById('description_gratis').required = false;
-
-            document.getElementById('title').required = false;
-            document.getElementById('slug').required = false;
-            document.getElementById('description').required = false;
-            document.getElementById('price_original').required = false;
-            document.getElementById('price_promo').required = false;
-            document.getElementById('start_date').required = false;
-            document.getElementById('end_date').required = false;
-          } else {
-            gratisFields.classList.add('hidden');
-            berbayarFields.classList.remove('hidden');
-
-            document.getElementById('title_gratis').required = false;
-            document.getElementById('slug_gratis').required = false;
-            document.getElementById('description_gratis').required = false;
-
-            document.getElementById('title').required = true;
-            document.getElementById('slug').required = false;
-            document.getElementById('description').required = false;
-            document.getElementById('price_original').required = false;
-            document.getElementById('price_promo').required = false;
-            document.getElementById('start_date').required = true;
-            document.getElementById('end_date').required = true;
-          }
-        }
-
         function generateSlug(title) {
           return title
             .toLowerCase()
@@ -2289,6 +2313,261 @@
             .replace(/[^\w\s-]/g, '')
             .replace(/[\s_-]+/g, '-')
             .replace(/^-+|-+$/g, '');
+        }
+
+        function detectHeroMediaTypeFromUrl(url) {
+          if (!url) return '';
+          const lower = url.toLowerCase();
+          if (/\.(mp4|webm|mov|m4v|avi)(\?|$)/.test(lower) || lower.includes('youtube.com') || lower.includes('youtu.be') || lower.includes('vimeo.com')) {
+            return 'video';
+          }
+          return 'image';
+        }
+
+        function renderHeroPreview(url, type) {
+          const preview = document.getElementById('hero_preview');
+          if (!url) {
+            preview.innerHTML = '';
+            return;
+          }
+
+          if (type === 'video') {
+            preview.innerHTML = `<a href="${url}" target="_blank" rel="noopener" class="text-xs text-emerald-700 underline">Preview video: ${url}</a>`;
+            return;
+          }
+
+          preview.innerHTML = `<img src="${url}" class="mt-2 max-h-24 rounded-lg" alt="Hero preview" />`;
+        }
+
+        function toggleHeroInputMode() {
+          const source = document.getElementById('hero_media_source').value;
+          const urlWrapper = document.getElementById('hero_url_wrapper');
+          const uploadWrapper = document.getElementById('hero_upload_wrapper');
+
+          if (source === 'upload') {
+            uploadWrapper.classList.remove('hidden');
+            urlWrapper.classList.add('hidden');
+          } else {
+            uploadWrapper.classList.add('hidden');
+            urlWrapper.classList.remove('hidden');
+          }
+        }
+
+        function uploadMediaFile(file) {
+          const form = new FormData();
+          form.append('hero', file);
+          return fetch('/api/admin/events/upload-hero', {
+            method: 'POST',
+            body: form
+          }).then((r) => r.json());
+        }
+
+        function createMediaSourceControl(prefix, initial = {}) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'grid grid-cols-1 md:grid-cols-4 gap-2 items-end';
+          wrapper.innerHTML = `
+            <div>
+              <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Sumber</label>
+              <select class="${prefix}-source w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs">
+                <option value="url">URL</option>
+                <option value="upload">Upload File</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Tipe</label>
+              <select class="${prefix}-type w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs">
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+              </select>
+            </div>
+            <div class="${prefix}-url-wrap md:col-span-2">
+              <label class="block text-[10px] font-extrabold text-gray-700 mb-1">URL</label>
+              <input type="text" class="${prefix}-url w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs" placeholder="https://...">
+            </div>
+            <div class="${prefix}-upload-wrap hidden md:col-span-2">
+              <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Upload File</label>
+              <input type="file" accept="image/*,video/*" class="${prefix}-file w-full text-xs" />
+            </div>
+          `;
+
+          const sourceEl = wrapper.querySelector(`.${prefix}-source`);
+          const typeEl = wrapper.querySelector(`.${prefix}-type`);
+          const urlEl = wrapper.querySelector(`.${prefix}-url`);
+          const fileEl = wrapper.querySelector(`.${prefix}-file`);
+          const urlWrap = wrapper.querySelector(`.${prefix}-url-wrap`);
+          const uploadWrap = wrapper.querySelector(`.${prefix}-upload-wrap`);
+
+          const toggleMode = () => {
+            if (sourceEl.value === 'upload') {
+              uploadWrap.classList.remove('hidden');
+              urlWrap.classList.add('hidden');
+            } else {
+              uploadWrap.classList.add('hidden');
+              urlWrap.classList.remove('hidden');
+            }
+          };
+
+          sourceEl.addEventListener('change', toggleMode);
+          urlEl.addEventListener('input', () => {
+            if (!typeEl.value && urlEl.value.trim()) {
+              typeEl.value = detectHeroMediaTypeFromUrl(urlEl.value.trim());
+            }
+          });
+          fileEl.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            try {
+              const data = await uploadMediaFile(file);
+              if (data.success) {
+                urlEl.value = data.url;
+                typeEl.value = file.type.startsWith('video/') ? 'video' : 'image';
+                sourceEl.value = 'upload';
+                toggleMode();
+              } else {
+                showError('Upload gagal: ' + (data.message || ''));
+              }
+            } catch (err) {
+              showError('Upload gagal: ' + err.message);
+            }
+          });
+
+          sourceEl.value = initial.source || (initial.media_url && initial.media_url.startsWith('/uploads/') ? 'upload' : 'url');
+          typeEl.value = initial.media_type || detectHeroMediaTypeFromUrl(initial.media_url || '') || 'image';
+          urlEl.value = initial.media_url || '';
+          toggleMode();
+
+          return {
+            wrapper,
+            sourceEl,
+            typeEl,
+            urlEl,
+            fileEl,
+          };
+        }
+
+        function addTestimonial(initial = {}) {
+          const list = document.getElementById('testimonialsList');
+          const item = document.createElement('div');
+          item.className = 'testimonial-item bg-white/60 border border-white/60 rounded-xl p-3 space-y-2';
+
+          const media = createMediaSourceControl('testimonial-media', {
+            media_type: initial.media_type || 'image',
+            media_url: initial.media_url || '',
+          });
+
+          const preview = document.createElement('div');
+          preview.className = 'testimonial-preview text-xs';
+          const renderPreview = () => {
+            const url = media.urlEl.value.trim();
+            const type = media.typeEl.value;
+            if (!url) {
+              preview.innerHTML = '';
+              return;
+            }
+            if (type === 'video') {
+              preview.innerHTML = `<a href="${url}" target="_blank" rel="noopener" class="text-amber-700 underline">Preview video testimoni</a>`;
+            } else {
+              preview.innerHTML = `<img src="${url}" class="max-h-20 rounded-lg" alt="testimonial preview" />`;
+            }
+          };
+          media.urlEl.addEventListener('input', renderPreview);
+          media.typeEl.addEventListener('change', renderPreview);
+          media.fileEl.addEventListener('change', () => setTimeout(renderPreview, 200));
+
+          const removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'text-[10px] font-bold text-red-600 hover:underline';
+          removeBtn.textContent = 'Hapus Testimoni';
+          removeBtn.addEventListener('click', () => item.remove());
+
+          item.appendChild(media.wrapper);
+          item.appendChild(preview);
+          item.appendChild(removeBtn);
+          list.appendChild(item);
+          renderPreview();
+        }
+
+        function addVariant(initial = {}) {
+          const list = document.getElementById('variantsList');
+          const item = document.createElement('div');
+          item.className = 'variant-item bg-white/60 border border-white/60 rounded-xl p-3 space-y-3';
+
+          item.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Tipe Event</label>
+                <select class="variant-type w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs">
+                  <option value="berbayar">Berbayar</option>
+                  <option value="gratis">Gratis</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Judul</label>
+                <input type="text" class="variant-title w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs" placeholder="Judul varian">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Slug</label>
+                <input type="text" class="variant-slug w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs" placeholder="slug-varian">
+              </div>
+              <div>
+                <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Deskripsi</label>
+                <textarea class="variant-description w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs" rows="2" placeholder="Deskripsi varian"></textarea>
+              </div>
+            </div>
+            <div class="variant-price-wrap grid grid-cols-1 md:grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Harga Asli</label>
+                <input type="number" class="variant-price-original w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs" placeholder="0">
+              </div>
+              <div>
+                <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Harga Promo</label>
+                <input type="number" class="variant-price-promo w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs" placeholder="0">
+              </div>
+            </div>
+          `;
+
+          const mediaWrap = document.createElement('div');
+          mediaWrap.className = 'space-y-1';
+          const mediaTitle = document.createElement('p');
+          mediaTitle.className = 'text-[10px] font-extrabold text-gray-700';
+          mediaTitle.textContent = 'Logo (URL / File)';
+          const logoMedia = createMediaSourceControl('variant-logo', {
+            media_type: initial.logo_media_type || 'image',
+            media_url: initial.logo_media_url || '',
+          });
+          mediaWrap.appendChild(mediaTitle);
+          mediaWrap.appendChild(logoMedia.wrapper);
+
+          const removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'text-[10px] font-bold text-red-600 hover:underline';
+          removeBtn.textContent = 'Hapus Varian';
+          removeBtn.addEventListener('click', () => item.remove());
+
+          item.appendChild(mediaWrap);
+          item.appendChild(removeBtn);
+          list.appendChild(item);
+
+          const typeEl = item.querySelector('.variant-type');
+          const priceWrap = item.querySelector('.variant-price-wrap');
+          const togglePrice = () => {
+            if (typeEl.value === 'gratis') {
+              priceWrap.classList.add('hidden');
+            } else {
+              priceWrap.classList.remove('hidden');
+            }
+          };
+          typeEl.addEventListener('change', togglePrice);
+
+          item.querySelector('.variant-type').value = initial.event_type || 'berbayar';
+          item.querySelector('.variant-title').value = initial.title || '';
+          item.querySelector('.variant-slug').value = initial.slug || '';
+          item.querySelector('.variant-description').value = initial.description || '';
+          item.querySelector('.variant-price-original').value = initial.price_original || '';
+          item.querySelector('.variant-price-promo').value = initial.price_promo || '';
+          togglePrice();
         }
 
         // helper to dynamically add benefits/pains
@@ -2338,24 +2617,29 @@
           e.preventDefault();
 
           const eventId = document.getElementById('eventId').value;
-          const eventType = document.querySelector('input[name="event_type"]:checked').value;
           const status = document.querySelector('input[name="status"]:checked').value;
 
           let formData = {
-            event_type: eventType,
+            event_type: '',
             admin_whatsapp: document.getElementById('admin_whatsapp').value,
             status: status,
             headline: document.getElementById('headline').value,
             subheadline: document.getElementById('subheadline').value,
             hero_media_type: document.getElementById('hero_media_type').value,
-            hero_media_url: document.getElementById('hero_media_url').value,
+            hero_media_url: document.getElementById('hero_media_url').value.trim(),
             hero_as_background: document.getElementById('hero_as_background').checked ? 1 : 0,
             benefits: [],
             problemTitle: document.getElementById('problemTitle').value,
             problemSubtitle: document.getElementById('problemSubtitle').value,
             pains: [],
-            faqs: []
+            faqs: [],
+            testimonials: [],
+            variants: []
           };
+
+          if (formData.hero_media_url && !formData.hero_media_type) {
+            formData.hero_media_type = detectHeroMediaTypeFromUrl(formData.hero_media_url);
+          }
 
           // collect benefits
           document.querySelectorAll('.benefit-input').forEach(input => {
@@ -2382,20 +2666,57 @@
             }
           });
 
-          if (eventType === 'gratis') {
-            formData.title = document.getElementById('title_gratis').value;
-            formData.slug = document.getElementById('slug_gratis').value || generateSlug(document.getElementById('title_gratis').value);
-            formData.description = document.getElementById('description_gratis').value;
-            formData.price_original = 0;
-            formData.price_promo = 0;
-          } else {
-            formData.title = document.getElementById('title').value;
-            formData.slug = document.getElementById('slug').value || generateSlug(document.getElementById('title').value);
-            formData.description = document.getElementById('description').value;
-            formData.price_original = document.getElementById('price_original').value || 0;
-            formData.price_promo = document.getElementById('price_promo').value || 0;
-            formData.start_date = document.getElementById('start_date').value;
-            formData.end_date = document.getElementById('end_date').value;
+          // collect testimonials
+          document.querySelectorAll('.testimonial-item').forEach((item) => {
+            const typeEl = item.querySelector('.testimonial-media-type');
+            const urlEl = item.querySelector('.testimonial-media-url');
+            if (!typeEl || !urlEl) return;
+            const mediaUrl = urlEl.value.trim();
+            if (!mediaUrl) return;
+            formData.testimonials.push({
+              media_type: typeEl.value || detectHeroMediaTypeFromUrl(mediaUrl),
+              media_url: mediaUrl
+            });
+          });
+
+          // collect variants
+          document.querySelectorAll('.variant-item').forEach((item) => {
+            const title = item.querySelector('.variant-title')?.value?.trim() || '';
+            if (!title) return;
+            const slugRaw = item.querySelector('.variant-slug')?.value?.trim() || '';
+            const eventTypeVariant = item.querySelector('.variant-type')?.value || 'berbayar';
+            const logoType = item.querySelector('.variant-logo-type')?.value || '';
+            const logoUrl = item.querySelector('.variant-logo-url')?.value?.trim() || '';
+            formData.variants.push({
+              event_type: eventTypeVariant,
+              title: title,
+              slug: slugRaw || generateSlug(title),
+              description: item.querySelector('.variant-description')?.value || '',
+              price_original: eventTypeVariant === 'gratis' ? 0 : (item.querySelector('.variant-price-original')?.value || 0),
+              price_promo: eventTypeVariant === 'gratis' ? 0 : (item.querySelector('.variant-price-promo')?.value || 0),
+              logo_media_type: logoType || (logoUrl ? detectHeroMediaTypeFromUrl(logoUrl) : ''),
+              logo_media_url: logoUrl
+            });
+          });
+
+          if (formData.variants.length === 0) {
+            showError('Minimal harus ada 1 varian event');
+            return;
+          }
+
+          const primaryVariant = formData.variants[0];
+          formData.event_type = primaryVariant.event_type;
+          formData.title = primaryVariant.title;
+          formData.slug = primaryVariant.slug || generateSlug(primaryVariant.title);
+          formData.description = primaryVariant.description || '';
+          formData.price_original = primaryVariant.event_type === 'gratis' ? 0 : (primaryVariant.price_original || 0);
+          formData.price_promo = primaryVariant.event_type === 'gratis' ? 0 : (primaryVariant.price_promo || 0);
+          formData.start_date = document.getElementById('start_date_main').value || null;
+          formData.end_date = document.getElementById('end_date_main').value || null;
+
+          if (formData.event_type === 'berbayar' && (!formData.start_date || !formData.end_date)) {
+            showError('Untuk varian utama berbayar, tanggal mulai dan berakhir wajib diisi');
+            return;
           }
 
           try {
@@ -2423,8 +2744,24 @@
           }
         });
 
-        document.querySelectorAll('input[name="event_type"]').forEach(radio => {
-          radio.addEventListener('change', toggleEventFields);
+        document.getElementById('hero_media_source').addEventListener('change', toggleHeroInputMode);
+        document.getElementById('hero_media_url').addEventListener('input', function(e) {
+          const mediaUrl = e.target.value.trim();
+          if (!mediaUrl) {
+            document.getElementById('hero_preview').innerHTML = '';
+            return;
+          }
+          const detectedType = detectHeroMediaTypeFromUrl(mediaUrl);
+          if (!document.getElementById('hero_media_type').value) {
+            document.getElementById('hero_media_type').value = detectedType;
+          }
+          renderHeroPreview(mediaUrl, document.getElementById('hero_media_type').value || detectedType);
+        });
+        document.getElementById('hero_media_type').addEventListener('change', function() {
+          renderHeroPreview(
+            document.getElementById('hero_media_url').value.trim(),
+            document.getElementById('hero_media_type').value
+          );
         });
 
         let searchTimeout;
@@ -2453,8 +2790,9 @@
             if (data.success) {
               document.getElementById('hero_media_url').value = data.url;
               document.getElementById('hero_media_type').value = 'image';
-              const preview = document.getElementById('hero_preview');
-              preview.innerHTML = `<img src="${data.url}" class="mt-2 max-h-24 rounded-lg"/>`;
+              document.getElementById('hero_media_source').value = 'upload';
+              toggleHeroInputMode();
+              renderHeroPreview(data.url, 'image');
               showSuccess('File berhasil diunggah');
             } else {
               showError('Upload gagal: ' + (data.message || ''));

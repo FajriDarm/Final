@@ -44,6 +44,30 @@ async function buildLandingData(eventId) {
     [eventId],
   );
 
+  let testimonials = [];
+  try {
+    const [rows] = await db.query(
+      `SELECT media_type, media_url, sort_order
+       FROM event_testimonials
+       WHERE event_id = ?
+       ORDER BY sort_order ASC`,
+      [eventId],
+    );
+    testimonials = rows;
+  } catch (_) {}
+
+  let variants = [];
+  try {
+    const [rows] = await db.query(
+      `SELECT event_type, title, slug, description, price_original, price_promo, logo_media_type, logo_media_url, sort_order
+       FROM event_variants
+       WHERE event_id = ?
+       ORDER BY sort_order ASC`,
+      [eventId],
+    );
+    variants = rows;
+  } catch (_) {}
+
   const [sections] = await db.query(
     `SELECT id, title, subtitle FROM event_problem_sections WHERE event_id = ? LIMIT 1`,
     [eventId],
@@ -87,6 +111,22 @@ async function buildLandingData(eventId) {
     },
     benefits: benefits.map((b) => b.benefit_text),
     faqs: faqs.map((f) => ({ question: f.question, answer: f.answer })),
+    testimonials: testimonials.map((t) => ({
+      media_type: t.media_type,
+      media_url: t.media_url,
+      sort_order: t.sort_order,
+    })),
+    variants: variants.map((v) => ({
+      event_type: v.event_type,
+      title: v.title,
+      slug: v.slug,
+      description: v.description,
+      price_original: v.price_original,
+      price_promo: v.price_promo,
+      logo_media_type: v.logo_media_type,
+      logo_media_url: v.logo_media_url,
+      sort_order: v.sort_order,
+    })),
     problem: {
       title: problemTitle || "",
       subtitle: problemSubtitle || "",

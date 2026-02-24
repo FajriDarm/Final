@@ -13,6 +13,49 @@ function generateSlug(text) {
     .replace(/^-+|-+$/g, "");
 }
 
+function isValidHeroMediaUrl(url) {
+  if (!url) return false;
+  return /^https?:\/\//i.test(url) || url.startsWith("/");
+}
+
+function inferHeroMediaTypeFromUrl(url) {
+  if (!url) return null;
+  const lower = String(url).toLowerCase();
+  if (
+    /\.(mp4|webm|mov|m4v|avi)(\?|$)/.test(lower) ||
+    lower.includes("youtube.com") ||
+    lower.includes("youtu.be") ||
+    lower.includes("vimeo.com")
+  ) {
+    return "video";
+  }
+  return "image";
+}
+
+function sanitizeHeroMediaInput(heroMediaTypeRaw, heroMediaUrlRaw) {
+  const heroMediaUrl = typeof heroMediaUrlRaw === "string" ? heroMediaUrlRaw.trim() : "";
+  const heroMediaType = typeof heroMediaTypeRaw === "string" ? heroMediaTypeRaw.trim().toLowerCase() : "";
+
+  if (!heroMediaUrl) {
+    return { heroMediaType: null, heroMediaUrl: null };
+  }
+
+  if (!isValidHeroMediaUrl(heroMediaUrl)) {
+    throw new Error("Invalid hero_media_url format");
+  }
+
+  let normalizedType = heroMediaType;
+  if (!["image", "video"].includes(normalizedType)) {
+    normalizedType = inferHeroMediaTypeFromUrl(heroMediaUrl);
+  }
+
+  return { heroMediaType: normalizedType, heroMediaUrl };
+}
+
+function normalizeMediaPayload(mediaTypeRaw, mediaUrlRaw) {
+  return sanitizeHeroMediaInput(mediaTypeRaw, mediaUrlRaw);
+}
+
 const getActiveEvents = async (req, res) => {
   try {
     const [events] = await db.query(
@@ -368,6 +411,51 @@ const getEvents = async (req, res) => {
         faqMap[f.event_id].push(f);
       });
 
+      // testimonials
+      let testimonials = [];
+      try {
+        const [rows] = await db.query(
+          `SELECT event_id, media_type, media_url, sort_order
+           FROM event_testimonials
+           WHERE event_id IN (?)
+           ORDER BY sort_order ASC`,
+          [eventIds],
+        );
+        testimonials = rows;
+      } catch (err) {
+        console.warn("event_testimonials table not ready:", err.message);
+      }
+      const testimonialMap = {};
+      testimonials.forEach((t) => {
+        if (!testimonialMap[t.event_id]) testimonialMap[t.event_id] = [];
+        testimonialMap[t.event_id].push({
+          media_type: t.media_type,
+          media_url: t.media_url,
+          sort_order: t.sort_order,
+        });
+      });
+
+      // event variants
+      let variants = [];
+      try {
+        const [rows] = await db.query(
+          `SELECT event_id, event_type, title, slug, description, price_original, price_promo,
+                  logo_media_type, logo_media_url, sort_order
+           FROM event_variants
+           WHERE event_id IN (?)
+           ORDER BY sort_order ASC`,
+          [eventIds],
+        );
+        variants = rows;
+      } catch (err) {
+        console.warn("event_variants table not ready:", err.message);
+      }
+      const variantMap = {};
+      variants.forEach((v) => {
+        if (!variantMap[v.event_id]) variantMap[v.event_id] = [];
+        variantMap[v.event_id].push(v);
+      });
+
       // problem sections + pains
       const [sections] = await db.query(
         `SELECT * FROM event_problem_sections WHERE event_id IN (?)`,
@@ -396,6 +484,8 @@ const getEvents = async (req, res) => {
       events.forEach(e => {
         e.benefits = benefitMap[e.id] || [];
         e.faqs = faqMap[e.id] || [];
+        e.testimonials = testimonialMap[e.id] || [];
+        e.variants = variantMap[e.id] || [];
         const sec = sectionMap[e.id];
         if (sec) {
           e.problem_title = sec.title;
@@ -470,7 +560,16 @@ const createEvent = async (req, res) => {
       problemSubtitle,
       pains,
       faqs,
+      testimonials,
+      variants,
     } = req.body;
+
+    let normalizedHero = { heroMediaType: null, heroMediaUrl: null };
+    try {
+      normalizedHero = sanitizeHeroMediaInput(hero_media_type, hero_media_url);
+    } catch (heroErr) {
+      return res.status(400).json({ success: false, message: heroErr.message });
+    }
 
     const userId = req.user?.id || 1;
 
@@ -542,6 +641,65 @@ const createEvent = async (req, res) => {
       }
     }
 
+    // testimonials
+    if (Array.isArray(testimonials)) {
+      try {
+        for (let i = 0; i < testimonials.length; i++) {
+          const t = testimonials[i] || {};
+          let normalized = { heroMediaType: null, heroMediaUrl: null };
+          try {
+            normalized = normalizeMediaPayload(t.media_type, t.media_url);
+          } catch (e) {
+            continue;
+          }
+          if (!normalized.heroMediaUrl) continue;
+          await db.query(
+            `INSERT INTO event_testimonials (event_id, media_type, media_url, sort_order)
+             VALUES (?, ?, ?, ?)`,
+            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, i],
+          );
+        }
+      } catch (err) {
+        console.warn("Failed to insert testimonials:", err.message);
+      }
+    }
+
+    // variants
+    if (Array.isArray(variants)) {
+      try {
+        for (let i = 0; i < variants.length; i++) {
+          const v = variants[i] || {};
+          if (!v.title || !String(v.title).trim()) continue;
+          const eventTypeVar = v.event_type === "gratis" ? "gratis" : "berbayar";
+          let logoNormalized = { heroMediaType: null, heroMediaUrl: null };
+          try {
+            logoNormalized = normalizeMediaPayload(v.logo_media_type, v.logo_media_url);
+          } catch (e) {
+            logoNormalized = { heroMediaType: null, heroMediaUrl: null };
+          }
+          await db.query(
+            `INSERT INTO event_variants
+             (event_id, event_type, title, slug, description, price_original, price_promo, logo_media_type, logo_media_url, sort_order)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+              eventId,
+              eventTypeVar,
+              String(v.title).trim(),
+              (v.slug && String(v.slug).trim()) || generateSlug(v.title),
+              v.description || null,
+              eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_original || 0) || 0),
+              eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_promo || 0) || 0),
+              logoNormalized.heroMediaType || null,
+              logoNormalized.heroMediaUrl || null,
+              i,
+            ],
+          );
+        }
+      } catch (err) {
+        console.warn("Failed to insert variants:", err.message);
+      }
+    }
+
     let problemSectionId = null;
     if (problemTitle || problemSubtitle || (Array.isArray(pains) && pains.length)) {
       const [ps] = await db.query(
@@ -562,10 +720,10 @@ const createEvent = async (req, res) => {
 
     // insert hero section into event_hero_sections (separate table)
     try {
-      if (headline || subheadline || hero_media_type || hero_media_url) {
+      if (headline || subheadline || normalizedHero.heroMediaType || normalizedHero.heroMediaUrl) {
         await db.query(
           `INSERT INTO event_hero_sections (event_id, headline, subheadline, hero_media_type, hero_media_url, hero_as_background) VALUES (?, ?, ?, ?, ?, ?)`,
-          [eventId, headline || null, subheadline || null, hero_media_type || null, hero_media_url || null, hero_as_background ? 1 : 0],
+          [eventId, headline || null, subheadline || null, normalizedHero.heroMediaType, normalizedHero.heroMediaUrl, hero_as_background ? 1 : 0],
         );
       }
     } catch (err) {
@@ -615,7 +773,16 @@ const updateEvent = async (req, res) => {
       problemSubtitle,
       pains,
       faqs,
+      testimonials,
+      variants,
     } = req.body;
+
+    let normalizedHero = { heroMediaType: null, heroMediaUrl: null };
+    try {
+      normalizedHero = sanitizeHeroMediaInput(hero_media_type, hero_media_url);
+    } catch (heroErr) {
+      return res.status(400).json({ success: false, message: heroErr.message });
+    }
 
     // Basic validation for update
     const allowedTypes = ['gratis', 'berbayar'];
@@ -658,6 +825,12 @@ const updateEvent = async (req, res) => {
     await db.query("DELETE FROM event_benefits WHERE event_id = ?", [eventId]);
     await db.query("DELETE FROM event_faqs WHERE event_id = ?", [eventId]);
     await db.query("DELETE FROM event_problem_sections WHERE event_id = ?", [eventId]);
+    try {
+      await db.query("DELETE FROM event_testimonials WHERE event_id = ?", [eventId]);
+      await db.query("DELETE FROM event_variants WHERE event_id = ?", [eventId]);
+    } catch (err) {
+      console.warn("Failed to clear testimonials/variants:", err.message);
+    }
 
     // reinsert relationships same as create
     if (Array.isArray(benefits)) {
@@ -700,13 +873,72 @@ const updateEvent = async (req, res) => {
       }
     }
 
+    // testimonials reinsertion
+    if (Array.isArray(testimonials)) {
+      try {
+        for (let i = 0; i < testimonials.length; i++) {
+          const t = testimonials[i] || {};
+          let normalized = { heroMediaType: null, heroMediaUrl: null };
+          try {
+            normalized = normalizeMediaPayload(t.media_type, t.media_url);
+          } catch (e) {
+            continue;
+          }
+          if (!normalized.heroMediaUrl) continue;
+          await db.query(
+            `INSERT INTO event_testimonials (event_id, media_type, media_url, sort_order)
+             VALUES (?, ?, ?, ?)`,
+            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, i],
+          );
+        }
+      } catch (err) {
+        console.warn("Failed to update testimonials:", err.message);
+      }
+    }
+
+    // variants reinsertion
+    if (Array.isArray(variants)) {
+      try {
+        for (let i = 0; i < variants.length; i++) {
+          const v = variants[i] || {};
+          if (!v.title || !String(v.title).trim()) continue;
+          const eventTypeVar = v.event_type === "gratis" ? "gratis" : "berbayar";
+          let logoNormalized = { heroMediaType: null, heroMediaUrl: null };
+          try {
+            logoNormalized = normalizeMediaPayload(v.logo_media_type, v.logo_media_url);
+          } catch (e) {
+            logoNormalized = { heroMediaType: null, heroMediaUrl: null };
+          }
+          await db.query(
+            `INSERT INTO event_variants
+             (event_id, event_type, title, slug, description, price_original, price_promo, logo_media_type, logo_media_url, sort_order)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+              eventId,
+              eventTypeVar,
+              String(v.title).trim(),
+              (v.slug && String(v.slug).trim()) || generateSlug(v.title),
+              v.description || null,
+              eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_original || 0) || 0),
+              eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_promo || 0) || 0),
+              logoNormalized.heroMediaType || null,
+              logoNormalized.heroMediaUrl || null,
+              i,
+            ],
+          );
+        }
+      } catch (err) {
+        console.warn("Failed to update variants:", err.message);
+      }
+    }
+
     // handle hero section: remove existing then insert if provided
     try {
       await db.query(`DELETE FROM event_hero_sections WHERE event_id = ?`, [eventId]);
-      if (headline || subheadline || hero_media_type || hero_media_url) {
+      if (headline || subheadline || normalizedHero.heroMediaType || normalizedHero.heroMediaUrl) {
         await db.query(
           `INSERT INTO event_hero_sections (event_id, headline, subheadline, hero_media_type, hero_media_url, hero_as_background) VALUES (?, ?, ?, ?, ?, ?)`,
-          [eventId, headline || null, subheadline || null, hero_media_type || null, hero_media_url || null, hero_as_background ? 1 : 0],
+          [eventId, headline || null, subheadline || null, normalizedHero.heroMediaType, normalizedHero.heroMediaUrl, hero_as_background ? 1 : 0],
         );
       }
     } catch (err) {
@@ -752,6 +984,33 @@ const getEventById = async (req, res) => {
 
     const [faqs] = await db.query(`SELECT * FROM event_faqs WHERE event_id = ? ORDER BY sort_order ASC`, [eventId]);
     event.faqs = faqs.map(f=>({ question: f.question, answer: f.answer }));
+
+    try {
+      const [testimonials] = await db.query(
+        `SELECT media_type, media_url, sort_order
+         FROM event_testimonials
+         WHERE event_id = ?
+         ORDER BY sort_order ASC`,
+        [eventId],
+      );
+      event.testimonials = testimonials;
+    } catch (err) {
+      event.testimonials = [];
+    }
+
+    try {
+      const [variants] = await db.query(
+        `SELECT event_type, title, slug, description, price_original, price_promo,
+                logo_media_type, logo_media_url, sort_order
+         FROM event_variants
+         WHERE event_id = ?
+         ORDER BY sort_order ASC`,
+        [eventId],
+      );
+      event.variants = variants;
+    } catch (err) {
+      event.variants = [];
+    }
 
     // packages removed; event.price_* contains cost information
 
