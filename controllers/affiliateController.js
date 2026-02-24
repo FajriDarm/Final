@@ -1,4 +1,5 @@
 const db = require("../config/database");
+const landingPageService = require("../services/landingPageService");
 
 const dashboard = async (req, res) => {
   try {
@@ -286,6 +287,21 @@ const getActiveEvents = async (req, res) => {
       [userId],
     );
 
+    const [lpRows] = await db.query(
+      `SELECT lp.event_id, lp.slug
+       FROM landing_pages lp
+       JOIN (
+         SELECT event_id, MAX(version) AS max_version
+         FROM landing_pages
+         GROUP BY event_id
+       ) latest
+       ON latest.event_id = lp.event_id AND latest.max_version = lp.version`,
+    );
+    const lpMap = {};
+    lpRows.forEach((lp) => {
+      lpMap[lp.event_id] = lp.slug;
+    });
+
     // Create a map of existing links by event_id with full URL (direct to checkout form)
     const linksMap = {};
     const siteUrl =
@@ -296,9 +312,10 @@ const getActiveEvents = async (req, res) => {
       const checkoutUrl = link.slug
         ? `${siteUrl}/checkout?event=${link.slug}&ref=${link.code}`
         : `${siteUrl}/checkout?ref=${link.code}`;
-      const landingUrl = link.slug
-        ? `${siteUrl}/?event=${link.slug}&ref=${link.code}`
-        : `${siteUrl}/?ref=${link.code}`;
+      const lpSlug = lpMap[link.event_id];
+      const landingUrl = lpSlug
+        ? `${siteUrl}/lp/${lpSlug}?ref=${link.code}`
+        : (link.slug ? `${siteUrl}/?event=${link.slug}&ref=${link.code}` : `${siteUrl}/?ref=${link.code}`);
 
       linksMap[link.event_id] = {
         ...link,
@@ -423,7 +440,13 @@ const generateLink = async (req, res) => {
     const siteUrl =
       process.env.SITE_URL || req.protocol + "://" + req.get("host");
     const checkoutUrl = `${siteUrl}/checkout?event=${event.slug}&ref=${code}`;
-    const landingUrl = `${siteUrl}/?event=${event.slug}&ref=${code}`;
+    let lpSlug = await landingPageService.getLatestLandingPageSlug(eventId);
+    if (!lpSlug) {
+      lpSlug = await landingPageService.createLandingFromEvent(eventId, userId);
+    }
+    const landingUrl = lpSlug
+      ? `${siteUrl}/lp/${lpSlug}?ref=${code}`
+      : `${siteUrl}/?event=${event.slug}&ref=${code}`;
 
     res.json({
       success: true,

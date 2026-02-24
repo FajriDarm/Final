@@ -1,9 +1,23 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <%
+        const lp = landingData || {};
+        const ev = lp.event || {};
+        const hero = lp.hero || {};
+        const waDigits = String(ev.admin_whatsapp || '').replace(/[^\d]/g, '');
+        const waNumber = waDigits
+            ? (waDigits.startsWith('0') ? `62${waDigits.slice(1)}` : (waDigits.startsWith('62') ? waDigits : waDigits))
+            : '';
+        const waLink = waNumber ? `https://wa.me/${waNumber}` : '#';
+        const checkoutLink = ev.slug ? `/checkout?event=${ev.slug}` : '/checkout';
+        const heroTitle = hero.headline || ev.title || 'JamaahCare';
+        const heroSubtitle = hero.subheadline || ev.description || '';
+        const heroImage = hero.hero_media_url || 'https://images.unsplash.com/photo-1585030242339-066d10c8a3dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+    %>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>JamaahCare - Layanan Terbaik untuk Jamaah</title>
+    <title><%= ev.title ? `${ev.title} - JamaahCare` : 'JamaahCare - Layanan Terbaik untuk Jamaah' %></title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -164,7 +178,7 @@
                 
                 <!-- CTA Button with modern design -->
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <a href="#" class="hidden sm:block gradient-primary text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 text-sm sm:text-base">
+                    <a href="<%= waLink %>" class="hidden sm:block gradient-primary text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 text-sm sm:text-base">
                         <i class="fas fa-whatsapp mr-2"></i>
                         <span class="hidden lg:inline">Konsultasi</span>
                         <span class="lg:hidden">WA</span>
@@ -199,7 +213,7 @@
                         <i class="fas fa-star w-6 text-emerald-600"></i> Testimoni
                     </a>
                     <div class="pt-2 mt-2 border-t border-gray-200">
-                        <a href="#" class="block gradient-primary text-white px-4 py-3 rounded-xl font-semibold text-center">
+                        <a href="<%= waLink %>" class="block gradient-primary text-white px-4 py-3 rounded-xl font-semibold text-center">
                             <i class="fas fa-whatsapp mr-2"></i> Konsultasi via WhatsApp
                         </a>
                     </div>
@@ -226,13 +240,11 @@
                     </div>
                     
                     <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight mb-6">
-                        Wujudkan Perjalanan 
-                        <span class="gradient-text block lg:inline">Ibadah Impian</span>
-                        Anda
+                        <%= heroTitle %>
                     </h1>
                     
                     <p class="text-gray-600 text-base sm:text-lg mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                        Bersama JamaahCare, setiap langkah ibadah Anda menjadi lebih bermakna dengan pelayanan premium dan bimbingan profesional.
+                        <%= heroSubtitle || 'Bersama JamaahCare, setiap langkah ibadah Anda menjadi lebih bermakna dengan pelayanan premium dan bimbingan profesional.' %>
                     </p>
                     
                     <!-- Modern Stats with glass morphism -->
@@ -253,7 +265,7 @@
                     
                     <!-- Modern CTA Buttons -->
                     <div class="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
-                        <a href="#schedule" class="gradient-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
+                        <a href="<%= checkoutLink %>" class="gradient-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
                             Mulai Perjalanan
                             <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                         </a>
@@ -269,7 +281,7 @@
                     <div class="relative">
                         <!-- Main image with modern frame -->
                         <div class="relative rounded-2xl overflow-hidden shadow-2xl">
-                            <img src="https://images.unsplash.com/photo-1585030242339-066d10c8a3dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                            <img src="<%= heroImage %>" 
                                  alt="Masjid" 
                                  class="w-full h-auto object-cover">
                             <div class="absolute inset-0 gradient-primary opacity-20 mix-blend-overlay"></div>
@@ -769,7 +781,7 @@
                 </div>
                 
                 <div class="flex flex-wrap gap-3 sm:gap-4 justify-center">
-                    <a href="#" class="bg-white text-emerald-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
+                    <a href="<%= waLink %>" class="bg-white text-emerald-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
                         <i class="fab fa-whatsapp text-xl"></i>
                         Konsultasi Gratis
                     </a>
@@ -869,7 +881,7 @@
     </footer>
 
     <!-- Floating WhatsApp Button -->
-    <a href="#" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white shadow-2xl hover:bg-green-600 transition-all duration-300 hover:scale-110 animate-bounce">
+    <a href="<%= waLink %>" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white shadow-2xl hover:bg-green-600 transition-all duration-300 hover:scale-110 animate-bounce">
         <i class="fab fa-whatsapp text-2xl"></i>
     </a>
 

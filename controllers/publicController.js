@@ -43,13 +43,13 @@ async function checkoutPage(req, res) {
 
     if (eventId) {
       const [rows] = await db.query(
-        "SELECT id, title AS name, slug, status, price_promo, price_original, bank_name, bank_account_name, bank_account_number, payment_methods FROM events WHERE id = ? LIMIT 1",
+        "SELECT id, title AS name, slug, status, price_promo, price_original, admin_whatsapp FROM events WHERE id = ? LIMIT 1",
         [eventId],
       );
       if (rows.length > 0) event = rows[0];
     } else if (eventSlug) {
       const [rows] = await db.query(
-        "SELECT id, title AS name, slug, status, price_promo, price_original, bank_name, bank_account_name, bank_account_number, payment_methods FROM events WHERE slug = ? LIMIT 1",
+        "SELECT id, title AS name, slug, status, price_promo, price_original, admin_whatsapp FROM events WHERE slug = ? LIMIT 1",
         [eventSlug],
       );
       if (rows.length > 0) event = rows[0];

@@ -104,6 +104,10 @@ app.get("/landing", (req, res) => {
   });
 });
 
+// Landing page (dynamic per event)
+const landingPageController = require("./controllers/landingPageController");
+app.get("/lp/:slug", landingPageController.renderLandingPage);
+
 // Auth Routes (Pages)
 app.get("/login", checkAlreadyLoggedIn, (req, res) => {
   // Preserve tracking params if redirecting

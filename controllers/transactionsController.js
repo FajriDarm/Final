@@ -198,22 +198,11 @@ async function createTransaction(req, res) {
       }
     }
 
-    // Fetch event bank details to return for client-side flow
-    let bankInfo = null;
-    if (resolvedEventId) {
-      const [evRows2] = await db.query(
-        "SELECT bank_name, bank_account_name, bank_account_number, payment_methods FROM events WHERE id = ? LIMIT 1",
-        [resolvedEventId],
-      );
-      if (evRows2.length > 0) bankInfo = evRows2[0];
-    }
-
     // If client expects JSON (AJAX), return JSON with transaction id and bank info
     if (req.is("application/json") || req.xhr) {
       return res.json({
         success: true,
         transactionId: trxRes.insertId,
-        bankInfo,
       });
     }
 

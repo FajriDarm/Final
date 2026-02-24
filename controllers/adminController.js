@@ -1,5 +1,6 @@
 const db = require("../config/database");
 const jwt = require("jsonwebtoken");
+const landingPageService = require("../services/landingPageService");
 
 function generateSlug(text) {
   if (!text) return "";
@@ -16,8 +17,7 @@ const getActiveEvents = async (req, res) => {
   try {
     const [events] = await db.query(
       `SELECT e.id, e.title as name, e.description, e.price_original, e.price_promo as price_discount,
-              e.start_date, e.end_date, e.status, e.slug,
-              e.payment_methods, e.bank_name, e.bank_account_name, e.bank_account_number, e.account_holder_name, e.event_type,
+              e.start_date, e.end_date, e.status, e.slug, e.event_type,
               ehs.headline, ehs.subheadline, ehs.hero_media_type, ehs.hero_media_url, ehs.hero_as_background
        FROM events e
        LEFT JOIN event_hero_sections ehs ON ehs.event_id = e.id
@@ -86,6 +86,14 @@ const getActiveEvents = async (req, res) => {
         }
       });
     }
+
+    events.forEach(e => {
+      delete e.payment_methods;
+      delete e.bank_name;
+      delete e.bank_account_name;
+      delete e.bank_account_number;
+      delete e.account_holder_name;
+    });
 
     res.json({
       success: true,
@@ -450,10 +458,6 @@ const createEvent = async (req, res) => {
       description,
       price_original,
       price_promo,
-      payment_methods,
-      bank_name,
-      bank_account_name,
-      bank_account_number,
       start_date,
       end_date,
       headline,
@@ -476,8 +480,11 @@ const createEvent = async (req, res) => {
       eventType === "gratis" ? 0 : req.body.price_original || 0;
     const finalPricePromo =
       eventType === "gratis" ? 0 : req.body.price_promo || 0;
-    const paymentMethods =
-      eventType === "gratis" ? "" : (req.body.payment_methods || "");
+    const ignoredPaymentMethods = null;
+    const ignoredBankName = null;
+    const ignoredBankAccountName = null;
+    const ignoredBankAccountNumber = null;
+    const ignoredAccountHolderName = null;
 
     const insertValues = [
       req.body.title,
@@ -486,11 +493,11 @@ const createEvent = async (req, res) => {
       eventType,
       finalPriceOriginal,
       finalPricePromo,
-      paymentMethods,
-      req.body.bank_name || "",
-      req.body.bank_account_name || "",
-      req.body.bank_account_number || "",
-      req.body.account_holder_name || "",
+      ignoredPaymentMethods,
+      ignoredBankName,
+      ignoredBankAccountName,
+      ignoredBankAccountNumber,
+      ignoredAccountHolderName,
       req.body.admin_whatsapp || "",
       req.body.start_date,
       req.body.end_date,
@@ -566,6 +573,11 @@ const createEvent = async (req, res) => {
     }
 
     // packages removed from model - pricing kept on events
+    try {
+      await landingPageService.createLandingFromEvent(eventId, userId);
+    } catch (err) {
+      console.warn("Failed to create landing page for event", eventId, err.message || err);
+    }
 
     res.status(201).json({
       success: true,
@@ -590,10 +602,6 @@ const updateEvent = async (req, res) => {
       description,
       price_original,
       price_promo,
-      payment_methods,
-      bank_name,
-      bank_account_name,
-      bank_account_number,
       start_date,
       end_date,
       status,
@@ -633,11 +641,11 @@ const updateEvent = async (req, res) => {
         description,
         price_original,
         price_promo,
-        payment_methods,
-        bank_name,
-        bank_account_name,
-        bank_account_number,
-        req.body.account_holder_name || null,
+        null,
+        null,
+        null,
+        null,
+        null,
         start_date,
         end_date,
         status,
@@ -705,6 +713,12 @@ const updateEvent = async (req, res) => {
       console.warn('Failed to update event_hero_sections for event', eventId, err.message);
     }
 
+    try {
+      await landingPageService.createLandingFromEvent(eventId, req.user?.id || null);
+    } catch (err) {
+      console.warn("Failed to create landing page for event", eventId, err.message || err);
+    }
+
     res.json({
       success: true,
       message: "Event updated successfully",
@@ -751,6 +765,12 @@ const getEventById = async (req, res) => {
       );
       event.pains = pains;
     }
+
+    delete event.payment_methods;
+    delete event.bank_name;
+    delete event.bank_account_name;
+    delete event.bank_account_number;
+    delete event.account_holder_name;
 
     res.json({ success:true, data:event });
   } catch(err) {

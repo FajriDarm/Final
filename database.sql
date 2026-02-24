@@ -416,4 +416,15 @@ COLLATE=utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS event_packages;
 DROP TABLE IF EXISTS packages;
 
+  CREATE TABLE landing_pages (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    event_id BIGINT NOT NULL,
+    slug VARCHAR(200) UNIQUE NOT NULL,
+    template VARCHAR(50) NOT NULL DEFAULT 'LPCUST',
+    version INT NOT NULL DEFAULT 1,
+    data_json JSON NOT NULL,
+    created_by BIGINT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (event_id) REFERENCES events(id)
+  );
 -- End of database.sql

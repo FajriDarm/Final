@@ -1105,10 +1105,6 @@
                       <span id="viewPricePromo"
                         class="font-extrabold text-emerald-700 bg-white/80 px-3 py-1 rounded-lg border border-green-200"></span>
                     </div>
-                    <div class="pt-2 border-t border-green-200">
-                      <span class="text-xs font-semibold text-green-700">Metode Pembayaran</span>
-                      <div id="viewPaymentMethods" class="mt-1.5 space-y-1"></div>
-                    </div>
                   </div>
                 </div>
 
@@ -1127,36 +1123,6 @@
                   <p class="text-[11px] text-blue-600">Peserta bisa mendaftar secara gratis tanpa proses pembayaran.</p>
                 </div>
 
-                <!-- Bank Information -->
-                <div id="viewBankSection"
-                  class="bg-indigo-50/80 backdrop-blur p-4 rounded-xl border border-indigo-200/50">
-                  <h4 class="text-xs font-extrabold text-indigo-800 mb-3 flex items-center gap-1.5">
-                    <i class="fas fa-university text-indigo-600"></i>
-                    Informasi Bank
-                  </h4>
-                  <div class="space-y-2.5">
-                    <div class="flex items-center justify-between text-xs">
-                      <span class="font-semibold text-indigo-700">Nama Bank</span>
-                      <span id="viewBankName"
-                        class="font-extrabold text-indigo-900 bg-white/80 px-3 py-1 rounded-lg border border-indigo-200">-</span>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                      <span class="font-semibold text-indigo-700">Nama Akun</span>
-                      <span id="viewAccountName"
-                        class="font-extrabold text-indigo-900 bg-white/80 px-3 py-1 rounded-lg border border-indigo-200">-</span>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                      <span class="font-semibold text-indigo-700">Nomor Rekening</span>
-                      <span id="viewAccountNumber"
-                        class="font-extrabold text-indigo-900 bg-white/80 px-3 py-1 rounded-lg border border-indigo-200">-</span>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                      <span class="font-semibold text-indigo-700">Pemilik Rekening</span>
-                      <span id="viewAccountHolder"
-                        class="font-extrabold text-indigo-900 bg-white/80 px-3 py-1 rounded-lg border border-indigo-200">-</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -1272,7 +1238,7 @@
                     <input type="text" id="subheadline" class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium" placeholder="Subjudul landing page">
                   </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
                   <div>
                     <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Media Type</label>
                     <select id="hero_media_type" class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
@@ -1285,7 +1251,13 @@
                     <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Media URL</label>
                     <input type="text" id="hero_media_url" class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium" placeholder="https://...">
                   </div>
+                  <div>
+                    <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Upload Foto</label>
+                    <input type="file" id="hero_media_file" accept="image/*" class="w-full text-xs" />
+                    <p id="hero_upload_note" class="text-[9px] text-gray-500 mt-1">Pilih file untuk diunggah, atau isi URL di atas.</p>
+                  </div>
                 </div>
+                <div id="hero_preview" class="mt-2"></div>
                 <div>
                   <label class="inline-flex items-center gap-2 text-[10px] font-extrabold text-emerald-800">
                     <input type="checkbox" id="hero_as_background" class="form-checkbox h-4 w-4 text-emerald-600">
@@ -1402,7 +1374,6 @@
                 <div class="text-[9px] font-medium text-gray-600 space-y-0.5 ml-5">
                   <p>• Tidak perlu harga & pembayaran</p>
                   <p>• User langsung bisa daftar</p>
-                  <p>• Info bank tidak diperlukan</p>
                 </div>
 
                 <div class="mt-2 space-y-3">
@@ -1479,77 +1450,6 @@
                           placeholder="0">
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                <div>
-                  <div class="flex items-center gap-2 mb-2">
-                    <div class="w-7 h-7 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <i class="fas fa-credit-card text-purple-600 text-xs"></i>
-                    </div>
-                    <h5 class="text-sm font-extrabold text-gray-900">Metode Pembayaran</h5>
-                  </div>
-                  <div class="flex flex-wrap gap-2">
-                    <label class="cursor-pointer">
-                      <input type="checkbox" value="cash" class="peer sr-only payment-method-checkbox">
-                      <div
-                        class="px-3 py-2 border-2 border-white/50 rounded-lg hover:border-emerald-300 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/50 transition-all duration-300 bg-white/40 backdrop-blur">
-                        <div class="flex items-center gap-1.5">
-                          <div class="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-money-bill-wave text-green-600 text-[10px]"></i>
-                          </div>
-                          <div>
-                            <p class="font-extrabold text-gray-900 text-[10px]">Tunai</p>
-                          </div>
-                        </div>
-                      </div>
-                    </label>
-                    <label class="cursor-pointer">
-                      <input type="checkbox" value="transfer" class="peer sr-only payment-method-checkbox">
-                      <div
-                        class="px-3 py-2 border-2 border-white/50 rounded-lg hover:border-emerald-300 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/50 transition-all duration-300 bg-white/40 backdrop-blur">
-                        <div class="flex items-center gap-1.5">
-                          <div class="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-university text-blue-600 text-[10px]"></i>
-                          </div>
-                          <div>
-                            <p class="font-extrabold text-gray-900 text-[10px]">Transfer</p>
-                          </div>
-                        </div>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-
-                <div
-                  class="bg-gradient-to-r from-indigo-50/80 to-blue-50/80 backdrop-blur p-4 rounded-xl border border-indigo-200/50">
-                  <div class="flex items-center gap-2 mb-2">
-                    <div class="w-7 h-7 bg-indigo-100 rounded-lg flex items-center justify-center">
-                      <i class="fas fa-university text-indigo-600 text-xs"></i>
-                    </div>
-                    <h5 class="text-sm font-extrabold text-indigo-900">Informasi Bank</h5>
-                  </div>
-                  <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-                    <div>
-                      <label class="block text-[8px] font-extrabold text-indigo-700 mb-1">Nama Bank</label>
-                      <input type="text" id="bank_name"
-                        class="w-full px-2 py-1.5 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-[9px] font-medium text-gray-900">
-                    </div>
-                    <div>
-                      <label class="block text-[8px] font-extrabold text-indigo-700 mb-1">Nama Akun</label>
-                      <input type="text" id="bank_account_name"
-                        class="w-full px-2 py-1.5 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-[9px] font-medium text-gray-900">
-                    </div>
-                    <div>
-                      <label class="block text-[8px] font-extrabold text-indigo-700 mb-1">Nomor Rekening</label>
-                      <input type="text" id="bank_account_number"
-                        class="w-full px-2 py-1.5 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-[9px] font-medium text-gray-900">
-                    </div>
-                  </div>
-                  <div class="mt-2">
-                    <label class="block text-[8px] font-extrabold text-indigo-700 mb-1">Nama Pemilik Rekening</label>
-                    <input type="text" id="account_holder_name"
-                      class="w-full px-2 py-1.5 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-[9px] font-medium text-gray-900">
                   </div>
                 </div>
 
@@ -2141,37 +2041,9 @@
 
             document.getElementById('viewPriceOriginal').textContent = `Rp ${parseInt(event.price_original || 0).toLocaleString('id-ID')}`;
             document.getElementById('viewPricePromo').textContent = `Rp ${parseInt(event.price_promo || 0).toLocaleString('id-ID')}`;
-
-            const paymentMethodsContainer = document.getElementById('viewPaymentMethods');
-            paymentMethodsContainer.innerHTML = '';
-
-            if (event.payment_methods) {
-              const methods = event.payment_methods.split(',');
-              methods.forEach(method => {
-                const methodConfig = {
-                  'cash': { icon: 'fas fa-money-bill-wave', text: 'Tunai', color: 'green' },
-                  'transfer': { icon: 'fas fa-university', text: 'Transfer Bank', color: 'blue' }
-                }[method] || { icon: 'fas fa-money-bill', text: method, color: 'gray' };
-
-                const methodElement = document.createElement('div');
-                methodElement.className = `flex items-center gap-1.5 text-[10px] font-medium text-${methodConfig.color}-600`;
-                methodElement.innerHTML = `
-                  <i class="${methodConfig.icon}"></i>
-                  <span>${methodConfig.text}</span>
-                `;
-                paymentMethodsContainer.appendChild(methodElement);
-              });
-            }
-
-            document.getElementById('viewBankName').textContent = event.bank_name || '-';
-            document.getElementById('viewAccountName').textContent = event.bank_account_name || '-';
-            document.getElementById('viewAccountNumber').textContent = event.bank_account_number || '-';
-            document.getElementById('viewAccountHolder').textContent = event.account_holder_name || '-';
-            document.getElementById('viewBankSection').classList.remove('hidden');
           } else {
             document.getElementById('viewPricingSection').classList.add('hidden');
             document.getElementById('viewFreeEventSection').classList.remove('hidden');
-            document.getElementById('viewBankSection').classList.add('hidden');
           }
 
           document.getElementById('viewAdminWhatsApp').textContent = event.admin_whatsapp ? `+62 ${event.admin_whatsapp}` : '-';
@@ -2270,8 +2142,9 @@
           document.getElementById('subheadline').value = '';
           document.getElementById('hero_media_type').value = '';
           document.getElementById('hero_media_url').value = '';
+          document.getElementById('hero_media_file').value = '';
+          document.getElementById('hero_preview').innerHTML = '';
           document.getElementById('hero_as_background').checked = false;
-          document.getElementById('account_holder_name').value = '';
           // clear dynamic lists
           document.getElementById('benefitsList').innerHTML = '';
           document.getElementById('painsList').innerHTML = '';
@@ -2308,6 +2181,13 @@
           document.getElementById('subheadline').value = event.subheadline || '';
           document.getElementById('hero_media_type').value = event.hero_media_type || '';
           document.getElementById('hero_media_url').value = event.hero_media_url || '';
+          document.getElementById('hero_media_file').value = ''; // reset file input
+          const previewEl = document.getElementById('hero_preview');
+          if (event.hero_media_url) {
+            previewEl.innerHTML = `<img src="${event.hero_media_url}" class="mt-2 max-h-24 rounded-lg">`;
+          } else {
+            previewEl.innerHTML = '';
+          }
           document.getElementById('hero_as_background').checked = !!event.hero_as_background;
 
           // populate benefits list
@@ -2344,14 +2224,6 @@
             document.getElementById('price_promo').value = event.price_promo || '';
             document.getElementById('start_date').value = event.start_date || '';
             document.getElementById('end_date').value = event.end_date || '';
-            document.getElementById('bank_name').value = event.bank_name || '';
-            document.getElementById('bank_account_name').value = event.bank_account_name || '';
-            document.getElementById('bank_account_number').value = event.bank_account_number || '';
-            document.getElementById('account_holder_name').value = event.account_holder_name || '';
-
-            document.querySelectorAll('.payment-method-checkbox').forEach(cb => {
-              cb.checked = event.payment_methods && event.payment_methods.includes(cb.value);
-            });
           }
 
           const statusRadio = document.querySelector(`input[name="status"][value="${event.status || 'draft'}"]`);
@@ -2478,7 +2350,6 @@
             hero_media_type: document.getElementById('hero_media_type').value,
             hero_media_url: document.getElementById('hero_media_url').value,
             hero_as_background: document.getElementById('hero_as_background').checked ? 1 : 0,
-            account_holder_name: document.getElementById('account_holder_name') ? document.getElementById('account_holder_name').value : '',
             benefits: [],
             problemTitle: document.getElementById('problemTitle').value,
             problemSubtitle: document.getElementById('problemSubtitle').value,
@@ -2517,23 +2388,12 @@
             formData.description = document.getElementById('description_gratis').value;
             formData.price_original = 0;
             formData.price_promo = 0;
-            formData.payment_methods = '';
           } else {
-            const paymentMethods = [];
-            document.querySelectorAll('.payment-method-checkbox:checked').forEach(checkbox => {
-              paymentMethods.push(checkbox.value);
-            });
-
             formData.title = document.getElementById('title').value;
             formData.slug = document.getElementById('slug').value || generateSlug(document.getElementById('title').value);
             formData.description = document.getElementById('description').value;
             formData.price_original = document.getElementById('price_original').value || 0;
             formData.price_promo = document.getElementById('price_promo').value || 0;
-            formData.payment_methods = paymentMethods.join(',');
-            formData.bank_name = document.getElementById('bank_name').value;
-            formData.bank_account_name = document.getElementById('bank_account_name').value;
-            formData.bank_account_number = document.getElementById('bank_account_number').value;
-            formData.account_holder_name = document.getElementById('account_holder_name').value;
             formData.start_date = document.getElementById('start_date').value;
             formData.end_date = document.getElementById('end_date').value;
           }
@@ -2577,6 +2437,33 @@
 
         document.getElementById('statusFilter').addEventListener('change', filterEvents);
         document.getElementById('typeFilter').addEventListener('change', filterEvents);
+
+        // upload when file selected
+        document.getElementById('hero_media_file').addEventListener('change', async function(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          const form = new FormData();
+          form.append('hero', file);
+          try {
+            const resp = await fetch('/api/admin/events/upload-hero', {
+              method: 'POST',
+              body: form
+            });
+            const data = await resp.json();
+            if (data.success) {
+              document.getElementById('hero_media_url').value = data.url;
+              document.getElementById('hero_media_type').value = 'image';
+              const preview = document.getElementById('hero_preview');
+              preview.innerHTML = `<img src="${data.url}" class="mt-2 max-h-24 rounded-lg"/>`;
+              showSuccess('File berhasil diunggah');
+            } else {
+              showError('Upload gagal: ' + (data.message || ''));
+            }
+          } catch (err) {
+            console.error('hero upload', err);
+            showError('Upload gagal: ' + err.message);
+          }
+        });
 
         function filterEvents() {
           const searchTerm = document.getElementById('searchInput').value.toLowerCase();
