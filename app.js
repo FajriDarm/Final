@@ -44,9 +44,9 @@ app.get("/", (req, res) => {
     });
   }
 
-  // Render the custom landing page (LPCUST.ejs)
-  res.render("LPCUST", {
-    title: "Home - JamaahCare",
+  // Render the public marketing landing page (LandingPage.ejs)
+  res.render("LandingPage", {
+    title: "Affillink - Affiliate Marketing Platform",
     affiliateRef: ref || null,
     eventSlug: event || null,
   });
