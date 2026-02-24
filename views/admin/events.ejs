@@ -5,7 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manajemen Event - Affillink Admin</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind CSS should be built locally for production. -->
+  <!--
+    Install Tailwind as a PostCSS plugin or use the CLI:
+    https://tailwindcss.com/docs/installation
+    Build a stylesheet (e.g. assets/css/tailwind.css) and serve it from the public folder.
+    Example command: npx tailwindcss -i ./src/input.css -o ./public/css/tailwind.css --minify
+  -->
+  <link rel="stylesheet" href="/css/tailwind.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
@@ -1187,10 +1194,12 @@
                 <p id="viewProblemSubtitle" class="text-[10px] text-indigo-600 mb-2"></p>
                 <ul id="viewPainsList" class="list-disc list-inside text-[10px] text-gray-700"></ul>
               </div>
-              <!-- Packages -->
               <div class="bg-green-50/80 backdrop-blur p-4 rounded-xl border border-green-200/50">
-                <h4 class="text-xs font-extrabold text-green-800 mb-2">Packages (Dengan Harga)</h4>
-                <ul id="viewPackagesList" class="list-disc list-inside text-[10px] text-gray-700"></ul>
+              </div>
+              <!-- FAQs -->
+              <div class="bg-blue-50/80 backdrop-blur p-4 rounded-xl border border-blue-200/50">
+                <h4 class="text-xs font-extrabold text-blue-800 mb-2">FAQs</h4>
+                <ul id="viewFaqsList" class="list-disc list-inside text-[10px] text-gray-700"></ul>
               </div>
             </div>
           </div>
@@ -1314,15 +1323,17 @@
                 <button type="button" onclick="addPain('','')" class="text-[10px] font-bold text-indigo-600 hover:underline">+ Tambah pain</button>
               </div>
 
-              <!-- Package Selection -->
-              <div id="packageSection" class="space-y-3 bg-gradient-to-r from-yellow-50/80 to-amber-50/80 backdrop-blur p-4 rounded-xl border border-yellow-200/50">
+
+              <!-- FAQ Section -->
+              <div id="faqSection" class="space-y-3 bg-gradient-to-r from-blue-50/80 to-indigo-50/80 backdrop-blur p-4 rounded-xl border border-blue-200/50">
                 <div class="flex items-center gap-2 mb-2">
-                  <div class="w-7 h-7 bg-yellow-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-box-open text-yellow-600 text-xs"></i>
+                  <div class="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-question-circle text-blue-600 text-xs"></i>
                   </div>
-                  <h5 class="text-sm font-extrabold text-yellow-900">Pilih Paket & Harga</h5>
+                  <h5 class="text-sm font-extrabold text-blue-900">FAQ</h5>
                 </div>
-                <div id="packagesList" class="space-y-2"></div>
+                <div id="faqsList" class="space-y-2"></div>
+                <button type="button" onclick="addFAQ('','')" class="text-[10px] font-bold text-blue-600 hover:underline">+ Tambah FAQ</button>
               </div>
 
               <!-- Event Type Selection -->
@@ -1670,13 +1681,13 @@
 
       <script>
         let allEvents = [];
-        let availablePackages = []; // loaded from API
         let currentItemToDelete = null;
         let deleteCallback = null;
         // temporary arrays to hold dynamic inputs when editing/creating
         let currentBenefits = [];
         let currentPains = [];
         let currentProblemSection = { title: '', subtitle: '' };
+        let currentFaqs = []; // for dynamic FAQs
 
         // ============================================================
         // FUNGSI NOTIFIKASI MODAL
@@ -1866,7 +1877,6 @@
             }
           });
 
-          loadPackages();
           loadEvents();
         });
 
@@ -2203,21 +2213,19 @@
             painsContainer.parentElement.style.display = 'none';
           }
 
-          // packages
-          const packagesContainer = document.getElementById('viewPackagesList');
-          packagesContainer.innerHTML = '';
-          const pkgList = event.packages || event.event_packages || [];
-          if (Array.isArray(pkgList) && pkgList.length) {
-            pkgList.forEach(p => {
-              const name = p.name || p.package_name || (p.package && p.package.name) || ''; 
-              const price = parseInt(p.price || 0);
+
+          // faqs
+          const faqsContainer = document.getElementById('viewFaqsList');
+          faqsContainer.innerHTML = '';
+          if (event.faqs && Array.isArray(event.faqs) && event.faqs.length) {
+            event.faqs.forEach(f => {
               const li = document.createElement('li');
-              li.textContent = `${name} - Rp ${price.toLocaleString('id-ID')}`;
-              packagesContainer.appendChild(li);
+              li.innerHTML = `<strong>${f.question}</strong><br>${f.answer}`;
+              faqsContainer.appendChild(li);
             });
-            packagesContainer.parentElement.style.display = '';
+            faqsContainer.parentElement.style.display = '';
           } else {
-            packagesContainer.parentElement.style.display = 'none';
+            faqsContainer.parentElement.style.display = 'none';
           }
 
           document.getElementById('editFromViewBtn').setAttribute('onclick', `closeViewModal(); editEvent(${event.id})`);
@@ -2255,9 +2263,10 @@
           // clear dynamic lists
           document.getElementById('benefitsList').innerHTML = '';
           document.getElementById('painsList').innerHTML = '';
+          document.getElementById('faqsList').innerHTML = '';
           document.getElementById('problemTitle').value = '';
           document.getElementById('problemSubtitle').value = '';
-          renderPackageList();
+          // package logic removed
           toggleEventFields();
           document.getElementById('eventModal').classList.remove('hidden');
           document.getElementById('eventModal').classList.add('flex');
@@ -2265,8 +2274,7 @@
         }
 
         async function editEvent(eventId) {
-          // make sure package list is ready
-          await loadPackages();
+          // package list no longer required
           const event = allEvents.find(e => e.id === eventId);
           if (!event) {
             showError('Event tidak ditemukan');
@@ -2304,8 +2312,13 @@
             event.pains.forEach(p => addPain(p.pain_title || p.title, p.pain_description || p.description));
           }
 
-          // packages
-          renderPackageList(event.packages || event.event_packages || []);
+          // faqs
+          document.getElementById('faqsList').innerHTML = '';
+          if (event.faqs && Array.isArray(event.faqs)) {
+            event.faqs.forEach(f => addFAQ(f.question || '', f.answer || ''));
+          }
+
+          // packages no longer applicable; event pricing handled separately
 
           if (event.event_type === 'gratis') {
             document.getElementById('title_gratis').value = event.title || '';
@@ -2354,7 +2367,6 @@
           if (eventType === 'gratis') {
             gratisFields.classList.remove('hidden');
             berbayarFields.classList.add('hidden');
-            document.getElementById('packageSection').classList.add('hidden');
 
             document.getElementById('title_gratis').required = true;
             document.getElementById('slug_gratis').required = false;
@@ -2370,7 +2382,6 @@
           } else {
             gratisFields.classList.add('hidden');
             berbayarFields.classList.remove('hidden');
-            document.getElementById('packageSection').classList.remove('hidden');
 
             document.getElementById('title_gratis').required = false;
             document.getElementById('slug_gratis').required = false;
@@ -2395,7 +2406,7 @@
             .replace(/^-+|-+$/g, '');
         }
 
-        // helper to dynamically add benefits/pains/packages
+        // helper to dynamically add benefits/pains
         function addBenefit(text = '') {
           const list = document.getElementById('benefitsList');
           const idx = list.children.length;
@@ -2422,39 +2433,19 @@
           list.appendChild(div);
         }
 
-        async function loadPackages() {
-          try {
-            const resp = await fetch('/api/admin/packages');
-            const data = await resp.json();
-            if (data.success && Array.isArray(data.data)) {
-              availablePackages = data.data;
-              renderPackageList();
-            }
-          } catch (err) {
-            console.error('Error loading packages:', err);
-          }
+        function addFAQ(question = '', answer = '') {
+          const list = document.getElementById('faqsList');
+          const div = document.createElement('div');
+          div.className = 'space-y-2 faq-item';
+          div.innerHTML = `
+            <input type="text" class="faq-question w-full px-2 py-1 bg-white/60 backdrop-blur border border-white/50 rounded-lg text-xs" placeholder="Pertanyaan" value="${question.replace(/"/g,'&quot;')}">
+            <textarea class="faq-answer w-full px-2 py-1 bg-white/60 backdrop-blur border border-white/50 rounded-lg text-xs" rows="2" placeholder="Jawaban">${answer}</textarea>
+            <button type="button" class="text-red-500 text-xs" onclick="this.parentElement.remove()">&times;</button>
+          `;
+          list.appendChild(div);
         }
 
-        function renderPackageList(selected = []) {
-          const container = document.getElementById('packagesList');
-          container.innerHTML = '';
-          availablePackages.forEach(pkg => {
-            const row = document.createElement('div');
-            row.className = 'flex items-center gap-2';
-            const isChecked = selected.some(s => s.package_id == pkg.id);
-            const priceVal = isChecked ? selected.find(s => s.package_id == pkg.id).price : '';
-            row.innerHTML = `
-              <label class="flex items-center gap-1">
-                <input type="checkbox" class="package-checkbox" data-id="${pkg.id}" ${isChecked ? 'checked' : ''}>
-                <span class="text-xs font-medium">${pkg.name}</span>
-              </label>
-              <input type="number" class="package-price w-20 text-xs px-1 py-1 bg-white/60 backdrop-blur border border-white/50 rounded-lg" placeholder="harga" value="${priceVal}" ${isChecked ? '' : 'disabled'}>
-            `;
-            container.appendChild(row);
-          });
 
-          container.querySelectorAll('.package-checkbox').forEach(cb => {
-            cb.addEventListener('change', (e) => {
               const priceInput = e.target.parentElement.nextElementSibling;
               if (e.target.checked) {
                 priceInput.disabled = false;
@@ -2488,7 +2479,7 @@
             problemTitle: document.getElementById('problemTitle').value,
             problemSubtitle: document.getElementById('problemSubtitle').value,
             pains: [],
-            packages: []
+            faqs: []
           };
 
           // collect benefits
@@ -2506,12 +2497,14 @@
               });
             }
           });
-          // collect packages and prices
-          document.querySelectorAll('#packagesList .package-checkbox:checked').forEach(cb => {
-            const id = cb.getAttribute('data-id');
-            const priceInput = cb.parentElement.nextElementSibling;
-            const priceVal = parseFloat(priceInput.value) || 0;
-            formData.packages.push({ package_id: id, price: priceVal });
+
+          // collect faqs
+          document.querySelectorAll('.faq-item').forEach(item => {
+            const qEl = item.querySelector('.faq-question');
+            const aEl = item.querySelector('.faq-answer');
+            if (qEl && aEl && qEl.value.trim() && aEl.value.trim()) {
+              formData.faqs.push({ question: qEl.value.trim(), answer: aEl.value.trim() });
+            }
           });
 
           if (eventType === 'gratis') {

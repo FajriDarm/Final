@@ -21,8 +21,7 @@ router.post("/events", adminController.createEvent);
 router.put("/events/:eventId", adminController.updateEvent);
 router.delete("/events/:eventId", adminController.deleteEvent);
 
-// Packages endpoint for frontend dropdown
-router.get("/packages", adminController.getPackages);
+// Packages endpoint removed - pricing is part of the event record
 
 // Admin: generate token for user (super_admin only)
 router.post("/tokens", authMiddleware, adminController.generateTokenForUser);

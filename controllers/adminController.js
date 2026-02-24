@@ -37,18 +37,19 @@ const getActiveEvents = async (req, res) => {
         benefitMap[b.event_id].push(b.benefit_text || b);
       });
 
-      const [pkgs] = await db.query(
-        `SELECT ep.event_id, ep.price, p.id as package_id, p.name, p.slug, p.logo_url
-         FROM event_packages ep
-         JOIN packages p ON ep.package_id = p.id
-         WHERE ep.event_id IN (?)`,
+      // faqs for active events
+      const [faqs] = await db.query(
+        `SELECT * FROM event_faqs WHERE event_id IN (?) ORDER BY sort_order ASC`,
         [eventIds],
       );
-      const pkgMap = {};
-      pkgs.forEach(p => {
-        if (!pkgMap[p.event_id]) pkgMap[p.event_id] = [];
-        pkgMap[p.event_id].push(p);
+      const faqMap = {};
+      faqs.forEach(f => {
+        if (!faqMap[f.event_id]) faqMap[f.event_id] = [];
+        faqMap[f.event_id].push({ question: f.question, answer: f.answer });
       });
+
+      // package functionality has been removed; keep empty map for compatibility
+      const pkgMap = {}; // packages are no longer stored separately
 
       const [sections] = await db.query(
         `SELECT * FROM event_problem_sections WHERE event_id IN (?)`,
@@ -75,7 +76,7 @@ const getActiveEvents = async (req, res) => {
 
       events.forEach(e => {
         e.benefits = benefitMap[e.id] || [];
-        e.packages = pkgMap[e.id] || [];
+        e.faqs = faqMap[e.id] || [];
         const sec = sectionMap[e.id];
         if (sec) {
           e.problem_title = sec.title;
@@ -346,18 +347,15 @@ const getEvents = async (req, res) => {
         benefitMap[b.event_id].push(b);
       });
 
-      // packages
-      const [pkgs] = await db.query(
-        `SELECT ep.*, p.name, p.slug, p.logo_url
-         FROM event_packages ep
-         JOIN packages p ON ep.package_id = p.id
-         WHERE ep.event_id IN (?)`,
+      // faqs
+      const [faqs] = await db.query(
+        `SELECT * FROM event_faqs WHERE event_id IN (?) ORDER BY sort_order ASC`,
         [eventIds],
       );
-      const pkgMap = {};
-      pkgs.forEach(p => {
-        if (!pkgMap[p.event_id]) pkgMap[p.event_id] = [];
-        pkgMap[p.event_id].push(p);
+      const faqMap = {};
+      faqs.forEach(f => {
+        if (!faqMap[f.event_id]) faqMap[f.event_id] = [];
+        faqMap[f.event_id].push(f);
       });
 
       // problem sections + pains
@@ -387,7 +385,7 @@ const getEvents = async (req, res) => {
       // attach to events
       events.forEach(e => {
         e.benefits = benefitMap[e.id] || [];
-        e.packages = pkgMap[e.id] || [];
+        e.faqs = faqMap[e.id] || [];
         const sec = sectionMap[e.id];
         if (sec) {
           e.problem_title = sec.title;
@@ -433,7 +431,7 @@ const createEvent = async (req, res) => {
       problemTitle,
       problemSubtitle,
       pains,
-      packages,
+      faqs,
     } = req.body;
 
     const userId = req.user?.id || 1;
@@ -501,6 +499,17 @@ const createEvent = async (req, res) => {
       }
     }
 
+    // faqs
+    if (Array.isArray(faqs)) {
+      for (let i = 0; i < faqs.length; i++) {
+        const f = faqs[i];
+        await db.query(
+          `INSERT INTO event_faqs (event_id, question, answer, sort_order) VALUES (?, ?, ?, ?)`,
+          [eventId, f.question || '', f.answer || '', i],
+        );
+      }
+    }
+
     let problemSectionId = null;
     if (problemTitle || problemSubtitle || (Array.isArray(pains) && pains.length)) {
       const [ps] = await db.query(
@@ -519,14 +528,7 @@ const createEvent = async (req, res) => {
       }
     }
 
-    if (Array.isArray(packages)) {
-      for (const pkg of packages) {
-        await db.query(
-          `INSERT INTO event_packages (event_id, package_id, price) VALUES (?, ?, ?)`,
-          [eventId, pkg.package_id, pkg.price || 0],
-        );
-      }
-    }
+    // packages removed from model - pricing kept on events
 
     res.status(201).json({
       success: true,
@@ -567,7 +569,6 @@ const updateEvent = async (req, res) => {
       problemTitle,
       problemSubtitle,
       pains,
-      packages,
     } = req.body;
 
     await db.query(
@@ -599,8 +600,9 @@ const updateEvent = async (req, res) => {
     );
 
     // remove previous related entries
-    await db.query("DELETE FROM event_packages WHERE event_id = ?", [eventId]);
+    // event_packages table removed; nothing to delete
     await db.query("DELETE FROM event_benefits WHERE event_id = ?", [eventId]);
+    await db.query("DELETE FROM event_faqs WHERE event_id = ?", [eventId]);
     await db.query("DELETE FROM event_problem_sections WHERE event_id = ?", [eventId]);
 
     // reinsert relationships same as create
@@ -631,11 +633,15 @@ const updateEvent = async (req, res) => {
       }
     }
 
-    if (Array.isArray(packages)) {
-      for (const pkg of packages) {
+    // packages removed from model - pricing kept on events
+
+    // faqs reinsertion
+    if (Array.isArray(faqs)) {
+      for (let i = 0; i < faqs.length; i++) {
+        const f = faqs[i];
         await db.query(
-          `INSERT INTO event_packages (event_id, package_id, price) VALUES (?, ?, ?)`,
-          [eventId, pkg.package_id, pkg.price || 0],
+          `INSERT INTO event_faqs (event_id, question, answer, sort_order) VALUES (?, ?, ?, ?)`,
+          [eventId, f.question || '', f.answer || '', i],
         );
       }
     }
@@ -654,7 +660,7 @@ const updateEvent = async (req, res) => {
   }
 };
 
-// returns a single event with related benefits/packages/problem/pains
+// returns a single event with related benefits/problem/pains
 const getEventById = async (req, res) => {
   try {
     const { eventId } = req.params;
@@ -665,11 +671,10 @@ const getEventById = async (req, res) => {
     const [benefits] = await db.query(`SELECT * FROM event_benefits WHERE event_id = ? ORDER BY sort_order ASC`, [eventId]);
     event.benefits = benefits.map(b=>b.benefit_text);
 
-    const [pkgs] = await db.query(
-      `SELECT ep.*, p.name, p.slug, p.logo_url FROM event_packages ep JOIN packages p ON ep.package_id = p.id WHERE ep.event_id = ?`,
-      [eventId],
-    );
-    event.packages = pkgs;
+    const [faqs] = await db.query(`SELECT * FROM event_faqs WHERE event_id = ? ORDER BY sort_order ASC`, [eventId]);
+    event.faqs = faqs.map(f=>({ question: f.question, answer: f.answer }));
+
+    // packages removed; event.price_* contains cost information
 
     const [sections] = await db.query(`SELECT * FROM event_problem_sections WHERE event_id = ?`, [eventId]);
     if (sections.length) {
@@ -689,16 +694,7 @@ const getEventById = async (req, res) => {
   }
 };
 
-// return global packages
-const getPackages = async (req, res) => {
-  try {
-    const [rows] = await db.query(`SELECT id, name, slug, logo_url FROM packages ORDER BY name`);
-    res.json({ success:true, data: rows });
-  } catch (err) {
-    console.error('Get packages error:', err);
-    res.status(500).json({ success:false, message:'Internal server error' });
-  }
-};
+// global packages endpoint removed – not needed in single‑event pricing model
 
 const deleteEvent = async (req, res) => {
   try {
@@ -1340,7 +1336,6 @@ module.exports = {
   getActivityLogs,
   getWithdrawalApprovalsPage,
   getEventById,
-  getPackages,
   getPendingWithdrawalsForApproval,
   getWithdrawalDetailForApproval,
   approveWithdrawal,

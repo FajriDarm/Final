@@ -50,47 +50,16 @@ subheadline	Subjudul LP
 hero_media_type	image / video
 hero_media_url	URL atau path upload
 hero_as_background	Apakah dijadikan background
-2️⃣ Tabel packages (Master Global)
+2️⃣ Pricing Embedded in Event
 
-Digunakan untuk menyimpan daftar paket global.
+Model "packages" sudah tidak digunakan dalam versi terbaru. Semua informasi harga dan
+pilihan kini disimpan langsung di tabel `events` (kolom `price_original`,
+`price_promo`, dll). Pendekatan ini menyederhanakan alur dan menghilangkan
+kebutuhan relasi `packages`/`event_packages`.
 
-CREATE TABLE packages (
-  id BIGINT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(100) NOT NULL,
-  slug VARCHAR(100) NOT NULL,
-  logo_url TEXT DEFAULT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  UNIQUE KEY unique_slug (slug)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-Contoh Data
-id	name	slug
-1	Indigo	indigo
-2	Lion	lion
-3	Qatar	qatar
-3️⃣ Tabel event_packages
-
-Relasi event dengan package.
-Admin hanya mengisi harga.
-
-CREATE TABLE event_packages (
-  id BIGINT NOT NULL AUTO_INCREMENT,
-  event_id BIGINT NOT NULL,
-  package_id BIGINT NOT NULL,
-  price DECIMAL(15,2) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  UNIQUE KEY unique_event_package (event_id, package_id),
-  FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
-  FOREIGN KEY (package_id) REFERENCES packages(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-Rule
-
-1 event bisa memiliki banyak package.
-
-1 package bisa digunakan di banyak event.
-
-Tidak boleh duplicate package dalam 1 event.
+> Jika di masa depan diperlukan kembali struktur paket terpisah, kita dapat
+> menambahkan tabel baru atau mengembalikan `packages` dengan desain yang
+> sesuai.
 
 4️⃣ Tabel event_benefits
 
@@ -141,9 +110,6 @@ CREATE TABLE event_pains (
 Struktur Relasi
 events
 │
-├── event_packages
-│     └── packages
-│
 ├── event_benefits
 │
 └── event_problem_sections
@@ -154,22 +120,12 @@ events
 Ambil dari tabel events.
 
 SELECT * FROM events WHERE slug = ?;
-2️⃣ Packages yang Dipilih Admin
-SELECT 
-  p.name,
-  p.slug,
-  p.logo_url,
-  ep.price
-FROM event_packages ep
-JOIN packages p ON ep.package_id = p.id
-WHERE ep.event_id = ?
-ORDER BY ep.price ASC;
-3️⃣ Benefits
+2️⃣ Benefits
 SELECT benefit_text
 FROM event_benefits
 WHERE event_id = ?
 ORDER BY sort_order ASC;
-4️⃣ Problem Section
+3️⃣ Problem Section
 SELECT * FROM event_problem_sections
 WHERE event_id = ?;
 SELECT *
@@ -190,16 +146,13 @@ Tambah Benefit (multiple)
 
 Isi Problem Section
 
-Pilih Package
-
-Isi Harga untuk Package yang dipilih
+Isi Harga (jika berbayar)
 
 Save Event
 
 🔐 Business Rules
 
-✔ Package hanya mengisi harga
-✔ Package dipanggil berdasarkan package_id atau slug
+✔ Harga wajib jika event berbayar
 ✔ Benefit & Pain unlimited
 ✔ Jika event dihapus → semua relasi ikut terhapus (CASCADE)
 ✔ Struktur scalable & future-ready
@@ -214,12 +167,12 @@ Menjadi:
 
 Landing Page CMS + Dynamic Pricing Engine
 
-🔁 Workflow Event V2 — Landing Page CMS + Dynamic Packages
+🔁 Workflow Event V2 — Landing Page CMS + Dynamic Pricing
 📌 Overview
 
 Event V2 mengubah Event dari sekadar pricing menjadi:
 
-Landing Page Builder + Dynamic Pricing + Package Selector
+Landing Page Builder + Dynamic Pricing
 
 Workflow ini menjelaskan alur dari:
 
@@ -227,7 +180,7 @@ Admin membuat event
 
 Admin mengisi konten LP
 
-Admin memilih package & harga
+Admin menentukan harga
 
 Event dipublish
 
@@ -330,44 +283,18 @@ event_pains
 Relasi:
 event_problem_sections → event_pains (1:N)
 
-💼 WORKFLOW 5 — Memilih Package & Mengisi Harga
+💼 WORKFLOW 5 — Menentukan Harga
 
-Admin melihat daftar package global:
+Jika event bertipe berbayar, admin menginput nilai:
 
-☑ Indigo
-☑ Lion
-☑ Qatar
-☑ Emirates
+- `price_original`
+- `price_promo` (opsional)
 
-Admin memilih package yang ingin ditampilkan.
-
-Contoh:
-
-Indigo
-
-Qatar
-
-Setelah dipilih → muncul input harga.
-
-Admin isi:
-
-Indigo → 15.000.000
-
-Qatar → 18.000.000
-
-Sistem menyimpan ke:
-
-event_packages
-
-Struktur:
-
-| event_id | package_id | price |
+Nilai harga disimpan langsung di tabel `events`.
 
 Rule:
 
-Tidak boleh duplicate package dalam 1 event
-
-Harga wajib diisi jika package dipilih
+Harga wajib diisi jika event berbayar
 
 💳 WORKFLOW 6 — Pengaturan Pembayaran
 
@@ -428,7 +355,7 @@ Sistem melakukan:
 3️⃣ Ambil benefits
 4️⃣ Ambil problem section
 5️⃣ Ambil pains
-6️⃣ Ambil event_packages join packages
+6️⃣ Ambil harga & info pembayaran dari tabel events
 7️⃣ Render ke frontend
 
 📊 WORKFLOW 9 — Perubahan Harga / Edit Event
@@ -439,9 +366,9 @@ Update headline → langsung update LP
 
 Update benefit → replace data
 
-Update package price → update event_packages
+Update harga → langsung modify kolom pada tabel events
 
-Hapus package → delete row event_packages
+Hapus harga → set nilai 0 atau null sesuai status
 
 Semua relasi ON DELETE CASCADE.
 
@@ -453,12 +380,9 @@ events
 ├── event_problem_sections
 │     └── event_pains
 │
-└── event_packages
-      └── packages (master global)
+
 🔐 VALIDATION RULES
 Event Gratis
-
-Tidak perlu package
 
 Tidak perlu payment
 

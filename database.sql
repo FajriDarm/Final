@@ -55,6 +55,7 @@ CREATE TABLE events (
     bank_name VARCHAR(100) NULL,
     bank_account_name VARCHAR(100) NULL,
     bank_account_number VARCHAR(50) NULL,
+    account_holder_name VARCHAR(100) NULL,
 
     -- AFFILIATE
     affiliate_enabled BOOLEAN DEFAULT FALSE,
@@ -269,6 +270,10 @@ ADD bank_name VARCHAR(100) NULL AFTER affiliate_status,
 ADD bank_account_name VARCHAR(100) NULL AFTER bank_name,
 ADD bank_account_number VARCHAR(50) NULL AFTER bank_account_name;
 
+-- ensure events table has account_holder_name for payment details
+ALTER TABLE events
+ADD COLUMN account_holder_name VARCHAR(100) NULL AFTER bank_account_number;
+
 ALTER TABLE users
 ADD no_wa VARCHAR(20) NULL AFTER email;
 
@@ -324,36 +329,31 @@ CREATE TABLE commission_rules (
     FOREIGN KEY (created_by) REFERENCES users(id)
 );
 # ========================================= 
--- PACKAGES
+-- event 
 -- =========================================
-CREATE TABLE packages (
-  id BIGINT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(100) NOT NULL,
-  slug VARCHAR(100) NOT NULL,
-  logo_url TEXT DEFAULT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  UNIQUE KEY unique_slug (slug)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `event_hero_sections` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `event_id` BIGINT NOT NULL,
 
-ALTER TABLE events
-ADD COLUMN headline VARCHAR(255) DEFAULT NULL AFTER title,
-ADD COLUMN subheadline TEXT DEFAULT NULL AFTER headline,
-ADD COLUMN hero_media_type ENUM('image','video') DEFAULT NULL AFTER subheadline,
-ADD COLUMN hero_media_url TEXT DEFAULT NULL AFTER hero_media_type,
-ADD COLUMN hero_as_background TINYINT(1) DEFAULT 1 AFTER hero_media_url;
+  `headline` VARCHAR(255) DEFAULT NULL,
+  `subheadline` TEXT DEFAULT NULL,
 
-CREATE TABLE event_packages (
-  id BIGINT NOT NULL AUTO_INCREMENT,
-  event_id BIGINT NOT NULL,
-  package_id BIGINT NOT NULL,
-  price DECIMAL(15,2) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  UNIQUE KEY unique_event_package (event_id, package_id),
-  FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
-  FOREIGN KEY (package_id) REFERENCES packages(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `hero_media_type` ENUM('image','video') DEFAULT NULL,
+  `hero_media_url` TEXT DEFAULT NULL,
+  `hero_as_background` TINYINT(1) DEFAULT 1,
+
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_event_hero` (`event_id`),
+
+  CONSTRAINT `event_hero_sections_ibfk_1`
+    FOREIGN KEY (`event_id`)
+    REFERENCES `events` (`id`)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 CREATE TABLE event_benefits (
   id BIGINT NOT NULL AUTO_INCREMENT,
@@ -411,5 +411,9 @@ CREATE TABLE event_faqs (
 ) ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_0900_ai_ci;
+
+-- drop legacy package tables if they exist
+DROP TABLE IF EXISTS event_packages;
+DROP TABLE IF EXISTS packages;
 
 -- End of database.sql
