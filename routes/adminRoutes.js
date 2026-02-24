@@ -1,6 +1,21 @@
 const express = require("express");
 const router = express.Router();
 const adminController = require("../controllers/adminController");
+const multer = require('multer');
+const path = require('path');
+
+// multer setup for hero uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '..', 'public', 'uploads'));
+  },
+  filename: function (req, file, cb) {
+    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, `${unique}${ext}`);
+  },
+});
+const upload = multer({ storage: storage, limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB
 const monitoringCtrl = require("../controllers/monitoringAffiliateController");
 const authMiddleware = require("../middleware/auth");
 
@@ -20,6 +35,9 @@ router.get("/events/:eventId", adminController.getEventById); // detail for edit
 router.post("/events", adminController.createEvent);
 router.put("/events/:eventId", adminController.updateEvent);
 router.delete("/events/:eventId", adminController.deleteEvent);
+
+// Upload hero media (image/video) - authenticated
+router.post('/events/upload-hero', upload.single('hero'), adminController.uploadHero);
 
 // Packages endpoint removed - pricing is part of the event record
 

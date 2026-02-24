@@ -15,14 +15,15 @@ function generateSlug(text) {
 const getActiveEvents = async (req, res) => {
   try {
     const [events] = await db.query(
-      `SELECT id, title as name, description, price_original, price_promo as price_discount,
-              start_date, end_date, status, slug,
-              payment_methods, bank_name, bank_account_name, bank_account_number, event_type,
-              headline, subheadline, hero_media_type, hero_media_url, hero_as_background
-       FROM events
-       WHERE status = 'active'
-       AND (end_date >= CURDATE() OR end_date IS NULL)
-       ORDER BY created_at DESC`,
+      `SELECT e.id, e.title as name, e.description, e.price_original, e.price_promo as price_discount,
+              e.start_date, e.end_date, e.status, e.slug,
+              e.payment_methods, e.bank_name, e.bank_account_name, e.bank_account_number, e.account_holder_name, e.event_type,
+              ehs.headline, ehs.subheadline, ehs.hero_media_type, ehs.hero_media_url, ehs.hero_as_background
+       FROM events e
+       LEFT JOIN event_hero_sections ehs ON ehs.event_id = e.id
+       WHERE e.status = 'active'
+       AND (e.end_date >= CURDATE() OR e.end_date IS NULL)
+       ORDER BY e.created_at DESC`,
     );
 
     const eventIds = events.map(e => e.id);
@@ -328,9 +329,10 @@ const getUsers = async (req, res) => {
 const getEvents = async (req, res) => {
   try {
     const [events] = await db.query(
-      `SELECT e.*, u.name as created_by_name
+      `SELECT e.*, u.name as created_by_name, ehs.headline, ehs.subheadline, ehs.hero_media_type, ehs.hero_media_url, ehs.hero_as_background
        FROM events e
        LEFT JOIN users u ON e.created_by = u.id
+       LEFT JOIN event_hero_sections ehs ON ehs.event_id = e.id
        ORDER BY e.created_at DESC`,
     );
 
@@ -411,6 +413,38 @@ const getEvents = async (req, res) => {
 
 const createEvent = async (req, res) => {
   try {
+    // Basic validation
+    const allowedTypes = ['gratis', 'berbayar'];
+    const allowedStatus = ['draft', 'active', 'inactive'];
+
+    if (!req.body.event_type || !allowedTypes.includes(req.body.event_type)) {
+      return res.status(400).json({ success: false, message: 'Invalid event_type' });
+    }
+
+    if (req.body.status && !allowedStatus.includes(req.body.status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status' });
+    }
+
+    if (!req.body.title || String(req.body.title).trim().length === 0) {
+      return res.status(400).json({ success: false, message: 'Title is required' });
+    }
+
+    if (req.body.event_type === 'berbayar') {
+      if (!req.body.start_date || !req.body.end_date) {
+        return res.status(400).json({ success: false, message: 'start_date and end_date are required for paid events' });
+      }
+      const po = parseFloat(req.body.price_original || 0);
+      const pp = parseFloat(req.body.price_promo || 0);
+      if (isNaN(po) || isNaN(pp)) {
+        return res.status(400).json({ success: false, message: 'Invalid price values' });
+      }
+    }
+
+    // sanitize whatsapp (digits only)
+    if (req.body.admin_whatsapp && !/^[0-9+\-\s()]{3,20}$/.test(req.body.admin_whatsapp)) {
+      return res.status(400).json({ success: false, message: 'Invalid admin_whatsapp format' });
+    }
+
     const {
       title,
       description,
@@ -443,7 +477,7 @@ const createEvent = async (req, res) => {
     const finalPricePromo =
       eventType === "gratis" ? 0 : req.body.price_promo || 0;
     const paymentMethods =
-      eventType === "gratis" ? "" : req.body.payment_methods || "";
+      eventType === "gratis" ? "" : (req.body.payment_methods || "");
 
     const insertValues = [
       req.body.title,
@@ -462,32 +496,23 @@ const createEvent = async (req, res) => {
       req.body.end_date,
       req.body.status || "draft",
       userId,
-      // new hero fields
-      headline || null,
-      subheadline || null,
-      hero_media_type || null,
-      hero_media_url || null,
-      hero_as_background ? 1 : 0,
     ];
 
-    console.debug(
-      "Creating event with values length:",
-      insertValues.length,
-      "values:",
-      insertValues,
-    );
+    console.debug("Creating event with values:", insertValues);
 
     const [result] = await db.query(
       `INSERT INTO events
        (title, slug, description, event_type, price_original, price_promo, payment_methods,
         bank_name, bank_account_name, bank_account_number, account_holder_name,
-        admin_whatsapp, start_date, end_date, status, created_by,
-        headline, subheadline, hero_media_type, hero_media_url, hero_as_background)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        admin_whatsapp, start_date, end_date, status, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       insertValues,
     );
 
     const eventId = result.insertId;
+
+    // if request contains uploaded hero file reference (URL), prefer that over URL field
+    // handled below when inserting hero section
 
     // insert related entities
     if (Array.isArray(benefits)) {
@@ -526,6 +551,18 @@ const createEvent = async (req, res) => {
           );
         }
       }
+    }
+
+    // insert hero section into event_hero_sections (separate table)
+    try {
+      if (headline || subheadline || hero_media_type || hero_media_url) {
+        await db.query(
+          `INSERT INTO event_hero_sections (event_id, headline, subheadline, hero_media_type, hero_media_url, hero_as_background) VALUES (?, ?, ?, ?, ?, ?)`,
+          [eventId, headline || null, subheadline || null, hero_media_type || null, hero_media_url || null, hero_as_background ? 1 : 0],
+        );
+      }
+    } catch (err) {
+      console.warn('Failed to insert into event_hero_sections:', err.message);
     }
 
     // packages removed from model - pricing kept on events
@@ -569,14 +606,27 @@ const updateEvent = async (req, res) => {
       problemTitle,
       problemSubtitle,
       pains,
+      faqs,
     } = req.body;
+
+    // Basic validation for update
+    const allowedTypes = ['gratis', 'berbayar'];
+    const allowedStatus = ['draft', 'active', 'inactive'];
+    if (req.body.event_type && !allowedTypes.includes(req.body.event_type)) {
+      return res.status(400).json({ success: false, message: 'Invalid event_type' });
+    }
+    if (status && !allowedStatus.includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status' });
+    }
+    if (req.body.admin_whatsapp && !/^[0-9+\-\s()]{3,20}$/.test(req.body.admin_whatsapp)) {
+      return res.status(400).json({ success: false, message: 'Invalid admin_whatsapp format' });
+    }
 
     await db.query(
       `UPDATE events SET
        title = ?, description = ?, price_original = ?, price_promo = ?,
        payment_methods = ?, bank_name = ?, bank_account_name = ?,
-       bank_account_number = ?, start_date = ?, end_date = ?, status = ?,
-       headline = ?, subheadline = ?, hero_media_type = ?, hero_media_url = ?, hero_as_background = ?
+       bank_account_number = ?, account_holder_name = ?, start_date = ?, end_date = ?, status = ?
        WHERE id = ?`,
       [
         title,
@@ -587,14 +637,10 @@ const updateEvent = async (req, res) => {
         bank_name,
         bank_account_name,
         bank_account_number,
+        req.body.account_holder_name || null,
         start_date,
         end_date,
         status,
-        headline || null,
-        subheadline || null,
-        hero_media_type || null,
-        hero_media_url || null,
-        hero_as_background ? 1 : 0,
         eventId,
       ],
     );
@@ -646,6 +692,19 @@ const updateEvent = async (req, res) => {
       }
     }
 
+    // handle hero section: remove existing then insert if provided
+    try {
+      await db.query(`DELETE FROM event_hero_sections WHERE event_id = ?`, [eventId]);
+      if (headline || subheadline || hero_media_type || hero_media_url) {
+        await db.query(
+          `INSERT INTO event_hero_sections (event_id, headline, subheadline, hero_media_type, hero_media_url, hero_as_background) VALUES (?, ?, ?, ?, ?, ?)`,
+          [eventId, headline || null, subheadline || null, hero_media_type || null, hero_media_url || null, hero_as_background ? 1 : 0],
+        );
+      }
+    } catch (err) {
+      console.warn('Failed to update event_hero_sections for event', eventId, err.message);
+    }
+
     res.json({
       success: true,
       message: "Event updated successfully",
@@ -664,7 +723,13 @@ const updateEvent = async (req, res) => {
 const getEventById = async (req, res) => {
   try {
     const { eventId } = req.params;
-    const [rows] = await db.query(`SELECT * FROM events WHERE id = ?`, [eventId]);
+    const [rows] = await db.query(
+      `SELECT e.*, ehs.headline, ehs.subheadline, ehs.hero_media_type, ehs.hero_media_url, ehs.hero_as_background
+       FROM events e
+       LEFT JOIN event_hero_sections ehs ON ehs.event_id = e.id
+       WHERE e.id = ?`,
+      [eventId],
+    );
     if (rows.length === 0) return res.status(404).json({ success:false, message:'Not found' });
     const event = rows[0];
 
@@ -1333,6 +1398,7 @@ module.exports = {
   approveAffiliate,
   rejectAffiliate,
   generateTokenForUser,
+  uploadHero,
   getActivityLogs,
   getWithdrawalApprovalsPage,
   getEventById,
@@ -1347,3 +1413,16 @@ module.exports = {
   getAffiliatesPage,
   getActivityLogsPage,
 };
+
+// upload handler for hero media
+async function uploadHero(req, res) {
+  try {
+    if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded' });
+    // return URL path relative to public
+    const url = `/uploads/${req.file.filename}`;
+    res.json({ success: true, url });
+  } catch (err) {
+    console.error('Upload hero error:', err);
+    res.status(500).json({ success: false, message: 'Upload failed', error: err.message });
+  }
+}

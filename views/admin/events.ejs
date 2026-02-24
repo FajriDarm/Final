@@ -1150,6 +1150,11 @@
                       <span id="viewAccountNumber"
                         class="font-extrabold text-indigo-900 bg-white/80 px-3 py-1 rounded-lg border border-indigo-200">-</span>
                     </div>
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="font-semibold text-indigo-700">Pemilik Rekening</span>
+                      <span id="viewAccountHolder"
+                        class="font-extrabold text-indigo-900 bg-white/80 px-3 py-1 rounded-lg border border-indigo-200">-</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1540,6 +1545,11 @@
                       <input type="text" id="bank_account_number"
                         class="w-full px-2 py-1.5 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-[9px] font-medium text-gray-900">
                     </div>
+                  </div>
+                  <div class="mt-2">
+                    <label class="block text-[8px] font-extrabold text-indigo-700 mb-1">Nama Pemilik Rekening</label>
+                    <input type="text" id="account_holder_name"
+                      class="w-full px-2 py-1.5 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-[9px] font-medium text-gray-900">
                   </div>
                 </div>
 
@@ -2156,6 +2166,7 @@
             document.getElementById('viewBankName').textContent = event.bank_name || '-';
             document.getElementById('viewAccountName').textContent = event.bank_account_name || '-';
             document.getElementById('viewAccountNumber').textContent = event.bank_account_number || '-';
+            document.getElementById('viewAccountHolder').textContent = event.account_holder_name || '-';
             document.getElementById('viewBankSection').classList.remove('hidden');
           } else {
             document.getElementById('viewPricingSection').classList.add('hidden');
@@ -2260,6 +2271,7 @@
           document.getElementById('hero_media_type').value = '';
           document.getElementById('hero_media_url').value = '';
           document.getElementById('hero_as_background').checked = false;
+          document.getElementById('account_holder_name').value = '';
           // clear dynamic lists
           document.getElementById('benefitsList').innerHTML = '';
           document.getElementById('painsList').innerHTML = '';
@@ -2335,6 +2347,7 @@
             document.getElementById('bank_name').value = event.bank_name || '';
             document.getElementById('bank_account_name').value = event.bank_account_name || '';
             document.getElementById('bank_account_number').value = event.bank_account_number || '';
+            document.getElementById('account_holder_name').value = event.account_holder_name || '';
 
             document.querySelectorAll('.payment-method-checkbox').forEach(cb => {
               cb.checked = event.payment_methods && event.payment_methods.includes(cb.value);
@@ -2465,6 +2478,7 @@
             hero_media_type: document.getElementById('hero_media_type').value,
             hero_media_url: document.getElementById('hero_media_url').value,
             hero_as_background: document.getElementById('hero_as_background').checked ? 1 : 0,
+            account_holder_name: document.getElementById('account_holder_name') ? document.getElementById('account_holder_name').value : '',
             benefits: [],
             problemTitle: document.getElementById('problemTitle').value,
             problemSubtitle: document.getElementById('problemSubtitle').value,
@@ -2519,6 +2533,7 @@
             formData.bank_name = document.getElementById('bank_name').value;
             formData.bank_account_name = document.getElementById('bank_account_name').value;
             formData.bank_account_number = document.getElementById('bank_account_number').value;
+            formData.account_holder_name = document.getElementById('account_holder_name').value;
             formData.start_date = document.getElementById('start_date').value;
             formData.end_date = document.getElementById('end_date').value;
           }
