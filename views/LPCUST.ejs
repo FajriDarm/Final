@@ -1,1151 +1,943 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
+
 <head>
-    <%
-        const lp = landingData || {};
-        const ev = lp.event || {};
-        const hero = lp.hero || {};
-        const waDigits = String(ev.admin_whatsapp || '').replace(/[^\d]/g, '');
-        const waNumber = waDigits
-            ? (waDigits.startsWith('0') ? `62${waDigits.slice(1)}` : (waDigits.startsWith('62') ? waDigits : waDigits))
-            : '';
-        const waLink = waNumber ? `https://wa.me/${waNumber}` : '#';
-        const checkoutLink = ev.slug ? `/checkout?event=${ev.slug}` : '/checkout';
-        const heroTitle = hero.headline || ev.title || 'JamaahCare';
-        const heroSubtitle = hero.subheadline || ev.description || '';
-        const heroImage = hero.hero_media_url || 'https://images.unsplash.com/photo-1585030242339-066d10c8a3dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
-    %>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title><%= ev.title ? `${ev.title} - JamaahCare` : 'JamaahCare - Layanan Terbaik untuk Jamaah' %></title>
-    
-    <!-- Tailwind CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= (typeof landingData !== 'undefined' && landingData && landingData.event && landingData.event.title) ? `${landingData.event.title} - Landing Page` : 'Umroh Syawal 9D - Pendampingian Tenang untuk Ibu' %></title>
+    <meta name="description"
+        content="Program Umroh Syawal 9 Hari oleh Rahmah Travel. Kepastian jadwal, hotel dekat, dan transparan biaya. Cocok untuk anak perempuan mendampingi ibu.">
+
+    <!-- Fonts: Playfair Display (Trust/Authority) & Plus Jakarta Sans (Modern/Clean) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS (via CDN for standalone usage) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- AOS CSS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <!-- Font Awesome 6 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
-    <!-- Google Fonts - Inter & Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        * {
-            font-family: 'Inter', 'Poppins', sans-serif;
+
+    <!-- Tailwind Configuration for Custom Earthy Tones -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        earth: {
+                            50: '#FAFAF5',  /* Ultra light background */
+                            100: '#F5F5EB',
+                            200: '#E6E6D6',
+                            800: '#5D4E37',  /* Primary Text/Headings */
+                            900: '#3E3328',  /* Darker Text */
+                        },
+                        brand: {
+                            brown: '#8B5E3C', /* Primary Button/Action */
+                            gold: '#C5A059',  /* Accent/Star */
+                            light: '#FDFBF7',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
         }
-        
+    </script>
+
+    <style>
+        /* GLOBAL STYLES & OVERRIDES */
+        body {
+            overflow-x: hidden;
+            /* Rule 2: Prevent horizontal scroll */
+            background-color: #FAFAF5;
+            /* Rule 4: Light Mode */
+            color: #3E3328;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Rule 7: Button Consistency */
+        .btn-primary {
+            background-color: #8B5E3C !important;
+            color: #FFFFFF !important;
+            text-decoration: none !important;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* Smooth Scrolling */
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 80px;
         }
-        
-        /* Modern gradient backgrounds */
-        .gradient-primary {
-            background: linear-gradient(135deg, #0d9488 0%, #059669 50%, #10b981 100%);
+
+        /* Image styling */
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
         }
-        
-        .gradient-secondary {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-        }
-        
-        .gradient-dark {
-            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .gradient-text-gold {
-            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Modern card effects */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .hover-lift {
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        .hover-lift:hover {
-            transform: translateY(-8px) scale(1.02);
-        }
-        
-        .hover-glow {
-            transition: box-shadow 0.3s ease;
-        }
-        
-        .hover-glow:hover {
-            box-shadow: 0 25px 50px -12px rgba(5, 150, 105, 0.25);
-        }
-        
-        /* Smooth transitions */
-        .smooth-transition {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Custom animations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-        
-        .animate-pulse-glow {
-            animation: pulse-glow 3s ease-in-out infinite;
-        }
-        
-        /* Modern scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #0d9488, #059669);
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #059669, #047857);
+
+        /* Sticky CTA Mobile */
+        .sticky-cta-wrapper {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 50;
+            background: white;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            padding: 12px 16px;
+            border-top: 1px solid #E6E6D6;
         }
     </style>
 </head>
-<body class="bg-gray-50 overflow-x-hidden antialiased">
 
-    <!-- Modern Navbar -->
-    <nav class="fixed w-full z-50 top-0 transition-all duration-500" id="navbar" data-aos="fade-down" data-aos-duration="800">
-        <div class="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
-            <div class="glass-card rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between">
-                <!-- Logo with modern design -->
-                <a href="#" class="flex items-center space-x-2 sm:space-x-3 group">
-                    <div class="w-9 h-9 sm:w-11 sm:h-11 gradient-primary rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-all duration-500 shadow-lg">
-                        <i class="fas fa-mosque text-white text-lg sm:text-xl"></i>
-                    </div>
-                    <div>
-                        <span class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
-                            Jamaah<span class="text-amber-500">Care</span>
-                        </span>
-                        <span class="hidden lg:block text-xs text-gray-500">Since 2014</span>
-                    </div>
-                </a>
-                
-                <!-- Desktop Menu with modern styling -->
-                <div class="hidden lg:flex items-center space-x-1 xl:space-x-2">
-                    <a href="#home" class="nav-link px-4 py-2 text-gray-700 hover:text-emerald-600 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300">
-                        Beranda
-                    </a>
-                    <a href="#about" class="nav-link px-4 py-2 text-gray-700 hover:text-emerald-600 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300">
-                        Tentang
-                    </a>
-                    <a href="#services" class="nav-link px-4 py-2 text-gray-700 hover:text-emerald-600 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300">
-                        Layanan
-                    </a>
-                    <a href="#schedule" class="nav-link px-4 py-2 text-gray-700 hover:text-emerald-600 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300">
-                        Paket
-                    </a>
-                    <a href="#gallery" class="nav-link px-4 py-2 text-gray-700 hover:text-emerald-600 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300">
-                        Galeri
-                    </a>
-                    <a href="#testimonials" class="nav-link px-4 py-2 text-gray-700 hover:text-emerald-600 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300">
-                        Testimoni
-                    </a>
-                </div>
-                
-                <!-- CTA Button with modern design -->
-                <div class="flex items-center gap-2 sm:gap-3">
-                    <a href="<%= waLink %>" class="hidden sm:block gradient-primary text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 text-sm sm:text-base">
-                        <i class="fas fa-whatsapp mr-2"></i>
-                        <span class="hidden lg:inline">Konsultasi</span>
-                        <span class="lg:hidden">WA</span>
-                    </a>
-                    
-                    <!-- Mobile Menu Button with modern design -->
-                    <button class="lg:hidden w-10 h-10 gradient-primary rounded-xl text-white flex items-center justify-center" onclick="toggleMobileMenu()">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
+<body class="font-sans antialiased w-full">
+
+    <!-- MAIN WRAPPER: Full Width, No Max Width Container -->
+    <div class="w-full relative pb-24">
+
+        <!-- SECTION 1: HERO -->
+        <header class="w-full relative bg-brand-light">
+            <div id="lpHeroMediaWrap" class="w-full h-64 md:h-80 lg:h-96 overflow-hidden relative">
+                <img id="lpHeroImage" src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="Suasana tawaf yang tenang" class="object-cover w-full h-full">
+                <div class="absolute inset-0 bg-gradient-to-t from-earth-900/60 to-transparent"></div>
             </div>
-            
-            <!-- Modern Mobile Menu -->
-            <div id="mobileMenu" class="hidden lg:hidden mt-3">
-                <div class="glass-card rounded-2xl p-4 space-y-2">
-                    <a href="#home" class="block px-4 py-3 text-gray-700 hover:text-emerald-600 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300">
-                        <i class="fas fa-home w-6 text-emerald-600"></i> Beranda
-                    </a>
-                    <a href="#about" class="block px-4 py-3 text-gray-700 hover:text-emerald-600 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300">
-                        <i class="fas fa-info-circle w-6 text-emerald-600"></i> Tentang
-                    </a>
-                    <a href="#services" class="block px-4 py-3 text-gray-700 hover:text-emerald-600 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300">
-                        <i class="fas fa-hand-holding-heart w-6 text-emerald-600"></i> Layanan
-                    </a>
-                    <a href="#schedule" class="block px-4 py-3 text-gray-700 hover:text-emerald-600 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300">
-                        <i class="fas fa-calendar-alt w-6 text-emerald-600"></i> Paket
-                    </a>
-                    <a href="#gallery" class="block px-4 py-3 text-gray-700 hover:text-emerald-600 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300">
-                        <i class="fas fa-images w-6 text-emerald-600"></i> Galeri
-                    </a>
-                    <a href="#testimonials" class="block px-4 py-3 text-gray-700 hover:text-emerald-600 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300">
-                        <i class="fas fa-star w-6 text-emerald-600"></i> Testimoni
-                    </a>
-                    <div class="pt-2 mt-2 border-t border-gray-200">
-                        <a href="<%= waLink %>" class="block gradient-primary text-white px-4 py-3 rounded-xl font-semibold text-center">
-                            <i class="fas fa-whatsapp mr-2"></i> Konsultasi via WhatsApp
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Modern Hero Section -->
-    <section id="home" class="relative min-h-screen flex items-center pt-20 lg:pt-24 overflow-hidden">
-        <!-- Animated background elements -->
-        <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute top-0 -left-40 w-80 h-80 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"></div>
-            <div class="absolute top-0 -right-40 w-80 h-80 bg-amber-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float" style="animation-delay: 2s"></div>
-            <div class="absolute bottom-0 left-20 w-80 h-80 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float" style="animation-delay: 4s"></div>
-        </div>
-
-        <div class="container mx-auto px-4 sm:px-6 relative z-10">
-            <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
-                <!-- Left Content with modern typography -->
-                <div class="flex-1 text-center lg:text-left" data-aos="fade-right" data-aos-duration="1000">
-                    <div class="inline-block px-4 py-2 gradient-primary rounded-full text-white text-sm font-semibold mb-6 shadow-lg">
-                        ✨ Terpercaya Sejak 2014
-                    </div>
-                    
-                    <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight mb-6">
-                        <%= heroTitle %>
+            <div id="lpHeroContentWrap" class="px-5 -mt-12 relative z-10">
+                <div id="lpHeroCard" class="bg-white/95 backdrop-blur-sm p-6 rounded-t-2xl shadow-sm border-t-4 border-brand-brown transition-all duration-300">
+                    <h1 id="lpHeroHeadline" class="font-serif text-3xl md:text-4xl font-bold text-earth-900 leading-tight mb-2 text-center">
+                        Program 9 Hari Setelah Lebaran
                     </h1>
-                    
-                    <p class="text-gray-600 text-base sm:text-lg mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                        <%= heroSubtitle || 'Bersama JamaahCare, setiap langkah ibadah Anda menjadi lebih bermakna dengan pelayanan premium dan bimbingan profesional.' %>
+                    <p id="lpHeroSubheadline" class="text-lg text-earth-800 font-medium mb-4 text-center">
+                        Untuk Anak Perempuan yang Ingin Mendampingi Ibu dengan Tenang
                     </p>
-                    
-                    <!-- Modern Stats with glass morphism -->
-                    <div class="grid grid-cols-3 gap-3 sm:gap-6 mb-8 max-w-md mx-auto lg:mx-0">
-                        <div class="glass-card rounded-xl p-3 sm:p-4">
-                            <div class="text-xl sm:text-2xl font-bold gradient-text">5000+</div>
-                            <div class="text-xs sm:text-sm text-gray-600">Jamaah</div>
-                        </div>
-                        <div class="glass-card rounded-xl p-3 sm:p-4">
-                            <div class="text-xl sm:text-2xl font-bold gradient-text">150+</div>
-                            <div class="text-xs sm:text-sm text-gray-600">Keberangkatan</div>
-                        </div>
-                        <div class="glass-card rounded-xl p-3 sm:p-4">
-                            <div class="text-xl sm:text-2xl font-bold gradient-text">10th</div>
-                            <div class="text-xs sm:text-sm text-gray-600">Pengalaman</div>
-                        </div>
+                    <div id="lpHeroInlineMediaWrap" class="hidden mb-5 overflow-hidden rounded-2xl border border-earth-200/80 bg-gradient-to-b from-earth-50 to-white max-w-lg mx-auto p-2 shadow-sm">
+                        <img id="lpHeroInlineImage" src="" alt="Media hero event" class="w-full h-auto max-h-[220px] md:max-h-[260px] object-contain rounded-xl mx-auto hidden">
                     </div>
-                    
-                    <!-- Modern CTA Buttons -->
-                    <div class="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
-                        <a href="<%= checkoutLink %>" class="gradient-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
-                            Mulai Perjalanan
-                            <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                        <a href="#about" class="glass-card text-gray-700 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base border-2 border-transparent hover:border-emerald-600">
-                            <i class="fas fa-play text-emerald-600"></i>
-                            Video Profil
-                        </a>
+                    <div id="lpHeroTags" class="flex flex-wrap justify-center gap-2 text-sm font-semibold text-brand-brown mb-4">
+                        <span class="flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            Hotel dekat masjid
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            Jadwal sudah dikunci
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Biaya transparan
+                        </span>
                     </div>
-                </div>
-                
-                <!-- Right Image with modern design -->
-                <div class="flex-1 relative mt-8 lg:mt-0" data-aos="fade-left" data-aos-duration="1000">
-                    <div class="relative">
-                        <!-- Main image with modern frame -->
-                        <div class="relative rounded-2xl overflow-hidden shadow-2xl">
-                            <img src="<%= heroImage %>" 
-                                 alt="Masjid" 
-                                 class="w-full h-auto object-cover">
-                            <div class="absolute inset-0 gradient-primary opacity-20 mix-blend-overlay"></div>
-                        </div>
-                        
-                        <!-- Modern floating cards -->
-                        <div class="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 glass-card p-3 sm:p-4 rounded-xl shadow-2xl flex items-center gap-3 animate-float">
-                            <div class="w-10 h-10 sm:w-12 sm:h-12 gradient-primary rounded-xl flex items-center justify-center">
-                                <i class="fas fa-users text-white text-lg sm:text-xl"></i>
-                            </div>
-                            <div>
-                                <div class="font-bold text-gray-800 text-sm sm:text-base">+500 Jamaah</div>
-                                <div class="text-xs text-gray-500">Bulan Ini</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Second floating card -->
-                        <div class="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 glass-card p-3 sm:p-4 rounded-xl shadow-2xl flex items-center gap-3">
-                            <div class="w-10 h-10 sm:w-12 sm:h-12 gradient-secondary rounded-xl flex items-center justify-center">
-                                <i class="fas fa-star text-white text-lg sm:text-xl"></i>
-                            </div>
-                            <div>
-                                <div class="font-bold text-gray-800 text-sm sm:text-base">Rating 4.9</div>
-                                <div class="text-xs text-gray-500">1000+ Ulasan</div>
-                            </div>
-                        </div>
-
-                        <!-- Badge pengalaman -->
-                        <div class="absolute top-1/2 -left-8 sm:-left-12 transform -translate-y-1/2 hidden sm:block">
-                            <div class="gradient-primary text-white p-4 rounded-2xl rotate-[-90deg] origin-left shadow-xl">
-                                <span class="font-bold">10 Tahun Pengalaman</span>
-                            </div>
-                        </div>
-                    </div>
+                    <p class="text-earth-800 italic text-center">
+                        Karena saat kamu mendampingi Ibu, yang kamu cari bukan promo. Tapi kepastian.
+                    </p>
                 </div>
             </div>
-        </div>
-    </section>
+        </header>
 
-    <!-- About Section with modern design -->
-    <section id="about" class="py-16 sm:py-20 lg:py-24 bg-white">
-        <div class="container mx-auto px-4 sm:px-6">
-            <!-- Section Title with modern style -->
-            <div class="text-center mb-12 sm:mb-16" data-aos="fade-up">
-                <span class="inline-block px-4 py-2 gradient-primary rounded-full text-white text-sm font-semibold mb-4">
-                    Tentang Kami
-                </span>
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                    Mengapa Memilih <span class="gradient-text">JamaahCare?</span>
-                </h2>
-                <p class="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">
-                    Kami hadir dengan komitmen memberikan pelayanan terbaik untuk kenyamanan ibadah Anda
+        <!-- SECTION 2: AUTHORITY & TRUST -->
+        <section class="w-full bg-white py-10 px-5 border-b border-earth-200">
+            <div class="max-w-2xl mx-auto text-center">
+                <h2 class="font-serif text-xl font-bold text-earth-900 mb-4 tracking-wide uppercase">Rahmah Travel</h2>
+                <div
+                    class="flex flex-col gap-3 text-sm text-earth-800 bg-earth-50 p-5 rounded-lg border border-earth-200">
+                    <p class="font-semibold">PPIU Resmi Kemenag RI <br><span class="font-normal text-earth-600">No.
+                            16611230055337003</span></p>
+                    <div class="h-px bg-earth-200 w-1/2 mx-auto"></div>
+                    <p class="font-semibold">Terdaftar & Terakreditasi IATA <br><span
+                            class="font-normal text-earth-600">No. 15340883</span></p>
+                </div>
+                <p class="mt-4 text-sm italic text-brand-brown font-medium">
+                    "Kami bertahan karena jamaah kembali dan merekomendasikan - bukan karena janji manis."
                 </p>
             </div>
-            
-            <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-                <!-- Left Content with modern cards -->
-                <div data-aos="fade-right">
-                    <div class="grid sm:grid-cols-2 gap-4 sm:gap-6">
-                        <!-- Feature cards with modern design -->
-                        <div class="glass-card p-6 rounded-xl hover-lift hover-glow">
-                            <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mb-4">
-                                <i class="fas fa-certificate text-white text-xl"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-800 mb-2">Berpengalaman</h3>
-                            <p class="text-gray-600 text-sm">10+ tahun melayani jamaah dengan profesional</p>
-                        </div>
+        </section>
 
-                        <div class="glass-card p-6 rounded-xl hover-lift hover-glow">
-                            <div class="w-12 h-12 gradient-secondary rounded-xl flex items-center justify-center mb-4">
-                                <i class="fas fa-headset text-white text-xl"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-800 mb-2">Layanan 24/7</h3>
-                            <p class="text-gray-600 text-sm">Tim siap membantu kapanpun dibutuhkan</p>
-                        </div>
+        <!-- SECTION 3: PROBLEM (Amplifier) -->
+        <section class="w-full py-10 px-5 bg-earth-50">
+            <div class="max-w-2xl mx-auto">
+                <h2 id="lpProblemTitle" class="font-serif text-2xl md:text-3xl font-bold text-earth-900 mb-6 text-center">Kenapa Masih Ragu?
+                </h2>
+                <p id="lpProblemSubtitle" class="text-center mb-6 text-earth-800">Biasanya bukan karena dananya. Tapi karena ketidakpastian
+                    ini:</p>
 
-                        <div class="glass-card p-6 rounded-xl hover-lift hover-glow">
-                            <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center mb-4">
-                                <i class="fas fa-shield-alt text-white text-xl"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-800 mb-2">Asuransi</h3>
-                            <p class="text-gray-600 text-sm">Perlindungan perjalanan komprehensif</p>
+                <div id="lpPainsList" class="space-y-4">
+                    <div class="flex items-start gap-3">
+                        <div
+                            class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">
+                            !</div>
+                        <div class="text-earth-800">
+                            <p class="font-semibold text-earth-900">Hotel katanya dekat</p>
+                            <p class="text-sm">Tapi tidak jelas detailnya.</p>
                         </div>
-
-                        <div class="glass-card p-6 rounded-xl hover-lift hover-glow">
-                            <div class="w-12 h-12 gradient-secondary rounded-xl flex items-center justify-center mb-4">
-                                <i class="fas fa-user-tie text-white text-xl"></i>
-                            </div>
-                            <h3 class="font-bold text-gray-800 mb-2">Pembimbing</h3>
-                            <p class="text-gray-600 text-sm">Profesional dan bersertifikat</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div
+                            class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">
+                            !</div>
+                        <div class="text-earth-800">
+                            <p class="font-semibold text-earth-900">Jadwal bisa berubah</p>
+                            <p class="text-sm">Setelah DP terbayar.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div
+                            class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">
+                            !</div>
+                        <div class="text-earth-800">
+                            <p class="font-semibold text-earth-900">Biaya tambahan</p>
+                            <p class="text-sm">Muncul belakangan.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div
+                            class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">
+                            !</div>
+                        <div class="text-earth-800">
+                            <p class="font-semibold text-earth-900">Takut Ibu kelelahan</p>
+                            <p class="text-sm">Karena sistem perjalanan tidak rapi.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div
+                            class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">
+                            !</div>
+                        <div class="text-earth-800">
+                            <p class="font-semibold text-earth-900">Takut Ibu butuh bantuan mendadak</p>
+                            <p class="text-sm">Tapi tidak ada penanganan yang cepat.</p>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Right Content with modern image and stats -->
-                <div class="relative" data-aos="fade-left">
-                    <div class="relative rounded-2xl overflow-hidden shadow-2xl">
-                        <img src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-                             alt="About" 
-                             class="w-full h-auto">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                        
-                        <!-- Play button with modern design -->
-                        <button class="absolute inset-0 m-auto w-16 h-16 sm:w-20 sm:h-20 glass-card rounded-full flex items-center justify-center group hover:scale-110 transition-transform duration-300">
-                            <div class="w-12 h-12 sm:w-16 sm:h-16 gradient-primary rounded-full flex items-center justify-center">
-                                <i class="fas fa-play text-white text-xl sm:text-2xl ml-1"></i>
-                            </div>
-                        </button>
 
-                        <!-- Achievement badges -->
-                        <div class="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
-                            <div class="glass-card px-3 py-2 rounded-lg text-white text-xs sm:text-sm">
-                                <i class="fas fa-check-circle text-emerald-400 mr-1"></i> 100% Halal
+                <div class="mt-8 p-5 bg-white rounded-xl border-l-4 border-brand-brown shadow-sm">
+                    <p class="text-earth-900 font-medium leading-relaxed">
+                        Kalau kamu berangkat sendiri mungkin masih bisa kompromi.<br><br>
+                        Tapi kamu berangkat bersama Ibu.<br>
+                        <strong>Dan kamu ingin semuanya terkendali sejak awal.</strong>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- SECTION 4: SOLUTION (Benefit Stacking) -->
+        <section class="w-full py-10 px-5 bg-white">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <span id="lpSolutionBadge"
+                        class="inline-block py-1 px-3 bg-brand-brown/10 text-brand-brown text-xs font-bold tracking-wider rounded-full uppercase mb-2">Solusi
+                        Tepat</span>
+                    <h2 id="lpSolutionTitle" class="font-serif text-2xl md:text-3xl font-bold text-earth-900">Solusi Event</h2>
+                    <p id="lpSolutionSubtitle" class="text-earth-800 mt-2 text-sm">Rangkaian solusi yang disiapkan untuk menjawab masalah utama peserta.</p>
+                </div>
+
+                <div id="lpSolutionsList" class="flex flex-col gap-6">
+                    <div class="bg-earth-50 p-5 rounded-lg">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="p-2 bg-white rounded-full shadow-sm text-brand-brown">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
                             </div>
-                            <div class="glass-card px-3 py-2 rounded-lg text-white text-xs sm:text-sm">
-                                <i class="fas fa-check-circle text-emerald-400 mr-1"></i> Resmi Kemenag
-                            </div>
+                            <h3 class="font-serif font-bold text-lg text-earth-900">Solusi 1</h3>
                         </div>
+                        <p class="text-earth-800 text-sm ml-11">Deskripsi solusi.</p>
                     </div>
+                </div>
+            </div>
+        </section>
 
-                    <!-- Floating stat card -->
-                    <div class="absolute -bottom-6 -right-6 glass-card p-4 rounded-xl shadow-2xl hidden sm:block">
-                        <div class="flex items-center gap-3">
+        <!-- CTA 1 (Direct to WA) -->
+        <section class="w-full py-8 px-5 bg-white border-t border-earth-100">
+            <div class="max-w-md mx-auto text-center">
+                <p class="text-sm text-earth-800 mb-4">Jangan biarkan keraguan menghambat rencana ibu untuk berangkat.
+                </p>
+                <a href="https://konektor.id/wa/ishmah-waba"
+                    class="wa-cta btn-primary block w-full text-center py-3.5 rounded-xl font-bold text-base shadow-md">
+                    Konsultasi Gratis Via Whatsapp
+                </a>
+                <p class="text-[10px] text-earth-400 mt-2">Gratis & Tanpa Kewajiban</p>
+            </div>
+        </section>
+        <!-- TESTIMONI -->
+        <section class="w-full py-10 px-5 bg-white border-b border-earth-200">
+            <div class="max-w-2xl mx-auto">
+                <h2 id="lpTestimonialsTitle" class="font-serif text-xl font-bold text-center text-earth-900 mb-6">Testimoni Jamaah</h2>
+                <div id="lpTestimonialsList" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="relative overflow-hidden rounded-lg bg-earth-50 p-2 min-h-[260px] flex items-center justify-center pointer-events-none">
+                        <img src="https://i.ibb.co.com/Nd2m5GCd/1.png" alt="Testimoni 1" class="max-w-full max-h-[360px] object-contain rounded">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: SOCIAL PROOF (6 Images) -->
+        <section class="w-full py-10 px-5 bg-brand-light border-y border-earth-200">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="font-serif text-xl font-bold text-center text-earth-900 mb-6">Dokumentasi Aktivitas Jamaah
+                </h2>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
+                        <img src="https://i.ibb.co.com/vxf4chgB/Copy-of-IMG-9530-2.webp" alt="Tawaf"
+                            class="w-full h-full object-cover">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
+                            Khusyuk Beribadah</div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
+                        <img src="https://i.ibb.co.com/tPYdwGyZ/Salinan-45cd16f2-2839-4291-8322-6a3038741998.webp"
+                            alt="Raudha" class="w-full h-full object-cover">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
+                            Ziarah di Raudhah</div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
+                        <img src="https://i.ibb.co.com/FqYmYsHr/Copy-of-IMG-0459.webp" alt="Makan Bersama"
+                            class="w-full h-full object-cover">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
+                            Makanan Catering Indonesia</div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
+                        <img src="https://i.ibb.co.com/7dfSDrWp/hotel.webp" alt="View Hotel"
+                            class="w-full h-full object-cover">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
+                            View Hotel Dekat Masjid</div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-lg aspect-[3/4]">
+                        <img src="https://kimi-web-img.moonshot.cn/img/umrah-alamanah.com/bf08f61eb7dae4a16f7852318dcdffbbc29a7379.jpg"
+                            alt="Bus" class="w-full h-full object-cover">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
+                            Transportasi Nyaman</div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
+                        <img src="https://i.ibb.co.com/7tNY8yb0/Copy-of-IMG-1249.webp" alt="Kebersamaan Jamaah"
+                            class="w-full h-full object-cover">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
+                            Kebersamaan Jamaah</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: PRICING & SCARCITY -->
+        <section class="w-full py-10 px-5 bg-white" id="pricing">
+            <div class="max-w-2xl mx-auto">
+                <h2 id="lpPricingTitle" class="font-serif text-2xl md:text-3xl font-bold text-center text-earth-900 mb-2">Pilihan Favorit
+                </h2>
+                <p id="lpPricingSubtitle" class="text-center text-earth-800 text-sm mb-6">Paket Umroh Syawal 9 Hari</p>
+
+                <div
+                    class="bg-red-50 text-red-700 border border-red-100 rounded-lg p-3 mb-6 flex items-center justify-between">
+                    <span class="text-sm font-semibold">Peringatan: Permintaan Tinggi Syawal</span>
+                    <span class="text-sm font-bold">Sisa Slot: 7</span>
+                </div>
+
+                <div id="lpPricingCards" class="flex flex-col gap-4">
+
+                    <!-- Option 1: IndiGo (Al Mokhtara) -->
+                    <div class="border border-earth-200 rounded-xl p-5 hover:border-brand-brown transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <span
+                                    class="bg-earth-100 text-earth-800 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">Paket
+                                    Hemat</span>
+                                <h3 class="font-serif font-bold text-lg text-earth-900 mt-2">IndiGo Airlines</h3>
+                                <p class="text-xs text-earth-600">Transit +/- 2 Jam</p>
+                            </div>
                             <div class="text-right">
-                                <div class="text-2xl font-bold gradient-text">100%</div>
-                                <div class="text-xs text-gray-600">Kepuasan Jamaah</div>
-                            </div>
-                            <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center">
-                                <i class="fas fa-smile text-white text-xl"></i>
+                                <p class="text-xs text-earth-500 line-through">Rp 29.9 Jt</p>
+                                <p class="text-xl font-bold text-brand-brown">Rp 23.9 Jt <span
+                                        class="text-xs font-normal text-earth-600">/org (Quad)</span></p>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section with modern cards -->
-    <section id="services" class="py-16 sm:py-20 lg:py-24 bg-gray-50">
-        <div class="container mx-auto px-4 sm:px-6">
-            <!-- Section Title -->
-            <div class="text-center mb-12 sm:mb-16" data-aos="fade-up">
-                <span class="inline-block px-4 py-2 gradient-primary rounded-full text-white text-sm font-semibold mb-4">
-                    Layanan Premium
-                </span>
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                    Fasilitas <span class="gradient-text">Terbaik</span> untuk Jamaah
-                </h2>
-                <p class="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">
-                    Nikmati berbagai layanan eksklusif yang kami sediakan
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-                <!-- Service cards with modern design -->
-                <div class="glass-card p-6 sm:p-8 rounded-2xl hover-lift hover-glow group" data-aos="fade-up" data-aos-delay="100">
-                    <div class="relative mb-6">
-                        <div class="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500">
-                            <i class="fas fa-hotel text-white text-2xl"></i>
+                        <!-- Specific Hotel for IndiGo -->
+                        <div class="bg-earth-50 rounded p-2 mb-3 border border-earth-100">
+                            <p class="text-xs font-semibold text-earth-800 mb-1">Detail Hotel:</p>
+                            <p class="text-xs text-earth-600">Makkah: Al Mokhtara (5-7 menit)<br>Madinah: Al Mokhtara
+                                (2-3 menit)</p>
                         </div>
-                        <div class="absolute -top-2 -right-2 w-8 h-8 gradient-secondary rounded-full flex items-center justify-center text-white text-xs font-bold">
-                            01
+                        <div class="bg-earth-50 rounded p-2 mb-3">
+                            <p class="text-xs font-semibold text-earth-800 mb-1">Keberangkatan:</p>
+                            <p class="text-xs text-earth-600">21 | 22 | 23 | 24 | 25 | 26 Maret 2026</p>
                         </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Akomodasi Mewah</h3>
-                    <p class="text-gray-600 mb-4 text-sm leading-relaxed">Hotel bintang 5 strategis dekat Masjidil Haram dan Nabawi dengan view istimewa</p>
-                    <a href="#" class="inline-flex items-center text-emerald-600 font-semibold group-hover:gap-2 transition-all">
-                        Selengkapnya <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                </div>
-                
-                <div class="glass-card p-6 sm:p-8 rounded-2xl hover-lift hover-glow group" data-aos="fade-up" data-aos-delay="200">
-                    <div class="relative mb-6">
-                        <div class="w-16 h-16 gradient-secondary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500">
-                            <i class="fas fa-utensils text-white text-2xl"></i>
-                        </div>
-                        <div class="absolute -top-2 -right-2 w-8 h-8 gradient-primary rounded-full flex items-center justify-center text-white text-xs font-bold">
-                            02
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Katering Halal</h3>
-                    <p class="text-gray-600 mb-4 text-sm leading-relaxed">Menu Indonesia autentik dengan cita rasa istimewa, disiapkan oleh chef profesional</p>
-                    <a href="#" class="inline-flex items-center text-emerald-600 font-semibold group-hover:gap-2 transition-all">
-                        Selengkapnya <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                </div>
-                
-                <div class="glass-card p-6 sm:p-8 rounded-2xl hover-lift hover-glow group" data-aos="fade-up" data-aos-delay="300">
-                    <div class="relative mb-6">
-                        <div class="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500">
-                            <i class="fas fa-bus text-white text-2xl"></i>
-                        </div>
-                        <div class="absolute -top-2 -right-2 w-8 h-8 gradient-secondary rounded-full flex items-center justify-center text-white text-xs font-bold">
-                            03
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Transportasi Premium</h3>
-                    <p class="text-gray-600 mb-4 text-sm leading-relaxed">Armada bus mewah dengan fasilitas VIP untuk kenyamanan perjalanan ibadah</p>
-                    <a href="#" class="inline-flex items-center text-emerald-600 font-semibold group-hover:gap-2 transition-all">
-                        Selengkapnya <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                </div>
-                
-                <div class="glass-card p-6 sm:p-8 rounded-2xl hover-lift hover-glow group" data-aos="fade-up" data-aos-delay="400">
-                    <div class="relative mb-6">
-                        <div class="w-16 h-16 gradient-secondary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500">
-                            <i class="fas fa-hand-holding-heart text-white text-2xl"></i>
-                        </div>
-                        <div class="absolute -top-2 -right-2 w-8 h-8 gradient-primary rounded-full flex items-center justify-center text-white text-xs font-bold">
-                            04
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Bimbingan Ibadah</h3>
-                    <p class="text-gray-600 mb-4 text-sm leading-relaxed">Pembimbing berpengalaman dengan sertifikasi internasional</p>
-                    <a href="#" class="inline-flex items-center text-emerald-600 font-semibold group-hover:gap-2 transition-all">
-                        Selengkapnya <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                </div>
-                
-                <div class="glass-card p-6 sm:p-8 rounded-2xl hover-lift hover-glow group" data-aos="fade-up" data-aos-delay="500">
-                    <div class="relative mb-6">
-                        <div class="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500">
-                            <i class="fas fa-file-medical text-white text-2xl"></i>
-                        </div>
-                        <div class="absolute -top-2 -right-2 w-8 h-8 gradient-secondary rounded-full flex items-center justify-center text-white text-xs font-bold">
-                            05
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Layanan Kesehatan</h3>
-                    <p class="text-gray-600 mb-4 text-sm leading-relaxed">Tim medis 24 jam dan akses cepat ke rumah sakit terbaik</p>
-                    <a href="#" class="inline-flex items-center text-emerald-600 font-semibold group-hover:gap-2 transition-all">
-                        Selengkapnya <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                </div>
-                
-                <div class="glass-card p-6 sm:p-8 rounded-2xl hover-lift hover-glow group" data-aos="fade-up" data-aos-delay="600">
-                    <div class="relative mb-6">
-                        <div class="w-16 h-16 gradient-secondary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500">
-                            <i class="fas fa-wifi text-white text-2xl"></i>
-                        </div>
-                        <div class="absolute -top-2 -right-2 w-8 h-8 gradient-primary rounded-full flex items-center justify-center text-white text-xs font-bold">
-                            06
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Internet Cepat</h3>
-                    <p class="text-gray-600 mb-4 text-sm leading-relaxed">Koneksi WiFi berkecepatan tinggi di semua area</p>
-                    <a href="#" class="inline-flex items-center text-emerald-600 font-semibold group-hover:gap-2 transition-all">
-                        Selengkapnya <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Schedule Section with modern pricing cards -->
-    <section id="schedule" class="py-16 sm:py-20 lg:py-24 bg-white">
-        <div class="container mx-auto px-4 sm:px-6">
-            <!-- Section Title -->
-            <div class="text-center mb-12 sm:mb-16" data-aos="fade-up">
-                <span class="inline-block px-4 py-2 gradient-primary rounded-full text-white text-sm font-semibold mb-4">
-                    Paket & Jadwal
-                </span>
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                    Pilih Paket <span class="gradient-text">Perjalanan</span> Anda
-                </h2>
-                <p class="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">
-                    Berbagai pilihan paket umroh dengan fasilitas premium dan jadwal fleksibel
-                </p>
-            </div>
-            
-            <!-- Events will replace the static package cards (populated from /api/admin/events/active) -->
-            <div class="max-w-6xl mx-auto w-full">
-                <!-- Loading state (shown while fetching) -->
-                <div id="eventsLoading" class="text-center py-8">
-                    <i class="fas fa-spinner fa-spin text-4xl text-emerald-600 mb-4"></i>
-                    <p class="text-gray-500">Memuat promo...</p>
-                </div>
-
-                <!-- Events container (JS will render cards here) -->
-                <div id="eventsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6 hidden"></div>
-
-                <!-- No events fallback -->
-                <div id="noEvents" class="text-center py-8 hidden">
-                    <i class="fas fa-calendar-times text-4xl text-gray-300 mb-4"></i>
-                    <p class="text-gray-500">Belum ada promo saat ini — cek lagi nanti.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-    <!-- Gallery Section with modern carousel -->
-    <section id="gallery" class="py-16 sm:py-20 lg:py-24 bg-gray-50">
-        <div class="container mx-auto px-4 sm:px-6">
-            <!-- Section Title -->
-            <div class="text-center mb-12 sm:mb-16" data-aos="fade-up">
-                <span class="inline-block px-4 py-2 gradient-primary rounded-full text-white text-sm font-semibold mb-4">
-                    Galeri
-                </span>
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                    Momen Bersama <span class="gradient-text">Jamaah</span>
-                </h2>
-                <p class="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">
-                    Dokumentasi perjalanan ibadah bersama jamaah kami
-                </p>
-            </div>
-
-            <!-- Modern Carousel -->
-            <div class="max-w-5xl mx-auto" data-aos="zoom-in">
-                <div id="jamaahSlider" class="relative w-full aspect-[16/9] rounded-2xl overflow-hidden group">
-                    <!-- Navigation buttons with modern design -->
-                    <button id="jamaahPrev" class="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 glass-card rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110">
-                        <i class="fas fa-chevron-left text-gray-800"></i>
-                    </button>
-
-                    <button id="jamaahNext" class="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 glass-card rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110">
-                        <i class="fas fa-chevron-right text-gray-800"></i>
-                    </button>
-
-                    <!-- Slides with modern overlay -->
-                    <div class="jamaah-slide absolute inset-0 transition-opacity duration-700 ease-in-out opacity-100">
-                        <img loading="lazy" src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-                             alt="Masjid Nabawi" 
-                             class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white">
-                            <h3 class="text-lg sm:text-2xl font-bold">Masjid Nabawi</h3>
-                            <p class="text-xs sm:text-sm opacity-90">Madinah, Saudi Arabia</p>
-                        </div>
+                        <p class="text-xs text-earth-800 leading-relaxed">
+                            Cocok untuk yang fleksibel tanggal dan ingin biaya lebih efisien dengan sistem terjadwal.
+                        </p>
                     </div>
 
-                    <div class="jamaah-slide absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0">
-                        <img loading="lazy" src="https://images.unsplash.com/photo-1564769625905-50e93615e769?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-                             alt="Ka'bah" 
-                             class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white">
-                            <h3 class="text-lg sm:text-2xl font-bold">Ka'bah</h3>
-                            <p class="text-xs sm:text-sm opacity-90">Makkah, Saudi Arabia</p>
-                        </div>
-                    </div>
-
-                    <div class="jamaah-slide absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0">
-                        <img loading="lazy" src="https://images.unsplash.com/photo-1585030242339-066d10c8a3dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-                             alt="Hotel Mewah" 
-                             class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white">
-                            <h3 class="text-lg sm:text-2xl font-bold">Hotel Mewah</h3>
-                            <p class="text-xs sm:text-sm opacity-90">View Masjidil Haram</p>
-                        </div>
-                    </div>
-
-                    <!-- Dots indicator with modern design -->
-                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
-                        <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-white/50 hover:bg-white transition-all duration-300" data-index="0"></button>
-                        <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-white/50 hover:bg-white transition-all duration-300" data-index="1"></button>
-                        <button class="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-white/50 hover:bg-white transition-all duration-300" data-index="2"></button>
-                    </div>
-                </div>
-            </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section with modern cards -->
-    <section id="testimonials" class="py-16 sm:py-20 lg:py-24 bg-white">
-        <div class="container mx-auto px-4 sm:px-6">
-            <!-- Section Title -->
-            <div class="text-center mb-12 sm:mb-16" data-aos="fade-up">
-                <span class="inline-block px-4 py-2 gradient-primary rounded-full text-white text-sm font-semibold mb-4">
-                    Testimoni
-                </span>
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                    Apa Kata <span class="gradient-text">Mereka?</span>
-                </h2>
-                <p class="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">
-                    Pengalaman jamaah yang telah merasakan layanan premium kami
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-                <!-- Testimonial 1 -->
-                <div class="glass-card p-6 sm:p-8 rounded-2xl relative hover-lift hover-glow" data-aos="fade-up" data-aos-delay="100">
-                    <i class="fas fa-quote-right text-5xl sm:text-6xl text-emerald-200 absolute bottom-4 right-4"></i>
-                    
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="relative">
-                            <img src="https://randomuser.me/api/portraits/women/65.jpg" 
-                                 alt="User" 
-                                 class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-4 border-white shadow-lg">
-                            <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800">Ibu Siti Aminah</h4>
-                            <div class="flex text-amber-400 text-sm">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <!-- Option 2: Lion Air (Winner Inn Ajyad & Bukit Madinah) -->
+                    <div
+                        class="border-2 border-brand-brown rounded-xl p-5 relative bg-brand-light overflow-hidden shadow-md">
+                        <div
+                            class="absolute top-0 right-0 bg-brand-brown text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg">
+                            BEST SELLER</div>
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <span
+                                    class="bg-brand-brown/10 text-brand-brown text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">Paket
+                                    Premium</span>
+                                <h3 class="font-serif font-bold text-lg text-earth-900 mt-2">Lion Air Direct</h3>
+                                <p class="text-xs text-earth-600">Non-Stop Jakarta - Jeddah PP</p>
                             </div>
-                            <p class="text-xs text-gray-500">Umroh Desember 2023</p>
-                        </div>
-                    </div>
-                    
-                    <p class="text-gray-600 relative z-10 text-sm leading-relaxed">
-                        "Alhamdulillah, pelayanan sangat memuaskan. Pembimbingnya ramah dan profesional. Hotelnya bersih dan dekat dengan masjid."
-                    </p>
-                </div>
-                
-                <!-- Testimonial 2 -->
-                <div class="glass-card p-6 sm:p-8 rounded-2xl relative hover-lift hover-glow" data-aos="fade-up" data-aos-delay="200">
-                    <i class="fas fa-quote-right text-5xl sm:text-6xl text-emerald-200 absolute bottom-4 right-4"></i>
-                    
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="relative">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" 
-                                 alt="User" 
-                                 class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-4 border-white shadow-lg">
-                            <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800">Bapak Ahmad Fauzi</h4>
-                            <div class="flex text-amber-400 text-sm">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <div class="text-right">
+                                <p class="text-xs text-earth-500 line-through">Rp 32.9 Jt</p>
+                                <p class="text-xl font-bold text-brand-brown">Rp 27.9 Jt <span
+                                        class="text-xs font-normal text-earth-600">/org (Quad)</span></p>
                             </div>
-                            <p class="text-xs text-gray-500">Umroh Januari 2024</p>
                         </div>
+                        <!-- Specific Hotel for Lion -->
+                        <div class="bg-white rounded p-2 mb-3 border border-earth-100">
+                            <p class="text-xs font-semibold text-earth-800 mb-1">Detail Hotel:</p>
+                            <p class="text-xs text-earth-600">Makkah: Winner Inn Ajyad (5-7 menit)<br>Madinah: Bukit
+                                Madinah (2-3 menit)</p>
+                        </div>
+                        <div class="bg-white rounded p-2 mb-3">
+                            <p class="text-xs font-semibold text-earth-800 mb-1">Keberangkatan:</p>
+                            <p class="text-xs text-earth-600">21 | 23 | 26 Maret 2026</p>
+                        </div>
+                        <p class="text-xs text-earth-800 leading-relaxed">
+                            Cocok untuk yang ingin perjalanan lebih ringkas dan menjaga tenaga Ibu sejak awal tanpa
+                            transit.
+                        </p>
                     </div>
-                    
-                    <p class="text-gray-600 relative z-10 text-sm leading-relaxed">
-                        "Transportasi selalu tepat waktu, makanannya enak dan bervariasi. Fasilitasnya premium, sangat recommended!"
-                    </p>
                 </div>
-                
-                <!-- Testimonial 3 -->
-                <div class="glass-card p-6 sm:p-8 rounded-2xl relative hover-lift hover-glow" data-aos="fade-up" data-aos-delay="300">
-                    <i class="fas fa-quote-right text-5xl sm:text-6xl text-emerald-200 absolute bottom-4 right-4"></i>
-                    
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="relative">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" 
-                                 alt="User" 
-                                 class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-4 border-white shadow-lg">
-                            <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800">Ibu Nurul Hasanah</h4>
-                            <div class="flex text-amber-400 text-sm">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                            <p class="text-xs text-gray-500">Haji 2023</p>
-                        </div>
-                    </div>
-                    
-                    <p class="text-gray-600 relative z-10 text-sm leading-relaxed">
-                        "Pelayanan kesehatannya sangat baik. Ada dokter yang selalu siap membantu. Terima kasih JamaahCare!"
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Modern CTA Section -->
-    <section class="py-16 sm:py-20 lg:py-24 gradient-primary relative overflow-hidden">
-        <!-- Animated background elements -->
-        <div class="absolute inset-0 opacity-10">
-            <i class="fas fa-mosque absolute text-8xl sm:text-9xl -top-10 -left-10 text-white animate-float"></i>
-            <i class="fas fa-mosque absolute text-8xl sm:text-9xl bottom-0 right-0 text-white animate-float" style="animation-delay: 2s"></i>
-        </div>
-        
-        <div class="container mx-auto px-4 sm:px-6 relative z-10">
-            <div class="max-w-3xl mx-auto text-center" data-aos="zoom-in">
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4">
-                    Siap Memulai Perjalanan Ibadah?
-                </h2>
-                <p class="text-white/90 text-sm sm:text-base mb-8 max-w-2xl mx-auto">
-                    Dapatkan promo spesial untuk pendaftaran bulan ini. Konsultasikan kebutuhan ibadah Anda dengan tim kami.
-                </p>
-                
-                <!-- Modern stats row -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 mb-8">
-                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                        <div class="text-white font-bold text-lg sm:text-xl">10+</div>
-                        <div class="text-white/80 text-xs">Tahun</div>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                        <div class="text-white font-bold text-lg sm:text-xl">5000+</div>
-                        <div class="text-white/80 text-xs">Jamaah</div>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                        <div class="text-white font-bold text-lg sm:text-xl">150+</div>
-                        <div class="text-white/80 text-xs">Keberangkatan</div>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                        <div class="text-white font-bold text-lg sm:text-xl">4.9</div>
-                        <div class="text-white/80 text-xs">Rating</div>
-                    </div>
-                </div>
-                
-                <div class="flex flex-wrap gap-3 sm:gap-4 justify-center">
-                    <a href="<%= waLink %>" class="bg-white text-emerald-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base">
-                        <i class="fab fa-whatsapp text-xl"></i>
-                        Konsultasi Gratis
-                    </a>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Modern Footer -->
-    <footer class="bg-gray-900 text-white">
-        <!-- Main Footer -->
-        <div class="container mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-20">
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-                <!-- Company Info -->
-                <div data-aos="fade-up">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <div class="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center">
-                            <i class="fas fa-mosque text-white text-xl"></i>
-                        </div>
-                        <span class="text-2xl font-bold">Jamaah<span class="text-emerald-400">Care</span></span>
-                    </div>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
-                        Mitra terpercaya perjalanan ibadah Anda menuju tanah suci dengan layanan premium dan bimbingan profesional.
-                    </p>
-                    
-                    <!-- Social Media with modern design -->
-                    <div class="flex gap-3">
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gradient-primary hover:text-white transition-all duration-300 hover:scale-110">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gradient-primary hover:text-white transition-all duration-300 hover:scale-110">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gradient-primary hover:text-white transition-all duration-300 hover:scale-110">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gradient-primary hover:text-white transition-all duration-300 hover:scale-110">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Quick Links -->
-                <div data-aos="fade-up" data-aos-delay="100">
-                    <h4 class="text-lg font-semibold mb-4">Tautan Cepat</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#home" class="text-gray-400 hover:text-white transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-emerald-500"></i>Beranda</a></li>
-                        <li><a href="#about" class="text-gray-400 hover:text-white transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-emerald-500"></i>Tentang</a></li>
-                        <li><a href="#services" class="text-gray-400 hover:text-white transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-emerald-500"></i>Layanan</a></li>
-                        <li><a href="#schedule" class="text-gray-400 hover:text-white transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-emerald-500"></i>Paket</a></li>
-                        <li><a href="#contact" class="text-gray-400 hover:text-white transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-emerald-500"></i>Kontak</a></li>
+                <div class="mt-8 mb-8">
+                    <h4 class="font-bold text-earth-900 mb-3 text-sm uppercase tracking-wide">Semua Sudah Termasuk:
+                    </h4>
+                    <ul id="lpBenefitsList" class="grid grid-cols-1 gap-2 text-sm text-earth-800">
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Tiket PP & Visa Umroh</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Hotel *4/5 Dekat Masjid</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Makan 3x Sehari (Fullboard)</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Transportasi Bus AC & Ziarah</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Tour Leader & Muthowwif</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Air Zam-zam 10 Liter</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Perlengkapan Umroh (Koper & Mukena/Ihram)</li>
                     </ul>
+                    <p class="mt-3 text-xs font-bold text-green-700">Tidak ada biaya tambahan di tengah perjalanan.</p>
                 </div>
-                
-                
-                
-                <!-- Contact Info -->
-                <div data-aos="fade-up" data-aos-delay="300">
-                    <h4 class="text-lg font-semibold mb-4">Kantor Pusat</h4>
-                    <ul class="space-y-3">
-                        <li class="flex items-start gap-3 text-gray-400">
-                            <i class="fas fa-map-marker-alt text-emerald-500 mt-1"></i>
-                            <span class="text-sm">Jl. KH. Ahmad Dahlan No. 123, Kebayoran Baru, Jakarta Selatan</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-400">
-                            <i class="fas fa-phone-alt text-emerald-500"></i>
-                            <span>(021) 1234-5678</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-400">
-                            <i class="fas fa-envelope text-emerald-500"></i>
-                            <span>info@jamaahcare.com</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-400">
-                            <i class="fas fa-clock text-emerald-500"></i>
-                            <span>Mon-Fri: 08:00 - 20:00</span>
-                        </li>
-                    </ul>
+
+                <!-- REVISED Special Offer Block -->
+                <div class="bg-brand-brown text-white p-6 rounded-xl text-center shadow-lg mb-8">
+                    <h3 class="font-serif font-bold text-xl mb-4">Penawaran Syawal</h3>
+
+                    <div
+                        class="bg-white text-earth-900 p-4 rounded-lg shadow-sm border-2 border-brand-gold inline-flex flex-col items-center justify-center w-full max-w-xs mx-auto">
+                        <span class="text-xl font-bold text-brand-brown">🎁 Gratis Zamzam 10 Liter</span>
+                    </div>
+
+                    <p class="text-xs mt-4 opacity-90">Persediaan terbatas (S&K Berlaku)</p>
+                </div>
+
+                <div class="bg-earth-50 p-5 rounded-lg text-center mb-8">
+                    <h4 class="font-serif font-bold text-lg mb-3">Soal Harga...</h4>
+                    <p class="text-sm text-earth-800 leading-relaxed mb-3">
+                        23-27 juta itu bukan angka kecil.
+                    </p>
+                    <p class="text-sm text-earth-900 font-medium leading-relaxed">
+                        Tapi lebih mahal mana:<br>
+                        Berangkat dengan sistem yang jelas...<br>
+                        atau salah pilih lalu Ibu yang kelelahan?
+                    </p>
+                    <p class="text-sm text-brand-brown font-bold mt-3 italic">
+                        Kalau memang sudah niat, pastikan yang kamu bayar adalah kepastian - bukan risiko.
+                    </p>
+                </div>
+
+                <!-- CTA 2 (Direct to WA) -->
+                <div class="w-full">
+                    <a href="https://konektor.id/wa/ishmah-waba"
+                        class="wa-cta btn-primary block w-full text-center py-4 rounded-xl font-bold text-lg shadow-lg">
+                        Konsultasi Gratis Via Whatsapp
+                    </a>
+                    <p class="text-[10px] text-center text-earth-500 mt-2">
+                        Konsultasi Tanpa Kewajiban | Dana Jamaah Diatur Rekening Terpisah
+                    </p>
                 </div>
             </div>
-        </div>
-        
-        <!-- Copyright -->
-        <div class="border-t border-gray-800">
-            <div class="container mx-auto px-4 sm:px-6 py-4">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-2">
-                    <p class="text-gray-400 text-sm text-center sm:text-left">
-                        &copy; 2024 JamaahCare. All rights reserved.
-                    </p>
-                    <div class="flex gap-4 text-sm">
-                        <a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a>
-                        <a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a>
+        </section>
+
+        <!-- SECTION 7: TRUST & SAFETY -->
+        <section class="w-full py-10 px-5 bg-brand-light border-t border-earth-200">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="font-serif text-2xl font-bold text-center text-earth-900 mb-6">Garansi & Keamanan</h2>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <div
+                            class="mx-auto w-10 h-10 bg-brand-brown/10 rounded-full flex items-center justify-center text-brand-brown mb-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-sm text-earth-900">Travel Resmi</h3>
+                        <p class="text-xs text-earth-600 mt-1">Berizin PPIU & IATA</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <div
+                            class="mx-auto w-10 h-10 bg-brand-brown/10 rounded-full flex items-center justify-center text-brand-brown mb-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-sm text-earth-900">Dana Aman</h3>
+                        <p class="text-xs text-earth-600 mt-1">Rekening Terpisah</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm col-span-2">
+                        <div
+                            class="mx-auto w-10 h-10 bg-brand-brown/10 rounded-full flex items-center justify-center text-brand-brown mb-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-sm text-earth-900">Jadwal Transparan</h3>
+                        <p class="text-xs text-earth-600 mt-1">Detail diverifikasi sebelum pembayaran</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </footer>
+        </section>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="<%= waLink %>" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white shadow-2xl hover:bg-green-600 transition-all duration-300 hover:scale-110 animate-bounce">
-        <i class="fab fa-whatsapp text-2xl"></i>
-    </a>
+        <!-- SECTION 8: FAQ (Added 1 more) -->
+        <section class="w-full py-10 px-5 bg-white" id="consultation">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="font-serif text-2xl font-bold text-center text-earth-900 mb-6">Pertanyaan Umum</h2>
+                <div id="lpFaqContainer" class="space-y-4">
+                    <details class="group border border-earth-200 rounded-lg">
+                        <summary
+                            class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
+                            <span>Apakah aman mendampingi Ibu tanpa keluarga lain?</span>
+                            <span class="transition group-open:rotate-180">
+                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                                    <path d="M6 9l6 6 6-6"></path>
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">
+                            Ya, karena perjalanan didampingi oleh TL Indonesia dan Muthowwif resmi yang berpengalaman.
+                            Sistemnya dibuat rapi agar kamu tidak merasa mengurus semuanya sendirian.
+                        </div>
+                    </details>
+                    <details class="group border border-earth-200 rounded-lg">
+                        <summary
+                            class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
+                            <span>Apakah benar tidak ada biaya tambahan di tengah perjalanan?</span>
+                            <span class="transition group-open:rotate-180">
+                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                                    <path d="M6 9l6 6 6-6"></path>
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">
+                            Semua komponen dijelaskan sejak awal sebelum pembayaran dilakukan. Tidak ada biaya
+                            tersembunyi di luar rincian yang sudah disepakati.
+                        </div>
+                    </details>
+                    <details class="group border border-earth-200 rounded-lg">
+                        <summary
+                            class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
+                            <span>Bisa cek hotel sebelum DP?</span>
+                            <span class="transition group-open:rotate-180">
+                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                                    <path d="M6 9l6 6 6-6"></path>
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">
+                            Tentu bisa, kamu dapat meminta detail hotel untuk memverifikasi lokasinya terlebih dahulu.
+                            Kami justru menyarankan memastikan semuanya sebelum transfer.
+                        </div>
+                    </details>
+                    <details class="group border border-earth-200 rounded-lg">
+                        <summary
+                            class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
+                            <span>Apakah harus langsung daftar setelah konsultasi?</span>
+                            <span class="transition group-open:rotate-180">
+                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                                    <path d="M6 9l6 6 6-6"></path>
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">
+                            Tidak. Konsultasi tidak mengikat dan tanpa kewajiban pembayaran. Kamu bebas berdiskusi
+                            sampai benar-benar yakin.
+                        </div>
+                    </details>
+                    <!-- ADDED FAQ -->
+                    <details class="group border border-earth-200 rounded-lg">
+                        <summary
+                            class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
+                            <span>Bagaimana jika Ibu membutuhkan bantuan mendadak di lapangan?</span>
+                            <span class="transition group-open:rotate-180">
+                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                                    <path d="M6 9l6 6 6-6"></path>
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">
+                            Tim Muthowwif kami selalu siaga. Untuk kondisi darurat, kami memiliki prosedur penanganan
+                            cepat dan akses ke layanan medis terdekat di Tanah Suci.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
 
-    <!-- AOS JS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
-    <!-- Custom JS -->
+        <!-- SECTION 9: FINAL CALL TO ACTION -->
+        <section class="w-full py-12 px-5 bg-brand-brown text-white text-center" id="booking">
+            <div class="max-w-md mx-auto">
+                <h2 class="font-serif text-2xl font-bold mb-4">Masih Mempertimbangkan?</h2>
+                <p class="mb-8 text-white/90 text-sm leading-relaxed">
+                    Kalau yang kamu cari adalah ketenangan untuk Ibu, mulailah dari memastikan sistemnya jelas.
+                </p>
+                <!-- CTA 3 (Direct to WA) -->
+                <a href="https://konektor.id/wa/ishmah-waba"
+                    class="wa-cta block w-full bg-white text-brand-brown font-bold text-lg py-4 rounded-xl shadow-xl hover:bg-gray-100 transition-colors mb-3">
+                    Konsultasi Gratis Via Whatsapp
+                </a>
+                <p class="text-xs text-white/70">
+                    Respons cepat | 24 jam
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="w-full bg-white py-6 text-center border-t border-earth-100">
+            <p class="text-xs text-earth-500">
+                &copy; 2026 Rahmah Travel<br>
+                <span class="opacity-75">Ibadah Ibu, tanggung jawab yang kami jaga bersama.</span>
+            </p>
+        </footer>
+
+
+
+    </div>
+
     <script>
-        // Initialize AOS with modern settings
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 50,
-            easing: 'ease-out-cubic',
-            disable: 'mobile'
-        });
+        const serverLandingData = <%- JSON.stringify((typeof landingData !== 'undefined' && landingData) ? landingData : {}) %>;
 
-        // Mobile Menu Toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
+        function esc(v) {
+            return String(v || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
         }
 
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('#mobileMenu a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('mobileMenu').classList.add('hidden');
-            });
-        });
+        function formatIDR(v) {
+            const n = Number(v) || 0;
+            return "Rp " + new Intl.NumberFormat("id-ID").format(Math.round(n));
+        }
 
-        // Modern Navbar scroll effect
-        let lastScroll = 0;
-        const navbar = document.getElementById('navbar');
-        
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll > 100) {
-                navbar.classList.add('py-2');
-                navbar.classList.remove('py-3');
-            } else {
-                navbar.classList.remove('py-2');
-                navbar.classList.add('py-3');
+        function formatDateID(v) {
+            if (!v) return "";
+            const d = new Date(v);
+            if (Number.isNaN(d.getTime())) return "";
+            return d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+        }
+
+        function applyLandingData() {
+            const data = serverLandingData || {};
+            const eventData = data.event || {};
+            const hero = data.hero || {};
+            const benefits = Array.isArray(data.benefits) ? data.benefits.filter(Boolean) : [];
+            const faqs = Array.isArray(data.faqs) ? data.faqs.filter((f) => f && f.question && f.answer) : [];
+            const variants = Array.isArray(data.variants) ? data.variants.filter((v) => v && v.title) : [];
+            const problem = data.problem || {};
+            const pains = Array.isArray(problem.pains) ? problem.pains : [];
+            const solution = data.solution || {};
+            const solutionItems = Array.isArray(solution.items) ? solution.items : [];
+
+            const heroHeadline = document.getElementById("lpHeroHeadline");
+            const heroSubheadline = document.getElementById("lpHeroSubheadline");
+            if (heroHeadline && (hero.headline || eventData.title)) {
+                heroHeadline.textContent = hero.headline || eventData.title;
             }
-            
-            if (currentScroll > lastScroll && currentScroll > 200) {
-                navbar.style.transform = 'translateY(-100%)';
-            } else {
-                navbar.style.transform = 'translateY(0)';
+            if (heroSubheadline && (hero.subheadline || eventData.description)) {
+                heroSubheadline.textContent = hero.subheadline || eventData.description;
             }
-            lastScroll = currentScroll;
-        });
 
-        // Modern Carousel
-        (function () {
-            const slider = document.getElementById('jamaahSlider');
-            if (!slider) return;
+            const heroTags = document.getElementById("lpHeroTags");
+            if (heroTags && benefits.length) {
+                heroTags.innerHTML = benefits.slice(0, 3).map((b) => `
+                    <span class="flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        ${esc(b)}
+                    </span>
+                `).join("");
+            }
 
-            const slides = Array.from(slider.querySelectorAll('.jamaah-slide'));
-            const dots = Array.from(slider.querySelectorAll('[data-index]'));
-            const prevBtn = document.getElementById('jamaahPrev');
-            const nextBtn = document.getElementById('jamaahNext');
+            const heroWrap = document.getElementById("lpHeroMediaWrap");
+            const heroImage = document.getElementById("lpHeroImage");
+            const heroContentWrap = document.getElementById("lpHeroContentWrap");
+            const heroCard = document.getElementById("lpHeroCard");
+            const heroInlineMediaWrap = document.getElementById("lpHeroInlineMediaWrap");
+            let heroInlineImage = document.getElementById("lpHeroInlineImage");
+            const mediaType = String(hero.hero_media_type || "").toLowerCase();
+            const mediaUrl = String(hero.hero_media_url || "").trim();
+            const asBg = (hero.hero_as_background === 1 || String(hero.hero_as_background) === "1" || hero.hero_as_background === true) && mediaType === "image" && mediaUrl;
+            if (heroWrap) {
+                heroWrap.style.backgroundImage = "";
+                heroWrap.classList.remove("hidden");
+            }
+            if (heroContentWrap) {
+                heroContentWrap.classList.add("-mt-12");
+                heroContentWrap.classList.remove("mt-0");
+            }
+            if (heroCard) {
+                heroCard.classList.add("rounded-t-2xl");
+                heroCard.classList.remove("rounded-2xl");
+            }
+            if (heroInlineMediaWrap) {
+                heroInlineMediaWrap.classList.add("hidden");
+                heroInlineMediaWrap.innerHTML = '<img id="lpHeroInlineImage" src="" alt="Media hero event" class="w-full h-auto max-h-[220px] md:max-h-[260px] object-contain rounded-xl mx-auto hidden">';
+                heroInlineImage = heroInlineMediaWrap.querySelector("#lpHeroInlineImage");
+            }
 
-            let current = 0;
-            const INTERVAL = 3000;
-            let timer = null;
-
-            function goTo(index) {
-                index = (index + slides.length) % slides.length;
-
-                slides.forEach((s, i) => {
-                    if (i === index) {
-                        s.classList.remove('opacity-0');
-                        s.classList.add('opacity-100');
-                    } else {
-                        s.classList.remove('opacity-100');
-                        s.classList.add('opacity-0');
+            if (heroWrap && mediaUrl) {
+                if (asBg) {
+                    heroWrap.style.backgroundImage = `url('${mediaUrl}')`;
+                    heroWrap.style.backgroundSize = "cover";
+                    heroWrap.style.backgroundPosition = "center";
+                    if (heroImage) heroImage.classList.add("hidden");
+                } else if (mediaType === "video") {
+                    if (heroWrap) heroWrap.classList.add("hidden");
+                    if (heroContentWrap) {
+                        heroContentWrap.classList.remove("-mt-12");
+                        heroContentWrap.classList.add("mt-0");
                     }
-                });
-
-                dots.forEach((d, i) => {
-                    if (i === index) {
-                        d.classList.add('bg-white');
-                        d.classList.remove('bg-white/50');
-                    } else {
-                        d.classList.remove('bg-white');
-                        d.classList.add('bg-white/50');
+                    if (heroCard) {
+                        heroCard.classList.remove("rounded-t-2xl");
+                        heroCard.classList.add("rounded-2xl");
                     }
-                });
-
-                current = index;
-            }
-
-            function next() { goTo(current + 1); }
-            function prev() { goTo(current - 1); }
-
-            function start() {
-                if (timer) return;
-                timer = setInterval(next, INTERVAL);
-            }
-
-            function stop() {
-                if (!timer) return;
-                clearInterval(timer);
-                timer = null;
-            }
-
-            goTo(0);
-            start();
-
-            slider.addEventListener('mouseenter', stop);
-            slider.addEventListener('mouseleave', start);
-            slider.addEventListener('touchstart', stop);
-            slider.addEventListener('touchend', start);
-
-            if (prevBtn) prevBtn.addEventListener('click', () => { stop(); prev(); start(); });
-            if (nextBtn) nextBtn.addEventListener('click', () => { stop(); next(); start(); });
-
-            dots.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    stop();
-                    goTo(Number(btn.dataset.index));
-                    start();
-                });
-            });
-
-            // Touch swipe support
-            let touchStartX = 0;
-            slider.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].clientX; stop(); });
-            slider.addEventListener('touchend', (e) => {
-                const dx = e.changedTouches[0].clientX - touchStartX;
-                if (Math.abs(dx) > 50) {
-                    if (dx < 0) next(); else prev();
+                    if (heroInlineMediaWrap) {
+                        heroInlineMediaWrap.classList.remove("hidden");
+                        heroInlineMediaWrap.innerHTML = `<video src="${esc(mediaUrl)}" controls class="w-full h-auto max-h-[220px] md:max-h-[260px] object-contain rounded-xl mx-auto"></video>`;
+                    }
+                } else if (heroImage) {
+                    if (heroWrap) heroWrap.classList.add("hidden");
+                    if (heroContentWrap) {
+                        heroContentWrap.classList.remove("-mt-12");
+                        heroContentWrap.classList.add("mt-0");
+                    }
+                    if (heroCard) {
+                        heroCard.classList.remove("rounded-t-2xl");
+                        heroCard.classList.add("rounded-2xl");
+                    }
+                    if (heroInlineMediaWrap && heroInlineImage) {
+                        heroInlineMediaWrap.classList.remove("hidden");
+                        heroInlineImage.src = mediaUrl;
+                        heroInlineImage.classList.remove("hidden");
+                    } else if (heroInlineMediaWrap) {
+                        heroInlineMediaWrap.classList.remove("hidden");
+                        heroInlineMediaWrap.innerHTML = `<img src="${esc(mediaUrl)}" alt="Media hero event" class="w-full h-auto max-h-[220px] md:max-h-[260px] object-contain rounded-xl mx-auto">`;
+                    }
+                    if (heroImage) heroImage.classList.add("hidden");
                 }
-                start();
-            });
-        })();
-
-        // --- Promo events: load & render (copied/adapted from LandingPage) ---
-        document.addEventListener('DOMContentLoaded', function () {
-            loadActiveEvents();
-        });
-
-        async function loadActiveEvents() {
-            const eventsLoading = document.getElementById('eventsLoading');
-            const eventsContainer = document.getElementById('eventsContainer');
-            const noEvents = document.getElementById('noEvents');
-            if (!eventsLoading || !eventsContainer || !noEvents) return;
-
-            // show loader
-            eventsLoading.classList.remove('hidden');
-            eventsContainer.classList.add('hidden');
-            noEvents.classList.add('hidden');
-
-            try {
-                const resp = await fetch('/api/admin/events/active');
-                const data = await resp.json();
-                console.debug('Loaded active events:', data);
-
-                eventsLoading.classList.add('hidden');
-
-                if (data && data.success && Array.isArray(data.data) && data.data.length > 0) {
-                    eventsContainer.classList.remove('hidden');
-                    displayEvents(data.data);
-                } else {
-                    noEvents.classList.remove('hidden');
-                }
-            } catch (err) {
-                console.error('Error loading events:', err);
-                eventsLoading.classList.add('hidden');
-                noEvents.classList.remove('hidden');
             }
-        }
 
-        function escapeHtml(str) {
-            return String(str || '')
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
-        }
-
-        function formatIDR(amount) {
-            const n = Number(amount) || 0;
-            return 'Rp ' + new Intl.NumberFormat('id-ID').format(Math.round(n));
-        }
-
-        function displayEvents(events) {
-            const container = document.getElementById('eventsContainer');
-            container.innerHTML = '';
-            const frag = document.createDocumentFragment();
-
-            events.forEach((event, idx) => {
-                const priceOriginal = Number(event.price_original) || 0;
-                const priceDiscount = Number(event.price_discount) || 0;
-                const isGratis = priceOriginal === 0;
-                const isDiscounted = priceOriginal > 0 && priceDiscount > 0 && priceDiscount < priceOriginal;
-                const discountPercent = isDiscounted ? Math.round(((priceOriginal - priceDiscount) / priceOriginal) * 100) : 0;
-                const delay = 150 + idx * 80;
-
-                const card = document.createElement('div');
-                card.className = 'glass-card rounded-2xl p-6 shadow-lg border relative transition-all duration-300 hover:-translate-y-2';
-                card.setAttribute('data-aos', 'fade-up');
-                card.setAttribute('data-aos-duration', '800');
-                card.setAttribute('data-aos-delay', String(delay));
-
-                const title = escapeHtml(event.name || '—');
-                const desc = escapeHtml(event.description || '');
-                const startDate = event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '—';
-                const endDate = event.end_date ? new Date(event.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '—';
-
-                let priceHtml = '';
-                if (isGratis) {
-                    priceHtml = `<div class="text-2xl font-bold text-emerald-600">Gratis</div>`;
-                } else {
-                    const displayPrice = isDiscounted ? priceDiscount : priceOriginal;
-                    priceHtml = `${priceOriginal > displayPrice ? `<div class="text-sm text-gray-400 line-through">${formatIDR(priceOriginal)}</div>` : ''}` +
-                        `<div class="text-2xl font-bold text-emerald-600">${formatIDR(displayPrice)}</div>` +
-                        `${priceOriginal > displayPrice ? `<div class="text-sm text-red-500 font-semibold mt-1">Hemat ${formatIDR(priceOriginal - displayPrice)}</div>` : ''}`;
-                }
-
-                const badgeHtml = discountPercent > 0 ? `<div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-semibold">${discountPercent}% OFF</div>` : '';
-
-                card.innerHTML = `
-                    ${badgeHtml}
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">${title}</h3>
-                    ${desc ? `<p class="text-gray-500 text-sm mb-4">${desc}</p>` : ''}
-                    <div class="mb-4">${priceHtml}</div>
-                    <div class="mb-4 pb-4 border-b border-gray-100 text-sm text-gray-500">
-                        <div class="flex items-center gap-2 mb-2"><i class="fas fa-calendar-alt"></i><span>${startDate}</span></div>
-                        <div class="flex items-center gap-2"><i class="fas fa-clock"></i><span>Sampai ${endDate}</span></div>
+            const problemTitle = document.getElementById("lpProblemTitle");
+            const problemSubtitle = document.getElementById("lpProblemSubtitle");
+            const painsList = document.getElementById("lpPainsList");
+            if (problemTitle && problem.title) problemTitle.textContent = problem.title;
+            if (problemSubtitle && problem.subtitle) problemSubtitle.textContent = problem.subtitle;
+            if (painsList && pains.length) {
+                painsList.innerHTML = pains.map((p) => `
+                    <div class="flex items-start gap-3">
+                        <div class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">!</div>
+                        <div class="text-earth-800">
+                            <p class="font-semibold text-earth-900">${esc(p.title || p.pain_title || p.description || p.pain_description || "")}</p>
+                            ${(p.description || p.pain_description) && (p.title || p.pain_title) ? `<p class="text-sm">${esc(p.description || p.pain_description)}</p>` : ""}
+                        </div>
                     </div>
-                    <button type="button" data-action="get-deal" data-event-id="${escapeHtml(event.id)}" data-ref="${escapeHtml(event.affiliate_link ? event.affiliate_link.code : '')}" class="w-full gradient-primary text-white py-3 rounded-xl font-semibold text-center">Dapatkan Promo</button>
-                `;
+                `).join("");
+            }
 
-                frag.appendChild(card);
-            });
+            const solutionTitle = document.getElementById("lpSolutionTitle");
+            const solutionSubtitle = document.getElementById("lpSolutionSubtitle");
+            const solutionList = document.getElementById("lpSolutionsList");
+            if (solutionTitle && solution.title) solutionTitle.textContent = solution.title;
+            if (solutionSubtitle && solution.subtitle) solutionSubtitle.textContent = solution.subtitle;
+            if (solutionList && solutionItems.length) {
+                solutionList.innerHTML = solutionItems.map((s) => `
+                    <div class="bg-earth-50 p-5 rounded-lg">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="p-2 bg-white rounded-full shadow-sm text-brand-brown">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-serif font-bold text-lg text-earth-900">${esc(s.title || s.solution_title || "")}</h3>
+                        </div>
+                        <p class="text-earth-800 text-sm ml-11">${esc(s.description || s.solution_description || "")}</p>
+                    </div>
+                `).join("");
+            }
 
-            container.appendChild(frag);
+                        const testimonialsList = document.getElementById("lpTestimonialsList");
+            const testimonials = Array.isArray(data.testimonials) ? data.testimonials.filter((t) => t && t.media_url) : [];
+            if (testimonialsList && testimonials.length) {
+                testimonialsList.innerHTML = testimonials.map((t, idx) => {
+                    const type = String(t.media_type || "").toLowerCase();
+                    const url = esc(t.media_url);
+                    if (type === "video") {
+                        return `
+                            <div class="relative overflow-hidden rounded-lg bg-black p-2 min-h-[260px] flex items-center justify-center">
+                                <video src="${url}" class="max-w-full max-h-[360px] object-contain rounded" controls preload="metadata"></video>
+                            </div>
+                        `;
+                    }
+                    return `
+                        <div class="relative overflow-hidden rounded-lg bg-earth-50 p-2 min-h-[260px] flex items-center justify-center pointer-events-none">
+                            <img src="${url}" alt="Testimoni ${idx + 1}" class="max-w-full max-h-[360px] object-contain rounded">
+                        </div>
+                    `;
+                }).join("");
+            }
+
+            const pricingCards = document.getElementById("lpPricingCards");
+            if (pricingCards) {
+                const items = variants.length ? variants : [{
+                    title: eventData.title || "Paket Event",
+                    description: eventData.description || "",
+                    event_type: eventData.event_type || "berbayar",
+                    price_original: eventData.price_original || 0,
+                    price_promo: eventData.price_promo || 0
+                }];
+                pricingCards.innerHTML = items.map((v, i) => {
+                    const po = Number(v.price_original) || 0;
+                    const pp = Number(v.price_promo) || 0;
+                    const free = v.event_type === "gratis" || (po === 0 && pp === 0);
+                    const shown = (!free && pp > 0 && pp < po) ? pp : po;
+                    return `
+                        <div class="${i === 0 ? "border-2 border-brand-brown bg-brand-light shadow-md" : "border border-earth-200"} rounded-xl p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <span class="${i === 0 ? "bg-brand-brown/10 text-brand-brown" : "bg-earth-100 text-earth-800"} text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">
+                                        ${free ? "Paket Gratis" : "Paket Berbayar"}
+                                    </span>
+                                    <h3 class="font-serif font-bold text-lg text-earth-900 mt-2">${esc(v.title || "Paket Event")}</h3>
+                                    <p class="text-xs text-earth-600">${esc(v.description || "")}</p>
+                                </div>
+                                <div class="text-right">
+                                    ${(!free && pp > 0 && pp < po) ? `<p class="text-xs text-earth-500 line-through">${formatIDR(po)}</p>` : ""}
+                                    <p class="text-xl font-bold text-brand-brown">${free ? "GRATIS" : formatIDR(shown)}</p>
+                                </div>
+                            </div>
+                            <p class="text-xs text-earth-700">Periode: ${esc(formatDateID(eventData.start_date) || "-")} - ${esc(formatDateID(eventData.end_date) || "-")}</p>
+                        </div>
+                    `;
+                }).join("");
+            }
+
+            const benefitList = document.getElementById("lpBenefitsList");
+            if (benefitList && benefits.length) {
+                benefitList.innerHTML = benefits.map((b) => `
+                    <li class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-brand-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        ${esc(b)}
+                    </li>
+                `).join("");
+            }
+
+            const faqContainer = document.getElementById("lpFaqContainer");
+            if (faqContainer && faqs.length) {
+                faqContainer.innerHTML = faqs.map((f) => `
+                    <details class="group border border-earth-200 rounded-lg">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
+                            <span>${esc(f.question)}</span>
+                            <span class="transition group-open:rotate-180">
+                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                                    <path d="M6 9l6 6 6-6"></path>
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">${esc(f.answer)}</div>
+                    </details>
+                `).join("");
+            }
+
+            const waRaw = String(eventData.admin_whatsapp || "").replace(/[^0-9]/g, "");
+            const waNormalized = waRaw
+                ? (waRaw.startsWith("0") ? `62${waRaw.slice(1)}` : (waRaw.startsWith("62") ? waRaw : waRaw))
+                : "";
+            const waLink = waNormalized ? `https://wa.me/${waNormalized}` : null;
+            if (waLink) {
+                document.querySelectorAll(".wa-cta").forEach((el) => {
+                    el.setAttribute("href", waLink);
+                    el.setAttribute("target", "_blank");
+                    el.setAttribute("rel", "noopener noreferrer");
+                });
+            }
         }
 
-        // Delegated click handler for promo buttons (redirect to checkout)
-        document.getElementById('eventsContainer')?.addEventListener('click', function (e) {
-            const btn = e.target.closest('button[data-action="get-deal"], a[data-action="get-deal"]');
-            if (!btn) return;
-            e.preventDefault();
-            const eventId = btn.dataset.eventId || btn.getAttribute('data-event-id') || '';
-            const ref = btn.dataset.ref || btn.getAttribute('data-ref') || '';
-            const params = new URLSearchParams();
-            if (eventId) params.set('event_id', eventId);
-            if (ref) params.set('ref', ref);
-            window.location.href = '/checkout' + (params.toString() ? '?' + params.toString() : '');
-        });
-
-        // Refresh promos when the user returns to the tab
-        window.addEventListener('focus', loadActiveEvents);
-
-        // --- Gallery function ---
-        // You can implement a lightbox here if needed
-        function openGallery(index) {
-            // Placeholder for future lightbox
-            console.log('Open gallery image:', index);
-        }
+        document.addEventListener("DOMContentLoaded", applyLandingData);
     </script>
 </body>
+
 </html>
+
+

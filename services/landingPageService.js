@@ -58,14 +58,25 @@ async function buildLandingData(eventId) {
 
   let variants = [];
   try {
-    const [rows] = await db.query(
-      `SELECT event_type, title, slug, description, price_original, price_promo, logo_media_type, logo_media_url, sort_order
-       FROM event_variants
-       WHERE event_id = ?
-       ORDER BY sort_order ASC`,
-      [eventId],
-    );
-    variants = rows;
+    try {
+      const [rows] = await db.query(
+        `SELECT event_type, title, slug, description, price_original, price_promo, start_date, end_date, logo_media_type, logo_media_url, sort_order
+         FROM event_variants
+         WHERE event_id = ?
+         ORDER BY sort_order ASC`,
+        [eventId],
+      );
+      variants = rows;
+    } catch (variantDateErr) {
+      const [rows] = await db.query(
+        `SELECT event_type, title, slug, description, price_original, price_promo, logo_media_type, logo_media_url, sort_order
+         FROM event_variants
+         WHERE event_id = ?
+         ORDER BY sort_order ASC`,
+        [eventId],
+      );
+      variants = rows;
+    }
   } catch (_) {}
 
   const [sections] = await db.query(
@@ -88,6 +99,28 @@ async function buildLandingData(eventId) {
     );
     pains = p;
   }
+
+  let solutions = [];
+  let solutionTitle = null;
+  let solutionSubtitle = null;
+  try {
+    const [solutionSections] = await db.query(
+      `SELECT id, title, subtitle FROM event_solution_sections WHERE event_id = ? LIMIT 1`,
+      [eventId],
+    );
+    if (solutionSections.length) {
+      solutionTitle = solutionSections[0].title || null;
+      solutionSubtitle = solutionSections[0].subtitle || null;
+      const [solRows] = await db.query(
+        `SELECT solution_title, solution_description, sort_order
+         FROM event_solutions
+         WHERE solution_section_id = ?
+         ORDER BY sort_order ASC`,
+        [solutionSections[0].id],
+      );
+      solutions = solRows;
+    }
+  } catch (_) {}
 
   return {
     event: {
@@ -123,6 +156,8 @@ async function buildLandingData(eventId) {
       description: v.description,
       price_original: v.price_original,
       price_promo: v.price_promo,
+      start_date: v.start_date || null,
+      end_date: v.end_date || null,
       logo_media_type: v.logo_media_type,
       logo_media_url: v.logo_media_url,
       sort_order: v.sort_order,
@@ -133,6 +168,14 @@ async function buildLandingData(eventId) {
       pains: pains.map((p) => ({
         title: p.pain_title || "",
         description: p.pain_description || "",
+      })),
+    },
+    solution: {
+      title: solutionTitle || "",
+      subtitle: solutionSubtitle || "",
+      items: solutions.map((s) => ({
+        title: s.solution_title || "",
+        description: s.solution_description || "",
       })),
     },
   };

@@ -438,15 +438,27 @@ const getEvents = async (req, res) => {
       // event variants
       let variants = [];
       try {
-        const [rows] = await db.query(
-          `SELECT event_id, event_type, title, slug, description, price_original, price_promo,
-                  logo_media_type, logo_media_url, sort_order
-           FROM event_variants
-           WHERE event_id IN (?)
-           ORDER BY sort_order ASC`,
-          [eventIds],
-        );
-        variants = rows;
+        try {
+          const [rows] = await db.query(
+            `SELECT event_id, event_type, title, slug, description, price_original, price_promo, start_date, end_date,
+                    logo_media_type, logo_media_url, sort_order
+             FROM event_variants
+             WHERE event_id IN (?)
+             ORDER BY sort_order ASC`,
+            [eventIds],
+          );
+          variants = rows;
+        } catch (variantDateErr) {
+          const [rows] = await db.query(
+            `SELECT event_id, event_type, title, slug, description, price_original, price_promo,
+                    logo_media_type, logo_media_url, sort_order
+             FROM event_variants
+             WHERE event_id IN (?)
+             ORDER BY sort_order ASC`,
+            [eventIds],
+          );
+          variants = rows;
+        }
       } catch (err) {
         console.warn("event_variants table not ready:", err.message);
       }
@@ -480,6 +492,35 @@ const getEvents = async (req, res) => {
         s.pains = painMap[s.id] || [];
       });
 
+      // solution sections + solutions
+      const solutionSectionMap = {};
+      try {
+        const [solutionSections] = await db.query(
+          `SELECT * FROM event_solution_sections WHERE event_id IN (?)`,
+          [eventIds],
+        );
+        const solutionSectionIds = solutionSections.map((s) => s.id);
+        const [solutions] = solutionSectionIds.length
+          ? await db.query(
+              `SELECT * FROM event_solutions WHERE solution_section_id IN (?) ORDER BY sort_order ASC`,
+              [solutionSectionIds],
+            )
+          : [[],];
+        const solutionsBySectionId = {};
+        solutions.forEach((s) => {
+          if (!solutionsBySectionId[s.solution_section_id]) solutionsBySectionId[s.solution_section_id] = [];
+          solutionsBySectionId[s.solution_section_id].push(s);
+        });
+        solutionSections.forEach((s) => {
+          solutionSectionMap[s.event_id] = {
+            ...s,
+            solutions: solutionsBySectionId[s.id] || [],
+          };
+        });
+      } catch (err) {
+        // optional feature - keep backward compatibility
+      }
+
       // attach to events
       events.forEach(e => {
         e.benefits = benefitMap[e.id] || [];
@@ -491,6 +532,12 @@ const getEvents = async (req, res) => {
           e.problem_title = sec.title;
           e.problem_subtitle = sec.subtitle;
           e.pains = sec.pains;
+        }
+        const solSec = solutionSectionMap[e.id];
+        if (solSec) {
+          e.solution_title = solSec.title;
+          e.solution_subtitle = solSec.subtitle;
+          e.solutions = solSec.solutions;
         }
       });
     }
@@ -559,6 +606,9 @@ const createEvent = async (req, res) => {
       problemTitle,
       problemSubtitle,
       pains,
+      solutionTitle,
+      solutionSubtitle,
+      solutions,
       faqs,
       testimonials,
       variants,
@@ -677,23 +727,45 @@ const createEvent = async (req, res) => {
           } catch (e) {
             logoNormalized = { heroMediaType: null, heroMediaUrl: null };
           }
-          await db.query(
-            `INSERT INTO event_variants
-             (event_id, event_type, title, slug, description, price_original, price_promo, logo_media_type, logo_media_url, sort_order)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [
-              eventId,
-              eventTypeVar,
-              String(v.title).trim(),
-              (v.slug && String(v.slug).trim()) || generateSlug(v.title),
-              v.description || null,
-              eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_original || 0) || 0),
-              eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_promo || 0) || 0),
-              logoNormalized.heroMediaType || null,
-              logoNormalized.heroMediaUrl || null,
-              i,
-            ],
-          );
+          try {
+            await db.query(
+              `INSERT INTO event_variants
+               (event_id, event_type, title, slug, description, price_original, price_promo, start_date, end_date, logo_media_type, logo_media_url, sort_order)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              [
+                eventId,
+                eventTypeVar,
+                String(v.title).trim(),
+                (v.slug && String(v.slug).trim()) || generateSlug(v.title),
+                v.description || null,
+                eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_original || 0) || 0),
+                eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_promo || 0) || 0),
+                v.start_date || null,
+                v.end_date || null,
+                logoNormalized.heroMediaType || null,
+                logoNormalized.heroMediaUrl || null,
+                i,
+              ],
+            );
+          } catch (variantDateErr) {
+            await db.query(
+              `INSERT INTO event_variants
+               (event_id, event_type, title, slug, description, price_original, price_promo, logo_media_type, logo_media_url, sort_order)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              [
+                eventId,
+                eventTypeVar,
+                String(v.title).trim(),
+                (v.slug && String(v.slug).trim()) || generateSlug(v.title),
+                v.description || null,
+                eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_original || 0) || 0),
+                eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_promo || 0) || 0),
+                logoNormalized.heroMediaType || null,
+                logoNormalized.heroMediaUrl || null,
+                i,
+              ],
+            );
+          }
         }
       } catch (err) {
         console.warn("Failed to insert variants:", err.message);
@@ -718,6 +790,27 @@ const createEvent = async (req, res) => {
       }
     }
 
+    try {
+      if (solutionTitle || solutionSubtitle || (Array.isArray(solutions) && solutions.length)) {
+        const [ss] = await db.query(
+          `INSERT INTO event_solution_sections (event_id, title, subtitle) VALUES (?, ?, ?)`,
+          [eventId, solutionTitle || null, solutionSubtitle || null],
+        );
+        const solutionSectionId = ss.insertId;
+        if (Array.isArray(solutions)) {
+          for (let i = 0; i < solutions.length; i++) {
+            const s = solutions[i] || {};
+            await db.query(
+              `INSERT INTO event_solutions (solution_section_id, solution_title, solution_description, sort_order) VALUES (?, ?, ?, ?)`,
+              [solutionSectionId, s.solution_title || null, s.solution_description || null, i],
+            );
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to insert solution section:", err.message);
+    }
+
     // insert hero section into event_hero_sections (separate table)
     try {
       if (headline || subheadline || normalizedHero.heroMediaType || normalizedHero.heroMediaUrl) {
@@ -731,8 +824,9 @@ const createEvent = async (req, res) => {
     }
 
     // packages removed from model - pricing kept on events
+    let landingSlug = null;
     try {
-      await landingPageService.createLandingFromEvent(eventId, userId);
+      landingSlug = await landingPageService.createLandingFromEvent(eventId, userId);
     } catch (err) {
       console.warn("Failed to create landing page for event", eventId, err.message || err);
     }
@@ -740,7 +834,11 @@ const createEvent = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Event created successfully",
-      data: { id: eventId },
+      data: {
+        id: eventId,
+        landing_slug: landingSlug,
+        landing_url: landingSlug ? `/lp/${landingSlug}` : null,
+      },
     });
   } catch (error) {
     console.error("Create event error:", error);
@@ -772,6 +870,9 @@ const updateEvent = async (req, res) => {
       problemTitle,
       problemSubtitle,
       pains,
+      solutionTitle,
+      solutionSubtitle,
+      solutions,
       faqs,
       testimonials,
       variants,
@@ -826,6 +927,11 @@ const updateEvent = async (req, res) => {
     await db.query("DELETE FROM event_faqs WHERE event_id = ?", [eventId]);
     await db.query("DELETE FROM event_problem_sections WHERE event_id = ?", [eventId]);
     try {
+      await db.query("DELETE FROM event_solution_sections WHERE event_id = ?", [eventId]);
+    } catch (err) {
+      console.warn("Failed to clear solution sections:", err.message);
+    }
+    try {
       await db.query("DELETE FROM event_testimonials WHERE event_id = ?", [eventId]);
       await db.query("DELETE FROM event_variants WHERE event_id = ?", [eventId]);
     } catch (err) {
@@ -858,6 +964,27 @@ const updateEvent = async (req, res) => {
           );
         }
       }
+    }
+
+    try {
+      if (solutionTitle || solutionSubtitle || (Array.isArray(solutions) && solutions.length)) {
+        const [ss] = await db.query(
+          `INSERT INTO event_solution_sections (event_id, title, subtitle) VALUES (?, ?, ?)`,
+          [eventId, solutionTitle || null, solutionSubtitle || null],
+        );
+        const solutionSectionId = ss.insertId;
+        if (Array.isArray(solutions)) {
+          for (let i = 0; i < solutions.length; i++) {
+            const s = solutions[i] || {};
+            await db.query(
+              `INSERT INTO event_solutions (solution_section_id, solution_title, solution_description, sort_order) VALUES (?, ?, ?, ?)`,
+              [solutionSectionId, s.solution_title || null, s.solution_description || null, i],
+            );
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to update solution section:", err.message);
     }
 
     // packages removed from model - pricing kept on events
@@ -909,23 +1036,45 @@ const updateEvent = async (req, res) => {
           } catch (e) {
             logoNormalized = { heroMediaType: null, heroMediaUrl: null };
           }
-          await db.query(
-            `INSERT INTO event_variants
-             (event_id, event_type, title, slug, description, price_original, price_promo, logo_media_type, logo_media_url, sort_order)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [
-              eventId,
-              eventTypeVar,
-              String(v.title).trim(),
-              (v.slug && String(v.slug).trim()) || generateSlug(v.title),
-              v.description || null,
-              eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_original || 0) || 0),
-              eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_promo || 0) || 0),
-              logoNormalized.heroMediaType || null,
-              logoNormalized.heroMediaUrl || null,
-              i,
-            ],
-          );
+          try {
+            await db.query(
+              `INSERT INTO event_variants
+               (event_id, event_type, title, slug, description, price_original, price_promo, start_date, end_date, logo_media_type, logo_media_url, sort_order)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              [
+                eventId,
+                eventTypeVar,
+                String(v.title).trim(),
+                (v.slug && String(v.slug).trim()) || generateSlug(v.title),
+                v.description || null,
+                eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_original || 0) || 0),
+                eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_promo || 0) || 0),
+                v.start_date || null,
+                v.end_date || null,
+                logoNormalized.heroMediaType || null,
+                logoNormalized.heroMediaUrl || null,
+                i,
+              ],
+            );
+          } catch (variantDateErr) {
+            await db.query(
+              `INSERT INTO event_variants
+               (event_id, event_type, title, slug, description, price_original, price_promo, logo_media_type, logo_media_url, sort_order)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              [
+                eventId,
+                eventTypeVar,
+                String(v.title).trim(),
+                (v.slug && String(v.slug).trim()) || generateSlug(v.title),
+                v.description || null,
+                eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_original || 0) || 0),
+                eventTypeVar === "gratis" ? 0 : (parseFloat(v.price_promo || 0) || 0),
+                logoNormalized.heroMediaType || null,
+                logoNormalized.heroMediaUrl || null,
+                i,
+              ],
+            );
+          }
         }
       } catch (err) {
         console.warn("Failed to update variants:", err.message);
@@ -945,8 +1094,9 @@ const updateEvent = async (req, res) => {
       console.warn('Failed to update event_hero_sections for event', eventId, err.message);
     }
 
+    let landingSlug = null;
     try {
-      await landingPageService.createLandingFromEvent(eventId, req.user?.id || null);
+      landingSlug = await landingPageService.createLandingFromEvent(eventId, req.user?.id || null);
     } catch (err) {
       console.warn("Failed to create landing page for event", eventId, err.message || err);
     }
@@ -954,6 +1104,11 @@ const updateEvent = async (req, res) => {
     res.json({
       success: true,
       message: "Event updated successfully",
+      data: {
+        id: Number(eventId),
+        landing_slug: landingSlug,
+        landing_url: landingSlug ? `/lp/${landingSlug}` : null,
+      },
     });
   } catch (error) {
     console.error("Update event error:", error);
@@ -999,15 +1154,27 @@ const getEventById = async (req, res) => {
     }
 
     try {
-      const [variants] = await db.query(
-        `SELECT event_type, title, slug, description, price_original, price_promo,
-                logo_media_type, logo_media_url, sort_order
-         FROM event_variants
-         WHERE event_id = ?
-         ORDER BY sort_order ASC`,
-        [eventId],
-      );
-      event.variants = variants;
+      try {
+        const [variants] = await db.query(
+          `SELECT event_type, title, slug, description, price_original, price_promo, start_date, end_date,
+                  logo_media_type, logo_media_url, sort_order
+           FROM event_variants
+           WHERE event_id = ?
+           ORDER BY sort_order ASC`,
+          [eventId],
+        );
+        event.variants = variants;
+      } catch (variantDateErr) {
+        const [variants] = await db.query(
+          `SELECT event_type, title, slug, description, price_original, price_promo,
+                  logo_media_type, logo_media_url, sort_order
+           FROM event_variants
+           WHERE event_id = ?
+           ORDER BY sort_order ASC`,
+          [eventId],
+        );
+        event.variants = variants;
+      }
     } catch (err) {
       event.variants = [];
     }
@@ -1023,6 +1190,23 @@ const getEventById = async (req, res) => {
         [sections[0].id],
       );
       event.pains = pains;
+    }
+
+    try {
+      const [solutionSections] = await db.query(`SELECT * FROM event_solution_sections WHERE event_id = ? LIMIT 1`, [eventId]);
+      if (solutionSections.length) {
+        event.solution_title = solutionSections[0].title || "";
+        event.solution_subtitle = solutionSections[0].subtitle || "";
+        const [solutions] = await db.query(
+          `SELECT * FROM event_solutions WHERE solution_section_id = ? ORDER BY sort_order ASC`,
+          [solutionSections[0].id],
+        );
+        event.solutions = solutions;
+      } else {
+        event.solutions = [];
+      }
+    } catch (err) {
+      event.solutions = [];
     }
 
     delete event.payment_methods;

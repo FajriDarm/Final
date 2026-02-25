@@ -434,6 +434,8 @@ CREATE TABLE IF NOT EXISTS event_variants (
   description TEXT DEFAULT NULL,
   price_original DECIMAL(15,2) DEFAULT 0,
   price_promo DECIMAL(15,2) DEFAULT 0,
+  start_date DATE DEFAULT NULL,
+  end_date DATE DEFAULT NULL,
   logo_media_type ENUM('image','video') DEFAULT NULL,
   logo_media_url TEXT DEFAULT NULL,
   sort_order INT DEFAULT 0,
@@ -444,6 +446,31 @@ CREATE TABLE IF NOT EXISTS event_variants (
   KEY idx_event_variants_slug (slug),
   CONSTRAINT fk_event_variants_event
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS event_solution_sections (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  event_id BIGINT NOT NULL,
+  title VARCHAR(150) DEFAULT NULL,
+  subtitle TEXT DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_event_solution_sections_event_id (event_id),
+  CONSTRAINT fk_event_solution_sections_event
+    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS event_solutions (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  solution_section_id BIGINT NOT NULL,
+  solution_title VARCHAR(150) DEFAULT NULL,
+  solution_description TEXT DEFAULT NULL,
+  sort_order INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_event_solutions_section_id (solution_section_id),
+  CONSTRAINT fk_event_solutions_section
+    FOREIGN KEY (solution_section_id) REFERENCES event_solution_sections(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- drop legacy package tables if they exist

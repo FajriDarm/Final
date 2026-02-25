@@ -1,1498 +1,2542 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Affillink - Affiliate Marketing Platform</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- AOS CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
-    />
-    <!-- Font Awesome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <!-- Custom Font -->
-    <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link
-      href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700"
-      rel="stylesheet"
-    />
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: {
-                DEFAULT: "#059669",
-                dark: "#047857",
-                light: "#10b981",
-              },
-              secondary: {
-                DEFAULT: "#3b82f6",
-                dark: "#2563eb",
-              },
-              dark: "#1e293b",
-              gray: {
-                dark: "#475569",
-                DEFAULT: "#64748b",
-                light: "#e2e8f0",
-              },
-              light: "#f8fafc",
-            },
-            fontFamily: {
-              sans: ["Instrument Sans", "system-ui", "sans-serif"],
-            },
-            boxShadow: {
-              primary: "0 10px 30px rgba(5, 150, 105, 0.2)",
-              card: "0 10px 25px rgba(0, 0, 0, 0.05)",
-              "card-lg": "0 20px 40px rgba(0, 0, 0, 0.1)",
-            },
-            borderRadius: {
-              lg: "12px",
-              xl: "16px",
-              "2xl": "20px",
-            },
-            animation: {
-              "fade-in-up": "fadeInUp 0.6s ease-out forwards",
-            },
-            keyframes: {
-              fadeInUp: {
-                from: {
-                  opacity: "0",
-                  transform: "translateY(30px)",
-                },
-                to: {
-                  opacity: "1",
-                  transform: "translateY(0)",
-                },
-              },
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      /* Custom CSS untuk efek tambahan */
-      .gradient-text {
-        background: linear-gradient(135deg, #1e293b 0%, #059669 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Affillink - Platform Affiliate Marketing Modern Indonesia</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    * {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+
+    /* Modern Green Color Palette */
+    :root {
+      --primary: #064e3b;
+      --secondary: #065f46;
+      --accent: #059669;
+      --accent-light: #10b981;
+      --accent-dark: #047857;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --dark: #064e3b;
+      --light: #ecfdf5;
+    }
+
+    /* Modern Gradient Backgrounds with Green */
+    .gradient-modern {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    }
+
+    .gradient-green {
+      background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+    }
+
+    .gradient-dark-green {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+    }
+
+    .gradient-light-green {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    }
+
+    .gradient-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+    }
+
+    /* Glassmorphism with Green Tint */
+    .glass-effect {
+      background: rgba(5, 150, 105, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(5, 150, 105, 0.1);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(5, 150, 105, 0.2);
+    }
+
+    /* Modern Header */
+    .header-modern {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(5, 150, 105, 0.1);
+    }
+
+    /* Hero Section with Green */
+    .hero-modern {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-circle {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+      border-radius: 50%;
+      top: -200px;
+      right: -200px;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .hero-circle-2 {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+      border-radius: 50%;
+      bottom: -100px;
+      left: -100px;
+      animation: float 15s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0deg);
       }
 
-      .navbar-scrolled {
-        padding: 12px 0;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      33% {
+        transform: translate(30px, -30px) rotate(5deg);
       }
 
-      .mobile-menu {
+      66% {
+        transform: translate(-20px, 20px) rotate(-5deg);
+      }
+    }
+
+    /* Modern Cards with Green Accent */
+    .card-modern {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px -15px rgba(5, 150, 105, 0.1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(5, 150, 105, 0.1);
+      overflow: hidden;
+    }
+
+    .card-modern:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 30px 60px -15px rgba(5, 150, 105, 0.3);
+    }
+
+    .card-gradient {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      color: white;
+    }
+
+    /* Product Card with Green */
+    .product-card-modern {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(5, 150, 105, 0.1);
+      box-shadow: 0 10px 30px -15px rgba(5, 150, 105, 0.1);
+    }
+
+    .product-card-modern:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 30px 40px -20px rgba(5, 150, 105, 0.4);
+    }
+
+    .product-image {
+      position: relative;
+      overflow: hidden;
+      height: 200px;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .product-card-modern:hover .product-image img {
+      transform: scale(1.1);
+    }
+
+    .product-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to top, rgba(5, 150, 105, 0.5), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .product-card-modern:hover .product-overlay {
+      opacity: 1;
+    }
+
+    /* Modern Badge with Green */
+    .badge-modern {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 10px -5px rgba(5, 150, 105, 0.5);
+    }
+
+    .badge-warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+      /* match modern badge sizing and shape but keep warning color */
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 10px -5px rgba(245, 158, 11, 0.45);
+    }
+
+    .badge-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+
+    /* Modern Button with Green */
+    .btn-modern {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 10px 20px -10px rgba(5, 150, 105, 0.5);
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-modern:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 30px -10px rgba(5, 150, 105, 0.6);
+    }
+
+    .btn-outline-modern {
+      background: transparent;
+      color: #059669;
+      border: 2px solid #059669;
+      padding: 0.75rem 1.5rem;
+      border-radius: 100px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-modern:hover {
+      background: #059669;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* Modern Stats with Green */
+    .stat-modern {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 10px 30px -15px rgba(5, 150, 105, 0.1);
+      border: 1px solid rgba(5, 150, 105, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .stat-modern:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px -15px rgba(5, 150, 105, 0.3);
+    }
+
+    .stat-number-modern {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+
+    /* Section Title with Green */
+    .section-title-modern {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .section-title-modern span {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .section-subtitle {
+      color: #4b5563;
+      font-size: 1.125rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Floating Elements */
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+
+      0%,
+      100% {
+        transform: translate(0, 0px);
+      }
+
+      50% {
+        transform: translate(0, 10px);
+      }
+    }
+
+    .floating-delay {
+      animation: floating 3s ease-in-out infinite;
+      animation-delay: 1s;
+    }
+
+    /* Modern Input with Green Focus */
+    .input-modern {
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 100px;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .input-modern:focus {
+      outline: none;
+      border-color: #059669;
+      box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+    }
+
+    /* Testimonial Card with Green Border */
+    .testimonial-modern {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px -15px rgba(5, 150, 105, 0.1);
+      border: 1px solid rgba(5, 150, 105, 0.1);
+      transition: all 0.3s ease;
+      border-left: 4px solid #059669;
+    }
+
+    .testimonial-modern:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px -15px rgba(5, 150, 105, 0.2);
+    }
+
+    .testimonial-name .last-name {
+      /* allow the last name color to be easily changed */
+      color: var(--accent, #10b981);
+    }
+    .testimonial-badge {
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Modern Footer with Dark Green */
+    .footer-modern {
+      background: #064e3b;
+      color: #a7f3d0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-wave {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .footer-wave svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 1.3px);
+      height: 50px;
+    }
+
+    /* Progress Bar with Green */
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #059669, #10b981);
+      border-radius: 100px;
+      transition: width 1s ease;
+    }
+
+    /* Tooltip with Green */
+    .tooltip-modern {
+      position: relative;
+    }
+
+    .tooltip-modern:hover:before {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #064e3b;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      z-index: 10;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Loading Skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, #f0fdf4 25%, #d1fae5 50%, #f0fdf4 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    /* Modern Scrollbar with Green */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f0fdf4;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #059669, #10b981);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #047857, #059669);
+    }
+
+    /* Floating Action Button with Green */
+    .fab-modern {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #059669, #10b981);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.4);
+      transition: all 0.3s ease;
+      z-index: 50;
+      cursor: pointer;
+      /* removed stroke/border to avoid white outline */
+    }
+
+    .fab-modern:hover {
+      transform: scale(1.1) rotate(10deg);
+      box-shadow: 0 20px 35px -5px rgba(5, 150, 105, 0.6);
+    }
+
+    .fab-modern:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: inherit;
+      z-index: -1;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    /* Back to Top with Green */
+    .back-to-top {
+      position: fixed;
+      bottom: 90px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      /* removed stroke/border to avoid white outline */
+      opacity: 0;
+      visibility: hidden;
+      z-index: 49;
+      box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.4);
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px -5px rgba(5, 150, 105, 0.6);
+    }
+
+    /* Timeline with Green */
+    .timeline-modern {
+      position: relative;
+    }
+
+    .timeline-modern:before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(180deg, #059669, #10b981);
+    }
+
+    /* Countdown Timer with Green */
+    .countdown-modern {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .countdown-item {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      min-width: 80px;
+      text-align: center;
+      box-shadow: 0 10px 20px -10px rgba(5, 150, 105, 0.1);
+      border: 1px solid rgba(5, 150, 105, 0.1);
+    }
+
+    .countdown-number {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+
+    .countdown-label {
+      font-size: 0.75rem;
+      color: #4b5563;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Running Text with Green */
+    .running-text-modern {
+      background: linear-gradient(90deg, #064e3b, #059669);
+      color: white;
+      padding: 0.75rem 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .running-text-content {
+      display: inline-block;
+      white-space: nowrap;
+      animation: scroll 30s linear infinite;
+    }
+
+    .running-text-content i {
+      margin: 0 1rem;
+      color: #fbbf24;
+    }
+
+    @keyframes scroll {
+      0% {
         transform: translateX(100%);
-        transition: transform 0.3s ease;
       }
 
-      .mobile-menu.active {
-        transform: translateX(0);
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    /* Newsletter Section with Green */
+    .newsletter-modern {
+      background: linear-gradient(135deg, #064e3b, #059669);
+      border-radius: 30px;
+      padding: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .newsletter-modern:before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 50%);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
       }
 
-      /* Custom scroll padding untuk fixed navbar */
-      html {
-        scroll-padding-top: 80px;
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Partner Logo with Green Hover */
+    .partner-logo {
+      filter: grayscale(100%);
+      opacity: 0.5;
+      transition: all 0.3s ease;
+    }
+
+    .partner-logo:hover {
+      filter: grayscale(0%);
+      opacity: 1;
+    }
+
+    /* Hover Effects */
+    .hover-lift {
+      transition: transform 0.3s ease;
+    }
+
+    .hover-lift:hover {
+      transform: translateY(-5px);
+    }
+
+    .hover-scale {
+      transition: transform 0.3s ease;
+    }
+
+    .hover-scale:hover {
+      transform: scale(1.05);
+    }
+
+    /* Gradient Text with Green */
+    .gradient-text {
+      background: linear-gradient(135deg, #059669, #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Border Gradient with Green */
+    .border-gradient {
+      border: double 2px transparent;
+      background-image: linear-gradient(white, white), linear-gradient(135deg, #059669, #10b981);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+
+    /* Card with Green Pattern */
+    .pattern-dots {
+      background-image: radial-gradient(#059669 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: 0.1;
+    }
+
+    /* Green Background Variations */
+    .bg-green-gradient {
+      background: linear-gradient(135deg, #064e3b, #059669);
+    }
+
+    .text-green-primary {
+      color: #059669;
+    }
+
+    .border-green-primary {
+      border-color: #059669;
+    }
+
+    .hover\:text-green-primary:hover {
+      color: #059669;
+    }
+
+    .hover\:bg-green-primary:hover {
+      background-color: #059669;
+    }
+
+    /* Logo Styles */
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-container img {
+      max-height: 40px;
+      width: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-container:hover img {
+      transform: scale(1.05);
+    }
+
+    /* New Modern Styles */
+    .gradient-border {
+      position: relative;
+      border: double 1px transparent;
+      border-radius: 20px;
+      background-image: linear-gradient(white, white), linear-gradient(135deg, #059669, #10b981);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+
+    .hover-glow:hover {
+      box-shadow: 0 0 20px rgba(5, 150, 105, 0.3);
+    }
+
+    .text-shadow {
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
       }
 
-      /* Dashboard chart */
-      .chart-line {
-        background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 0 120 Q 50 100 100 80 T 200 60 T 300 40 T 400 20' stroke='%2310b981' stroke-width='4' fill='none'/%3E%3Ccircle cx='0' cy='120' r='4' fill='%2310b981'/%3E%3Ccircle cx='100' cy='80' r='4' fill='%2310b981'/%3E%3Ccircle cx='200' cy='60' r='4' fill='%2310b981'/%3E%3Ccircle cx='300' cy='40' r='4' fill='%2310b981'/%3E%3Ccircle cx='400' cy='20' r='4' fill='%2310b981'/%3E%3C/svg%3E")
-          no-repeat center;
-        background-size: cover;
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    .animate-pulse-slow {
+      animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .grid-pattern {
+      background-image:
+        linear-gradient(rgba(5, 150, 105, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(5, 150, 105, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    .blob {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+      border-radius: 50%;
+      filter: blur(50px);
+      z-index: 0;
+    }
+
+    .card-3d {
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    .card-3d:hover {
+      transform: rotateY(5deg) rotateX(5deg);
+    }
+
+    .shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shimmer::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 20%;
+      height: 200%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transform: rotate(25deg);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        left: -60%;
       }
 
-      /* Hero background effect */
-      .hero-bg {
-        background: radial-gradient(
-          circle,
-          rgba(16, 185, 129, 0.1) 0%,
-          rgba(16, 185, 129, 0) 70%
-        );
+      100% {
+        left: 160%;
+      }
+    }
+
+    /* Animated Background */
+    .animated-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .animated-bg span {
+      position: absolute;
+      display: block;
+      width: 20px;
+      height: 20px;
+      background: rgba(5, 150, 105, 0.05);
+      border-radius: 50%;
+      animation: move 25s linear infinite;
+    }
+
+    @keyframes move {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.8;
       }
 
-      /* CTA background effects */
-      .cta-bg-1 {
-        background: rgba(255, 255, 255, 0.1);
+      100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Card Flip Effect */
+    .card-flip {
+      perspective: 1000px;
+    }
+
+    .card-flip-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .card-flip:hover .card-flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front,
+    .card-back {
+      backface-visibility: hidden;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Gradient Animation */
+    .gradient-animate {
+      background: linear-gradient(-45deg, #059669, #10b981, #34d399, #059669);
+      background-size: 400% 400%;
+      animation: gradient 10s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
       }
 
-      .cta-bg-2 {
-        background: rgba(255, 255, 255, 0.05);
+      50% {
+        background-position: 100% 50%;
       }
 
-      /* Logo placeholder styling */
-      .logo-placeholder {
-        width: 180px;
-        height: 40px;
-        background: linear-gradient(90deg, #059669 0%, #10b981 100%);
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 700;
-        font-size: 1.5rem;
-        letter-spacing: 1px;
+      100% {
+        background-position: 0% 50%;
       }
-    </style>
-  </head>
+    }
 
-  <body class="font-sans bg-light text-dark overflow-x-hidden">
-    <!-- Mobile Menu Overlay -->
-    <div
-      id="mobileMenuOverlay"
-      class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"
-    ></div>
+    /* Text Reveal Animation */
+    .text-reveal {
+      position: relative;
+      overflow: hidden;
+    }
 
-    <!-- Navigation -->
-    <nav
-      id="mainNav"
-      class="fixed top-0 left-0 right-0 bg-white bg-opacity-98 backdrop-blur-sm shadow-md z-50 py-4 transition-all duration-300"
-    >
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center">
-          <!-- Logo Affillink -->
-          <a href="#" class="flex items-center">
-            <img
-              src="/images/logoAffilllink2.png"
-              alt="Affillink Logo"
-              class="h-10 w-auto"
-              style="max-width: 180px"
-            />
+    .text-reveal::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(5, 150, 105, 0.2), transparent);
+      transform: translateX(-100%);
+      animation: reveal 2s infinite;
+    }
+
+    @keyframes reveal {
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    /* Particle Background */
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(5, 150, 105, 0.1);
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body class="bg-[#f0fdf4] antialiased overflow-x-hidden">
+
+  <!-- Animated Background -->
+  <div class="animated-bg">
+    <span style="top: 20%; left: 10%; animation-delay: 0s;"></span>
+    <span style="top: 60%; left: 80%; animation-delay: 2s;"></span>
+    <span style="top: 40%; left: 40%; animation-delay: 4s;"></span>
+    <span style="top: 70%; left: 20%; animation-delay: 6s;"></span>
+    <span style="top: 30%; left: 70%; animation-delay: 8s;"></span>
+    <span style="top: 80%; left: 30%; animation-delay: 10s;"></span>
+    <span style="top: 10%; left: 90%; animation-delay: 12s;"></span>
+    <span style="top: 50%; left: 50%; animation-delay: 14s;"></span>
+  </div>
+
+  <!-- Modern Top Bar with Green -->
+  <div class="bg-[#064e3b] text-white text-sm py-2 relative z-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-6">
+          <a href="tel:+6281234567890" class="hover:text-[#fbbf24] transition flex items-center gap-2 group">
+            <i class="fas fa-phone-alt text-[#10b981] text-xs group-hover:animate-bounce"></i>
+            <span class="group-hover:translate-x-1 transition-transform">+62 812-3456-7890</span>
+          </a>
+          <a href="mailto:support@affillink.id"
+            class="hover:text-[#fbbf24] transition hidden sm:flex items-center gap-2 group">
+            <i class="fas fa-envelope text-[#10b981] text-xs group-hover:animate-bounce"></i>
+            <span class="group-hover:translate-x-1 transition-transform">support@affillink.id</span>
+          </a>
+          <a href="#" class="hover:text-[#fbbf24] transition hidden md:flex items-center gap-2 group">
+            <i class="fas fa-map-marker-alt text-[#10b981] text-xs group-hover:animate-bounce"></i>
+            <span class="group-hover:translate-x-1 transition-transform">Jakarta, Indonesia</span>
+          </a>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="hidden md:inline text-[#a7f3d0]">Follow kami:</span>
+          <div class="flex gap-2">
+            <a href="#"
+              class="w-8 h-8 bg-[#065f46] rounded-full flex items-center justify-center text-[#a7f3d0] hover:bg-[#059669] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
+                class="fab fa-facebook-f text-sm"></i></a>
+            <a href="#"
+              class="w-8 h-8 bg-[#065f46] rounded-full flex items-center justify-center text-[#a7f3d0] hover:bg-[#059669] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
+                class="fab fa-instagram text-sm"></i></a>
+            <a href="#"
+              class="w-8 h-8 bg-[#065f46] rounded-full flex items-center justify-center text-[#a7f3d0] hover:bg-[#059669] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
+                class="fab fa-twitter text-sm"></i></a>
+            <a href="#"
+              class="w-8 h-8 bg-[#065f46] rounded-full flex items-center justify-center text-[#a7f3d0] hover:bg-[#059669] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
+                class="fab fa-linkedin-in text-sm"></i></a>
+            <a href="#"
+              class="w-8 h-8 bg-[#065f46] rounded-full flex items-center justify-center text-[#a7f3d0] hover:bg-[#059669] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
+                class="fab fa-youtube text-sm"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modern Header with Logo -->
+  <header class="header-modern sticky top-0 z-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo Affillink -->
+        <a href="/" class="logo-container flex items-center group relative">
+          <div
+            class="absolute -inset-2 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md">
+          </div>
+          <img src="/images/logoAffilllink2.png" alt="Affillink Logo"
+            class="h-10 w-auto transition-all duration-300 group-hover:scale-105 relative z-10" style="max-width: 180px"
+            onerror="this.onerror=null; this.src='https://via.placeholder.com/180x40/059669/ffffff?text=Affillink';" />
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center gap-1">
+          <a href="#beranda"
+            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
+            <span class="relative z-10">Beranda</span>
+            <span
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
+            <span
+              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+          </a>
+          <a href="#produk"
+            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
+            <span class="relative z-10">Produk</span>
+            <span
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
+            <span
+              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+          </a>
+          <a href="#komisi"
+            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
+            <span class="relative z-10">Komisi</span>
+            <span
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
+            <span
+              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+          </a>
+          <a href="#cara-kerja"
+            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
+            <span class="relative z-10">Cara Kerja</span>
+            <span
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
+            <span
+              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+          </a>
+          <a href="#testimoni"
+            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
+            <span class="relative z-10">Testimoni</span>
+            <span
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
+            <span
+              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+          </a>
+          <a href="#blog"
+            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
+            <span class="relative z-10">Blog</span>
+            <span
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
+            <span
+              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+          </a>
+          <a href="#faq"
+            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
+            <span class="relative z-10">FAQ</span>
+            <span
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
+            <span
+              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+          </a>
+        </nav>
+
+        <!-- CTA Buttons -->
+        <div class="flex items-center gap-3">
+          <a href="/login"
+            class="hidden md:block px-5 py-2 text-[#065f46] font-bold hover:text-[#059669] transition-all duration-300 relative group overflow-hidden">
+            <span class="relative z-10">Login</span>
+            <span
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
+            <span
+              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+          </a>
+          <a href="/register" class="btn-modern group relative overflow-hidden shimmer">
+            <span class="relative z-10">Daftar Gratis</span>
+            <i class="fas fa-arrow-right text-sm relative z-10 group-hover:translate-x-1 transition-transform"></i>
+            <span
+              class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
           </a>
 
-          <!-- Desktop Navigation -->
-          <div class="hidden lg:flex items-center gap-8">
-            <!-- Main Navigation Links -->
-            <div class="flex gap-8">
-              <a
-                href="#home"
-                class="text-gray-dark font-medium hover:text-primary transition-colors duration-300 relative after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
-                >Home</a
-              >
-              <a
-                href="#features"
-                class="text-gray-dark font-medium hover:text-primary transition-colors duration-300 relative after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
-                >Features</a
-              >
-              <a
-                href="#pricing"
-                class="text-gray-dark font-medium hover:text-primary transition-colors duration-300 relative after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
-                >Pricing</a
-              >
-              <a
-                href="#blog"
-                class="text-gray-dark font-medium hover:text-primary transition-colors duration-300 relative after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
-                >Blog</a
-              >
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex items-center gap-4">
-              <a
-                href="/login"
-                class="px-6 py-2 border-2 border-gray-light rounded-lg font-medium text-dark hover:border-primary hover:text-primary transition-all duration-300"
-                >Login</a
-              >
-              <a
-                href="/register"
-                class="px-6 py-2 bg-gradient-to-br from-primary to-primary-light text-white font-medium rounded-lg shadow-primary hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                >Register</a
-              >
-            </div>
-          </div>
-
           <!-- Mobile Menu Button -->
-          <button
-            id="mobileMenuBtn"
-            class="lg:hidden text-2xl text-dark focus:outline-none"
-          >
+          <button onclick="toggleMobileMenu()"
+            class="lg:hidden w-10 h-10 bg-gradient-to-r from-[#059669] to-[#10b981] text-white rounded-xl flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-lg">
             <i class="fas fa-bars"></i>
           </button>
         </div>
       </div>
-    </nav>
-
-    <!-- Mobile Menu -->
-    <div
-      id="mobileMenuContainer"
-      class="mobile-menu fixed top-0 right-0 w-72 h-full bg-white shadow-2xl z-50 flex flex-col pt-24 px-8 gap-6"
-    >
-      <a
-        href="#home"
-        class="text-xl text-dark font-medium hover:text-primary transition-colors"
-        >Home</a
-      >
-      <a
-        href="#features"
-        class="text-xl text-dark font-medium hover:text-primary transition-colors"
-        >Features</a
-      >
-      <a
-        href="#pricing"
-        class="text-xl text-dark font-medium hover:text-primary transition-colors"
-        >Pricing</a
-      >
-      <a
-        href="#blog"
-        class="text-xl text-dark font-medium hover:text-primary transition-colors"
-        >Blog</a
-      >
-
-      <div class="mt-8 flex flex-col gap-4">
-        <a
-          href="/login"
-          class="px-6 py-3 border-2 border-gray-light rounded-lg font-medium text-dark hover:border-primary hover:text-primary transition-all duration-300 text-center"
-          >Login</a
-        >
-        <a
-          href="/register"
-          class="px-6 py-3 bg-gradient-to-br from-primary to-primary-light text-white font-medium rounded-lg shadow-primary hover:shadow-xl transition-all duration-300 text-center"
-          >Register</a
-        >
-      </div>
     </div>
 
-    <!-- Hero Section -->
-    <section
-      id="home"
-      class="pt-32 pb-16 md:pt-40 md:pb-20 relative overflow-hidden"
-    >
-      <!-- Background Effect -->
-      <div
-        class="hero-bg absolute -top-40 -right-40 w-96 h-96 md:w-[800px] md:h-[800px] rounded-full -z-10"
-      ></div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu"
+      class="hidden lg:hidden absolute top-full left-0 w-full bg-white border-t border-[#d1fae5] shadow-xl transform transition-all duration-300">
+      <div class="container mx-auto px-4 py-4">
+        <div class="space-y-2">
+          <a href="#beranda"
+            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
+              class="fas fa-home w-6 text-[#059669]"></i> Beranda</a>
+          <a href="#produk"
+            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
+              class="fas fa-box w-6 text-[#059669]"></i> Produk</a>
+          <a href="#komisi"
+            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
+              class="fas fa-percentage w-6 text-[#059669]"></i> Komisi</a>
+          <a href="#cara-kerja"
+            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
+              class="fas fa-cogs w-6 text-[#059669]"></i> Cara Kerja</a>
+          <a href="#testimoni"
+            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
+              class="fas fa-star w-6 text-[#059669]"></i> Testimoni</a>
+          <a href="#blog"
+            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
+              class="fas fa-blog w-6 text-[#059669]"></i> Blog</a>
+          <a href="#faq"
+            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
+              class="fas fa-question-circle w-6 text-[#059669]"></i> FAQ</a>
+          <div class="pt-4 mt-4 border-t border-[#d1fae5]">
+            <a href="/register" class="btn-modern w-full justify-center group">
+              Daftar Sekarang
+              <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </a>
+              <a href="/login"
+                class="mt-2 block w-full px-4 py-3 text-center text-[#065f46] hover:text-[#059669] transition-colors duration-300 font-bold">
+                Login
+              </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center"
-        >
-          <!-- Hero Content -->
+  <!-- Running Text Modern with Green -->
+  <div class="running-text-modern relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-[#064e3b] to-[#059669] opacity-90"></div>
+    <div class="container mx-auto px-4 relative">
+      <div class="running-text-content">
+        <i class="fas fa-bolt text-yellow-300"></i> PROMO SPESIAL: Bonus Rp 500.000 untuk Affiliate Baru!
+        <i class="fas fa-star text-yellow-300"></i> Komisi Tertinggi hingga 50%
+        <i class="fas fa-rocket text-yellow-300"></i> Produk Digital & Fisik Tersedia
+        <i class="fas fa-clock text-yellow-300"></i> Payout Harian via Bank & E-Wallet
+        <i class="fas fa-gift text-yellow-300"></i> Gratis Pendaftaran Selamanya!
+        <i class="fas fa-trophy text-yellow-300"></i> 50,000+ Affiliate Sukses
+        <i class="fas fa-bolt text-yellow-300"></i> PROMO SPESIAL: Bonus Rp 500.000 untuk Affiliate Baru!
+        <i class="fas fa-star text-yellow-300"></i> Komisi Tertinggi hingga 50%
+        <i class="fas fa-rocket text-yellow-300"></i> Produk Digital & Fisik Tersedia
+        <i class="fas fa-clock text-yellow-300"></i> Payout Harian via Bank & E-Wallet
+        <i class="fas fa-gift text-yellow-300"></i> Gratis Pendaftaran Selamanya!
+        <i class="fas fa-trophy text-yellow-300"></i> 50,000+ Affiliate Sukses
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section Modern with Green -->
+  <section id="beranda" class="hero-modern pt-20 pb-32 relative overflow-hidden">
+    <div class="hero-circle"></div>
+    <div class="hero-circle-2"></div>
+    <div class="absolute inset-0 grid-pattern opacity-20"></div>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Left Content -->
+        <div data-aos="fade-right" data-aos-duration="1000">
           <div
-            data-aos="fade-right"
-            data-aos-duration="800"
-            data-aos-delay="100"
-          >
-            <h1
-              class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 gradient-text leading-tight"
-            >
-              Grow Your Revenue with Smart Affiliate Marketing
-            </h1>
-            <p class="text-lg md:text-xl text-gray mb-8 leading-relaxed">
-              Join our powerful affiliate platform to boost your income by
-              partnering with top brands and earning commissions easily. Access
-              advanced analytics, intuitive tools, and dedicated support.
-            </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 mb-10">
-              <a
-                href="/login"
-                class="px-8 py-4 bg-gradient-to-br from-primary to-primary-light text-white font-semibold rounded-xl shadow-primary hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center"
-                data-aos="fade-up"
-                data-aos-duration="800"
-                data-aos-delay="300"
-              >
-                Get Started
-              </a>
-              <a
-                href="/register"
-                class="px-8 py-4 bg-white text-primary font-semibold rounded-xl border-2 border-primary hover:bg-opacity-5 hover:bg-primary transition-all duration-300 text-center"
-                data-aos="fade-up"
-                data-aos-duration="800"
-                data-aos-delay="400"
-              >
-                Learn More
-              </a>
-            </div>
-
-            <div
-              class="flex flex-wrap items-center gap-4"
-              data-aos="fade-up"
-              data-aos-duration="800"
-              data-aos-delay="500"
-            >
-              <span
-                class="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-card text-sm text-gray"
-              >
-                <i class="fab fa-paypal text-primary"></i> PayPal
-              </span>
-              <span
-                class="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-card text-sm text-gray"
-              >
-                <i class="fas fa-credit-card text-primary"></i> Stripe
-              </span>
-              <span
-                class="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-card text-sm text-gray"
-              >
-                <i class="fas fa-university text-primary"></i> Bank Transfer
-              </span>
-            </div>
+            class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-lg text-sm font-semibold mb-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <span class="w-2 h-2 bg-[#059669] rounded-full animate-pulse"></span>
+            <span class="text-[#065f46]">🔥 50,000+ Affiliate Aktif di Seluruh Indonesia</span>
+            <span class="px-2 py-0.5 bg-[#059669] text-white text-xs rounded-full animate-pulse-slow">LIVE</span>
           </div>
 
-          <!-- Dashboard Preview -->
-          <div
-            class="relative"
-            data-aos="fade-left"
-            data-aos-duration="800"
-            data-aos-delay="200"
-          >
+          <h1 class="section-title-modern text-5xl lg:text-6xl text-shadow">
+            Dapatkan Penghasilan <br><span>Jutaan Rupiah</span> <br>Setiap Bulan
+          </h1>
+
+          <p class="text-[#4b5563] text-lg mb-8 max-w-lg leading-relaxed">
+            Bergabung dengan platform affiliate marketing modern. Promosikan produk berkualitas, dapatkan komisi hingga
+            <span class="font-bold text-[#059669] bg-[#ecfdf5] px-2 py-1 rounded-lg border border-[#059669]">50%</span>
+            setiap penjualan. Tanpa modal, tanpa stok barang.
+          </p>
+
+          <div class="flex flex-wrap gap-4 mb-8">
+            <a href="/register" class="btn-modern text-base px-8 py-4 group relative overflow-hidden shimmer">
+              <span class="relative z-10">Mulai Sekarang Gratis</span>
+              <i
+                class="fas fa-rocket ml-2 relative z-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+              <span
+                class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+            </a>
+            <a href="#cara-kerja" class="btn-outline-modern text-base px-8 py-4 group relative overflow-hidden">
+              <span class="relative z-10"><i class="far fa-play-circle mr-2 group-hover:animate-pulse"></i>Lihat Cara
+                Kerja</span>
+              <span
+                class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+            </a>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="flex items-center gap-6">
+            <div class="flex -space-x-3">
+              <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                class="w-10 h-10 rounded-full border-2 border-white hover:scale-110 hover:z-10 transition-all duration-300"
+                alt="User">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg"
+                class="w-10 h-10 rounded-full border-2 border-white hover:scale-110 hover:z-10 transition-all duration-300"
+                alt="User">
+              <img src="https://randomuser.me/api/portraits/women/68.jpg"
+                class="w-10 h-10 rounded-full border-2 border-white hover:scale-110 hover:z-10 transition-all duration-300"
+                alt="User">
+              <img src="https://randomuser.me/api/portraits/men/46.jpg"
+                class="w-10 h-10 rounded-full border-2 border-white hover:scale-110 hover:z-10 transition-all duration-300"
+                alt="User">
+              <img src="https://randomuser.me/api/portraits/women/33.jpg"
+                class="w-10 h-10 rounded-full border-2 border-white hover:scale-110 hover:z-10 transition-all duration-300"
+                alt="User">
+            </div>
+            <div>
+              <div class="flex items-center gap-1">
+                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                <span class="text-sm font-semibold text-[#065f46] ml-1">4.9</span>
+              </div>
+              <p class="text-xs text-[#6b7280]">1.500+ review positif dari affiliate</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Content -->
+        <div class="relative" data-aos="fade-left" data-aos-duration="1000">
+          <!-- Main Image -->
+          <div class="relative group card-3d">
             <div
-              class="bg-white rounded-2xl shadow-card-lg border border-gray-light p-6"
-            >
-              <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold text-dark">Affiliate Dashboard</h3>
+              class="absolute -inset-4 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-3xl opacity-20 blur-3xl group-hover:opacity-30 transition-all duration-500 animate-pulse">
+            </div>
+            <img
+              src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Affiliate Marketing"
+              class="relative rounded-3xl shadow-2xl w-full transform group-hover:scale-[1.02] transition-all duration-700">
+
+            <!-- Floating Cards with Green -->
+            <div
+              class="absolute -bottom-8 -left-8 glass-card p-4 rounded-2xl shadow-xl floating cursor-pointer hover:bg-white hover:scale-105 transition-all duration-300"
+              data-aos="zoom-in" data-aos-delay="200">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-12 h-12 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-xl flex items-center justify-center text-white group/icon">
+                  <i class="fas fa-chart-line text-xl group-hover/icon:scale-110 transition-transform duration-300"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-[#6b7280]">Komisi Bulanan</p>
+                  <p class="text-xl font-bold text-[#064e3b]">Rp 50Jt+</p>
+                  <div class="flex items-center gap-1 text-xs text-[#059669]">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+27% dari bulan lalu</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="absolute -top-8 -right-8 glass-card p-4 rounded-2xl shadow-xl floating-delay cursor-pointer hover:bg-white hover:scale-105 transition-all duration-300"
+              data-aos="zoom-in" data-aos-delay="400">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-12 h-12 bg-gradient-to-r from-[#f59e0b] to-[#d97706] rounded-xl flex items-center justify-center text-white group/icon">
+                  <i class="fas fa-users text-xl group-hover/icon:scale-110 transition-transform duration-300"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-[#6b7280]">Total Affiliate</p>
+                  <p class="text-xl font-bold text-[#064e3b]">50K+</p>
+                  <p class="text-xs text-[#059669]">Aktif</p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="absolute bottom-8 right-8 bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-[#059669] transition-all duration-300 cursor-pointer">
+              <i class="fas fa-play-circle text-[#10b981] group-hover:animate-pulse"></i>
+              <span>Watch Video</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section Modern with Green -->
+  <section class="py-12 relative z-20 -mt-16">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
+          data-aos-duration="800">
+          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">500+</div>
+          <div
+            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#059669] transition-colors duration-300">
+            Produk Tersedia</div>
+          <div class="progress-bar mt-3">
+            <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 85%"></div>
+          </div>
+        </div>
+        <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
+          data-aos-duration="800" data-aos-delay="100">
+          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">50K+</div>
+          <div
+            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#059669] transition-colors duration-300">
+            Affiliate Aktif</div>
+          <div class="progress-bar mt-3">
+            <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 92%"></div>
+          </div>
+        </div>
+        <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
+          data-aos-duration="800" data-aos-delay="200">
+          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">Rp 5M+</div>
+          <div
+            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#059669] transition-colors duration-300">
+            Komisi Dibayar</div>
+          <div class="progress-bar mt-3">
+            <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 78%"></div>
+          </div>
+        </div>
+        <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
+          data-aos-duration="800" data-aos-delay="300">
+          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">98%</div>
+          <div
+            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#059669] transition-colors duration-300">
+            Affiliate Puas</div>
+          <div class="progress-bar mt-3">
+            <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 98%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products Modern with Green -->
+  <section id="produk" class="py-20 bg-white relative overflow-hidden">
+    <div class="absolute inset-0 grid-pattern opacity-5"></div>
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center mb-12">
+        <div
+          class="inline-flex items-center gap-2 px-4 py-2 bg-[#ecfdf5] rounded-full mb-4 hover:shadow-md hover:scale-105 transition-all duration-300">
+          <span class="w-2 h-2 bg-[#059669] rounded-full animate-pulse"></span>
+          <span class="text-sm font-medium text-[#065f46]">Pilihan Produk Terbaik</span>
+        </div>
+        <h2 class="section-title-modern">
+          Produk <span>Unggulan</span> Kami
+        </h2>
+        <p class="section-subtitle">Pilih dari ratusan produk berkualitas dengan komisi tertinggi untuk dipromosikan</p>
+      </div>
+
+      <!-- Filter Categories Modern with Green -->
+      <div class="flex flex-wrap justify-center gap-2 mb-10">
+        <button
+          class="px-6 py-3 bg-gradient-to-r from-[#059669] to-[#10b981] text-white rounded-full font-medium text-sm shadow-lg shadow-[#059669]/20 hover:shadow-xl hover:scale-105 transition-all duration-300">Semua</button>
+        <button
+          class="px-6 py-3 bg-white text-[#065f46] rounded-full font-medium text-sm hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-105 transition-all duration-300 border border-gray-200">Digital</button>
+        <button
+          class="px-6 py-3 bg-white text-[#065f46] rounded-full font-medium text-sm hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-105 transition-all duration-300 border border-gray-200">Kesehatan</button>
+        <button
+          class="px-6 py-3 bg-white text-[#065f46] rounded-full font-medium text-sm hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-105 transition-all duration-300 border border-gray-200">Kecantikan</button>
+        <button
+          class="px-6 py-3 bg-white text-[#065f46] rounded-full font-medium text-sm hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-105 transition-all duration-300 border border-gray-200">Elektronik</button>
+        <button
+          class="px-6 py-3 bg-white text-[#065f46] rounded-full font-medium text-sm hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-105 transition-all duration-300 border border-gray-200">Fashion</button>
+        <button
+          class="px-6 py-3 bg-white text-[#065f46] rounded-full font-medium text-sm hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-105 transition-all duration-300 border border-gray-200">Travel</button>
+      </div>
+
+      <!-- Product Grid Modern with Green -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Product 1 -->
+        <div class="product-card-modern group hover-glow" data-aos="fade-up" data-aos-duration="800">
+          <div class="product-image">
+            <img
+              src="https://images.unsplash.com/photo-1586495777744-4413f21062fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+              alt="Produk">
+            <div class="product-overlay"></div>
+            <div class="absolute top-3 right-3 badge-modern z-10">Komisi 40%</div>
+            <div
+              class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#065f46] z-10 border border-[#d1fae5]">
+              Digital</div>
+            <div
+              class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-semibold text-[#065f46] z-10 opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <i class="fas fa-eye text-[#059669] mr-1"></i> 1.2k views
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+              E-Book Rahasia Sukses Affiliate</h3>
+            <p class="text-[#6b7280] text-sm mb-4">Panduan lengkap menjadi affiliate marketer profesional dari nol</p>
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <span class="text-xs text-[#9ca3af]">Harga</span>
+                <div class="font-bold text-[#064e3b]">Rp 299.000</div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-[#9ca3af]">Komisi</span>
+                <div class="font-bold text-[#059669]">Rp 119.600</div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1">
+                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                <span class="text-sm font-medium">4.8</span>
+                <span class="text-xs text-[#9ca3af]">(1.2k terjual)</span>
+              </div>
+              <button onclick="window.location.href='/register?ref=product1'"
+                class="btn-modern text-sm py-2 px-4 group/btn relative overflow-hidden">
+                <span class="relative z-10"><i
+                    class="fas fa-link mr-2 group-hover/btn:rotate-12 transition-transform duration-300"></i>Ambil
+                  Link</span>
                 <span
-                  class="text-sm text-gray bg-gray-light px-3 py-1 rounded-full"
-                  >Last 30 Days</span
-                >
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <!-- Stat Card 1 -->
-                <div
-                  class="bg-gradient-to-br from-green-50 to-emerald-50 p-5 rounded-xl border border-emerald-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
-                  data-aos="zoom-in"
-                  data-aos-delay="100"
-                >
-                  <p
-                    class="text-xs font-semibold text-primary uppercase tracking-wider mb-2"
-                  >
-                    Total Earnings
-                  </p>
-                  <p class="text-2xl md:text-3xl font-bold text-emerald-800">
-                    $5,472.50
-                  </p>
-                  <p class="text-xs text-primary mt-2">
-                    <i class="fas fa-arrow-up mr-1"></i> 12.5% from last month
-                  </p>
-                </div>
-
-                <!-- Stat Card 2 -->
-                <div
-                  class="bg-gradient-to-br from-green-50 to-emerald-50 p-5 rounded-xl border border-emerald-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
-                  data-aos="zoom-in"
-                  data-aos-delay="200"
-                >
-                  <p
-                    class="text-xs font-semibold text-primary uppercase tracking-wider mb-2"
-                  >
-                    Clicks
-                  </p>
-                  <p class="text-2xl md:text-3xl font-bold text-emerald-800">
-                    12,980
-                  </p>
-                  <p class="text-xs text-primary mt-2">
-                    <i class="fas fa-arrow-up mr-1"></i> 8.2% from last month
-                  </p>
-                </div>
-
-                <!-- Stat Card 3 -->
-                <div
-                  class="bg-gradient-to-br from-green-50 to-emerald-50 p-5 rounded-xl border border-emerald-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
-                  data-aos="zoom-in"
-                  data-aos-delay="300"
-                >
-                  <p
-                    class="text-xs font-semibold text-primary uppercase tracking-wider mb-2"
-                  >
-                    Conversion Rate
-                  </p>
-                  <p class="text-2xl md:text-3xl font-bold text-emerald-800">
-                    3.8%
-                  </p>
-                  <p class="text-xs text-primary mt-2">
-                    <i class="fas fa-arrow-up mr-1"></i> 1.2% from last month
-                  </p>
-                </div>
-              </div>
-
-              <!-- Chart Area -->
-              <div
-                class="bg-gradient-to-b from-emerald-50 to-green-50 h-48 rounded-xl p-5"
-              >
-                <div
-                  class="chart-line absolute bottom-10 left-10 right-10 h-32"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="py-16 md:py-20 bg-gray-light">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2
-          class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4"
-          data-aos="fade-up"
-          data-aos-duration="800"
-        >
-          Special Promo Events
-        </h2>
-        <p
-          class="text-lg md:text-xl text-gray text-center max-w-3xl mx-auto mb-12"
-          data-aos="fade-up"
-          data-aos-duration="800"
-          data-aos-delay="100"
-        >
-          Limited time offers with exclusive discounts. Don't miss out!
-        </p>
-
-        <!-- Loading State -->
-        <div id="eventsLoading" class="text-center py-12">
-          <i class="fas fa-spinner fa-spin text-4xl text-primary mb-4"></i>
-          <p class="text-gray">Loading events...</p>
-        </div>
-
-        <!-- Events Container -->
-        <div
-          id="eventsContainer"
-          class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto hidden"
-        >
-          <!-- Events will be loaded here dynamically -->
-        </div>
-
-        <!-- No Events State -->
-        <div id="noEvents" class="text-center py-12 hidden">
-          <i class="fas fa-calendar-times text-6xl text-gray-300 mb-4"></i>
-          <p class="text-xl text-gray-500">No active events at the moment</p>
-          <p class="text-gray-400 mt-2">
-            Check back later for special promotions!
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <script>
-      // Load active events on page load
-      document.addEventListener("DOMContentLoaded", async function () {
-        await loadActiveEvents();
-      });
-
-      async function loadActiveEvents() {
-        const eventsLoading = document.getElementById("eventsLoading");
-        const eventsContainer = document.getElementById("eventsContainer");
-        const noEvents = document.getElementById("noEvents");
-
-        try {
-          const response = await fetch("/api/admin/events/active");
-          const data = await response.json();
-          console.debug("Loaded active events:", data);
-
-          eventsLoading.classList.add("hidden");
-
-          if (data.success && data.data.length > 0) {
-            eventsContainer.classList.remove("hidden");
-            displayEvents(data.data);
-          } else {
-            noEvents.classList.remove("hidden");
-          }
-        } catch (error) {
-          console.error("Error loading events:", error);
-          eventsLoading.classList.add("hidden");
-          noEvents.classList.remove("hidden");
-        }
-      }
-
-      function displayEvents(events) {
-        const container = document.getElementById("eventsContainer");
-        container.innerHTML = "";
-
-        events.forEach((event, index) => {
-          const priceOriginal = Number(event.price_original) || 0;
-          const priceDiscount = Number(event.price_discount) || 0;
-          const isGratis = priceOriginal === 0;
-          const discount =
-            priceOriginal > 0 &&
-            priceDiscount > 0 &&
-            priceDiscount < priceOriginal
-              ? Math.round(
-                  ((priceOriginal - priceDiscount) / priceOriginal) * 100,
-                )
-              : 0;
-          const delay = 200 + index * 100;
-
-          const priceHtml = isGratis
-            ? `<div class="text-4xl font-bold text-dark">Gratis</div>`
-            : `
-                        ${priceOriginal > priceDiscount ? `<div class="text-sm text-gray-500 line-through">Rp ${parseInt(priceOriginal).toLocaleString("id-ID")}</div>` : ""}
-                        <div class="text-4xl font-bold text-dark">Rp ${parseInt(priceDiscount > 0 ? priceDiscount : priceOriginal).toLocaleString("id-ID")}</div>
-                        ${priceOriginal > priceDiscount ? `<div class="text-sm text-red-500 font-semibold mt-1">Save Rp ${Math.max(0, parseInt(priceOriginal) - parseInt(priceDiscount)).toLocaleString("id-ID")}</div>` : ""}
-                    `;
-
-          const eventCard = `
-                    <div class="bg-white rounded-2xl shadow-card p-8 border-2 ${event.status === "active" ? "border-primary" : "border-gray-light"} relative transition-all duration-300 hover:-translate-y-2"
-                         data-aos="fade-up" data-aos-duration="800" data-aos-delay="${delay}">
-                        ${
-                          discount > 0
-                            ? `
-                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-1 rounded-full text-sm font-semibold">
-                            ${discount}% OFF
-                        </div>
-                        `
-                            : ""
-                        }
-
-                        <h3 class="text-xl font-bold text-primary-dark mb-3">${event.name}</h3>
-                        ${event.description ? `<p class="text-gray text-sm mb-4">${event.description}</p>` : ""}
-
-                        <div class="mb-6">
-                            ${priceHtml}
-                        </div>
-
-                        <div class="mb-6 pb-6 border-b border-gray-200">
-                            <div class="flex items-center text-sm text-gray-500 mb-2">
-                                <i class="fas fa-calendar-alt mr-2"></i>
-                                <span>${event.start_date ? new Date(event.start_date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "—"}</span>
-                            </div>
-                            <div class="flex items-center text-sm text-gray-500">
-                                <i class="fas fa-clock mr-2"></i>
-                                <span>Until ${event.end_date ? new Date(event.end_date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "—"}</span>
-                            </div>
-                        </div>
-
-                        <button aria-label="Get This Deal" role="button" type="button" data-action="get-deal" data-event-id="${event.id}" data-ref="${event.affiliate_link ? event.affiliate_link.code : ""}"
-                           data-bank-name="${event.bank_name || ""}"
-                           data-bank-account-name="${event.bank_account_name || ""}"
-                           data-bank-account-number="${event.bank_account_number || ""}"
-                           data-payment-methods="${event.payment_methods || ""}"
-                           class="block w-full py-3 bg-gradient-to-br from-primary to-primary-light text-white font-semibold rounded-xl text-center shadow-primary hover:shadow-xl transition-all duration-300 cursor-pointer">
-                          Get This Deal
-                        </button>
-                    </div>
-                `;
-
-          container.innerHTML += eventCard;
-        });
-      }
-
-      // Add delegated click handler specifically for 'Get This Deal' buttons (more reliable than global delegation)
-      document.getElementById('eventsContainer')?.addEventListener('click', function (e) {
-        const btn = e.target.closest('button[data-action="get-deal"], a[data-action="get-deal"]');
-        if (!btn) return;
-        e.preventDefault();
-        const eventId = btn.dataset.eventId || btn.getAttribute('data-event-id') || '';
-        const ref = btn.dataset.ref || btn.getAttribute('data-ref') || '';
-        console.debug('Get This Deal clicked', { eventId, ref });
-        const params = new URLSearchParams();
-        if (eventId) params.set('event_id', eventId);
-        if (ref) params.set('ref', ref);
-        window.location.href = '/checkout' + (params.toString() ? '?' + params.toString() : '');
-      });
-
-      // Refresh events when user returns to the tab (helps see new events created in admin)
-      window.addEventListener("focus", function () {
-        loadActiveEvents();
-      });
-    </script>
-
-    <!-- Blog Section -->
-    <section id="blog" class="py-16 md:py-20 bg-white">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2
-          class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4"
-          data-aos="fade-up"
-          data-aos-duration="800"
-        >
-          Latest from Our Blog
-        </h2>
-        <p
-          class="text-lg md:text-xl text-gray text-center max-w-3xl mx-auto mb-12"
-          data-aos="fade-up"
-          data-aos-duration="800"
-          data-aos-delay="100"
-        >
-          Tips, strategies, and news to help you succeed in affiliate marketing.
-        </p>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <!-- Blog Post 1 -->
-          <div
-            class="bg-white rounded-2xl shadow-card p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-card-lg"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="200"
-          >
-            <div class="text-sm font-semibold text-primary mb-3">
-              Affiliate Tips
-            </div>
-            <h3 class="text-xl font-bold text-dark mb-4">
-              5 Ways to Boost Your Affiliate Revenue in 2026
-            </h3>
-            <p class="text-gray mb-6">
-              Discover actionable strategies to increase your affiliate earnings
-              with proven techniques and expert advice.
-            </p>
-            <a
-              href="#"
-              class="text-primary font-semibold flex items-center gap-2 hover:text-primary-dark transition-colors"
-            >
-              Read More <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-
-          <!-- Blog Post 2 -->
-          <div
-            class="bg-white rounded-2xl shadow-card p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-card-lg"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="300"
-          >
-            <div class="text-sm font-semibold text-secondary-dark mb-3">
-              Platform Update
-            </div>
-            <h3 class="text-xl font-bold text-dark mb-4">
-              New Analytics Dashboard Launched
-            </h3>
-            <p class="text-gray mb-6">
-              Explore the latest features in our analytics dashboard to help you
-              track and optimize your campaigns more effectively.
-            </p>
-            <a
-              href="#"
-              class="text-primary font-semibold flex items-center gap-2 hover:text-primary-dark transition-colors"
-            >
-              Read More <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-
-          <!-- Blog Post 3 -->
-          <div
-            class="bg-white rounded-2xl shadow-card p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-card-lg"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="400"
-          >
-            <div class="text-sm font-semibold text-secondary mb-3">
-              Success Story
-            </div>
-            <h3 class="text-xl font-bold text-dark mb-4">
-              How Jane Grew Her Affiliate Business
-            </h3>
-            <p class="text-gray mb-6">
-              Read how one marketer scaled her affiliate business using our
-              platform and the lessons you can apply today.
-            </p>
-            <a
-              href="#"
-              class="text-primary font-semibold flex items-center gap-2 hover:text-primary-dark transition-colors"
-            >
-              Read More <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="py-16 md:py-20 bg-light">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2
-          class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4"
-          data-aos="fade-up"
-          data-aos-duration="800"
-        >
-          Everything You Need to Succeed
-        </h2>
-        <p
-          class="text-lg md:text-xl text-gray text-center max-w-3xl mx-auto mb-16"
-          data-aos="fade-up"
-          data-aos-duration="800"
-          data-aos-delay="100"
-        >
-          Maximize your earnings with powerful analytics and easy-to-use tools
-          designed for affiliate marketers of all levels.
-        </p>
-
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto"
-        >
-          <!-- Feature 1 -->
-          <div
-            class="bg-white rounded-2xl shadow-card p-8 border border-gray-light transition-all duration-300 hover:-translate-y-2 hover:shadow-primary hover:border-primary-light"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="200"
-          >
-            <div
-              class="w-16 h-16 bg-gradient-to-br from-emerald-50 to-green-100 rounded-xl flex items-center justify-center text-2xl text-primary-dark mb-6 mx-auto"
-            >
-              <i class="fas fa-chart-line"></i>
-            </div>
-            <h3 class="text-xl font-bold text-dark text-center mb-4">
-              Real-Time Tracking
-            </h3>
-            <p class="text-gray text-center">
-              Monitor clicks, conversions, and earnings in real time with our
-              intuitive dashboard and detailed reports.
-            </p>
-          </div>
-
-          <!-- Feature 2 -->
-          <div
-            class="bg-white rounded-2xl shadow-card p-8 border border-gray-light transition-all duration-300 hover:-translate-y-2 hover:shadow-primary hover:border-primary-light"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="300"
-          >
-            <div
-              class="w-16 h-16 bg-gradient-to-br from-emerald-50 to-green-100 rounded-xl flex items-center justify-center text-2xl text-primary-dark mb-6 mx-auto"
-            >
-              <i class="fas fa-tools"></i>
-            </div>
-            <h3 class="text-xl font-bold text-dark text-center mb-4">
-              Marketing Tools
-            </h3>
-            <p class="text-gray text-center">
-              Access a suite of promotional tools, including banners, links,
-              landing pages, and social media integrations.
-            </p>
-          </div>
-
-          <!-- Feature 3 -->
-          <div
-            class="bg-white rounded-2xl shadow-card p-8 border border-gray-light transition-all duration-300 hover:-translate-y-2 hover:shadow-primary hover:border-primary-light"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="400"
-          >
-            <div
-              class="w-16 h-16 bg-gradient-to-br from-emerald-50 to-green-100 rounded-xl flex items-center justify-center text-2xl text-primary-dark mb-6 mx-auto"
-            >
-              <i class="fas fa-money-bill-wave"></i>
-            </div>
-            <h3 class="text-xl font-bold text-dark text-center mb-4">
-              Easy Payouts
-            </h3>
-            <p class="text-gray text-center">
-              Get paid fast with multiple payout options, including PayPal,
-              Stripe, and direct bank transfers.
-            </p>
-          </div>
-
-          <!-- Feature 4 -->
-          <div
-            class="bg-white rounded-2xl shadow-card p-8 border border-gray-light transition-all duration-300 hover:-translate-y-2 hover:shadow-primary hover:border-primary-light"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="500"
-          >
-            <div
-              class="w-16 h-16 bg-gradient-to-br from-emerald-50 to-green-100 rounded-xl flex items-center justify-center text-2xl text-primary-dark mb-6 mx-auto"
-            >
-              <i class="fas fa-headset"></i>
-            </div>
-            <h3 class="text-xl font-bold text-dark text-center mb-4">
-              Dedicated Support
-            </h3>
-            <p class="text-gray text-center">
-              Our expert team is here to assist you 24/7 with any questions,
-              strategy advice, or technical issues.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Analytics Section -->
-    <section class="py-16 md:py-20 bg-white">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center"
-        >
-          <!-- Content -->
-          <div data-aos="fade-right" data-aos-duration="800">
-            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-              Optimize Your Affiliate Performance
-            </h2>
-            <p class="text-lg text-gray mb-6">
-              Maximize your earnings with powerful analytics and easy-to-use
-              tools designed to help you track, analyze, and improve your
-              campaigns.
-            </p>
-            <p class="text-lg text-gray mb-10">
-              Track detailed metrics, analyze top-performing campaigns, monitor
-              referral sources, and understand your audience better with our
-              comprehensive dashboard.
-            </p>
-            <a
-              href="#"
-              class="px-8 py-4 bg-gradient-to-br from-primary to-primary-light text-white font-semibold rounded-xl shadow-primary hover:shadow-xl transition-all duration-300 hover:-translate-y-1 inline-block"
-              data-aos="fade-up"
-              data-aos-duration="800"
-              data-aos-delay="200"
-            >
-              Explore Analytics
-            </a>
-          </div>
-
-          <!-- Analytics Preview -->
-          <div
-            class="bg-gradient-to-br from-secondary-dark to-secondary rounded-2xl shadow-card-lg p-8 text-white"
-            data-aos="fade-left"
-            data-aos-duration="800"
-            data-aos-delay="200"
-          >
-            <h3 class="text-2xl font-bold mb-6">Detailed Earnings Analytics</h3>
-
-            <div class="bg-white bg-opacity-10 rounded-xl p-6 mb-6">
-              <div
-                class="flex justify-between items-center py-3 border-b border-white border-opacity-10"
-              >
-                <span>Total Earnings (All Time)</span>
-                <span class="font-bold">$2,135,003.00</span>
-              </div>
-              <div
-                class="flex justify-between items-center py-3 border-b border-white border-opacity-10"
-              >
-                <span>2025-2026 YTD</span>
-                <span class="font-bold">$1,150,053.00</span>
-              </div>
-              <div class="flex justify-between items-center py-3">
-                <span>2024-2025</span>
-                <span class="font-bold">$985,003.00</span>
-              </div>
-            </div>
-
-            <p class="text-white text-opacity-90 text-sm">
-              Data updated in real-time. Track your progress and set goals with
-              our advanced analytics.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="py-16 md:py-20 bg-light">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2
-          class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4"
-          data-aos="fade-up"
-          data-aos-duration="800"
-        >
-          Trusted by Thousands of Affiliates
-        </h2>
-        <p
-          class="text-lg md:text-xl text-gray text-center max-w-3xl mx-auto mb-16"
-          data-aos="fade-up"
-          data-aos-duration="800"
-          data-aos-delay="100"
-        >
-          Join thousands of successful marketers who have increased their
-          earnings with Affilink.
-        </p>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <!-- Testimonial 1 -->
-          <div
-            class="bg-white rounded-2xl shadow-card p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-card-lg"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="200"
-          >
-            <div class="flex items-center gap-4 mb-6">
-              <div
-                class="w-14 h-14 bg-gradient-to-br from-secondary to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl"
-              >
-                JD
-              </div>
-              <div>
-                <h4 class="font-bold text-dark">John Doe</h4>
-                <p class="text-sm text-gray">Freelance Marketer</p>
-              </div>
-            </div>
-
-            <div class="text-yellow-400 mb-4">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-
-            <p class="text-gray italic">
-              "Affilink has been a game changer for me. The platform is
-              intuitive and my earnings have increased by 65% in just three
-              months. The support team is incredibly responsive."
-            </p>
-          </div>
-
-          <!-- Testimonial 2 -->
-          <div
-            class="bg-white rounded-2xl shadow-card p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-card-lg"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="300"
-          >
-            <div class="flex items-center gap-4 mb-6">
-              <div
-                class="w-14 h-14 bg-gradient-to-br from-secondary to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl"
-              >
-                JS
-              </div>
-              <div>
-                <h4 class="font-bold text-dark">Jane Smith</h4>
-                <p class="text-sm text-gray">Digital Marketing Agency</p>
-              </div>
-            </div>
-
-            <div class="text-yellow-400 mb-4">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-
-            <p class="text-gray italic">
-              "The detailed analytics and comprehensive reporting have
-              transformed how we manage affiliate campaigns for our clients.
-              Affilink makes tracking and optimization so much easier."
-            </p>
-          </div>
-
-          <!-- Testimonial 3 -->
-          <div
-            class="bg-white rounded-2xl shadow-card p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-card-lg"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="400"
-          >
-            <div class="flex items-center gap-4 mb-6">
-              <div
-                class="w-14 h-14 bg-gradient-to-br from-secondary to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl"
-              >
-                MW
-              </div>
-              <div>
-                <h4 class="font-bold text-dark">Mark Wilson</h4>
-                <p class="text-sm text-gray">E-commerce Entrepreneur</p>
-              </div>
-            </div>
-
-            <div class="text-yellow-400 mb-4">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-
-            <p class="text-gray italic">
-              "Great support and fantastic tools. Affilink is the best affiliate
-              platform I've worked with. It's streamlined our affiliate program
-              management and increased our revenue significantly."
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section
-      class="py-16 md:py-20 bg-gradient-to-br from-primary to-primary-dark text-white relative overflow-hidden"
-    >
-      <!-- Background Effects -->
-      <div
-        class="cta-bg-1 absolute -top-20 -right-20 w-80 h-80 rounded-full"
-      ></div>
-      <div
-        class="cta-bg-2 absolute -bottom-20 -left-20 w-60 h-60 rounded-full"
-      ></div>
-
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <h2
-          class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6"
-          data-aos="fade-up"
-          data-aos-duration="800"
-        >
-          Ready to Maximize Your Affiliate Earnings?
-        </h2>
-        <p
-          class="text-lg md:text-xl text-white text-opacity-90 text-center max-w-3xl mx-auto mb-10"
-          data-aos="fade-up"
-          data-aos-duration="800"
-          data-aos-delay="100"
-        >
-          Join thousands of successful marketers who trust Affilink to grow
-          their revenue. Start your free trial today—no credit card required.
-        </p>
-
-        <div
-          class="text-center"
-          data-aos="fade-up"
-          data-aos-duration="800"
-          data-aos-delay="200"
-        >
-          <a
-            href="#"
-            class="px-10 py-5 bg-white text-primary font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 inline-block"
-          >
-            Start Free Trial Now
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-gray-light py-16">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12"
-        >
-          <!-- Column 1 -->
-          <div data-aos="fade-up" data-aos-duration="800">
-            <a href="#" class="flex items-center mb-6">
-              <img
-                src="/images/logoAffilllink2.png"
-                alt="Affillink Logo"
-                class="h-10 w-auto"
-                style="max-width: 180px"
-              />
-            </a>
-            <p class="text-gray-light max-w-xs">
-              The leading affiliate marketing platform for individuals and
-              businesses looking to maximize their revenue.
-            </p>
-          </div>
-
-          <!-- Column 2 -->
-          <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
-            <h3 class="text-white text-xl font-bold mb-6">Platform</h3>
-            <ul class="space-y-3">
-              <li>
-                <a
-                  href="#features"
-                  class="text-gray-light hover:text-primary-light transition-colors hover:pl-2"
-                  >Features</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#pricing"
-                  class="text-gray-light hover:text-primary-light transition-colors hover:pl-2"
-                  >Pricing</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-light hover:text-primary-light transition-colors hover:pl-2"
-                  >Affiliate Programs</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-light hover:text-primary-light transition-colors hover:pl-2"
-                  >API Documentation</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <!-- Column 3 -->
-          <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
-            <h3 class="text-white text-xl font-bold mb-6">Resources</h3>
-            <ul class="space-y-3">
-              <li>
-                <a
-                  href="#blog"
-                  class="text-gray-light hover:text-primary-light transition-colors hover:pl-2"
-                  >Blog</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-light hover:text-primary-light transition-colors hover:pl-2"
-                  >Help Center</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-light hover:text-primary-light transition-colors hover:pl-2"
-                  >Community</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-light hover:text-primary-light transition-colors hover:pl-2"
-                  >Webinars</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <!-- Column 4 -->
-          <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
-            <h3 class="text-white text-xl font-bold mb-6">Company</h3>
-            <ul class="space-y-3">
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-light hover:text-primary-light transition-colors hover:pl-2"
-                  >About Us</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-light hover:text-primary-light transition-colors hover:pl-2"
-                  >Careers</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-light hover:text-primary-light transition-colors hover:pl-2"
-                  >Contact</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-gray-light hover:text-primary-light transition-colors hover:pl-2"
-                  >Privacy Policy</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="pt-8 border-t border-white border-opacity-10 text-center">
-          <p class="text-gray text-sm">
-            &copy; 2026 Affilink. All rights reserved.
-          </p>
-        </div>
-      </div>
-    </footer>
-
-    <!-- AOS JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script>
-      // Initialize AOS
-      AOS.init({
-        duration: 800,
-        easing: "ease-in-out",
-        once: true,
-        offset: 100,
-        delay: 0,
-        disable: "mobile",
-      });
-
-      // Mobile Menu Toggle
-      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-      const mobileMenuContainer = document.getElementById(
-        "mobileMenuContainer",
-      );
-      const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
-
-      mobileMenuBtn.addEventListener("click", function () {
-        mobileMenuContainer.classList.toggle("active");
-        mobileMenuOverlay.classList.toggle("hidden");
-
-        // Ubah ikon menu
-        const icon = this.querySelector("i");
-        if (mobileMenuContainer.classList.contains("active")) {
-          icon.classList.remove("fa-bars");
-          icon.classList.add("fa-times");
-        } else {
-          icon.classList.remove("fa-times");
-          icon.classList.add("fa-bars");
-        }
-      });
-
-      // Tutup menu saat overlay diklik
-      mobileMenuOverlay.addEventListener("click", function () {
-        mobileMenuContainer.classList.remove("active");
-        this.classList.add("hidden");
-
-        // Reset ikon menu
-        const icon = mobileMenuBtn.querySelector("i");
-        icon.classList.remove("fa-times");
-        icon.classList.add("fa-bars");
-      });
-
-      // Tutup menu saat link di klik (untuk mobile)
-      document.querySelectorAll(".mobile-menu-container a").forEach((link) => {
-        link.addEventListener("click", function () {
-          mobileMenuContainer.classList.remove("active");
-          mobileMenuOverlay.classList.add("hidden");
-
-          // Reset ikon menu
-          const icon = mobileMenuBtn.querySelector("i");
-          icon.classList.remove("fa-times");
-          icon.classList.add("fa-bars");
-        });
-      });
-
-      // Smooth scroll untuk anchor links
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener("click", function (e) {
-          e.preventDefault();
-
-          const targetId = this.getAttribute("href");
-          if (targetId === "#") return;
-
-          const targetElement = document.querySelector(targetId);
-          if (targetElement) {
-            // Hitung offset untuk navbar tetap
-            const navHeight = document.querySelector("nav").offsetHeight;
-            const targetPosition = targetElement.offsetTop - navHeight;
-
-            window.scrollTo({
-              top: targetPosition,
-              behavior: "smooth",
-            });
-          }
-        });
-      });
-
-      // Efek navbar saat scroll
-      window.addEventListener("scroll", function () {
-        const nav = document.getElementById("mainNav");
-        if (window.scrollY > 50) {
-          nav.classList.add("navbar-scrolled");
-        } else {
-          nav.classList.remove("navbar-scrolled");
-        }
-      });
-
-      // Re-initialize AOS saat ukuran window berubah
-      window.addEventListener("resize", function () {
-        // Jika ukuran layar lebih besar dari 1024px, pastikan menu mobile tertutup
-        if (window.innerWidth > 1024) {
-          mobileMenuContainer.classList.remove("active");
-          mobileMenuOverlay.classList.add("hidden");
-
-          // Reset ikon menu
-          const icon = mobileMenuBtn.querySelector("i");
-          icon.classList.remove("fa-times");
-          icon.classList.add("fa-bars");
-        }
-
-        // Refresh AOS
-        AOS.refresh();
-      });
-    </script>
-
-    
-
-    <script>
-      // Utility: parse ?ref= from URL
-      function getAffiliateRefFromUrl() {
-        try {
-          const params = new URLSearchParams(window.location.search);
-          return params.get("ref") || "";
-        } catch (e) {
-          return "";
-        }
-      }
-
-      // Modal was removed; no client-side modal functions are needed.
-
-      // Delegate clicks for any "Get this deal" button/link
-      document.addEventListener("click", function (e) {
-        const btn = e.target.closest("a,button");
-        if (!btn) return;
-
-        const text = (btn.textContent || "").toLowerCase();
-        // Trigger if button/link has explicit data-action or visible text contains 'get this deal'
-        if (
-          (btn.dataset && btn.dataset.action === "get-deal") ||
-          text.includes("get this deal")
-        ) {
-          e.preventDefault();
-          // pass event id/ref if provided via data attributes
-          const eventId =
-            btn.dataset.eventId || btn.getAttribute("data-event-id") || "";
-          const ref = btn.dataset.ref || btn.getAttribute("data-ref") || "";
-
-          // Redirect to the new checkout page with query params (separated flow)
-          const params = new URLSearchParams();
-          if (eventId) params.set("event_id", eventId);
-          if (ref) params.set("ref", ref);
-          window.location.href = "/checkout" + (params.toString() ? "?" + params.toString() : "");
-        }
-      });
-
-      // Optional: prefill affiliate ref on page load if present
-      (function () {
-        const ref = getAffiliateRefFromUrl();
-        if (ref) {
-          const el = document.getElementById("deal_affiliate_ref");
-          if (el) el.value = ref;
-        }
-      })();
-
-      // Track affiliate click to server (non-blocking)
-      async function trackAffiliateClick(ref, eventSlug) {
-        if (!ref) return;
-        try {
-          await fetch("/api/affiliate/track-click", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ref, event_slug: eventSlug || null }),
-          });
-        } catch (e) {
-          console.debug("track click failed", e);
-        }
-      }
-
-      // If page loaded with ?ref=... or cookie present, send a tracking ping
-      document.addEventListener("DOMContentLoaded", function () {
-        try {
-          const params = new URLSearchParams(window.location.search);
-          const ref =
-            params.get("ref") ||
-            document.cookie.match(/affiliate_ref=([^;]+)/)?.[1] ||
-            "";
-          const eventSlug =
-            params.get("event") ||
-            document.cookie.match(/event_slug=([^;]+)/)?.[1] ||
-            "";
-          if (ref) trackAffiliateClick(ref, eventSlug);
-        } catch (e) {}
-      });
-    </script>
-
-    <!-- Bank Info Modal -->
-    <div
-      id="bankModal"
-      class="fixed inset-0 z-50 hidden items-center justify-center"
-    >
-      <div
-        id="bankModalOverlay"
-        class="absolute inset-0 bg-black bg-opacity-50"
-      ></div>
-      <div
-        class="relative w-full max-w-lg mx-auto bg-white rounded-2xl shadow-lg p-6 z-50"
-      >
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-semibold">Info Pembayaran</h3>
-          <button id="bankModalClose" class="text-gray-500 hover:text-gray-700">
-            &times;
-          </button>
-        </div>
-
-        <div id="bankDetails" class="space-y-3">
-          <div>
-            <div class="text-sm text-gray-500">Bank</div>
-            <div id="bank_name" class="font-semibold text-lg">-</div>
-          </div>
-          <div>
-            <div class="text-sm text-gray-500">Atas Nama</div>
-            <div id="bank_account_name" class="font-semibold">-</div>
-          </div>
-          <div>
-            <div class="text-sm text-gray-500">Nomor Rekening</div>
-            <div class="flex items-center justify-between gap-4">
-              <div
-                id="bank_account_number"
-                class="font-mono text-lg font-semibold"
-              >
-                -
-              </div>
-              <button
-                id="copyAccountBtn"
-                class="px-3 py-1 bg-gray-100 rounded-md text-sm"
-              >
-                Salin
+                  class="absolute inset-0 bg-white opacity-0 group-hover/btn:opacity-20 transition-opacity duration-300"></span>
               </button>
             </div>
           </div>
-          <div id="bankNote" class="text-sm text-gray-600">
-            Silakan transfer sesuai nominal, lalu upload bukti pada halaman
-            konfirmasi.
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card-modern group hover-glow" data-aos="fade-up" data-aos-duration="800"
+          data-aos-delay="100">
+          <div class="product-image">
+            <img
+              src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+              alt="Produk">
+            <div class="product-overlay"></div>
+            <div class="absolute top-3 right-3 badge-warning z-10">Komisi 35%</div>
+            <div
+              class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#065f46] z-10 border border-[#d1fae5]">
+              Kesehatan</div>
+            <div
+              class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-semibold text-[#065f46] z-10 opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <i class="fas fa-eye text-[#059669] mr-1"></i> 2.5k views
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+              Paket Vitamin Premium</h3>
+            <p class="text-[#6b7280] text-sm mb-4">Suplemen kesehatan herbal alami untuk tubuh yang fit dan sehat</p>
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <span class="text-xs text-[#9ca3af]">Harga</span>
+                <div class="font-bold text-[#064e3b]">Rp 450.000</div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-[#9ca3af]">Komisi</span>
+                <div class="font-bold text-[#059669]">Rp 157.500</div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1">
+                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                <span class="text-sm font-medium">4.9</span>
+                <span class="text-xs text-[#9ca3af]">(2.5k terjual)</span>
+              </div>
+              <button onclick="window.location.href='/register?ref=product2'"
+                class="btn-modern text-sm py-2 px-4 group/btn relative overflow-hidden">
+                <span class="relative z-10"><i
+                    class="fas fa-link mr-2 group-hover/btn:rotate-12 transition-transform duration-300"></i>Ambil
+                  Link</span>
+                <span
+                  class="absolute inset-0 bg-white opacity-0 group-hover/btn:opacity-20 transition-opacity duration-300"></span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="flex justify-end gap-3 pt-4">
-          <button
-            id="bankModalDone"
-            class="px-4 py-2 bg-primary text-white rounded-lg"
-          >
-            Selesai
-          </button>
+        <!-- Product 3 -->
+        <div class="product-card-modern group hover-glow" data-aos="fade-up" data-aos-duration="800"
+          data-aos-delay="200">
+          <div class="product-image">
+            <img
+              src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+              alt="Produk">
+            <div class="product-overlay"></div>
+            <div class="absolute top-3 right-3 badge-modern z-10">Komisi 50%</div>
+            <div
+              class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#065f46] z-10 border border-[#d1fae5]">
+              Kecantikan</div>
+            <div
+              class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-semibold text-[#065f46] z-10 opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <i class="fas fa-eye text-[#059669] mr-1"></i> 3.1k views
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+              Skincare Routine Set</h3>
+            <p class="text-[#6b7280] text-sm mb-4">Rangkaian perawatan wajah lengkap untuk kulit glowing alami</p>
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <span class="text-xs text-[#9ca3af]">Harga</span>
+                <div class="font-bold text-[#064e3b]">Rp 350.000</div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-[#9ca3af]">Komisi</span>
+                <div class="font-bold text-[#059669]">Rp 175.000</div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1">
+                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                <span class="text-sm font-medium">4.7</span>
+                <span class="text-xs text-[#9ca3af]">(3.1k terjual)</span>
+              </div>
+              <button onclick="window.location.href='/register?ref=product3'"
+                class="btn-modern text-sm py-2 px-4 group/btn relative overflow-hidden">
+                <span class="relative z-10"><i
+                    class="fas fa-link mr-2 group-hover/btn:rotate-12 transition-transform duration-300"></i>Ambil
+                  Link</span>
+                <span
+                  class="absolute inset-0 bg-white opacity-0 group-hover/btn:opacity-20 transition-opacity duration-300"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 4 (Elektronik) -->
+        <div class="product-card-modern group hover-glow" data-aos="fade-up" data-aos-duration="800"
+          data-aos-delay="300">
+          <div class="product-image">
+            <img
+              src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+              alt="Produk Elektronik">
+            <div class="product-overlay"></div>
+            <div class="absolute top-3 right-3 badge-modern z-10">Komisi 30%</div>
+            <div
+              class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#065f46] z-10 border border-[#d1fae5]">
+              Elektronik</div>
+            <div
+              class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-semibold text-[#065f46] z-10 opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <i class="fas fa-eye text-[#059669] mr-1"></i> 980 views
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+              Smart Headphones X100</h3>
+            <p class="text-[#6b7280] text-sm mb-4">Headphone nirkabel dengan noise-cancelling dan bass powerful</p>
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <span class="text-xs text-[#9ca3af]">Harga</span>
+                <div class="font-bold text-[#064e3b]">Rp 899.000</div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-[#9ca3af]">Komisi</span>
+                <div class="font-bold text-[#059669]">Rp 269.700</div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1">
+                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                <span class="text-sm font-medium">4.6</span>
+                <span class="text-xs text-[#9ca3af]">(980 terjual)</span>
+              </div>
+              <button onclick="window.location.href='/register?ref=product4'"
+                class="btn-modern text-sm py-2 px-4 group/btn relative overflow-hidden">
+                <span class="relative z-10"><i
+                    class="fas fa-link mr-2 group-hover/btn:rotate-12 transition-transform duration-300"></i>Ambil
+                  Link</span>
+                <span
+                  class="absolute inset-0 bg-white opacity-0 group-hover/btn:opacity-20 transition-opacity duration-300"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 5 (Fashion) -->
+        <div class="product-card-modern group hover-glow" data-aos="fade-up" data-aos-duration="800"
+          data-aos-delay="400">
+          <div class="product-image">
+            <img
+              src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+              alt="Produk Fashion">
+            <div class="product-overlay"></div>
+            <div class="absolute top-3 right-3 badge-modern z-10">Komisi 45%</div>
+            <div
+              class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#065f46] z-10 border border-[#d1fae5]">
+              Fashion</div>
+            <div
+              class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-semibold text-[#065f46] z-10 opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <i class="fas fa-eye text-[#059669] mr-1"></i> 1.1k views
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+              Stylish Jacket Pro</h3>
+            <p class="text-[#6b7280] text-sm mb-4">Jaket modern dengan material premium dan potongan trendi</p>
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <span class="text-xs text-[#9ca3af]">Harga</span>
+                <div class="font-bold text-[#064e3b]">Rp 499.000</div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-[#9ca3af]">Komisi</span>
+                <div class="font-bold text-[#059669]">Rp 224.550</div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1">
+                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                <span class="text-sm font-medium">4.9</span>
+                <span class="text-xs text-[#9ca3af]">(1.1k terjual)</span>
+              </div>
+              <button onclick="window.location.href='/register?ref=product5'"
+                class="btn-modern text-sm py-2 px-4 group/btn relative overflow-hidden">
+                <span class="relative z-10"><i
+                    class="fas fa-link mr-2 group-hover/btn:rotate-12 transition-transform duration-300"></i>Ambil
+                  Link</span>
+                <span
+                  class="absolute inset-0 bg-white opacity-0 group-hover/btn:opacity-20 transition-opacity duration-300"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 6 (Travel) -->
+        <div class="product-card-modern group hover-glow" data-aos="fade-up" data-aos-duration="800"
+          data-aos-delay="500">
+          <div class="product-image">
+            <img
+              src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+              alt="Produk Travel">
+            <div class="product-overlay"></div>
+            <div class="absolute top-3 right-3 badge-modern z-10">Komisi 20%</div>
+            <div
+              class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-[#065f46] z-10 border border-[#d1fae5]">
+              Travel</div>
+            <div
+              class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-semibold text-[#065f46] z-10 opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <i class="fas fa-eye text-[#059669] mr-1"></i> 430 views
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+              Paket Liburan Bali 3H2M</h3>
+            <p class="text-[#6b7280] text-sm mb-4">Paket liburan lengkap termasuk hotel, transportasi, dan tur lokal</p>
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <span class="text-xs text-[#9ca3af]">Harga</span>
+                <div class="font-bold text-[#064e3b]">Rp 2.499.000</div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-[#9ca3af]">Komisi</span>
+                <div class="font-bold text-[#059669]">Rp 499.800</div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1">
+                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                <span class="text-sm font-medium">4.7</span>
+                <span class="text-xs text-[#9ca3af]">(430 terjual)</span>
+              </div>
+              <button onclick="window.location.href='/register?ref=product6'"
+                class="btn-modern text-sm py-2 px-4 group/btn relative overflow-hidden">
+                <span class="relative z-10"><i
+                    class="fas fa-link mr-2 group-hover/btn:rotate-12 transition-transform duration-300"></i>Ambil
+                  Link</span>
+                <span
+                  class="absolute inset-0 bg-white opacity-0 group-hover/btn:opacity-20 transition-opacity duration-300"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-10">
+        <a href="/register" class="btn-outline-modern text-base px-8 py-3 group relative overflow-hidden">
+          <span class="relative z-10">Lihat Semua Produk</span>
+          <i class="fas fa-arrow-right ml-2 relative z-10 group-hover:translate-x-1 transition-transform"></i>
+          <span
+            class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Modern with Green -->
+  <section id="cara-kerja" class="py-20 bg-[#ecfdf5] relative overflow-hidden">
+    <div class="absolute inset-0 pattern-dots"></div>
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center mb-12">
+        <div
+          class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full mb-4 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+          <span class="w-2 h-2 bg-[#059669] rounded-full animate-pulse"></span>
+          <span class="text-sm font-medium text-[#065f46]">4 Langkah Mudah</span>
+        </div>
+        <h2 class="section-title-modern">
+          Cara Kerja <span>Affiliate</span>
+        </h2>
+        <p class="section-subtitle">Mulai menghasilkan uang hanya dalam 4 langkah sederhana</p>
+      </div>
+
+      <div class="grid md:grid-cols-4 gap-6 relative">
+        <!-- Connecting Line (centered, thicker, behind steps) -->
+        <div
+          class="hidden md:block absolute inset-x-10 top-1/2 transform -translate-y-1/2 h-1 bg-gradient-to-r from-[#059669] to-[#10b981]">
+        </div>
+
+        <!-- Step 1 -->
+        <div class="text-center relative group z-10" data-aos="fade-up" data-aos-duration="800">
+          <div class="relative inline-block">
+            <div
+              class="w-24 h-24 mx-auto bg-gradient-to-r from-[#059669] to-[#10b981] rounded-2xl flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-xl shadow-[#059669]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
+              <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500">1</span>
+            </div>
+            <div
+              class="absolute -top-2 -right-2 w-8 h-8 bg-[#10b981] rounded-full flex items-center justify-center text-white text-sm border-4 border-white animate-bounce">
+              <i class="fas fa-user-plus"></i>
+            </div>
+          </div>
+          <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+            Daftar Gratis</h3>
+          <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Buat akun dalam 2
+            menit. Tanpa biaya pendaftaran.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="text-center relative group z-10" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+          <div class="relative inline-block">
+            <div
+              class="w-24 h-24 mx-auto bg-gradient-to-r from-[#059669] to-[#10b981] rounded-2xl flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-xl shadow-[#059669]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
+              <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500">2</span>
+            </div>
+            <div
+              class="absolute -top-2 -right-2 w-8 h-8 bg-[#10b981] rounded-full flex items-center justify-center text-white text-sm border-4 border-white animate-bounce"
+              style="animation-delay: 0.2s">
+              <i class="fas fa-hand-pointer"></i>
+            </div>
+          </div>
+          <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+            Pilih Produk</h3>
+          <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Pilih dari 500+
+            produk dengan komisi tinggi.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="text-center relative group z-10" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+          <div class="relative inline-block">
+            <div
+              class="w-24 h-24 mx-auto bg-gradient-to-r from-[#059669] to-[#10b981] rounded-2xl flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-xl shadow-[#059669]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
+              <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500">3</span>
+            </div>
+            <div
+              class="absolute -top-2 -right-2 w-8 h-8 bg-[#10b981] rounded-full flex items-center justify-center text-white text-sm border-4 border-white animate-bounce"
+              style="animation-delay: 0.4s">
+              <i class="fas fa-share-alt"></i>
+            </div>
+          </div>
+          <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+            Promosikan</h3>
+          <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Bagikan link ke
+            sosial media, blog, atau WA.</p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="text-center relative group z-10" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+          <div class="relative inline-block">
+            <div
+              class="w-24 h-24 mx-auto bg-gradient-to-r from-[#059669] to-[#10b981] rounded-2xl flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-xl shadow-[#059669]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
+              <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500">4</span>
+            </div>
+            <div
+              class="absolute -top-2 -right-2 w-8 h-8 bg-[#10b981] rounded-full flex items-center justify-center text-white text-sm border-4 border-white animate-bounce"
+              style="animation-delay: 0.6s">
+              <i class="fas fa-money-bill-wave"></i>
+            </div>
+          </div>
+          <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+            Dapatkan Komisi</h3>
+          <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Terima komisi
+            setiap ada penjualan. Payout harian!</p>
         </div>
       </div>
     </div>
+  </section>
 
-    <script>
-      function openBankModal(bank) {
-        if (!bank) bank = {};
-        document.getElementById("bank_name").textContent =
-          bank.bank_name || "-";
-        document.getElementById("bank_account_name").textContent =
-          bank.bank_account_name || "-";
-        document.getElementById("bank_account_number").textContent =
-          bank.bank_account_number || "-";
-        // show/hide note depending on payment method
-        if (
-          bank.payment_methods &&
-          bank.payment_methods.indexOf("transfer") === -1
-        ) {
-          document.getElementById("bankNote").textContent =
-            "Metode pembayaran lain dipilih; silakan ikuti instruksi yang diberikan.";
-        } else {
-          document.getElementById("bankNote").textContent =
-            "Silakan transfer sesuai nominal, lalu upload bukti pada halaman konfirmasi.";
+  <!-- Features Modern with Green -->
+  <section class="py-20 bg-white relative overflow-hidden">
+    <div class="absolute inset-0 grid-pattern opacity-5"></div>
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div data-aos="fade-right" data-aos-duration="1000">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-2 bg-[#ecfdf5] rounded-full mb-4 hover:shadow-md hover:scale-105 transition-all duration-300">
+            <span class="w-2 h-2 bg-[#059669] rounded-full animate-pulse"></span>
+            <span class="text-sm font-medium text-[#065f46]">Kenapa Memilih Kami</span>
+          </div>
+          <h2 class="section-title-modern mb-6">
+            Platform Affiliate <span>Terpercaya</span> No.1 di Indonesia
+          </h2>
+          <p class="text-[#6b7280] text-lg mb-8 leading-relaxed">Kami memberikan solusi lengkap untuk affiliate
+            marketing dengan teknologi terkini dan support terbaik.</p>
+
+          <div class="space-y-4">
+            <div
+              class="flex items-start gap-4 p-4 bg-[#ecfdf5] rounded-2xl hover:shadow-lg transition-all duration-300 group hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-white hover:scale-[1.02]">
+              <div
+                class="w-12 h-12 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-percentage text-xl"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300">Komisi
+                  Tertinggi</h4>
+                <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Hingga 50%
+                  per penjualan, tertinggi di Indonesia.</p>
+              </div>
+            </div>
+
+            <div
+              class="flex items-start gap-4 p-4 bg-[#ecfdf5] rounded-2xl hover:shadow-lg transition-all duration-300 group hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-white hover:scale-[1.02]">
+              <div
+                class="w-12 h-12 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-clock text-xl"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300">Payout
+                  Harian</h4>
+                <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Penarikan
+                  setiap hari, minimal Rp 50.000.</p>
+              </div>
+            </div>
+
+            <div
+              class="flex items-start gap-4 p-4 bg-[#ecfdf5] rounded-2xl hover:shadow-lg transition-all duration-300 group hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-white hover:scale-[1.02]">
+              <div
+                class="w-12 h-12 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-chart-line text-xl"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300">Tracking
+                  Real-Time</h4>
+                <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Pantau
+                  performa link secara live dengan dashboard interaktif.</p>
+              </div>
+            </div>
+
+            <div
+              class="flex items-start gap-4 p-4 bg-[#ecfdf5] rounded-2xl hover:shadow-lg transition-all duration-300 group hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-white hover:scale-[1.02]">
+              <div
+                class="w-12 h-12 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-headset text-xl"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300">Support
+                  24/7</h4>
+                <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Tim support
+                  siap membantu kapan saja via live chat.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative" data-aos="fade-left" data-aos-duration="1000">
+          <div
+            class="absolute -inset-4 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-3xl opacity-20 blur-3xl animate-pulse">
+          </div>
+          <img
+            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            alt="Dashboard"
+            class="relative rounded-3xl shadow-2xl w-full transform hover:scale-[1.02] transition-all duration-700">
+
+          <!-- Stats Card with Green -->
+          <div
+            class="absolute -bottom-6 -left-6 glass-card p-4 rounded-2xl shadow-xl floating cursor-pointer hover:bg-white hover:scale-105 transition-all duration-300"
+            data-aos="zoom-in" data-aos-delay="200">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 bg-[#059669] rounded-xl flex items-center justify-center text-white group/icon">
+                <i class="fas fa-arrow-up text-xl group-hover/icon:scale-110 transition-transform duration-300"></i>
+              </div>
+              <div>
+                <p class="text-xs text-[#6b7280]">Konversi Bulan Ini</p>
+                <p class="text-xl font-bold text-[#064e3b]">+127%</p>
+                <div class="flex items-center gap-1 text-xs text-[#059669]">
+                  <i class="fas fa-chart-line"></i>
+                  <span>Meningkat 27%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature Badge with Green -->
+          <div
+            class="absolute top-6 right-6 bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-[#059669] transition-all duration-300 cursor-pointer">
+            <i class="fas fa-shield-alt text-[#10b981]"></i>
+            <span>100% Secure</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Modern with Green -->
+  <section id="testimoni" class="py-20 bg-[#ecfdf5] relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-[#059669] opacity-5 rounded-full -mr-32 -mt-32 animate-pulse-slow">
+    </div>
+    <div
+      class="absolute bottom-0 left-0 w-64 h-64 bg-[#10b981] opacity-5 rounded-full -ml-32 -mb-32 animate-pulse-slow">
+    </div>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center mb-12">
+        <div
+          class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full mb-4 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+          <span class="w-2 h-2 bg-[#059669] rounded-full animate-pulse"></span>
+          <span class="text-sm font-medium text-[#065f46]">Testimoni</span>
+        </div>
+        <h2 class="section-title-modern">
+          Apa Kata <span>Mereka</span>
+        </h2>
+        <p class="section-subtitle">Kisah sukses para affiliate yang telah merasakan manfaatnya</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Testimonial 1 -->
+        <div class="testimonial-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
+          data-aos-duration="800">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-16 h-16 rounded-2xl testimonial-badge font-bold shadow-sm text-2xl uppercase">
+              D
+            </div>
+            <div>
+              <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300"><span class="first-name">Dewi</span> <span class="last-name text-[#10b981]">Susanti</span></h4>
+              <p class="text-xs text-[#6b7280]">Ibu Rumah Tangga</p>
+              <div class="flex text-yellow-400 text-xs mt-1">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                  class="fas fa-star"></i><i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-[#4b5563] text-sm italic mb-4">"Dari yang cuma iseng-iseng share link, sekarang penghasilan
+            saya Rp 8 juta/bulan. Bisa bantu suami bayar sekolah anak."</p>
+          <div class="flex justify-between items-center pt-4 border-t border-[#d1fae5]">
+            <span class="text-xs text-[#9ca3af]">Bergabung 2024</span>
+            <span class="badge-success px-3 py-1 text-xs group-hover:scale-105 transition-all duration-300">Top
+              Affiliate</span>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="testimonial-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
+          data-aos-duration="800" data-aos-delay="100">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-16 h-16 rounded-2xl testimonial-badge font-bold shadow-sm text-2xl uppercase">
+              B
+            </div>
+            <div>
+              <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300"><span class="first-name">Budi</span> <span class="last-name text-[#10b981]">Santoso</span></h4>
+              <p class="text-xs text-[#6b7280]">Mahasiswa</p>
+              <div class="flex text-yellow-400 text-xs mt-1">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                  class="fas fa-star"></i><i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-[#4b5563] text-sm italic mb-4">"Sebagai mahasiswa, Affillink jadi sampingan terbaik. Dari HP
+            doang bisa dapet uang jajan plus tabungan."</p>
+          <div class="flex justify-between items-center pt-4 border-t border-[#d1fae5]">
+            <span class="text-xs text-[#9ca3af]">Bergabung 2025</span>
+            <span class="badge-success px-3 py-1 text-xs group-hover:scale-105 transition-all duration-300">Top
+              Performance</span>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="testimonial-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
+          data-aos-duration="800" data-aos-delay="200">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-16 h-16 rounded-2xl testimonial-badge font-bold shadow-sm text-2xl uppercase">
+              R
+            </div>
+            <div>
+              <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300"><span class="first-name">Rina</span> <span class="last-name text-[#10b981]">Wulandari</span></h4>
+              <p class="text-xs text-[#6b7280]">Content Creator</p>
+              <div class="flex text-yellow-400 text-xs mt-1">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                  class="fas fa-star"></i><i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-[#4b5563] text-sm italic mb-4">"Produk digitalnya bagus-bagus, gampang dijual. Komisi 40-50%
+            itu besar banget dibanding platform lain."</p>
+          <div class="flex justify-between items-center pt-4 border-t border-[#d1fae5]">
+            <span class="text-xs text-[#9ca3af]">Bergabung 2023</span>
+            <span class="badge-success px-3 py-1 text-xs group-hover:scale-105 transition-all duration-300">Top
+              Earner</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners Section -->
+  <section class="py-12 bg-white relative overflow-hidden">
+    <div class="absolute inset-0 grid-pattern opacity-5"></div>
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <p class="text-center text-sm font-medium text-[#6b7280] mb-8">Telah dipercaya oleh ribuan brand ternama</p>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"
+          class="partner-logo w-24 mx-auto hover:scale-110 transition-all duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google"
+          class="partner-logo w-24 mx-auto hover:scale-110 transition-all duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopify_logo_2018.svg" alt="Shopify"
+          class="partner-logo w-24 mx-auto hover:scale-110 transition-all duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" alt="Shopee"
+          class="partner-logo w-24 mx-auto hover:scale-110 transition-all duration-300">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/Tokopedia.svg" alt="Tokopedia"
+          class="partner-logo w-24 mx-auto hover:scale-110 transition-all duration-300">
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section with Green -->
+  <section class="py-16">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="newsletter-modern relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-animate"></div>
+        <div class="relative z-10 text-center max-w-2xl mx-auto">
+          <h3 class="text-3xl font-bold text-white mb-4">Dapatkan Update Terbaru</h3>
+          <p class="text-[#d1fae5] mb-6">Subscribe newsletter kami untuk mendapatkan info produk terbaru dan tips
+            affiliate marketing</p>
+          <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+            onsubmit="event.preventDefault(); const email=document.getElementById('newsletter-email').value; window.location.href='/register?newsletter=1&email='+encodeURIComponent(email);">
+            <input type="email" id="newsletter-email" placeholder="Masukkan email Anda" class="input-modern flex-1"
+              required>
+            <button type="submit" class="btn-modern whitespace-nowrap transition-all duration-300">
+              <span class="relative z-10">Subscribe</span>
+              <i class="fas fa-paper-plane ml-2 text-white"></i>
+            </button>
+          </form>
+          <p class="text-xs text-[#a7f3d0] mt-4">Kami tidak akan spam email Anda. Promo menarik setiap minggu!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Modern with Green -->
+  <section class="py-20 relative overflow-hidden bg-gradient-to-r from-[#064e3b] to-[#059669]">
+    <div class="absolute inset-0 opacity-10">
+      <i class="fas fa-dollar-sign absolute text-9xl -top-10 -left-10 text-white animate-pulse"></i>
+      <i class="fas fa-coins absolute text-9xl bottom-0 right-0 text-white animate-pulse"
+        style="animation-delay: 1s"></i>
+      <i class="fas fa-chart-line absolute text-8xl top-1/2 left-1/4 text-white animate-pulse"
+        style="animation-delay: 2s"></i>
+    </div>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-4 animate-pulse-slow">Siap Mulai Menghasilkan?</h2>
+        <p class="text-[#d1fae5] text-lg mb-8">Daftar gratis sekarang dan dapatkan bonus Rp 500.000 untuk affiliate
+          baru!</p>
+
+        <!-- Countdown Timer with Green -->
+        <div class="countdown-modern mb-8">
+          <div class="countdown-item hover:scale-110 transition-all duration-300">
+            <div class="countdown-number">24</div>
+            <div class="countdown-label">Jam</div>
+          </div>
+          <div class="countdown-item hover:scale-110 transition-all duration-300">
+            <div class="countdown-number">59</div>
+            <div class="countdown-label">Menit</div>
+          </div>
+          <div class="countdown-item hover:scale-110 transition-all duration-300">
+            <div class="countdown-number">59</div>
+            <div class="countdown-label">Detik</div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="/register"
+            class="bg-white text-[#059669] px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-110 transition-all duration-300 shadow-xl flex items-center gap-2 group">
+            <i class="fas fa-rocket group-hover:animate-bounce"></i>
+            Daftar Gratis Sekarang
+          </a>
+          <a href="/login"
+            class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-[#059669] hover:scale-110 transition-all duration-300 flex items-center gap-2">
+            <i class="fas fa-phone-alt"></i>
+            Hubungi Kami
+          </a>
+        </div>
+
+        <div class="flex items-center justify-center gap-6 mt-8 text-[#d1fae5] text-sm">
+          <span class="flex items-center gap-1 hover:scale-110 transition-all duration-300"><i
+              class="fas fa-check-circle"></i> Tanpa biaya</span>
+          <span class="flex items-center gap-1 hover:scale-110 transition-all duration-300"><i
+              class="fas fa-check-circle"></i> Tanpa modal</span>
+          <span class="flex items-center gap-1 hover:scale-110 transition-all duration-300"><i
+              class="fas fa-check-circle"></i> Langsung cair</span>
+          <span class="flex items-center gap-1 hover:scale-110 transition-all duration-300"><i
+              class="fas fa-check-circle"></i> Support 24/7</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Modern with Green -->
+  <section id="faq" class="py-20 bg-white relative overflow-hidden">
+    <div class="absolute inset-0 grid-pattern opacity-5"></div>
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center mb-12">
+        <div
+          class="inline-flex items-center gap-2 px-4 py-2 bg-[#ecfdf5] rounded-full mb-4 hover:shadow-md hover:scale-105 transition-all duration-300">
+          <span class="w-2 h-2 bg-[#059669] rounded-full animate-pulse"></span>
+          <span class="text-sm font-medium text-[#065f46]">FAQ</span>
+        </div>
+        <h2 class="section-title-modern">
+          Pertanyaan <span>Umum</span>
+        </h2>
+        <p class="section-subtitle">Temukan jawaban untuk pertanyaan yang sering diajukan</p>
+      </div>
+
+      <div class="max-w-3xl mx-auto space-y-3">
+        <div
+          class="bg-[#ecfdf5] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
+          <button
+            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#064e3b] hover:bg-[#d1fae5] transition-all duration-300"
+            onclick="toggleFaq(this)">
+            <span class="group-hover:text-[#059669] transition-colors duration-300">Apakah pendaftaran di Affillink
+              gratis?</span>
+            <i class="fas fa-chevron-down text-[#059669] transition-all duration-300 group-hover:scale-110"></i>
+          </button>
+          <div class="hidden px-6 pb-4 text-[#6b7280] text-sm">
+            Ya, pendaftaran di Affillink 100% gratis. Tidak ada biaya pendaftaran, biaya bulanan, atau biaya tersembunyi
+            lainnya. Anda bisa langsung mulai mempromosikan produk setelah mendaftar.
+          </div>
+        </div>
+
+        <div
+          class="bg-[#ecfdf5] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
+          <button
+            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#064e3b] hover:bg-[#d1fae5] transition-all duration-300"
+            onclick="toggleFaq(this)">
+            <span class="group-hover:text-[#059669] transition-colors duration-300">Berapa komisi yang bisa saya
+              dapatkan?</span>
+            <i class="fas fa-chevron-down text-[#059669] transition-all duration-300 group-hover:scale-110"></i>
+          </button>
+          <div class="hidden px-6 pb-4 text-[#6b7280] text-sm">
+            Komisi bervariasi per produk, mulai dari 10% hingga 50%. Produk digital biasanya memiliki komisi lebih
+            tinggi (30-50%). Rata-rata affiliate kami mendapatkan Rp 2-5 juta per bulan di bulan pertama.
+          </div>
+        </div>
+
+        <div
+          class="bg-[#ecfdf5] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
+          <button
+            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#064e3b] hover:bg-[#d1fae5] transition-all duration-300"
+            onclick="toggleFaq(this)">
+            <span class="group-hover:text-[#059669] transition-colors duration-300">Kapan saya bisa menarik
+              komisi?</span>
+            <i class="fas fa-chevron-down text-[#059669] transition-all duration-300 group-hover:scale-110"></i>
+          </button>
+          <div class="hidden px-6 pb-4 text-[#6b7280] text-sm">
+            Anda bisa melakukan payout setiap hari! Minimum payout hanya Rp 50.000. Dana akan masuk ke rekening atau
+            e-wallet Anda dalam 1x24 jam. Tersedia transfer bank (BCA, Mandiri, BRI, BNI) dan e-wallet (OVO, GoPay,
+            Dana).
+          </div>
+        </div>
+
+        <div
+          class="bg-[#ecfdf5] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
+          <button
+            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#064e3b] hover:bg-[#d1fae5] transition-all duration-300"
+            onclick="toggleFaq(this)">
+            <span class="group-hover:text-[#059669] transition-colors duration-300">Bagaimana cara mempromosikan
+              produk?</span>
+            <i class="fas fa-chevron-down text-[#059669] transition-all duration-300 group-hover:scale-110"></i>
+          </button>
+          <div class="hidden px-6 pb-4 text-[#6b7280] text-sm">
+            Anda akan mendapatkan link affiliate unik untuk setiap produk. Bagikan link tersebut ke media sosial
+            (Instagram, Facebook, TikTok), blog, YouTube, WhatsApp, atau email. Setiap pembelian via link Anda akan
+            tercatat sebagai komisi.
+          </div>
+        </div>
+
+        <div
+          class="bg-[#ecfdf5] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
+          <button
+            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#064e3b] hover:bg-[#d1fae5] transition-all duration-300"
+            onclick="toggleFaq(this)">
+            <span class="group-hover:text-[#059669] transition-colors duration-300">Apakah ada pelatihan untuk
+              pemula?</span>
+            <i class="fas fa-chevron-down text-[#059669] transition-all duration-300 group-hover:scale-110"></i>
+          </button>
+          <div class="hidden px-6 pb-4 text-[#6b7280] text-sm">
+            Ya! Kami menyediakan video tutorial, ebook panduan, dan grup komunitas khusus untuk member baru. Anda juga
+            bisa mengikuti webinar mingguan gratis tentang tips & trik affiliate marketing.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Modern with Dark Green and Logo -->
+  <footer class="footer-modern pt-20 pb-8">
+    <div class="footer-wave">
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path
+          d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+          fill="#059669" opacity="0.1"></path>
+      </svg>
+    </div>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8 mb-12">
+        <div>
+          <div class="flex items-center gap-3 mb-4 group">
+            <img src="/images/logoAffilllink2.png" alt="Affillink Logo"
+              class="h-10 w-auto brightness-0 invert transition-all duration-300 group-hover:scale-110"
+              style="max-width: 160px"
+              onerror="this.onerror=null; this.src='https://via.placeholder.com/160x40/ffffff/059669?text=Affillink';" />
+          </div>
+          <p class="text-[#a7f3d0] text-sm leading-relaxed mb-4">
+            Platform affiliate marketing modern dan terpercaya di Indonesia dengan komisi tertinggi dan payout harian.
+          </p>
+          <div class="flex gap-2">
+            <a href="#"
+              class="w-10 h-10 bg-[#065f46] rounded-xl flex items-center justify-center text-[#a7f3d0] hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 bg-[#065f46] rounded-xl flex items-center justify-center text-[#a7f3d0] hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 bg-[#065f46] rounded-xl flex items-center justify-center text-[#a7f3d0] hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 bg-[#065f46] rounded-xl flex items-center justify-center text-[#a7f3d0] hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="#"
+              class="w-10 h-10 bg-[#065f46] rounded-xl flex items-center justify-center text-[#a7f3d0] hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h5 class="font-bold text-white mb-4 border-l-4 border-[#10b981] pl-3">PERUSAHAAN</h5>
+          <ul class="space-y-2 text-sm text-[#a7f3d0]">
+            <li><a href="#"
+                class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
+                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Tentang
+                Kami</a></li>
+            <li><a href="#"
+                class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
+                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Karir</a>
+            </li>
+            <li><a href="#"
+                class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
+                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Blog</a>
+            </li>
+            <li><a href="#"
+                class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
+                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Press</a>
+            </li>
+            <li><a href="#"
+                class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
+                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Mitra</a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="font-bold text-white mb-4 border-l-4 border-[#10b981] pl-3">BANTUAN</h5>
+          <ul class="space-y-2 text-sm text-[#a7f3d0]">
+            <li><a href="#"
+                class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
+                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Pusat
+                Bantuan</a></li>
+            <li><a href="#"
+                class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
+                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Syarat
+                & Ketentuan</a></li>
+            <li><a href="#"
+                class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
+                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Kebijakan
+                Privasi</a></li>
+            <li><a href="#"
+                class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
+                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>FAQ</a>
+            </li>
+            <li><a href="#"
+                class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
+                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Hubungi
+                Kami</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="font-bold text-white mb-4 border-l-4 border-[#10b981] pl-3">KONTAK</h5>
+          <ul class="space-y-3 text-sm text-[#a7f3d0]">
+            <li class="flex items-start gap-3 group hover:text-white hover:translate-x-2 transition-all duration-300">
+              <i
+                class="fas fa-map-marker-alt mt-1 text-[#10b981] group-hover:scale-110 transition-transform duration-300"></i>
+              <span>Jl. Sudirman No. 123, Jakarta Selatan, Indonesia 12930</span>
+            </li>
+            <li class="flex items-center gap-3 group hover:text-white hover:translate-x-2 transition-all duration-300">
+              <i class="fas fa-phone-alt text-[#10b981] group-hover:scale-110 transition-transform duration-300"></i>
+              <span>+62 812-3456-7890</span>
+            </li>
+            <li class="flex items-center gap-3 group hover:text-white hover:translate-x-2 transition-all duration-300">
+              <i class="fas fa-envelope text-[#10b981] group-hover:scale-110 transition-transform duration-300"></i>
+              <span>support@affillink.id</span>
+            </li>
+            <li class="flex items-center gap-3 group hover:text-white hover:translate-x-2 transition-all duration-300">
+              <i class="fas fa-clock text-[#10b981] group-hover:scale-110 transition-transform duration-300"></i>
+              <span>Senin - Jumat, 09:00 - 18:00 WIB</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-[#065f46] pt-8">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-[#6b7280] text-sm text-center md:text-left hover:text-white transition-colors duration-300">
+            &copy; 2026 Affillink. All Rights Reserved. Made with <i
+              class="fas fa-heart text-[#10b981] animate-pulse"></i> in Indonesia
+          </p>
+          <div class="flex gap-4 text-sm text-[#6b7280]">
+            <a href="#" class="hover:text-white hover:scale-110 transition-all duration-300">Terms</a>
+            <span class="hover:text-white transition-colors duration-300">|</span>
+            <a href="#" class="hover:text-white hover:scale-110 transition-all duration-300">Privacy</a>
+            <span class="hover:text-white transition-colors duration-300">|</span>
+            <a href="#" class="hover:text-white hover:scale-110 transition-all duration-300">Cookies</a>
+            <span class="hover:text-white transition-colors duration-300">|</span>
+            <a href="#" class="hover:text-white hover:scale-110 transition-all duration-300">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp Modern with Green -->
+  <a href="https://wa.me/6281234567890"
+    class="fab-modern tooltip-modern hover:scale-110 hover:rotate-12 transition-all duration-300"
+    data-tooltip="Hubungi kami via WhatsApp" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- Back to Top Modern with Green -->
+  <button onclick="scrollToTop()" id="backToTop" class="back-to-top tooltip-modern" data-tooltip="Kembali ke atas">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    // Initialize AOS
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 50,
+      easing: 'ease-in-out'
+    });
+
+    // Mobile Menu Toggle
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+
+      // Add animation class
+      if (!menu.classList.contains('hidden')) {
+        menu.style.animation = 'slideDown 0.3s ease';
+      } else {
+        menu.style.animation = 'slideUp 0.3s ease';
+      }
+    }
+
+    // FAQ Toggle with Animation
+    function toggleFaq(button) {
+      const answer = button.nextElementSibling;
+      const icon = button.querySelector('i');
+
+      if (answer.classList.contains('hidden')) {
+        answer.classList.remove('hidden');
+        answer.style.animation = 'fadeIn 0.3s ease';
+        icon.style.transform = 'rotate(180deg)';
+      } else {
+        answer.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => {
+          answer.classList.add('hidden');
+        }, 200);
+        icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    // Back to Top Button
+    const backToTopBtn = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      const mobileMenu = document.getElementById('mobileMenu');
+      const menuButton = document.querySelector('button[onclick="toggleMobileMenu()"]');
+
+      if (!mobileMenu.contains(e.target) && !menuButton.contains(e.target) && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
+    });
+
+    // Countdown Timer
+    function updateCountdown() {
+      const hours = document.querySelector('.countdown-item:nth-child(1) .countdown-number');
+      const minutes = document.querySelector('.countdown-item:nth-child(2) .countdown-number');
+      const seconds = document.querySelector('.countdown-item:nth-child(3) .countdown-number');
+
+      if (hours && minutes && seconds) {
+        let h = 24;
+        let m = 59;
+        let s = 59;
+
+        setInterval(() => {
+          if (s > 0) {
+            s--;
+          } else {
+            s = 59;
+            if (m > 0) {
+              m--;
+            } else {
+              m = 59;
+              if (h > 0) {
+                h--;
+              }
+            }
+          }
+
+          hours.textContent = h < 10 ? '0' + h : h;
+          minutes.textContent = m < 10 ? '0' + m : m;
+          seconds.textContent = s < 10 ? '0' + s : s;
+        }, 1000);
+      }
+    }
+
+    // Initialize countdown
+    updateCountdown();
+
+    // Add animation styles
+    const style = document.createElement('style');
+    style.textContent = `
+            @keyframes slideDown {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            @keyframes slideUp {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(-10px); }
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(-10px); }
+            }
+        `;
+    document.head.appendChild(style);
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+
+          // Close mobile menu if open
+          const mobileMenu = document.getElementById('mobileMenu');
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+          }
         }
+      });
+    });
 
-        const modal = document.getElementById("bankModal");
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-      }
+    // Add loading animation
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+    });
 
-      function closeBankModal() {
-        const modal = document.getElementById("bankModal");
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-      }
+    // Handle newsletter form submission — redirect to register with email
+    document.querySelector('.newsletter-modern form')?.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = document.getElementById('newsletter-email')?.value || '';
+      window.location.href = '/register?newsletter=1&email=' + encodeURIComponent(email);
+    });
+  </script>
+</body>
 
-      document
-        .getElementById("bankModalClose")
-        .addEventListener("click", closeBankModal);
-      document
-        .getElementById("bankModalDone")
-        .addEventListener("click", closeBankModal);
-      document
-        .getElementById("bankModalOverlay")
-        .addEventListener("click", closeBankModal);
-
-      document
-        .getElementById("copyAccountBtn")
-        .addEventListener("click", function () {
-          const txt =
-            document.getElementById("bank_account_number").textContent || "";
-          if (!txt) return;
-          navigator.clipboard
-            .writeText(txt)
-            .then(() => {
-              this.textContent = "Tersalin";
-              setTimeout(() => (this.textContent = "Salin"), 1500);
-            })
-            .catch(() => {
-              alert("Gagal menyalin nomor rekening");
-            });
-        });
-
-      // Removed modal form handling since checkout flow is moved to /checkout
-      // Legacy handler removed to avoid errors when modal is absent.
-    </script>
-  </body>
 </html>

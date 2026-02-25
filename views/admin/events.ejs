@@ -1008,9 +1008,9 @@
           </div>
 
           <!-- Modal Body -->
-          <div class="p-5 overflow-y-auto flex-1 modern-scrollbar">
+          <div id="viewModalContent" class="p-5 overflow-y-auto flex-1 modern-scrollbar">
             <!-- Event Header -->
-            <div class="flex flex-col md:flex-row md:items-start gap-4 mb-5">
+            <div id="viewHeaderBlock" class="flex flex-col md:flex-row md:items-start gap-4 mb-5">
               <div class="flex-1">
                 <h2 id="viewEventTitle" class="text-xl font-extrabold text-gray-900 mb-2"></h2>
                 <div class="flex flex-wrap gap-2 mb-3">
@@ -1032,7 +1032,7 @@
             </div>
 
             <!-- Event Information -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            <div id="viewMetaBlock" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
               <!-- Left Column -->
               <div class="space-y-3">
                 <div class="bg-white/60 backdrop-blur p-4 rounded-xl border border-white/60">
@@ -1127,7 +1127,7 @@
             </div>
 
             <!-- Contact Information -->
-            <div
+            <div id="viewContactBlock"
               class="bg-gradient-to-r from-green-50/80 to-emerald-50/80 backdrop-blur p-4 rounded-xl border border-green-200/50">
               <div class="flex items-center gap-2 mb-3">
                 <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
@@ -1154,23 +1154,38 @@
             <!-- Additional Content -->
             <div id="viewAdditionalSections" class="space-y-4 mt-6">
               <!-- Benefits -->
-              <div class="bg-yellow-50/80 backdrop-blur p-4 rounded-xl border border-yellow-200/50">
+              <div id="viewBenefitsSection" class="bg-yellow-50/80 backdrop-blur p-4 rounded-xl border border-yellow-200/50">
                 <h4 class="text-xs font-extrabold text-yellow-800 mb-2">Benefits</h4>
                 <ul id="viewBenefitsList" class="list-disc list-inside text-[10px] text-gray-700"></ul>
               </div>
               <!-- Problem Amplifier -->
-              <div class="bg-indigo-50/80 backdrop-blur p-4 rounded-xl border border-indigo-200/50">
+              <div id="viewProblemSection" class="bg-indigo-50/80 backdrop-blur p-4 rounded-xl border border-indigo-200/50">
                 <h4 class="text-xs font-extrabold text-indigo-800 mb-2">Problem Amplifier</h4>
                 <p id="viewProblemTitle" class="font-semibold text-indigo-700 text-[11px]"></p>
                 <p id="viewProblemSubtitle" class="text-[10px] text-indigo-600 mb-2"></p>
                 <ul id="viewPainsList" class="list-disc list-inside text-[10px] text-gray-700"></ul>
               </div>
-              <div class="bg-green-50/80 backdrop-blur p-4 rounded-xl border border-green-200/50">
+              <!-- Solusi -->
+              <div id="viewSolutionSection" class="bg-emerald-50/80 backdrop-blur p-4 rounded-xl border border-emerald-200/50">
+                <h4 class="text-xs font-extrabold text-emerald-800 mb-2">Solusi</h4>
+                <p id="viewSolutionTitle" class="font-semibold text-emerald-700 text-[11px]"></p>
+                <p id="viewSolutionSubtitle" class="text-[10px] text-emerald-600 mb-2"></p>
+                <ul id="viewSolutionsList" class="list-disc list-inside text-[10px] text-gray-700"></ul>
               </div>
-              <!-- FAQs -->
-              <div class="bg-blue-50/80 backdrop-blur p-4 rounded-xl border border-blue-200/50">
+              <!-- FAQ -->
+              <div id="viewFaqSection" class="bg-blue-50/80 backdrop-blur p-4 rounded-xl border border-blue-200/50">
                 <h4 class="text-xs font-extrabold text-blue-800 mb-2">FAQs</h4>
                 <ul id="viewFaqsList" class="list-disc list-inside text-[10px] text-gray-700"></ul>
+              </div>
+              <!-- Testimonials -->
+              <div id="viewTestimonialsSection" class="bg-amber-50/80 backdrop-blur p-4 rounded-xl border border-amber-200/50">
+                <h4 class="text-xs font-extrabold text-amber-800 mb-2">Testimoni</h4>
+                <ul id="viewTestimonialsList" class="list-disc list-inside text-[10px] text-gray-700"></ul>
+              </div>
+              <!-- Variants -->
+              <div id="viewVariantsSection" class="bg-fuchsia-50/80 backdrop-blur p-4 rounded-xl border border-fuchsia-200/50">
+                <h4 class="text-xs font-extrabold text-fuchsia-800 mb-2">Varian Event</h4>
+                <ul id="viewVariantsList" class="list-disc list-inside text-[10px] text-gray-700"></ul>
               </div>
             </div>
           </div>
@@ -1305,6 +1320,28 @@
                 </div>
                 <div id="painsList" class="space-y-2"></div>
                 <button type="button" onclick="addPain('','')" class="text-[10px] font-bold text-indigo-600 hover:underline">+ Tambah pain</button>
+              </div>
+
+              <!-- Solusi Section -->
+              <div id="solutionSection" class="space-y-3 bg-gradient-to-r from-emerald-50/80 to-teal-50/80 backdrop-blur p-4 rounded-xl border border-emerald-200/50">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-7 h-7 bg-emerald-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-lightbulb text-emerald-600 text-xs"></i>
+                  </div>
+                  <h5 class="text-sm font-extrabold text-emerald-900">Solusi</h5>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Section Title</label>
+                    <input type="text" id="solutionTitle" class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium" placeholder="Judul section solusi">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Section Subtitle</label>
+                    <input type="text" id="solutionSubtitle" class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium" placeholder="Subjudul section solusi">
+                  </div>
+                </div>
+                <div id="solutionsList" class="space-y-2"></div>
+                <button type="button" onclick="addSolution('','')" class="text-[10px] font-bold text-emerald-600 hover:underline">+ Tambah solusi</button>
               </div>
 
 
@@ -1506,21 +1543,11 @@
                   </div>
                   <div>
                     <h5 class="text-sm font-extrabold text-cyan-900">Periode Event Utama</h5>
-                    <p class="text-[9px] font-medium text-cyan-700">Dipakai untuk event induk, tipe mengikuti varian pertama</p>
+                    <p class="text-[9px] font-medium text-cyan-700">Bisa lebih dari satu, menyesuaikan jumlah paket/varian</p>
                   </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div>
-                    <label class="block text-[10px] font-extrabold text-cyan-800 mb-1">Tanggal Mulai</label>
-                    <input type="date" id="start_date_main"
-                      class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-extrabold text-cyan-800 mb-1">Tanggal Berakhir</label>
-                    <input type="date" id="end_date_main"
-                      class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
-                  </div>
-                </div>
+                <div id="periodsList" class="space-y-2"></div>
+                <button type="button" onclick="addPeriod()" class="text-[10px] font-bold text-cyan-600 hover:underline">+ Tambah Periode</button>
               </div>
 
               <div
@@ -2120,6 +2147,7 @@
           }
 
           // benefits
+          const benefitsSection = document.getElementById('viewBenefitsSection');
           const benefitsContainer = document.getElementById('viewBenefitsList');
           benefitsContainer.innerHTML = '';
           if (event.benefits && Array.isArray(event.benefits) && event.benefits.length) {
@@ -2128,12 +2156,13 @@
               li.textContent = b.benefit_text || b;
               benefitsContainer.appendChild(li);
             });
-            benefitsContainer.parentElement.style.display = '';
+            benefitsSection.style.display = '';
           } else {
-            benefitsContainer.parentElement.style.display = 'none';
+            benefitsSection.style.display = 'none';
           }
 
           // problem & pains
+          const problemSection = document.getElementById('viewProblemSection');
           document.getElementById('viewProblemTitle').textContent = event.problem_title || '';
           document.getElementById('viewProblemSubtitle').textContent = event.problem_subtitle || '';
           const painsContainer = document.getElementById('viewPainsList');
@@ -2146,13 +2175,33 @@
               li.innerHTML = title ? `<strong>${title}</strong>: ${desc}` : desc;
               painsContainer.appendChild(li);
             });
-            painsContainer.parentElement.style.display = '';
+            problemSection.style.display = '';
           } else {
-            painsContainer.parentElement.style.display = 'none';
+            problemSection.style.display = 'none';
+          }
+
+          // solutions
+          const solutionSection = document.getElementById('viewSolutionSection');
+          document.getElementById('viewSolutionTitle').textContent = event.solution_title || '';
+          document.getElementById('viewSolutionSubtitle').textContent = event.solution_subtitle || '';
+          const solutionsContainer = document.getElementById('viewSolutionsList');
+          solutionsContainer.innerHTML = '';
+          if (event.solutions && Array.isArray(event.solutions) && event.solutions.length) {
+            event.solutions.forEach(s => {
+              const li = document.createElement('li');
+              const title = s.solution_title || s.title || '';
+              const desc = s.solution_description || s.description || '';
+              li.innerHTML = title ? `<strong>${title}</strong>: ${desc}` : desc;
+              solutionsContainer.appendChild(li);
+            });
+            solutionSection.style.display = '';
+          } else {
+            solutionSection.style.display = 'none';
           }
 
 
           // faqs
+          const faqSection = document.getElementById('viewFaqSection');
           const faqsContainer = document.getElementById('viewFaqsList');
           faqsContainer.innerHTML = '';
           if (event.faqs && Array.isArray(event.faqs) && event.faqs.length) {
@@ -2161,9 +2210,59 @@
               li.innerHTML = `<strong>${f.question}</strong><br>${f.answer}`;
               faqsContainer.appendChild(li);
             });
-            faqsContainer.parentElement.style.display = '';
+            faqSection.style.display = '';
           } else {
-            faqsContainer.parentElement.style.display = 'none';
+            faqSection.style.display = 'none';
+          }
+
+          // testimonials
+          const testimonialsSection = document.getElementById('viewTestimonialsSection');
+          const testimonialsContainer = document.getElementById('viewTestimonialsList');
+          testimonialsContainer.innerHTML = '';
+          if (event.testimonials && Array.isArray(event.testimonials) && event.testimonials.length) {
+            event.testimonials.forEach((t, idx) => {
+              const li = document.createElement('li');
+              const type = (t.media_type || 'image').toUpperCase();
+              li.innerHTML = `<strong>${idx + 1}. ${type}</strong>: ${t.media_url || '-'}`;
+              testimonialsContainer.appendChild(li);
+            });
+            testimonialsSection.style.display = '';
+          } else {
+            testimonialsSection.style.display = 'none';
+          }
+
+          // variants
+          const variantsSection = document.getElementById('viewVariantsSection');
+          const variantsContainer = document.getElementById('viewVariantsList');
+          variantsContainer.innerHTML = '';
+          if (event.variants && Array.isArray(event.variants) && event.variants.length) {
+            event.variants.forEach((v, idx) => {
+              const li = document.createElement('li');
+              const type = v.event_type === 'gratis' ? 'Gratis' : 'Berbayar';
+              const po = parseInt(v.price_original || 0).toLocaleString('id-ID');
+              const pp = parseInt(v.price_promo || 0).toLocaleString('id-ID');
+              const sDate = v.start_date ? new Date(v.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+              const eDate = v.end_date ? new Date(v.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+              li.innerHTML = `<strong>${idx + 1}. ${v.title || '-'}</strong> (${type})<br>Slug: ${v.slug || '-'}<br>Harga: Rp ${po} -> Rp ${pp}<br>Periode: ${sDate} - ${eDate}`;
+              variantsContainer.appendChild(li);
+            });
+            variantsSection.style.display = '';
+          } else {
+            variantsSection.style.display = 'none';
+          }
+
+          // susun urutan detail mengikuti alur form Buat Event:
+          // Header/Hero -> Konten LP (benefits/problem/faq/testimoni/varian) -> Meta/Pricing/Periode -> Admin WA
+          const viewModalContent = document.getElementById('viewModalContent');
+          const viewHeaderBlock = document.getElementById('viewHeaderBlock');
+          const viewMetaBlock = document.getElementById('viewMetaBlock');
+          const viewContactBlock = document.getElementById('viewContactBlock');
+          const viewAdditionalSections = document.getElementById('viewAdditionalSections');
+          if (viewModalContent && viewHeaderBlock && viewAdditionalSections && viewMetaBlock && viewContactBlock) {
+            viewModalContent.appendChild(viewHeaderBlock);
+            viewModalContent.appendChild(viewAdditionalSections);
+            viewModalContent.appendChild(viewMetaBlock);
+            viewModalContent.appendChild(viewContactBlock);
           }
 
           document.getElementById('editFromViewBtn').setAttribute('onclick', `closeViewModal(); editEvent(${event.id})`);
@@ -2208,12 +2307,15 @@
           document.getElementById('faqsList').innerHTML = '';
           document.getElementById('testimonialsList').innerHTML = '';
           document.getElementById('variantsList').innerHTML = '';
+          document.getElementById('solutionsList').innerHTML = '';
+          document.getElementById('periodsList').innerHTML = '';
           document.getElementById('problemTitle').value = '';
           document.getElementById('problemSubtitle').value = '';
-          document.getElementById('start_date_main').value = '';
-          document.getElementById('end_date_main').value = '';
+          document.getElementById('solutionTitle').value = '';
+          document.getElementById('solutionSubtitle').value = '';
           addTestimonial();
           addVariant();
+          syncPeriodsWithVariants();
           // package logic removed
           document.getElementById('eventModal').classList.remove('hidden');
           document.getElementById('eventModal').classList.add('flex');
@@ -2262,6 +2364,14 @@
             event.pains.forEach(p => addPain(p.pain_title || p.title, p.pain_description || p.description));
           }
 
+          // solution section
+          document.getElementById('solutionTitle').value = event.solution_title || '';
+          document.getElementById('solutionSubtitle').value = event.solution_subtitle || '';
+          document.getElementById('solutionsList').innerHTML = '';
+          if (event.solutions && Array.isArray(event.solutions)) {
+            event.solutions.forEach((s) => addSolution(s.solution_title || s.title || '', s.solution_description || s.description || ''));
+          }
+
           // faqs
           document.getElementById('faqsList').innerHTML = '';
           if (event.faqs && Array.isArray(event.faqs)) {
@@ -2284,9 +2394,17 @@
             addVariant();
           }
 
-          // packages no longer applicable; event pricing handled separately
-          document.getElementById('start_date_main').value = event.start_date || '';
-          document.getElementById('end_date_main').value = event.end_date || '';
+          // periods per paket
+          document.getElementById('periodsList').innerHTML = '';
+          if (event.variants && Array.isArray(event.variants) && event.variants.length) {
+            event.variants.forEach((v, idx) => addPeriod({
+              start_date: v.start_date || (idx === 0 ? (event.start_date || '') : ''),
+              end_date: v.end_date || (idx === 0 ? (event.end_date || '') : ''),
+            }));
+          } else {
+            addPeriod({ start_date: event.start_date || '', end_date: event.end_date || '' });
+          }
+          syncPeriodsWithVariants();
 
           const statusRadio = document.querySelector(`input[name="status"][value="${event.status || 'draft'}"]`);
           if (statusRadio) {
@@ -2544,7 +2662,10 @@
           removeBtn.type = 'button';
           removeBtn.className = 'text-[10px] font-bold text-red-600 hover:underline';
           removeBtn.textContent = 'Hapus Varian';
-          removeBtn.addEventListener('click', () => item.remove());
+          removeBtn.addEventListener('click', () => {
+            item.remove();
+            syncPeriodsWithVariants();
+          });
 
           item.appendChild(mediaWrap);
           item.appendChild(removeBtn);
@@ -2567,7 +2688,9 @@
           item.querySelector('.variant-description').value = initial.description || '';
           item.querySelector('.variant-price-original').value = initial.price_original || '';
           item.querySelector('.variant-price-promo').value = initial.price_promo || '';
+          item.querySelector('.variant-title').addEventListener('input', syncPeriodsWithVariants);
           togglePrice();
+          syncPeriodsWithVariants();
         }
 
         // helper to dynamically add benefits/pains
@@ -2595,6 +2718,84 @@
             <textarea class="pain-desc w-full px-2 py-1 bg-white/60 backdrop-blur border border-white/50 rounded-lg text-xs" rows="2" placeholder="Deskripsi pain">${desc}</textarea>
           `;
           list.appendChild(div);
+        }
+
+        function addSolution(title = '', desc = '') {
+          const list = document.getElementById('solutionsList');
+          const div = document.createElement('div');
+          div.className = 'space-y-1 solution-item';
+          div.innerHTML = `
+            <div class="flex items-center gap-2">
+              <input type="text" class="solution-title flex-1 px-2 py-1 bg-white/60 backdrop-blur border border-white/50 rounded-lg text-xs" placeholder="Judul solusi" value="${title.replace(/"/g,'&quot;')}">
+              <button type="button" class="text-red-500 text-xs" onclick="this.parentElement.parentElement.remove()">&times;</button>
+            </div>
+            <textarea class="solution-desc w-full px-2 py-1 bg-white/60 backdrop-blur border border-white/50 rounded-lg text-xs" rows="2" placeholder="Deskripsi solusi">${desc}</textarea>
+          `;
+          list.appendChild(div);
+        }
+
+        function toDateInputValue(value) {
+          if (!value) return '';
+          if (typeof value === 'string') {
+            if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+            const m = value.match(/^(\d{4}-\d{2}-\d{2})/);
+            if (m) return m[1];
+          }
+          const d = new Date(value);
+          if (Number.isNaN(d.getTime())) return '';
+          return d.toISOString().slice(0, 10);
+        }
+
+        function addPeriod(initial = {}, syncAfter = true) {
+          const list = document.getElementById('periodsList');
+          const row = document.createElement('div');
+          row.className = 'period-item grid grid-cols-1 md:grid-cols-12 gap-2 items-end bg-white/60 backdrop-blur border border-white/50 rounded-lg p-2';
+          row.innerHTML = `
+            <div class="md:col-span-4">
+              <label class="period-package-label block text-[10px] font-extrabold text-cyan-800 mb-1">Periode Paket</label>
+              <div class="text-[11px] text-cyan-700 font-semibold period-package-name">-</div>
+            </div>
+            <div class="md:col-span-3">
+              <label class="block text-[10px] font-extrabold text-cyan-800 mb-1">Tanggal Mulai</label>
+              <input type="date" class="period-start w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs">
+            </div>
+            <div class="md:col-span-3">
+              <label class="block text-[10px] font-extrabold text-cyan-800 mb-1">Tanggal Berakhir</label>
+              <input type="date" class="period-end w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs">
+            </div>
+            <div class="md:col-span-2">
+              <button type="button" class="w-full text-[10px] font-bold text-red-600 hover:underline period-remove-btn">Hapus</button>
+            </div>
+          `;
+          row.querySelector('.period-start').value = toDateInputValue(initial.start_date);
+          row.querySelector('.period-end').value = toDateInputValue(initial.end_date);
+          row.querySelector('.period-remove-btn').addEventListener('click', () => {
+            row.remove();
+            syncPeriodsWithVariants();
+          });
+          list.appendChild(row);
+          if (syncAfter) syncPeriodsWithVariants();
+        }
+
+        function syncPeriodsWithVariants() {
+          const variants = Array.from(document.querySelectorAll('.variant-item'));
+          const periodsList = document.getElementById('periodsList');
+          if (!periodsList) return;
+          const required = Math.max(variants.length, 1);
+          while (periodsList.children.length < required) {
+            addPeriod({}, false);
+          }
+          while (periodsList.children.length > required) {
+            periodsList.removeChild(periodsList.lastElementChild);
+          }
+          const rows = Array.from(periodsList.querySelectorAll('.period-item'));
+          rows.forEach((row, idx) => {
+            const title = variants[idx]?.querySelector('.variant-title')?.value?.trim() || `Paket ${idx + 1}`;
+            const labelEl = row.querySelector('.period-package-label');
+            const nameEl = row.querySelector('.period-package-name');
+            if (labelEl) labelEl.textContent = `Periode Paket ${idx + 1}`;
+            if (nameEl) nameEl.textContent = title;
+          });
         }
 
         function addFAQ(question = '', answer = '') {
@@ -2632,6 +2833,10 @@
             problemTitle: document.getElementById('problemTitle').value,
             problemSubtitle: document.getElementById('problemSubtitle').value,
             pains: [],
+            solutionTitle: document.getElementById('solutionTitle').value,
+            solutionSubtitle: document.getElementById('solutionSubtitle').value,
+            solutions: [],
+            periods: [],
             faqs: [],
             testimonials: [],
             variants: []
@@ -2657,6 +2862,26 @@
             }
           });
 
+          // collect solutions
+          document.querySelectorAll('.solution-item').forEach(item => {
+            const titleEl = item.querySelector('.solution-title');
+            const descEl = item.querySelector('.solution-desc');
+            if (titleEl || descEl) {
+              formData.solutions.push({
+                solution_title: titleEl ? titleEl.value.trim() : '',
+                solution_description: descEl ? descEl.value.trim() : '',
+              });
+            }
+          });
+
+          // collect periods (per paket)
+          document.querySelectorAll('.period-item').forEach(item => {
+            formData.periods.push({
+              start_date: item.querySelector('.period-start')?.value || null,
+              end_date: item.querySelector('.period-end')?.value || null,
+            });
+          });
+
           // collect faqs
           document.querySelectorAll('.faq-item').forEach(item => {
             const qEl = item.querySelector('.faq-question');
@@ -2680,13 +2905,14 @@
           });
 
           // collect variants
-          document.querySelectorAll('.variant-item').forEach((item) => {
+          document.querySelectorAll('.variant-item').forEach((item, idx) => {
             const title = item.querySelector('.variant-title')?.value?.trim() || '';
             if (!title) return;
             const slugRaw = item.querySelector('.variant-slug')?.value?.trim() || '';
             const eventTypeVariant = item.querySelector('.variant-type')?.value || 'berbayar';
             const logoType = item.querySelector('.variant-logo-type')?.value || '';
             const logoUrl = item.querySelector('.variant-logo-url')?.value?.trim() || '';
+            const period = formData.periods[idx] || formData.periods[0] || { start_date: null, end_date: null };
             formData.variants.push({
               event_type: eventTypeVariant,
               title: title,
@@ -2694,6 +2920,8 @@
               description: item.querySelector('.variant-description')?.value || '',
               price_original: eventTypeVariant === 'gratis' ? 0 : (item.querySelector('.variant-price-original')?.value || 0),
               price_promo: eventTypeVariant === 'gratis' ? 0 : (item.querySelector('.variant-price-promo')?.value || 0),
+              start_date: period.start_date || null,
+              end_date: period.end_date || null,
               logo_media_type: logoType || (logoUrl ? detectHeroMediaTypeFromUrl(logoUrl) : ''),
               logo_media_url: logoUrl
             });
@@ -2711,11 +2939,11 @@
           formData.description = primaryVariant.description || '';
           formData.price_original = primaryVariant.event_type === 'gratis' ? 0 : (primaryVariant.price_original || 0);
           formData.price_promo = primaryVariant.event_type === 'gratis' ? 0 : (primaryVariant.price_promo || 0);
-          formData.start_date = document.getElementById('start_date_main').value || null;
-          formData.end_date = document.getElementById('end_date_main').value || null;
+          formData.start_date = formData.periods[0]?.start_date || null;
+          formData.end_date = formData.periods[0]?.end_date || null;
 
           if (formData.event_type === 'berbayar' && (!formData.start_date || !formData.end_date)) {
-            showError('Untuk varian utama berbayar, tanggal mulai dan berakhir wajib diisi');
+            showError('Untuk varian utama berbayar, periode paket pertama wajib diisi');
             return;
           }
 
@@ -2732,7 +2960,11 @@
             const data = await response.json();
 
             if (data.success) {
-              showSuccess(eventId ? 'Event berhasil diperbarui' : 'Event berhasil dibuat');
+              const landingUrl = data?.data?.landing_url;
+              const successMessage = eventId
+                ? (landingUrl ? `Event berhasil diperbarui. Landing: ${landingUrl}` : 'Event berhasil diperbarui')
+                : (landingUrl ? `Event berhasil dibuat. Landing: ${landingUrl}` : 'Event berhasil dibuat');
+              showSuccess(successMessage);
               closeModal();
               loadEvents();
             } else {
