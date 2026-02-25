@@ -1513,6 +1513,63 @@
                 </div>
               </div>
             </div>
+
+            <!-- Rekap Perubahan Terakhir -->
+            <div class="glass-premium rounded-2xl p-4 border border-white/50 card-luxury">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-8 h-8 bg-gradient-to-br from-slate-700 to-slate-900 rounded-lg flex items-center justify-center shadow-lg">
+                    <i class="fas fa-user-edit text-white text-xs"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-extrabold text-gray-900">Rekap Perubahan Terakhir</h4>
+                    <p class="text-[8px] text-emerald-700 font-medium mt-0.5">Sales, Finance, Admin</p>
+                  </div>
+                </div>
+              </div>
+              <div id="lastChangesByRole" class="space-y-2">
+                <div class="flex items-center justify-between bg-white/60 p-2.5 rounded-xl border border-white/60">
+                  <div class="flex items-center gap-2">
+                    <div
+                      class="w-5 h-5 bg-gradient-to-r from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-briefcase text-white text-[8px]"></i>
+                    </div>
+                    <span class="text-[9px] font-bold text-gray-700">Sales</span>
+                  </div>
+                  <div class="text-right">
+                    <div id="lastChangeSalesName" class="text-[9px] font-extrabold text-emerald-800">—</div>
+                    <div id="lastChangeSalesMeta" class="text-[8px] text-gray-600">—</div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between bg-white/60 p-2.5 rounded-xl border border-white/60">
+                  <div class="flex items-center gap-2">
+                    <div
+                      class="w-5 h-5 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-wallet text-white text-[8px]"></i>
+                    </div>
+                    <span class="text-[9px] font-bold text-gray-700">Finance</span>
+                  </div>
+                  <div class="text-right">
+                    <div id="lastChangeFinanceName" class="text-[9px] font-extrabold text-emerald-800">—</div>
+                    <div id="lastChangeFinanceMeta" class="text-[8px] text-gray-600">—</div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between bg-white/60 p-2.5 rounded-xl border border-white/60">
+                  <div class="flex items-center gap-2">
+                    <div
+                      class="w-5 h-5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                      <i class="fas fa-user-shield text-white text-[8px]"></i>
+                    </div>
+                    <span class="text-[9px] font-bold text-gray-700">Admin</span>
+                  </div>
+                  <div class="text-right">
+                    <div id="lastChangeAdminName" class="text-[9px] font-extrabold text-emerald-800">—</div>
+                    <div id="lastChangeAdminMeta" class="text-[8px] text-gray-600">—</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </main>
@@ -1958,6 +2015,44 @@
                 document.getElementById('sysServerResponse').textContent = data.systemHealth.serverResponseMs + 'ms';
                 document.getElementById('sysUptime').textContent = data.systemHealth.uptimePct;
                 document.getElementById('sysActiveSessions').textContent = data.systemHealth.activeSessions;
+              }
+
+              if (data.lastChangesByRole) {
+                const setLastChange = (roleKey, nameId, metaId) => {
+                  const item = data.lastChangesByRole[roleKey];
+                  const nameEl = document.getElementById(nameId);
+                  const metaEl = document.getElementById(metaId);
+                  if (!nameEl || !metaEl) return;
+
+                  if (!item) {
+                    nameEl.textContent = '—';
+                    metaEl.textContent = 'Belum ada aktivitas';
+                    return;
+                  }
+
+                  const approverName = item.approver_name || item.approver_email || '—';
+                  let whenText = '—';
+                  if (item.created_at) {
+                    const d = new Date(item.created_at);
+                    if (!isNaN(d.getTime())) {
+                      whenText = d.toLocaleString('id-ID', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      });
+                    }
+                  }
+                  const actionText = item.action || 'update';
+
+                  nameEl.textContent = approverName;
+                  metaEl.textContent = `${actionText} • ${whenText}`;
+                };
+
+                setLastChange('sales', 'lastChangeSalesName', 'lastChangeSalesMeta');
+                setLastChange('finance', 'lastChangeFinanceName', 'lastChangeFinanceMeta');
+                setLastChange('admin', 'lastChangeAdminName', 'lastChangeAdminMeta');
               }
             }
           } catch (error) {

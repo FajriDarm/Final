@@ -1128,11 +1128,13 @@
                                       <option value="SEDANG DI PROSPEK" <%=trx.lead_status==='SEDANG DI PROSPEK'
                                         ? 'selected' : '' %>>SEDANG DI PROSPEK</option>
                                       <option value="HOT" <%=trx.lead_status==='HOT' ? 'selected' : '' %>>HOT</option>
-                                      <option value="DP" <%=trx.lead_status==='DP' ? 'selected' : '' %>>DP</option>
-                                      <option value="LUNAS" <%=trx.lead_status==='LUNAS' ? 'selected' : '' %>>LUNAS
-                                      </option>
-                                      <option value="SEDANG BERANGKAT" <%=trx.lead_status==='SEDANG BERANGKAT'
-                                        ? 'selected' : '' %>>SEDANG BERANGKAT</option>
+                                      <% if (trx.lead_status !== 'LEAD BARU') { %>
+                                        <option value="DP" <%=trx.lead_status==='DP' ? 'selected' : '' %>>DP</option>
+                                        <option value="LUNAS" <%=trx.lead_status==='LUNAS' ? 'selected' : '' %>>LUNAS
+                                        </option>
+                                        <option value="SEDANG BERANGKAT" <%=trx.lead_status==='SEDANG BERANGKAT'
+                                          ? 'selected' : '' %>>SEDANG BERANGKAT</option>
+                                      <% } %>
                                     </select>
                                     <% } %>
                                       <div class="text-[8px] text-gray-500 mt-1">Status DB: <%= trx.lead_status || '—'
@@ -1495,6 +1497,17 @@
             const currentDbStatus = statusEl ? statusEl.textContent.replace('Status DB:', '').trim() : (sel.dataset.prev || '');
             const curLevel = getStageLevel(currentDbStatus);
             const targetLevel = getStageLevel(val);
+
+            // Lead Baru can only progress up to HOT
+            if (currentDbStatus === 'LEAD BARU' && ['DP', 'LUNAS', 'SEDANG BERANGKAT'].includes(val)) {
+              await showModal({
+                type: 'warning',
+                title: 'Tidak Diizinkan',
+                message: 'Lead baru hanya boleh diubah sampai status HOT.'
+              });
+              sel.value = sel.dataset.prev || 'LEAD BARU';
+              return;
+            }
 
             // Prevent downgrading to an earlier/lower stage
             if (curLevel > targetLevel) {
@@ -1968,9 +1981,11 @@
                               <option value="LEAD BARU" ${newStatus === 'LEAD BARU' ? 'selected' : ''}>LEAD BARU</option>
                               <option value="SEDANG DI PROSPEK" ${newStatus === 'SEDANG DI PROSPEK' ? 'selected' : ''}>SEDANG DI PROSPEK</option>
                               <option value="HOT" ${newStatus === 'HOT' ? 'selected' : ''}>HOT</option>
-                              <option value="DP" ${newStatus === 'DP' ? 'selected' : ''}>DP</option>
-                              <option value="LUNAS" ${newStatus === 'LUNAS' ? 'selected' : ''}>LUNAS</option>
-                              <option value="SEDANG BERANGKAT" ${newStatus === 'SEDANG BERANGKAT' ? 'selected' : ''}>SEDANG BERANGKAT</option>
+                              ${newStatus === 'LEAD BARU' ? '' : `
+                                <option value="DP" ${newStatus === 'DP' ? 'selected' : ''}>DP</option>
+                                <option value="LUNAS" ${newStatus === 'LUNAS' ? 'selected' : ''}>LUNAS</option>
+                                <option value="SEDANG BERANGKAT" ${newStatus === 'SEDANG BERANGKAT' ? 'selected' : ''}>SEDANG BERANGKAT</option>
+                              `}
                             </select>
                             <div class="text-[8px] text-gray-500 mt-1">Status DB: ${newStatus}</div>
                             <div class="mt-2 action-area flex gap-1" data-id="${id}">

@@ -16,6 +16,7 @@ const {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(require("./middleware/auditLogger"));
 
 // View engine
 app.set("view engine", "ejs");

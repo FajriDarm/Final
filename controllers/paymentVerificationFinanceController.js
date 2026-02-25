@@ -202,6 +202,26 @@ exports.setLeadStatus = async (req, res) => {
       }
     }
 
+    // Log finance lead verification activity
+    try {
+      const actorId = req.user?.id || null;
+      await db.query(
+        `INSERT INTO activity_logs (approved_by, action, target_type, target_id, new_status, description, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, NOW())`,
+        [
+          actorId,
+          "LEAD_STATUS_UPDATE_FINANCE",
+          "transaction",
+          id,
+          lead_status,
+          `Finance updated lead status to ${lead_status} for transaction #${id}`,
+        ],
+      );
+      res.locals.auditLogged = true;
+    } catch (e) {
+      console.warn("Failed to log finance lead status update", e && (e.message || e));
+    }
+
     // If AJAX / fetch expecting JSON, return JSON success; otherwise redirect
     if (req.accepts && req.accepts("json")) {
       return res.json({ success: true });

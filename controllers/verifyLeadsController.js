@@ -163,6 +163,26 @@ exports.postUpdateLeadStatus = async (req, res) => {
       [id, lead_status],
     );
 
+    // Log sales lead verification activity
+    try {
+      const actorId = req.user?.id || req.body.user_id || req.query.user_id || null;
+      await db.query(
+        `INSERT INTO activity_logs (approved_by, action, target_type, target_id, new_status, description, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, NOW())`,
+        [
+          actorId,
+          "LEAD_STATUS_UPDATE_SALES",
+          "transaction",
+          id,
+          lead_status,
+          `Sales updated lead status to ${lead_status} for transaction #${id}`,
+        ],
+      );
+      res.locals.auditLogged = true;
+    } catch (e) {
+      console.warn("Failed to log sales lead status update", e && (e.message || e));
+    }
+
     // If lead moved to SEDANG BERANGKAT, attempt to award commission for stage 3
     if ((lead_status || "").toString().toUpperCase() === "SEDANG BERANGKAT") {
       // Ensure transaction is marked as paid so finance dashboard counts it
