@@ -1933,7 +1933,7 @@
         let profileCompletionPercent = 0;
         console.debug('User status from server (initial):', userStatus);
 
-        // Calculate profile completion percentage
+        // Calculate profile completion percentage (match profile page rules)
         function calculateProfileCompletion() {
           // First, try to get updated profile from localStorage (from profile page update)
           let updatedProfileFromStorage = null;
@@ -1948,7 +1948,7 @@
           }
 
           // Get affiliate profile data from template
-          let affiliateProfile = {
+          const baseProfile = {
             full_name: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.full_name : "" %>',
             email: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.email : "" %>',
             phone: '<%= typeof affiliateProfile !== "undefined" && affiliateProfile ? affiliateProfile.phone : "" %>',
@@ -1958,22 +1958,32 @@
           };
 
           // If we have updated data from storage, merge it
-          if (updatedProfileFromStorage) {
-            affiliateProfile = {
-              full_name: updatedProfileFromStorage.full_name || affiliateProfile.full_name,
-              email: updatedProfileFromStorage.email || affiliateProfile.email,
-              phone: updatedProfileFromStorage.phone || affiliateProfile.phone,
-              bank_name: updatedProfileFromStorage.bank_name || affiliateProfile.bank_name,
-              bank_account_number: updatedProfileFromStorage.bank_account_number || affiliateProfile.bank_account_number,
-              bank_account_name: updatedProfileFromStorage.bank_account_name || affiliateProfile.bank_account_name
-            };
-          }
+          const mergedProfile = updatedProfileFromStorage
+            ? {
+              full_name: updatedProfileFromStorage.full_name || baseProfile.full_name,
+              email: updatedProfileFromStorage.email || baseProfile.email,
+              phone: updatedProfileFromStorage.phone || baseProfile.phone,
+              bank_name: updatedProfileFromStorage.bank_name || baseProfile.bank_name,
+              bank_account_number: updatedProfileFromStorage.bank_account_number || baseProfile.bank_account_number,
+              bank_account_name: updatedProfileFromStorage.bank_account_name || baseProfile.bank_account_name
+            }
+            : baseProfile;
 
-          const requiredFields = ['full_name', 'email', 'phone', 'bank_name', 'bank_account_number', 'bank_account_name'];
+          // Normalize to match profile.ejs fields
+          const normalized = {
+            name: mergedProfile.full_name,
+            email: mergedProfile.email,
+            phone: mergedProfile.phone,
+            bank_name: mergedProfile.bank_name,
+            bank_account: mergedProfile.bank_account_number,
+            bank_account_name: mergedProfile.bank_account_name
+          };
+
+          const requiredFields = ['name', 'email', 'phone', 'bank_name', 'bank_account', 'bank_account_name'];
           let filledCount = 0;
 
           requiredFields.forEach(field => {
-            if (affiliateProfile[field] && String(affiliateProfile[field]).trim() !== '') {
+            if (normalized[field] && String(normalized[field]).trim() !== '') {
               filledCount++;
             }
           });
@@ -2058,11 +2068,20 @@
         }
 
         function calculateProfileCompletionFromData(profileData) {
-          const requiredFields = ['full_name', 'email', 'phone', 'bank_name', 'bank_account_number', 'bank_account_name'];
+          const normalized = {
+            name: profileData.full_name || profileData.name || '',
+            email: profileData.email || '',
+            phone: profileData.phone || '',
+            bank_name: profileData.bank_name || '',
+            bank_account: profileData.bank_account_number || profileData.bank_account || '',
+            bank_account_name: profileData.bank_account_name || ''
+          };
+
+          const requiredFields = ['name', 'email', 'phone', 'bank_name', 'bank_account', 'bank_account_name'];
           let filledCount = 0;
 
           requiredFields.forEach(field => {
-            const value = profileData[field];
+            const value = normalized[field];
             if (value && String(value).trim() !== '') {
               filledCount++;
             }

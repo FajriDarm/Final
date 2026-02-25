@@ -733,7 +733,13 @@
                 <span>DP</span>
                 <span class="ml-1 bg-white/30 px-2 py-0.5 rounded-lg text-[9px] badge-count" data-for="DP">0</span>
               </button>
-              <div class="ml-auto text-[10px] font-medium text-emerald-700">Pilih tab untuk melihat lead sesuai status
+              <div class="ml-auto flex items-center gap-2">
+                <div class="relative">
+                  <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-400 text-[10px]"></i>
+                  <input id="paymentsSearch" type="text" placeholder="Cari ID, customer, affiliate, event..."
+                    class="pl-8 pr-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-[10px] font-medium w-[220px]" />
+                </div>
+                <div class="text-[10px] font-medium text-emerald-700">Pilih tab untuk melihat lead sesuai status</div>
               </div>
             </div>
 
@@ -1045,7 +1051,21 @@
           }
 
           // Set up tabs
+          let activeStatus = 'HOT';
+          let searchTerm = '';
+
+          function applyFilters() {
+            document.querySelectorAll('#paymentsTableBody tr[data-lead-status]').forEach(tr => {
+              const s = tr.dataset.leadStatus || '';
+              const text = tr.textContent.toLowerCase();
+              const matchesStatus = s === activeStatus;
+              const matchesSearch = !searchTerm || text.includes(searchTerm);
+              tr.style.display = (matchesStatus && matchesSearch) ? '' : 'none';
+            });
+          }
+
           function updateTabs(active) {
+            activeStatus = active;
             document.querySelectorAll('.status-tab').forEach(btn => {
               if (btn.dataset.status === active) {
                 btn.classList.remove('tab-inactive');
@@ -1055,17 +1075,20 @@
                 btn.classList.add('tab-inactive');
               }
             });
-
-            // Show/hide rows
-            document.querySelectorAll('#paymentsTableBody tr[data-lead-status]').forEach(tr => {
-              const s = tr.dataset.leadStatus || '';
-              tr.style.display = (s === active) ? '' : 'none';
-            });
+            applyFilters();
           }
 
           document.querySelectorAll('.status-tab').forEach(btn => {
             btn.addEventListener('click', function () { updateTabs(this.dataset.status); });
           });
+
+          const searchInput = document.getElementById('paymentsSearch');
+          if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+              searchTerm = (e.target.value || '').trim().toLowerCase();
+              applyFilters();
+            });
+          }
 
           // Initialize counts and default tab
           const counts = { HOT: 0, DP: 0 };
@@ -1092,28 +1115,6 @@
           document.getElementById('lunasCount').textContent = lunasCount;
 
           updateTabs('HOT');
-
-          // Polling: when HOT tab active, poll every 10s and reload if result changed
-          let lastIds = Array.from(document.querySelectorAll('#paymentsTableBody tr[data-lead-status]'))
-            .map(r => r.dataset.leadStatus + ':' + r.querySelector('.font-extrabold.text-xs')?.textContent.trim()).join(',');
-
-          setInterval(async () => {
-            const activeTab = document.querySelector('.status-tab.tab-active')?.dataset.status || 'HOT';
-            if (activeTab !== 'HOT') return; // only poll when HOT active
-            try {
-              const res = await fetch('/finance/payment-verification/api', { credentials: 'same-origin' });
-              if (!res.ok) return;
-              const j = await res.json();
-              const ids = (j && j.pendingPayments || [])
-                .filter(p => (p.lead_status || '').toUpperCase() === 'HOT')
-                .map(p => 'HOT:' + p.id)
-                .join(',');
-              if (ids !== lastIds) {
-                console.log('pending HOT changed, reloading...');
-                window.location.reload();
-              }
-            } catch (e) { console.error('poll error', e); }
-          }, 10000);
 
         }).catch(() => { });
       </script>

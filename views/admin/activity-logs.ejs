@@ -606,7 +606,7 @@
                   </div>
                 </div>
 
-                <!-- Second Row: Search, Date Filter, and Clear Button -->
+                <!-- Second Row: Search, Role Filter, Date Range, and Clear Button -->
                 <div class="flex flex-col sm:flex-row gap-3">
                   <!-- Search Input Premium -->
                   <div class="relative flex-1">
@@ -617,11 +617,31 @@
                       class="w-full pl-10 pr-4 py-2.5 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 placeholder-gray-400 text-xs font-medium" />
                   </div>
 
-                  <!-- Date Filter Premium -->
+                  <!-- Role Filter -->
+                  <div class="relative">
+                    <i
+                      class="fas fa-user-tag absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400 text-sm"></i>
+                    <select id="roleFilter"
+                      class="pl-10 pr-8 py-2.5 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium w-full sm:w-auto min-w-[160px]">
+                      <option value="all">Semua Role</option>
+                      <option value="sales">Sales</option>
+                      <option value="finance">Finance</option>
+                      <option value="admin">Admin</option>
+                      <option value="super_admin">Super Admin</option>
+                    </select>
+                  </div>
+
+                  <!-- Date Range -->
                   <div class="relative">
                     <i
                       class="fas fa-calendar-alt absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400 text-sm"></i>
-                    <input type="date" id="dateFilter"
+                    <input type="date" id="dateFrom"
+                      class="pl-10 pr-4 py-2.5 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium w-full sm:w-auto min-w-[160px]" />
+                  </div>
+                  <div class="relative">
+                    <i
+                      class="fas fa-calendar-check absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400 text-sm"></i>
+                    <input type="date" id="dateTo"
                       class="pl-10 pr-4 py-2.5 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium w-full sm:w-auto min-w-[160px]" />
                   </div>
 
@@ -781,9 +801,30 @@
         // FUNGSI UTAMA
         // ============================================================
 
-        async function loadActivityLogs(page = 1) {
+        async function loadActivityLogs(page = 1, reset = false) {
           try {
-            const response = await fetch(`/api/admin/activity-logs?page=${page}&limit=${pageSize}`);
+            if (reset) {
+              allActivities = [];
+              currentPage = 1;
+              hasMore = true;
+            }
+
+            const roleFilter = document.getElementById('roleFilter')?.value || 'all';
+            const dateFrom = document.getElementById('dateFrom')?.value || '';
+            const dateTo = document.getElementById('dateTo')?.value || '';
+
+            const search = document.getElementById('searchInput')?.value?.trim() || '';
+
+            const params = new URLSearchParams({
+              page: String(page),
+              limit: String(pageSize),
+            });
+            if (roleFilter && roleFilter !== 'all') params.set('role', roleFilter);
+            if (dateFrom) params.set('date_from', dateFrom);
+            if (dateTo) params.set('date_to', dateTo);
+            if (search) params.set('search', search);
+
+            const response = await fetch(`/api/admin/activity-logs?${params.toString()}`);
             const data = await response.json();
 
             if (data.success) {
@@ -793,10 +834,12 @@
                 allActivities = [...allActivities, ...data.data];
               }
 
-              hasMore = data.data.length === pageSize;
+              const total = typeof data.total === 'number' ? data.total : allActivities.length;
+              hasMore = allActivities.length < total;
               filterActivities();
-              document.getElementById('totalEntries').textContent = allActivities.length;
-              document.getElementById('endEntry').textContent = Math.min(page * pageSize, allActivities.length);
+              document.getElementById('totalEntries').textContent = total;
+              document.getElementById('startEntry').textContent = total === 0 ? 0 : 1;
+              document.getElementById('endEntry').textContent = Math.min(allActivities.length, total);
             }
           } catch (error) {
             console.error('Error loading activity logs:', error);
@@ -832,24 +875,7 @@
             });
           }
 
-          // Apply date filter
-          const dateFilter = document.getElementById('dateFilter').value;
-          if (dateFilter) {
-            filtered = filtered.filter(activity => {
-              const activityDate = new Date(activity.created_at).toISOString().split('T')[0];
-              return activityDate === dateFilter;
-            });
-          }
-
-          // Apply search filter
-          const search = document.getElementById('searchInput').value.toLowerCase();
-          if (search) {
-            filtered = filtered.filter(activity =>
-              activity.description.toLowerCase().includes(search) ||
-              (activity.user_name && activity.user_name.toLowerCase().includes(search)) ||
-              activity.action.toLowerCase().includes(search)
-            );
-          }
+          // Server-side search handles global filtering
 
           // Show only current page
           const displayActivities = filtered.slice(0, currentPage * pageSize);
@@ -966,8 +992,11 @@
                       <div class="flex flex-wrap items-center gap-3">
                         <span class="text-emerald-700 font-bold flex items-center gap-1">
                           <i class="fas fa-user ${activity.user_name ? 'text-emerald-600' : 'text-gray-400'}"></i>
-                          ${activity.user_name || 'Sistem'}
+                          ${activity.user_name || activity.approver_name || 'Sistem'}
                         </span>
+                        ${activity.user_role ? `
+                          <span class="text-[9px] font-extrabold text-white bg-gradient-to-r from-slate-600 to-slate-800 px-2 py-1 rounded-lg border border-white/30 uppercase">${activity.user_role}</span>
+                        ` : ''}
                         <span class="text-emerald-700 font-bold flex items-center gap-1">
                           <i class="fas fa-clock text-emerald-400"></i>
                           ${time}
@@ -1075,7 +1104,7 @@
                         Pengguna
                       </label>
                       <div class="bg-white/60 backdrop-blur p-2.5 rounded-lg border border-white/60">
-                        <p class="text-xs font-extrabold text-gray-900">${activity.user_name || 'Sistem'}</p>
+                        <p class="text-xs font-extrabold text-gray-900">${activity.user_name || activity.approver_name || 'Sistem'}</p>
                       </div>
                     </div>
 
@@ -1088,6 +1117,16 @@
                         <span class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold ${config.gradient} text-white border border-white/30 inline-block">
                           ${config.label}
                         </span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label class="block text-[10px] font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
+                        <i class="fas fa-user-tag text-emerald-600"></i>
+                        Role
+                      </label>
+                      <div class="bg-white/60 backdrop-blur p-2.5 rounded-lg border border-white/60">
+                        <p class="text-xs font-extrabold text-gray-900">${activity.user_role || '-'}</p>
                       </div>
                     </div>
                   </div>
@@ -1127,18 +1166,27 @@
           clearTimeout(searchTimeout);
           searchTimeout = setTimeout(() => {
             currentPage = 1;
-            filterActivities();
+            loadActivityLogs(1, true);
           }, 300);
         });
 
-        document.getElementById('dateFilter').addEventListener('change', () => {
-          currentPage = 1;
-          filterActivities();
+        document.getElementById('roleFilter').addEventListener('change', () => {
+          loadActivityLogs(1, true);
+        });
+
+        document.getElementById('dateFrom').addEventListener('change', () => {
+          loadActivityLogs(1, true);
+        });
+
+        document.getElementById('dateTo').addEventListener('change', () => {
+          loadActivityLogs(1, true);
         });
 
         function clearFilters() {
           currentFilter = 'all';
-          document.getElementById('dateFilter').value = '';
+          document.getElementById('dateFrom').value = '';
+          document.getElementById('dateTo').value = '';
+          document.getElementById('roleFilter').value = 'all';
           document.getElementById('searchInput').value = '';
 
           // Reset filter buttons
@@ -1153,12 +1201,13 @@
           });
 
           currentPage = 1;
-          filterActivities();
+          loadActivityLogs(1, true);
         }
 
         function loadMore() {
+          if (!hasMore) return;
           currentPage++;
-          filterActivities();
+          loadActivityLogs(currentPage);
         }
 
         // ============================================================

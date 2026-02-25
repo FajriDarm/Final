@@ -372,19 +372,21 @@ exports.markWithdrawalAsPaidAPI = async (req, res) => {
         [id],
       );
 
-      // Log activity
+      // Log activity (finance transfer)
+      const actorName = req.user?.name || "Finance";
       await connection.query(
         `INSERT INTO activity_logs (approved_by, action, target_type, target_id, new_status, description, created_at)
          VALUES (?, ?, ?, ?, ?, ?, NOW())`,
         [
           userId,
-          "MARK_WITHDRAWAL_PAID",
+          "TRANSFER_WITHDRAWAL",
           "payout",
           id,
           "paid",
-          `Marked withdrawal #${id} (Rp ${payout.total_amount}) as paid with proof: ${proofFile.originalname}`,
+          `Finance ${actorName} transferred withdrawal #${id} (Rp ${payout.total_amount}) with proof: ${proofFile.originalname}`,
         ],
       );
+      res.locals.auditLogged = true;
 
       await connection.commit();
 

@@ -4,7 +4,8 @@ const db = require("../config/database");
 const PROVIDER = (process.env.WA_PROVIDER || "mock").toLowerCase();
 // WA_FORCE_TO (if set) will act as a fallback override only. Use WA_COPY_TO to send a copy to a tester number.
 const WA_FORCE_TO = process.env.WA_FORCE_TO || null;
-const WA_COPY_TO = process.env.WA_COPY_TO || (process.env.NODE_ENV !== "production" ? "+6287888669113" : null);
+// Only send copy if explicitly configured
+const WA_COPY_TO = process.env.WA_COPY_TO || null;
 const WABA_TOKEN = process.env.WABA_TOKEN || process.env.WHATSAPP_TOKEN;
 const WABA_PHONE_NUMBER_ID = process.env.WABA_PHONE_NUMBER_ID || process.env.WHATSAPP_PHONE_NUMBER_ID;
 
@@ -93,7 +94,7 @@ async function sendTextWA(toRaw, message, opts = {}) {
 
   // write activity log for primary (best-effort)
   try {
-    const description = `WA to ${primaryTo} via ${PROVIDER} - ${message.substring(0, 400)}`;
+    const description = `WA sent to ${primaryTo} via ${PROVIDER}`;
     await db.query(
       `INSERT INTO activity_logs (approved_by, action, target_type, target_id, description, created_at) VALUES (?, ?, ?, ?, ?, NOW())`,
       [null, action, target_type, target_id, description],
@@ -110,7 +111,7 @@ async function sendTextWA(toRaw, message, opts = {}) {
         const copyMessage = `[COPY] ${message}`;
         await sendOnce(copyTo, copyMessage);
         try {
-          const description = `WA COPY to ${copyTo} via ${PROVIDER} - ${copyMessage.substring(0,400)}`;
+          const description = `WA COPY sent to ${copyTo} via ${PROVIDER}`;
           await db.query(
             `INSERT INTO activity_logs (approved_by, action, target_type, target_id, description, created_at) VALUES (?, ?, ?, ?, ?, NOW())`,
             [null, `${action}_COPY`, target_type, target_id, description],

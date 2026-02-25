@@ -321,6 +321,40 @@ const getDashboardStats = async (req, res) => {
        LIMIT 10`,
     );
 
+    // Last activity per role (sales, finance, admin)
+    const [roleActivityRows] = await db.query(
+      `SELECT al.id, al.action, al.description, al.created_at,
+              approver.id as approver_id,
+              approver.name as approver_name,
+              approver.email as approver_email,
+              r.name as role_name
+       FROM activity_logs al
+       INNER JOIN users approver ON al.approved_by = approver.id
+       INNER JOIN roles r ON approver.role_id = r.id
+       WHERE r.name IN ('sales', 'finance', 'admin')
+       ORDER BY al.created_at DESC
+       LIMIT 200`,
+    );
+
+    const lastChangesByRole = {
+      sales: null,
+      finance: null,
+      admin: null,
+    };
+    for (const row of roleActivityRows) {
+      const role = row.role_name;
+      if (!lastChangesByRole[role]) {
+        lastChangesByRole[role] = {
+          approver_id: row.approver_id,
+          approver_name: row.approver_name,
+          approver_email: row.approver_email,
+          action: row.action,
+          description: row.description,
+          created_at: row.created_at,
+        };
+      }
+    }
+
     res.json({
       success: true,
       stats: {
@@ -343,6 +377,7 @@ const getDashboardStats = async (req, res) => {
       topAffiliates,
       popularEvents,
       systemHealth,
+      lastChangesByRole,
     });
   } catch (error) {
     console.error("Get dashboard stats error:", error);
@@ -1404,22 +1439,74 @@ const generateTokenForUser = async (req, res) => {
 
 const getActivityLogs = async (req, res) => {
   try {
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+    const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 10, 1), 200);
+    const offset = (page - 1) * limit;
+    const role = (req.query.role || "").trim();
+    const dateFrom = (req.query.date_from || "").trim();
+    const dateTo = (req.query.date_to || "").trim();
+    const search = (req.query.search || "").trim();
+
+    const whereClauses = [];
+    const whereParams = [];
+
+    if (role && role !== "all") {
+      whereClauses.push("r.name = ?");
+      whereParams.push(role);
+    }
+    if (dateFrom) {
+      whereClauses.push("DATE(al.created_at) >= ?");
+      whereParams.push(dateFrom);
+    }
+    if (dateTo) {
+      whereClauses.push("DATE(al.created_at) <= ?");
+      whereParams.push(dateTo);
+    }
+    if (search) {
+      const like = `%${search}%`;
+      whereClauses.push(
+        "(al.description LIKE ? OR al.action LIKE ? OR approver.name LIKE ? OR approver.email LIKE ? OR target.name LIKE ? OR target.email LIKE ?)",
+      );
+      whereParams.push(like, like, like, like, like, like);
+    }
+
+    const whereSql = whereClauses.length ? `WHERE ${whereClauses.join(" AND ")}` : "";
+
     const [logs] = await db.query(
       `SELECT al.*,
               approver.name as approver_name,
               approver.email as approver_email,
+              approver.name as user_name,
+              approver.email as user_email,
+              r.name as user_role,
               target.name as target_user_name,
               target.email as target_user_email
        FROM activity_logs al
        LEFT JOIN users approver ON al.approved_by = approver.id
+       LEFT JOIN roles r ON approver.role_id = r.id
        LEFT JOIN users target ON al.target_user_id = target.id
+       ${whereSql}
        ORDER BY al.created_at DESC
-       LIMIT 100`,
+       LIMIT ? OFFSET ?`,
+      [...whereParams, limit, offset],
+    );
+
+    const [countRows] = await db.query(
+      `SELECT COUNT(*) as total
+       FROM activity_logs al
+       LEFT JOIN users approver ON al.approved_by = approver.id
+       LEFT JOIN roles r ON approver.role_id = r.id
+       LEFT JOIN users target ON al.target_user_id = target.id
+       ${whereSql}`,
+      whereParams,
     );
 
     res.json({
       success: true,
       data: logs,
+      total: countRows[0]?.total || 0,
+      page,
+      limit,
     });
   } catch (error) {
     console.error("Get activity logs error:", error);
