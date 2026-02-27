@@ -1032,9 +1032,9 @@
             </div>
 
             <!-- Event Information -->
-            <div id="viewMetaBlock" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            <div id="viewMetaBlock" class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
               <!-- Left Column -->
-              <div class="space-y-3">
+              <div class="space-y-4">
                 <div class="bg-white/60 backdrop-blur p-4 rounded-xl border border-white/60">
                   <h4 class="text-xs font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
                     <i class="fas fa-info-circle text-emerald-600"></i>
@@ -1081,12 +1081,16 @@
                       <span id="viewEndDate"
                         class="font-extrabold text-blue-900 bg-white/80 px-3 py-1 rounded-lg border border-blue-200"></span>
                     </div>
+                    <div id="viewVariantDateListWrap" class="hidden pt-1 border-t border-blue-200/70">
+                      <p class="text-[10px] font-extrabold text-blue-800 mb-1">Tanggal Per Varian</p>
+                      <ul id="viewVariantDateList" class="space-y-1 text-[10px] text-blue-900"></ul>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <!-- Right Column -->
-              <div class="space-y-3">
+              <div class="space-y-4">
                 <!-- Pricing Information -->
                 <div id="viewPricingSection"
                   class="bg-green-50/80 backdrop-blur p-4 rounded-xl border border-green-200/50">
@@ -1123,6 +1127,16 @@
                   <p class="text-[11px] text-blue-600">Peserta bisa mendaftar secara gratis tanpa proses pembayaran.</p>
                 </div>
 
+                <!-- Variant Information -->
+                <div id="viewVariantInfoSection"
+                  class="bg-fuchsia-50/80 backdrop-blur p-4 rounded-xl border border-fuchsia-200/50 hidden">
+                  <h4 class="text-xs font-extrabold text-fuchsia-800 mb-3 flex items-center gap-1.5">
+                    <i class="fas fa-layer-group text-fuchsia-600"></i>
+                    Info Varian
+                  </h4>
+                  <div id="viewVariantInfoList" class="space-y-3"></div>
+                </div>
+
               </div>
             </div>
 
@@ -1152,7 +1166,7 @@
             </div>
 
             <!-- Additional Content -->
-            <div id="viewAdditionalSections" class="space-y-4 mt-6">
+            <div id="viewAdditionalSections" class="space-y-5 mt-6">
               <!-- Benefits -->
               <div id="viewBenefitsSection" class="bg-yellow-50/80 backdrop-blur p-4 rounded-xl border border-yellow-200/50">
                 <h4 class="text-xs font-extrabold text-yellow-800 mb-2">Benefits</h4>
@@ -1181,11 +1195,6 @@
               <div id="viewTestimonialsSection" class="bg-amber-50/80 backdrop-blur p-4 rounded-xl border border-amber-200/50">
                 <h4 class="text-xs font-extrabold text-amber-800 mb-2">Testimoni</h4>
                 <ul id="viewTestimonialsList" class="list-disc list-inside text-[10px] text-gray-700"></ul>
-              </div>
-              <!-- Variants -->
-              <div id="viewVariantsSection" class="bg-fuchsia-50/80 backdrop-blur p-4 rounded-xl border border-fuchsia-200/50">
-                <h4 class="text-xs font-extrabold text-fuchsia-800 mb-2">Varian Event</h4>
-                <ul id="viewVariantsList" class="list-disc list-inside text-[10px] text-gray-700"></ul>
               </div>
             </div>
           </div>
@@ -1275,7 +1284,7 @@
                   </div>
                   <div id="hero_upload_wrapper" class="hidden md:col-span-2">
                     <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Upload Foto</label>
-                    <input type="file" id="hero_media_file" accept="image/*" class="w-full text-xs" />
+                    <input type="file" id="hero_media_file" accept="image/*,video/*" class="w-full text-xs" />
                     <p id="hero_upload_note" class="text-[9px] text-gray-500 mt-1">File akan diunggah lalu URL disimpan otomatis.</p>
                   </div>
                 </div>
@@ -1945,13 +1954,36 @@
               'inactive': { bg: 'gradient-inactive', text: 'text-white', icon: 'fas fa-times-circle', badge: 'Tidak Aktif' }
             }[event.status] || { bg: 'bg-gray-500', text: 'text-white', icon: 'fas fa-file', badge: 'Tidak Diketahui' };
 
+            const variants = Array.isArray(event.variants) ? event.variants.filter(v => v && v.title) : [];
+            const primaryVariant = variants[0] || null;
+            const effectiveType = primaryVariant?.event_type || event.event_type || 'berbayar';
+            const effectivePriceOriginal = primaryVariant ? (primaryVariant.price_original || 0) : (event.price_original || 0);
+            const effectivePricePromo = primaryVariant ? (primaryVariant.price_promo || 0) : (event.price_promo || 0);
+            const effectiveStartDateRaw = primaryVariant?.start_date || event.start_date;
+            const effectiveEndDateRaw = primaryVariant?.end_date || event.end_date;
+            const displayTitle = primaryVariant?.title || event.title || '-';
+            const displayDescription = primaryVariant?.description || event.description || 'Tidak ada deskripsi';
             const typeConfig = {
               'gratis': { bg: 'gradient-gratis', text: 'text-white', icon: 'fas fa-gift', badge: 'Gratis' },
               'berbayar': { bg: 'gradient-berbayar', text: 'text-white', icon: 'fas fa-gem', badge: 'Berbayar' }
-            }[event.event_type] || { bg: 'bg-gray-500', text: 'text-white', icon: 'fas fa-calendar', badge: 'Tidak Diketahui' };
-
-            const startDate = event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
-            const endDate = event.end_date ? new Date(event.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+            }[effectiveType] || { bg: 'bg-gray-500', text: 'text-white', icon: 'fas fa-calendar', badge: 'Tidak Diketahui' };
+            const startDate = effectiveStartDateRaw ? new Date(effectiveStartDateRaw).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+            const endDate = effectiveEndDateRaw ? new Date(effectiveEndDateRaw).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+            const variantCount = variants.length;
+            const variantItems = variants.map((v, idx) => `${idx + 1}. ${v.title || '-'}`);
+            const waText = event.admin_whatsapp ? `+62 ${event.admin_whatsapp}` : '-';
+            const variantPeriodItems = variants
+              .map((v, idx) => {
+                const vs = v.start_date ? new Date(v.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+                const ve = v.end_date ? new Date(v.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+                return `${idx + 1}) ${vs} - ${ve}`;
+              });
+            const variantPriceItems = variants.map((v, idx) => {
+              const isFree = v.event_type === 'gratis';
+              const po = parseInt(v.price_original || 0).toLocaleString('id-ID');
+              const pp = parseInt(v.price_promo || 0).toLocaleString('id-ID');
+              return `${idx + 1}) ${v.title || '-'}: ${isFree ? 'Gratis' : `Rp ${po} -> Rp ${pp}`}`;
+            });
 
             return `
               <div class="glass-futuristic rounded-xl overflow-hidden group card-futuristic border border-white/50">
@@ -1974,19 +2006,36 @@
 
                 <!-- Content -->
                 <div class="p-4">
-                  <h3 class="font-extrabold text-sm mb-1 text-gray-900 line-clamp-2">${event.title}</h3>
+                  <h3 class="font-extrabold text-sm mb-1 text-gray-900 line-clamp-2">${displayTitle}</h3>
                   ${event.headline ? `<p class="text-[10px] font-semibold text-gray-700 mb-1 line-clamp-2">${event.headline}</p>` : ''}
-                  <p class="text-[10px] font-medium text-gray-600 mb-3 line-clamp-2">${event.description || 'Tidak ada deskripsi'}</p>
+                  <p class="text-[10px] font-medium text-gray-600 mb-3 line-clamp-2">${displayDescription}</p>
+                  <div class="mb-3 text-[10px] bg-fuchsia-50/80 backdrop-blur px-2.5 py-2 rounded-lg border border-fuchsia-200/50">
+                    <p class="font-extrabold text-fuchsia-700">Varian Event</p>
+                    ${variantCount > 0 ? `
+                      <ul class="mt-1 space-y-1 text-gray-700 font-semibold">
+                        ${variantItems.map((line) => `<li>• ${line}</li>`).join('')}
+                      </ul>
+                    ` : '<p class="font-semibold text-gray-700">Belum ada varian</p>'}
+                  </div>
+
+                  <div class="mb-3 text-[10px] bg-cyan-50/80 backdrop-blur px-2.5 py-2 rounded-lg border border-cyan-200/50">
+                    <p class="font-extrabold text-cyan-700">Periode Event</p>
+                    ${variantCount > 1 ? `
+                      <ul class="mt-1 space-y-1 text-gray-700 font-semibold">
+                        ${variantPeriodItems.map((line) => `<li>• ${line}</li>`).join('')}
+                      </ul>
+                    ` : `<p class="font-semibold text-gray-700">${startDate} - ${endDate}</p>`}
+                  </div>
 
                   <div class="space-y-2">
-                    ${event.event_type === 'berbayar' ? `
+                    ${effectiveType === 'berbayar' ? `
                       <div class="flex items-center justify-between text-[10px] bg-white/40 backdrop-blur p-2 rounded-lg border border-white/30">
                         <span class="font-bold text-emerald-700">Harga Asli</span>
-                        <span class="font-extrabold text-gray-900">Rp ${parseInt(event.price_original || 0).toLocaleString('id-ID')}</span>
+                        <span class="font-extrabold text-gray-900">Rp ${parseInt(effectivePriceOriginal || 0).toLocaleString('id-ID')}</span>
                       </div>
                       <div class="flex items-center justify-between text-[10px] bg-white/40 backdrop-blur p-2 rounded-lg border border-white/30">
                         <span class="font-bold text-emerald-700">Harga Promo</span>
-                        <span class="font-extrabold text-emerald-700">Rp ${parseInt(event.price_promo || 0).toLocaleString('id-ID')}</span>
+                        <span class="font-extrabold text-emerald-700">Rp ${parseInt(effectivePricePromo || 0).toLocaleString('id-ID')}</span>
                       </div>
                     ` : `
                       <div class="flex items-center justify-between text-[10px] bg-blue-50/80 backdrop-blur px-3 py-2 rounded-lg border border-blue-200/50">
@@ -1997,12 +2046,20 @@
                         <span class="font-extrabold text-blue-600">Tidak Perlu Bayar</span>
                       </div>
                     `}
-                    <div class="flex items-center justify-between text-[10px] pt-1 border-t border-white/30">
+                    ${variantCount > 1 ? `
+                      <div class="text-[10px] bg-white/40 backdrop-blur p-2 rounded-lg border border-white/30">
+                        <p class="font-bold text-emerald-700 mb-1">Harga Semua Varian</p>
+                        <ul class="space-y-1 text-gray-800 font-semibold">
+                          ${variantPriceItems.map((line) => `<li>• ${line}</li>`).join('')}
+                        </ul>
+                      </div>
+                    ` : ''}
+                    <div class="flex items-center justify-between text-[10px]">
                       <span class="font-bold text-emerald-700 flex items-center gap-1">
-                        <i class="fas fa-calendar-alt"></i>
-                        Periode
+                        <i class="fab fa-whatsapp"></i>
+                        Admin WA
                       </span>
-                      <span class="font-extrabold text-gray-900">${startDate} - ${endDate}</span>
+                      <span class="font-extrabold text-gray-900">${waText}</span>
                     </div>
                   </div>
                 </div>
@@ -2065,11 +2122,27 @@
             return;
           }
 
+          const variants = Array.isArray(event.variants) ? event.variants.filter(v => v && (v.title || v.slug)) : [];
+          const primaryVariant = variants[0] || null;
+          const effectiveType = primaryVariant?.event_type || event.event_type || 'berbayar';
+          const effectivePriceOriginal = primaryVariant ? (primaryVariant.price_original || 0) : (event.price_original || 0);
+          const effectivePricePromo = primaryVariant ? (primaryVariant.price_promo || 0) : (event.price_promo || 0);
+          const useMainPeriodForDetail = variants.length > 2;
+          const effectiveStartDateRaw = useMainPeriodForDetail
+            ? (event.start_date || primaryVariant?.start_date || null)
+            : (primaryVariant ? (primaryVariant.start_date || event.start_date || null) : (event.start_date || null));
+          const effectiveEndDateRaw = useMainPeriodForDetail
+            ? (event.end_date || primaryVariant?.end_date || null)
+            : (primaryVariant ? (primaryVariant.end_date || event.end_date || null) : (event.end_date || null));
+          const displayTitle = primaryVariant?.title || event.title || '-';
+          const displayDescription = primaryVariant?.description || event.description || 'Tidak ada deskripsi';
+          const displaySlug = primaryVariant?.slug || event.slug || '-';
+
           document.getElementById('viewEventId').textContent = event.id;
-          document.getElementById('viewEventTitle').textContent = event.title;
-          document.getElementById('viewEventDescription').textContent = event.description || 'Tidak ada deskripsi';
-          document.getElementById('viewEventSlug').textContent = event.slug || '-';
-          document.getElementById('viewEventType').textContent = event.event_type === 'gratis' ? 'Gratis' : 'Berbayar';
+          document.getElementById('viewEventTitle').textContent = displayTitle;
+          document.getElementById('viewEventDescription').textContent = displayDescription;
+          document.getElementById('viewEventSlug').textContent = displaySlug;
+          document.getElementById('viewEventType').textContent = effectiveType === 'gratis' ? 'Gratis' : 'Berbayar';
           document.getElementById('viewEventStatus').textContent = event.status === 'active' ? 'Aktif' : event.status === 'draft' ? 'Draft' : 'Tidak Aktif';
 
           const statusConfig = {
@@ -2085,29 +2158,29 @@
           const typeConfig = {
             'gratis': { bg: 'gradient-gratis', text: 'text-white', icon: 'fas fa-gift', badge: 'Gratis' },
             'berbayar': { bg: 'gradient-berbayar', text: 'text-white', icon: 'fas fa-gem', badge: 'Berbayar' }
-          }[event.event_type] || { bg: 'bg-gray-500', text: 'text-white', icon: 'fas fa-calendar', badge: 'Tidak Diketahui' };
+          }[effectiveType] || { bg: 'bg-gray-500', text: 'text-white', icon: 'fas fa-calendar', badge: 'Tidak Diketahui' };
 
           const typeBadge = document.getElementById('viewEventTypeBadge');
           typeBadge.className = `px-3 py-1.5 rounded-lg text-[9px] font-extrabold ${typeConfig.bg} ${typeConfig.text} flex items-center gap-1 border border-white/30`;
           typeBadge.innerHTML = `<i class="${typeConfig.icon}"></i>${typeConfig.badge}`;
 
           const priceBadge = document.getElementById('viewEventPriceBadge');
-          if (event.event_type === 'gratis') {
+          if (effectiveType === 'gratis') {
             priceBadge.className = 'px-3 py-1.5 rounded-lg text-[9px] font-extrabold gradient-gratis text-white flex items-center gap-1 border border-white/30';
             priceBadge.innerHTML = '<i class="fas fa-gift"></i>GRATIS';
           } else {
-            const promoPrice = parseInt(event.price_promo || 0);
+            const promoPrice = parseInt(effectivePricePromo || 0);
             priceBadge.className = 'px-3 py-1.5 rounded-lg text-[9px] font-extrabold gradient-berbayar text-white flex items-center gap-1 border border-white/30';
             priceBadge.innerHTML = `<i class="fas fa-tags"></i>Rp ${promoPrice.toLocaleString('id-ID')}`;
           }
 
-          const startDate = event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', {
+          const startDate = effectiveStartDateRaw ? new Date(effectiveStartDateRaw).toLocaleDateString('id-ID', {
             weekday: 'long',
             day: 'numeric',
             month: 'long',
             year: 'numeric'
           }) : '-';
-          const endDate = event.end_date ? new Date(event.end_date).toLocaleDateString('id-ID', {
+          const endDate = effectiveEndDateRaw ? new Date(effectiveEndDateRaw).toLocaleDateString('id-ID', {
             weekday: 'long',
             day: 'numeric',
             month: 'long',
@@ -2116,16 +2189,57 @@
 
           document.getElementById('viewStartDate').textContent = startDate;
           document.getElementById('viewEndDate').textContent = endDate;
+          const variantDateListWrap = document.getElementById('viewVariantDateListWrap');
+          const variantDateList = document.getElementById('viewVariantDateList');
+          variantDateList.innerHTML = '';
+          if (variants.length > 1) {
+            variants.forEach((v, idx) => {
+              const s = v.start_date ? new Date(v.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+              const e = v.end_date ? new Date(v.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+              const li = document.createElement('li');
+              li.textContent = `Varian ${idx + 1}: ${s} - ${e}`;
+              variantDateList.appendChild(li);
+            });
+            variantDateListWrap.classList.remove('hidden');
+          } else {
+            variantDateListWrap.classList.add('hidden');
+          }
 
-          if (event.event_type === 'berbayar') {
+          if (effectiveType === 'berbayar') {
             document.getElementById('viewPricingSection').classList.remove('hidden');
             document.getElementById('viewFreeEventSection').classList.add('hidden');
 
-            document.getElementById('viewPriceOriginal').textContent = `Rp ${parseInt(event.price_original || 0).toLocaleString('id-ID')}`;
-            document.getElementById('viewPricePromo').textContent = `Rp ${parseInt(event.price_promo || 0).toLocaleString('id-ID')}`;
+            document.getElementById('viewPriceOriginal').textContent = `Rp ${parseInt(effectivePriceOriginal || 0).toLocaleString('id-ID')}`;
+            document.getElementById('viewPricePromo').textContent = `Rp ${parseInt(effectivePricePromo || 0).toLocaleString('id-ID')}`;
           } else {
             document.getElementById('viewPricingSection').classList.add('hidden');
             document.getElementById('viewFreeEventSection').classList.remove('hidden');
+          }
+
+          const variantInfoSection = document.getElementById('viewVariantInfoSection');
+          const variantInfoList = document.getElementById('viewVariantInfoList');
+          variantInfoList.innerHTML = '';
+          if (variants.length) {
+            variants.forEach((v, idx) => {
+              const vType = v.event_type === 'gratis' ? 'Gratis' : 'Berbayar';
+              const vPriceOriginal = parseInt(v.price_original || 0).toLocaleString('id-ID');
+              const vPricePromo = parseInt(v.price_promo || 0).toLocaleString('id-ID');
+              const vStart = v.start_date ? new Date(v.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+              const vEnd = v.end_date ? new Date(v.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+              const row = document.createElement('div');
+              row.className = 'bg-white/70 border border-fuchsia-200/60 rounded-lg p-3 space-y-1.5';
+              row.innerHTML = `
+                <p class="text-xs font-extrabold text-fuchsia-800">Varian ${idx + 1}: ${v.title || '-'}</p>
+                <p class="text-[11px] text-gray-700"><span class="font-bold text-fuchsia-700">Slug:</span> ${v.slug || '-'}</p>
+                <p class="text-[11px] text-gray-700"><span class="font-bold text-fuchsia-700">Tipe:</span> ${vType}</p>
+                <p class="text-[11px] text-gray-700"><span class="font-bold text-fuchsia-700">Harga:</span> ${v.event_type === 'gratis' ? 'Gratis' : `Rp ${vPriceOriginal} -> Rp ${vPricePromo}`}</p>
+                <p class="text-[11px] text-gray-700"><span class="font-bold text-fuchsia-700">Periode:</span> ${vStart} - ${vEnd}</p>
+              `;
+              variantInfoList.appendChild(row);
+            });
+            variantInfoSection.classList.remove('hidden');
+          } else {
+            variantInfoSection.classList.add('hidden');
           }
 
           document.getElementById('viewAdminWhatsApp').textContent = event.admin_whatsapp ? `+62 ${event.admin_whatsapp}` : '-';
@@ -2229,26 +2343,6 @@
             testimonialsSection.style.display = '';
           } else {
             testimonialsSection.style.display = 'none';
-          }
-
-          // variants
-          const variantsSection = document.getElementById('viewVariantsSection');
-          const variantsContainer = document.getElementById('viewVariantsList');
-          variantsContainer.innerHTML = '';
-          if (event.variants && Array.isArray(event.variants) && event.variants.length) {
-            event.variants.forEach((v, idx) => {
-              const li = document.createElement('li');
-              const type = v.event_type === 'gratis' ? 'Gratis' : 'Berbayar';
-              const po = parseInt(v.price_original || 0).toLocaleString('id-ID');
-              const pp = parseInt(v.price_promo || 0).toLocaleString('id-ID');
-              const sDate = v.start_date ? new Date(v.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
-              const eDate = v.end_date ? new Date(v.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
-              li.innerHTML = `<strong>${idx + 1}. ${v.title || '-'}</strong> (${type})<br>Slug: ${v.slug || '-'}<br>Harga: Rp ${po} -> Rp ${pp}<br>Periode: ${sDate} - ${eDate}`;
-              variantsContainer.appendChild(li);
-            });
-            variantsSection.style.display = '';
-          } else {
-            variantsSection.style.display = 'none';
           }
 
           // susun urutan detail mengikuti alur form Buat Event:
@@ -2405,6 +2499,16 @@
             addPeriod({ start_date: event.start_date || '', end_date: event.end_date || '' });
           }
           syncPeriodsWithVariants();
+          const periodRows = Array.from(document.querySelectorAll('#periodsList .period-item'));
+          const firstFilledRow = periodRows.find((row) => {
+            const s = row.querySelector('.period-start')?.value;
+            const e = row.querySelector('.period-end')?.value;
+            return Boolean(s || e);
+          }) || periodRows[0];
+          const firstStart = firstFilledRow?.querySelector('.period-start')?.value || event.start_date || '';
+          const firstEnd = firstFilledRow?.querySelector('.period-end')?.value || event.end_date || '';
+          document.getElementById('start_date').value = toDateInputValue(firstStart);
+          document.getElementById('end_date').value = toDateInputValue(firstEnd);
 
           const statusRadio = document.querySelector(`input[name="status"][value="${event.status || 'draft'}"]`);
           if (statusRadio) {
@@ -2471,13 +2575,24 @@
           }
         }
 
-        function uploadMediaFile(file) {
+        async function uploadMediaFile(file) {
           const form = new FormData();
           form.append('hero', file);
-          return fetch('/api/admin/events/upload-hero', {
+          const resp = await fetch('/api/admin/events/upload-hero', {
             method: 'POST',
             body: form
-          }).then((r) => r.json());
+          });
+          let data = null;
+          try {
+            data = await resp.json();
+          } catch (err) {
+            data = null;
+          }
+          if (!resp.ok || !data?.success) {
+            const message = data?.message || `HTTP ${resp.status} ${resp.statusText}`;
+            throw new Error(message);
+          }
+          return data;
         }
 
         function createMediaSourceControl(prefix, initial = {}) {
@@ -2506,6 +2621,9 @@
               <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Upload File</label>
               <input type="file" accept="image/*,video/*" class="${prefix}-file w-full text-xs" />
             </div>
+            <div class="${prefix}-preview-wrap md:col-span-4 hidden bg-white/70 border border-white/60 rounded-lg p-2">
+              <div class="${prefix}-preview text-xs"></div>
+            </div>
           `;
 
           const sourceEl = wrapper.querySelector(`.${prefix}-source`);
@@ -2514,6 +2632,8 @@
           const fileEl = wrapper.querySelector(`.${prefix}-file`);
           const urlWrap = wrapper.querySelector(`.${prefix}-url-wrap`);
           const uploadWrap = wrapper.querySelector(`.${prefix}-upload-wrap`);
+          const previewWrap = wrapper.querySelector(`.${prefix}-preview-wrap`);
+          const previewEl = wrapper.querySelector(`.${prefix}-preview`);
 
           const toggleMode = () => {
             if (sourceEl.value === 'upload') {
@@ -2523,6 +2643,29 @@
               uploadWrap.classList.add('hidden');
               urlWrap.classList.remove('hidden');
             }
+            renderPreview();
+          };
+
+          const renderPreview = () => {
+            const url = urlEl.value.trim();
+            const type = typeEl.value || detectHeroMediaTypeFromUrl(url);
+            if (!url) {
+              previewEl.innerHTML = '';
+              previewWrap.classList.add('hidden');
+              return;
+            }
+            if (type === 'video') {
+              previewEl.innerHTML = `
+                <video src="${url}" controls class="w-full max-h-28 rounded"></video>
+                <a href="${url}" target="_blank" rel="noopener" class="text-[10px] text-emerald-700 underline break-all">${url}</a>
+              `;
+            } else {
+              previewEl.innerHTML = `
+                <img src="${url}" class="max-h-24 rounded mb-1" alt="media preview" />
+                <a href="${url}" target="_blank" rel="noopener" class="text-[10px] text-emerald-700 underline break-all">${url}</a>
+              `;
+            }
+            previewWrap.classList.remove('hidden');
           };
 
           sourceEl.addEventListener('change', toggleMode);
@@ -2530,7 +2673,9 @@
             if (!typeEl.value && urlEl.value.trim()) {
               typeEl.value = detectHeroMediaTypeFromUrl(urlEl.value.trim());
             }
+            renderPreview();
           });
+          typeEl.addEventListener('change', renderPreview);
           fileEl.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -2541,6 +2686,7 @@
                 typeEl.value = file.type.startsWith('video/') ? 'video' : 'image';
                 sourceEl.value = 'upload';
                 toggleMode();
+                renderPreview();
               } else {
                 showError('Upload gagal: ' + (data.message || ''));
               }
@@ -2553,6 +2699,7 @@
           typeEl.value = initial.media_type || detectHeroMediaTypeFromUrl(initial.media_url || '') || 'image';
           urlEl.value = initial.media_url || '';
           toggleMode();
+          renderPreview();
 
           return {
             wrapper,
@@ -2573,25 +2720,6 @@
             media_url: initial.media_url || '',
           });
 
-          const preview = document.createElement('div');
-          preview.className = 'testimonial-preview text-xs';
-          const renderPreview = () => {
-            const url = media.urlEl.value.trim();
-            const type = media.typeEl.value;
-            if (!url) {
-              preview.innerHTML = '';
-              return;
-            }
-            if (type === 'video') {
-              preview.innerHTML = `<a href="${url}" target="_blank" rel="noopener" class="text-amber-700 underline">Preview video testimoni</a>`;
-            } else {
-              preview.innerHTML = `<img src="${url}" class="max-h-20 rounded-lg" alt="testimonial preview" />`;
-            }
-          };
-          media.urlEl.addEventListener('input', renderPreview);
-          media.typeEl.addEventListener('change', renderPreview);
-          media.fileEl.addEventListener('change', () => setTimeout(renderPreview, 200));
-
           const removeBtn = document.createElement('button');
           removeBtn.type = 'button';
           removeBtn.className = 'text-[10px] font-bold text-red-600 hover:underline';
@@ -2599,10 +2727,8 @@
           removeBtn.addEventListener('click', () => item.remove());
 
           item.appendChild(media.wrapper);
-          item.appendChild(preview);
           item.appendChild(removeBtn);
           list.appendChild(item);
-          renderPreview();
         }
 
         function addVariant(initial = {}) {
@@ -2643,6 +2769,9 @@
                 <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Harga Promo</label>
                 <input type="number" class="variant-price-promo w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs" placeholder="0">
               </div>
+            </div>
+            <div class="variant-period-info text-[10px] text-cyan-800 bg-cyan-50/70 border border-cyan-200/70 rounded-lg px-2 py-1.5">
+              Periode varian: -
             </div>
           `;
 
@@ -2769,6 +2898,8 @@
           `;
           row.querySelector('.period-start').value = toDateInputValue(initial.start_date);
           row.querySelector('.period-end').value = toDateInputValue(initial.end_date);
+          row.querySelector('.period-start').addEventListener('change', syncPeriodsWithVariants);
+          row.querySelector('.period-end').addEventListener('change', syncPeriodsWithVariants);
           row.querySelector('.period-remove-btn').addEventListener('click', () => {
             row.remove();
             syncPeriodsWithVariants();
@@ -2793,8 +2924,14 @@
             const title = variants[idx]?.querySelector('.variant-title')?.value?.trim() || `Paket ${idx + 1}`;
             const labelEl = row.querySelector('.period-package-label');
             const nameEl = row.querySelector('.period-package-name');
+            const periodInfoEl = variants[idx]?.querySelector('.variant-period-info');
+            const startVal = row.querySelector('.period-start')?.value || '';
+            const endVal = row.querySelector('.period-end')?.value || '';
+            const sText = startVal ? new Date(startVal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+            const eText = endVal ? new Date(endVal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
             if (labelEl) labelEl.textContent = `Periode Paket ${idx + 1}`;
             if (nameEl) nameEl.textContent = title;
+            if (periodInfoEl) periodInfoEl.textContent = `Periode varian: ${sText} - ${eText}`;
           });
         }
 
@@ -2816,6 +2953,7 @@
 
         document.getElementById('eventForm').addEventListener('submit', async (e) => {
           e.preventDefault();
+          syncPeriodsWithVariants();
 
           const eventId = document.getElementById('eventId').value;
           const status = document.querySelector('input[name="status"]:checked').value;
@@ -2874,8 +3012,11 @@
             }
           });
 
+          const variantItems = Array.from(document.querySelectorAll('#variantsList .variant-item'));
+          const periodItems = Array.from(document.querySelectorAll('#periodsList .period-item'));
+
           // collect periods (per paket)
-          document.querySelectorAll('.period-item').forEach(item => {
+          periodItems.forEach(item => {
             formData.periods.push({
               start_date: item.querySelector('.period-start')?.value || null,
               end_date: item.querySelector('.period-end')?.value || null,
@@ -2905,18 +3046,30 @@
           });
 
           // collect variants
-          document.querySelectorAll('.variant-item').forEach((item, idx) => {
+          const usedVariantSlugs = new Set();
+          for (let idx = 0; idx < variantItems.length; idx++) {
+            const item = variantItems[idx];
             const title = item.querySelector('.variant-title')?.value?.trim() || '';
-            if (!title) return;
+            if (!title) {
+              showError(`Judul varian ke-${idx + 1} wajib diisi`);
+              return;
+            }
             const slugRaw = item.querySelector('.variant-slug')?.value?.trim() || '';
             const eventTypeVariant = item.querySelector('.variant-type')?.value || 'berbayar';
             const logoType = item.querySelector('.variant-logo-type')?.value || '';
             const logoUrl = item.querySelector('.variant-logo-url')?.value?.trim() || '';
             const period = formData.periods[idx] || formData.periods[0] || { start_date: null, end_date: null };
+            const baseSlug = slugRaw || generateSlug(title) || `varian-${idx + 1}`;
+            let finalSlug = baseSlug;
+            let suffix = 2;
+            while (usedVariantSlugs.has(finalSlug)) {
+              finalSlug = `${baseSlug}-${suffix++}`;
+            }
+            usedVariantSlugs.add(finalSlug);
             formData.variants.push({
               event_type: eventTypeVariant,
               title: title,
-              slug: slugRaw || generateSlug(title),
+              slug: finalSlug,
               description: item.querySelector('.variant-description')?.value || '',
               price_original: eventTypeVariant === 'gratis' ? 0 : (item.querySelector('.variant-price-original')?.value || 0),
               price_promo: eventTypeVariant === 'gratis' ? 0 : (item.querySelector('.variant-price-promo')?.value || 0),
@@ -2925,7 +3078,7 @@
               logo_media_type: logoType || (logoUrl ? detectHeroMediaTypeFromUrl(logoUrl) : ''),
               logo_media_url: logoUrl
             });
-          });
+          }
 
           if (formData.variants.length === 0) {
             showError('Minimal harus ada 1 varian event');
@@ -3011,24 +3164,15 @@
         document.getElementById('hero_media_file').addEventListener('change', async function(e) {
           const file = e.target.files[0];
           if (!file) return;
-          const form = new FormData();
-          form.append('hero', file);
           try {
-            const resp = await fetch('/api/admin/events/upload-hero', {
-              method: 'POST',
-              body: form
-            });
-            const data = await resp.json();
-            if (data.success) {
-              document.getElementById('hero_media_url').value = data.url;
-              document.getElementById('hero_media_type').value = 'image';
-              document.getElementById('hero_media_source').value = 'upload';
-              toggleHeroInputMode();
-              renderHeroPreview(data.url, 'image');
-              showSuccess('File berhasil diunggah');
-            } else {
-              showError('Upload gagal: ' + (data.message || ''));
-            }
+            const data = await uploadMediaFile(file);
+            const detectedType = file.type.startsWith('video/') ? 'video' : 'image';
+            document.getElementById('hero_media_url').value = data.url;
+            document.getElementById('hero_media_type').value = detectedType;
+            document.getElementById('hero_media_source').value = 'upload';
+            toggleHeroInputMode();
+            renderHeroPreview(data.url, detectedType);
+            showSuccess('File berhasil diunggah');
           } catch (err) {
             console.error('hero upload', err);
             showError('Upload gagal: ' + err.message);

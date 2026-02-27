@@ -893,6 +893,7 @@ const updateEvent = async (req, res) => {
       description,
       price_original,
       price_promo,
+      admin_whatsapp,
       start_date,
       end_date,
       status,
@@ -937,7 +938,7 @@ const updateEvent = async (req, res) => {
       `UPDATE events SET
        title = ?, description = ?, price_original = ?, price_promo = ?,
        payment_methods = ?, bank_name = ?, bank_account_name = ?,
-       bank_account_number = ?, account_holder_name = ?, start_date = ?, end_date = ?, status = ?
+       bank_account_number = ?, account_holder_name = ?, admin_whatsapp = ?, start_date = ?, end_date = ?, status = ?
        WHERE id = ?`,
       [
         title,
@@ -949,6 +950,7 @@ const updateEvent = async (req, res) => {
         null,
         null,
         null,
+        admin_whatsapp || "",
         start_date,
         end_date,
         status,

@@ -695,13 +695,33 @@
             return d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
         }
 
+        function parseDateSafe(v) {
+            if (!v) return null;
+            const d = new Date(v);
+            return Number.isNaN(d.getTime()) ? null : d;
+        }
+
+        function isVariantWithinMainPeriod(variant, mainStartRaw, mainEndRaw) {
+            const mainStart = parseDateSafe(mainStartRaw);
+            const mainEnd = parseDateSafe(mainEndRaw);
+            if (!mainStart || !mainEnd) return true;
+
+            const variantStart = parseDateSafe(variant?.start_date) || mainStart;
+            const variantEnd = parseDateSafe(variant?.end_date) || mainEnd;
+            if (!variantStart || !variantEnd) return true;
+
+            // Keep variants with date overlap against main period.
+            return variantStart <= mainEnd && variantEnd >= mainStart;
+        }
+
         function applyLandingData() {
             const data = serverLandingData || {};
             const eventData = data.event || {};
             const hero = data.hero || {};
             const benefits = Array.isArray(data.benefits) ? data.benefits.filter(Boolean) : [];
             const faqs = Array.isArray(data.faqs) ? data.faqs.filter((f) => f && f.question && f.answer) : [];
-            const variants = Array.isArray(data.variants) ? data.variants.filter((v) => v && v.title) : [];
+            const variantsRaw = Array.isArray(data.variants) ? data.variants.filter((v) => v && v.title) : [];
+            const variants = variantsRaw.filter((v) => isVariantWithinMainPeriod(v, eventData.start_date, eventData.end_date));
             const problem = data.problem || {};
             const pains = Array.isArray(problem.pains) ? problem.pains : [];
             const solution = data.solution || {};
@@ -870,6 +890,8 @@
                     const pp = Number(v.price_promo) || 0;
                     const free = v.event_type === "gratis" || (po === 0 && pp === 0);
                     const shown = (!free && pp > 0 && pp < po) ? pp : po;
+                    const variantStart = v.start_date || eventData.start_date || null;
+                    const variantEnd = v.end_date || eventData.end_date || null;
                     return `
                         <div class="${i === 0 ? "border-2 border-brand-brown bg-brand-light shadow-md" : "border border-earth-200"} rounded-xl p-5">
                             <div class="flex justify-between items-start mb-2">
@@ -885,7 +907,7 @@
                                     <p class="text-xl font-bold text-brand-brown">${free ? "GRATIS" : formatIDR(shown)}</p>
                                 </div>
                             </div>
-                            <p class="text-xs text-earth-700">Periode: ${esc(formatDateID(eventData.start_date) || "-")} - ${esc(formatDateID(eventData.end_date) || "-")}</p>
+                            <p class="text-xs text-earth-700">Periode: ${esc(formatDateID(variantStart) || "-")} - ${esc(formatDateID(variantEnd) || "-")}</p>
                         </div>
                     `;
                 }).join("");
@@ -920,18 +942,19 @@
                 `).join("");
             }
 
-            const waRaw = String(eventData.admin_whatsapp || "").replace(/[^0-9]/g, "");
-            const waNormalized = waRaw
-                ? (waRaw.startsWith("0") ? `62${waRaw.slice(1)}` : (waRaw.startsWith("62") ? waRaw : waRaw))
-                : "";
-            const waLink = waNormalized ? `https://wa.me/${waNormalized}` : null;
-            if (waLink) {
-                document.querySelectorAll(".wa-cta").forEach((el) => {
-                    el.setAttribute("href", waLink);
-                    el.setAttribute("target", "_blank");
-                    el.setAttribute("rel", "noopener noreferrer");
-                });
-            }
+            const params = new URLSearchParams(window.location.search || "");
+            const ref = params.get("ref");
+            const checkoutParams = new URLSearchParams();
+            if (eventData.slug) checkoutParams.set("event", eventData.slug);
+            else if (eventData.id) checkoutParams.set("event_id", String(eventData.id));
+            if (ref) checkoutParams.set("ref", ref);
+            const checkoutUrl = `/checkout${checkoutParams.toString() ? `?${checkoutParams.toString()}` : ""}`;
+
+            document.querySelectorAll(".wa-cta").forEach((el) => {
+                el.setAttribute("href", checkoutUrl);
+                el.removeAttribute("target");
+                el.removeAttribute("rel");
+            });
         }
 
         document.addEventListener("DOMContentLoaded", applyLandingData);
@@ -939,5 +962,3 @@
 </body>
 
 </html>
-
-
