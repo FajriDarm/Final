@@ -1,6 +1,10 @@
 const db = require("../config/database");
 const jwt = require("jsonwebtoken");
 const landingPageService = require("../services/landingPageService");
+const {
+  ensureEventActivePeriodColumns,
+  syncEventStatusesByActivePeriod,
+} = require("../services/eventStatusService");
 
 function generateSlug(text) {
   if (!text) return "";
@@ -58,14 +62,15 @@ function normalizeMediaPayload(mediaTypeRaw, mediaUrlRaw) {
 
 const getActiveEvents = async (req, res) => {
   try {
+    await syncEventStatusesByActivePeriod();
+
     const [events] = await db.query(
       `SELECT e.id, e.title as name, e.description, e.price_original, e.price_promo as price_discount,
-              e.start_date, e.end_date, e.status, e.slug, e.event_type,
+              e.start_date, e.end_date, e.active_start_date, e.active_end_date, e.status, e.slug, e.event_type,
               ehs.headline, ehs.subheadline, ehs.hero_media_type, ehs.hero_media_url, ehs.hero_as_background
        FROM events e
        LEFT JOIN event_hero_sections ehs ON ehs.event_id = e.id
        WHERE e.status = 'active'
-       AND (e.end_date >= CURDATE() OR e.end_date IS NULL)
        ORDER BY e.created_at DESC`,
     );
 
@@ -154,6 +159,8 @@ const getActiveEvents = async (req, res) => {
 
 const getDashboardStats = async (req, res) => {
   try {
+    await syncEventStatusesByActivePeriod();
+
     // Total Users
     const [totalUsers] = await db.query("SELECT COUNT(*) as count FROM users");
 
@@ -414,6 +421,8 @@ const getUsers = async (req, res) => {
 
 const getEvents = async (req, res) => {
   try {
+    await syncEventStatusesByActivePeriod();
+
     const [events] = await db.query(
       `SELECT e.*, u.name as created_by_name, ehs.headline, ehs.subheadline, ehs.hero_media_type, ehs.hero_media_url, ehs.hero_as_background
        FROM events e
@@ -593,6 +602,8 @@ const getEvents = async (req, res) => {
 
 const createEvent = async (req, res) => {
   try {
+    await ensureEventActivePeriodColumns();
+
     // Basic validation
     const allowedTypes = ['gratis', 'berbayar'];
     const allowedStatus = ['draft', 'active', 'inactive'];
@@ -647,7 +658,16 @@ const createEvent = async (req, res) => {
       faqs,
       testimonials,
       variants,
+      active_start_date,
+      active_end_date,
     } = req.body;
+
+    if ((active_start_date && !active_end_date) || (!active_start_date && active_end_date)) {
+      return res.status(400).json({
+        success: false,
+        message: "active_start_date dan active_end_date harus diisi berpasangan",
+      });
+    }
 
     let normalizedHero = { heroMediaType: null, heroMediaUrl: null };
     try {
@@ -685,6 +705,8 @@ const createEvent = async (req, res) => {
       req.body.admin_whatsapp || "",
       req.body.start_date,
       req.body.end_date,
+      active_start_date || null,
+      active_end_date || null,
       req.body.status || "draft",
       userId,
     ];
@@ -695,10 +717,12 @@ const createEvent = async (req, res) => {
       `INSERT INTO events
        (title, slug, description, event_type, price_original, price_promo, payment_methods,
         bank_name, bank_account_name, bank_account_number, account_holder_name,
-        admin_whatsapp, start_date, end_date, status, created_by)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        admin_whatsapp, start_date, end_date, active_start_date, active_end_date, status, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       insertValues,
     );
+
+    await syncEventStatusesByActivePeriod();
 
     const eventId = result.insertId;
 
@@ -887,6 +911,8 @@ const createEvent = async (req, res) => {
 
 const updateEvent = async (req, res) => {
   try {
+    await ensureEventActivePeriodColumns();
+
     const { eventId } = req.params;
     const {
       title,
@@ -896,6 +922,8 @@ const updateEvent = async (req, res) => {
       admin_whatsapp,
       start_date,
       end_date,
+      active_start_date,
+      active_end_date,
       status,
       headline,
       subheadline,
@@ -913,6 +941,13 @@ const updateEvent = async (req, res) => {
       testimonials,
       variants,
     } = req.body;
+
+    if ((active_start_date && !active_end_date) || (!active_start_date && active_end_date)) {
+      return res.status(400).json({
+        success: false,
+        message: "active_start_date dan active_end_date harus diisi berpasangan",
+      });
+    }
 
     let normalizedHero = { heroMediaType: null, heroMediaUrl: null };
     try {
@@ -938,7 +973,7 @@ const updateEvent = async (req, res) => {
       `UPDATE events SET
        title = ?, description = ?, price_original = ?, price_promo = ?,
        payment_methods = ?, bank_name = ?, bank_account_name = ?,
-       bank_account_number = ?, account_holder_name = ?, admin_whatsapp = ?, start_date = ?, end_date = ?, status = ?
+       bank_account_number = ?, account_holder_name = ?, admin_whatsapp = ?, start_date = ?, end_date = ?, active_start_date = ?, active_end_date = ?, status = ?
        WHERE id = ?`,
       [
         title,
@@ -953,10 +988,14 @@ const updateEvent = async (req, res) => {
         admin_whatsapp || "",
         start_date,
         end_date,
+        active_start_date || null,
+        active_end_date || null,
         status,
         eventId,
       ],
     );
+
+    await syncEventStatusesByActivePeriod();
 
     // remove previous related entries
     // event_packages table removed; nothing to delete
@@ -1160,6 +1199,8 @@ const updateEvent = async (req, res) => {
 // returns a single event with related benefits/problem/pains
 const getEventById = async (req, res) => {
   try {
+    await syncEventStatusesByActivePeriod();
+
     const { eventId } = req.params;
     const [rows] = await db.query(
       `SELECT e.*, ehs.headline, ehs.subheadline, ehs.hero_media_type, ehs.hero_media_url, ehs.hero_as_background
@@ -1262,22 +1303,85 @@ const getEventById = async (req, res) => {
 // global packages endpoint removed – not needed in single‑event pricing model
 
 const deleteEvent = async (req, res) => {
+  let connection;
   try {
     const { eventId } = req.params;
+    connection = await db.getConnection();
+    await connection.beginTransaction();
 
-    await db.query("DELETE FROM events WHERE id = ?", [eventId]);
+    const [existingEvent] = await connection.query("SELECT id FROM events WHERE id = ? LIMIT 1", [eventId]);
+    if (!existingEvent.length) {
+      await connection.rollback();
+      return res.status(404).json({
+        success: false,
+        message: "Event not found",
+      });
+    }
+
+    // Remove event-linked references in non-cascade foreign keys first.
+    await connection.query("DELETE FROM landing_pages WHERE event_id = ?", [eventId]);
+    await connection.query("DELETE FROM affiliate_links WHERE event_id = ?", [eventId]);
+    await connection.query("DELETE FROM affiliate_referrals WHERE event_id = ?", [eventId]);
+    await connection.query("DELETE FROM commission_rules WHERE event_id = ?", [eventId]);
+
+    // Remove transaction graph that references this event.
+    await connection.query(
+      `DELETE pd
+       FROM payout_details pd
+       INNER JOIN commissions c ON c.id = pd.commission_id
+       INNER JOIN transactions t ON t.id = c.transaction_id
+       WHERE t.event_id = ?`,
+      [eventId],
+    );
+    await connection.query(
+      `DELETE pp
+       FROM payment_proofs pp
+       INNER JOIN transactions t ON t.id = pp.transaction_id
+       WHERE t.event_id = ?`,
+      [eventId],
+    );
+    await connection.query(
+      `DELETE v
+       FROM verifications v
+       INNER JOIN transactions t ON t.id = v.transaction_id
+       WHERE t.event_id = ?`,
+      [eventId],
+    );
+    await connection.query(
+      `DELETE c
+       FROM commissions c
+       INNER JOIN transactions t ON t.id = c.transaction_id
+       WHERE t.event_id = ?`,
+      [eventId],
+    );
+    await connection.query("DELETE FROM transactions WHERE event_id = ?", [eventId]);
+
+    await connection.query("DELETE FROM events WHERE id = ?", [eventId]);
+    await connection.commit();
 
     res.json({
       success: true,
       message: "Event deleted successfully",
     });
   } catch (error) {
+    if (connection) await connection.rollback();
     console.error("Delete event error:", error);
+
+    if (error.code === "ER_ROW_IS_REFERENCED_2") {
+      return res.status(409).json({
+        success: false,
+        message: "Event tidak bisa dihapus karena masih dipakai di data lain",
+        error: error.message,
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: "Internal server error",
       error: error.message,
     });
+  } finally {
+    if (connection) connection.release();
   }
 };
 
@@ -1822,6 +1926,8 @@ const getUsersPage = async (req, res) => {
 // Get events page with data
 const getEventsPage = async (req, res) => {
   try {
+    await syncEventStatusesByActivePeriod();
+
     const [events] = await db.query(
       `SELECT e.*, u.name as created_by_name
        FROM events e

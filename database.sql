@@ -66,6 +66,8 @@ CREATE TABLE events (
     -- WAKTU EVENT
     start_date DATE,
     end_date DATE,
+    active_start_date DATE,
+    active_end_date DATE,
 
     status ENUM('draft','active','inactive') DEFAULT 'draft',
 

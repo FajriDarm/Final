@@ -298,6 +298,10 @@ app.use("/api", commissionRoutes);
 
 // Start
 const db = require("./config/database");
+const {
+  ensureEventActivePeriodColumns,
+  syncEventStatusesByActivePeriod,
+} = require("./services/eventStatusService");
 
 (async () => {
   try {
@@ -309,6 +313,9 @@ const db = require("./config/database");
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     `);
+
+    await ensureEventActivePeriodColumns();
+    await syncEventStatusesByActivePeriod();
   } catch (e) {
     console.error(
       "Failed creating lead_statuses table at startup:",
@@ -320,3 +327,11 @@ const db = require("./config/database");
     console.log(`Server running on http://localhost:${port}`);
   });
 })();
+
+setInterval(async () => {
+  try {
+    await syncEventStatusesByActivePeriod();
+  } catch (e) {
+    console.error("Failed syncing event status by active period:", e.message || e);
+  }
+}, 5 * 60 * 1000);

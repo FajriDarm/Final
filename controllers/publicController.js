@@ -1,4 +1,5 @@
 const db = require("../config/database");
+const { syncEventStatusesByActivePeriod } = require("../services/eventStatusService");
 
 async function trackAffiliateClick(req, res) {
   try {
@@ -36,6 +37,8 @@ async function trackAffiliateClick(req, res) {
 
 async function checkoutPage(req, res) {
   try {
+    await syncEventStatusesByActivePeriod();
+
     const eventId = req.query.event_id || null;
     const eventSlug = req.query.event || null;
     const ref = req.query.ref || null;
@@ -43,13 +46,13 @@ async function checkoutPage(req, res) {
 
     if (eventId) {
       const [rows] = await db.query(
-        "SELECT id, title AS name, slug, status, price_promo, price_original, admin_whatsapp FROM events WHERE id = ? LIMIT 1",
+        "SELECT id, title AS name, slug, status, price_promo, price_original, admin_whatsapp FROM events WHERE id = ? AND status = 'active' LIMIT 1",
         [eventId],
       );
       if (rows.length > 0) event = rows[0];
     } else if (eventSlug) {
       const [rows] = await db.query(
-        "SELECT id, title AS name, slug, status, price_promo, price_original, admin_whatsapp FROM events WHERE slug = ? LIMIT 1",
+        "SELECT id, title AS name, slug, status, price_promo, price_original, admin_whatsapp FROM events WHERE slug = ? AND status = 'active' LIMIT 1",
         [eventSlug],
       );
       if (rows.length > 0) event = rows[0];

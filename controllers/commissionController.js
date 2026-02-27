@@ -1,4 +1,5 @@
 const db = require("../config/database");
+const { syncEventStatusesByActivePeriod } = require("../services/eventStatusService");
 
 // Get all commission rules (API)
 exports.getAllCommissionsAPI = async (req, res) => {
@@ -319,6 +320,8 @@ exports.deleteCommission = async (req, res) => {
 // Get all events for dropdown
 exports.getEvents = async (req, res) => {
   try {
+    await syncEventStatusesByActivePeriod();
+
     const [results] = await db.query(`
             SELECT id, title FROM events 
             WHERE status = 'active' 

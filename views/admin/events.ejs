@@ -1072,13 +1072,13 @@
                   </h4>
                   <div class="space-y-2.5">
                     <div class="flex items-center justify-between text-xs">
-                      <span class="font-semibold text-blue-700">Tanggal Mulai</span>
-                      <span id="viewStartDate"
+                      <span class="font-semibold text-blue-700">Periode Mulai</span>
+                      <span id="viewActiveStartDate"
                         class="font-extrabold text-blue-900 bg-white/80 px-3 py-1 rounded-lg border border-blue-200"></span>
                     </div>
                     <div class="flex items-center justify-between text-xs">
-                      <span class="font-semibold text-blue-700">Tanggal Berakhir</span>
-                      <span id="viewEndDate"
+                      <span class="font-semibold text-blue-700">Periode Berakhir</span>
+                      <span id="viewActiveEndDate"
                         class="font-extrabold text-blue-900 bg-white/80 px-3 py-1 rounded-lg border border-blue-200"></span>
                     </div>
                     <div id="viewVariantDateListWrap" class="hidden pt-1 border-t border-blue-200/70">
@@ -1530,16 +1530,29 @@
                   </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div>
-                    <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Tanggal Mulai</label>
-                    <input type="date" id="start_date"
-                      class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
+              </div>
+
+              <!-- Active Period (independent from variant/package period) -->
+              <div class="bg-gradient-to-r from-blue-50/80 to-cyan-50/80 backdrop-blur p-4 rounded-xl border border-blue-200/50">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-calendar-check text-blue-600 text-xs"></i>
                   </div>
                   <div>
-                    <label class="block text-[10px] font-extrabold text-emerald-800 mb-1">Tanggal Berakhir</label>
-                    <input type="date" id="end_date"
-                      class="w-full px-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
+                    <h5 class="text-sm font-extrabold text-blue-900">Masa Aktif Event</h5>
+                    <p class="text-[9px] font-medium text-blue-700">Periode ini menentukan kapan event ditampilkan sebagai aktif</p>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-[10px] font-extrabold text-blue-800 mb-1">Aktif Mulai</label>
+                    <input type="date" id="active_start_date"
+                      class="w-full px-3 py-2 bg-white/70 backdrop-blur border border-white/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-extrabold text-blue-800 mb-1">Aktif Berakhir</label>
+                    <input type="date" id="active_end_date"
+                      class="w-full px-3 py-2 bg-white/70 backdrop-blur border border-white/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
                   </div>
                 </div>
               </div>
@@ -1556,7 +1569,7 @@
                   </div>
                 </div>
                 <div id="periodsList" class="space-y-2"></div>
-                <button type="button" onclick="addPeriod()" class="text-[10px] font-bold text-cyan-600 hover:underline">+ Tambah Periode</button>
+                <p class="text-[10px] font-semibold text-cyan-700">Periode mengikuti jumlah varian secara otomatis</p>
               </div>
 
               <div
@@ -1959,25 +1972,19 @@
             const effectiveType = primaryVariant?.event_type || event.event_type || 'berbayar';
             const effectivePriceOriginal = primaryVariant ? (primaryVariant.price_original || 0) : (event.price_original || 0);
             const effectivePricePromo = primaryVariant ? (primaryVariant.price_promo || 0) : (event.price_promo || 0);
-            const effectiveStartDateRaw = primaryVariant?.start_date || event.start_date;
-            const effectiveEndDateRaw = primaryVariant?.end_date || event.end_date;
+            const activeStartDateRaw = event.active_start_date || null;
+            const activeEndDateRaw = event.active_end_date || null;
             const displayTitle = primaryVariant?.title || event.title || '-';
             const displayDescription = primaryVariant?.description || event.description || 'Tidak ada deskripsi';
             const typeConfig = {
               'gratis': { bg: 'gradient-gratis', text: 'text-white', icon: 'fas fa-gift', badge: 'Gratis' },
               'berbayar': { bg: 'gradient-berbayar', text: 'text-white', icon: 'fas fa-gem', badge: 'Berbayar' }
             }[effectiveType] || { bg: 'bg-gray-500', text: 'text-white', icon: 'fas fa-calendar', badge: 'Tidak Diketahui' };
-            const startDate = effectiveStartDateRaw ? new Date(effectiveStartDateRaw).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
-            const endDate = effectiveEndDateRaw ? new Date(effectiveEndDateRaw).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+            const activeStartDate = activeStartDateRaw ? new Date(activeStartDateRaw).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+            const activeEndDate = activeEndDateRaw ? new Date(activeEndDateRaw).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
             const variantCount = variants.length;
             const variantItems = variants.map((v, idx) => `${idx + 1}. ${v.title || '-'}`);
             const waText = event.admin_whatsapp ? `+62 ${event.admin_whatsapp}` : '-';
-            const variantPeriodItems = variants
-              .map((v, idx) => {
-                const vs = v.start_date ? new Date(v.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
-                const ve = v.end_date ? new Date(v.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
-                return `${idx + 1}) ${vs} - ${ve}`;
-              });
             const variantPriceItems = variants.map((v, idx) => {
               const isFree = v.event_type === 'gratis';
               const po = parseInt(v.price_original || 0).toLocaleString('id-ID');
@@ -2018,13 +2025,9 @@
                     ` : '<p class="font-semibold text-gray-700">Belum ada varian</p>'}
                   </div>
 
-                  <div class="mb-3 text-[10px] bg-cyan-50/80 backdrop-blur px-2.5 py-2 rounded-lg border border-cyan-200/50">
-                    <p class="font-extrabold text-cyan-700">Periode Event</p>
-                    ${variantCount > 1 ? `
-                      <ul class="mt-1 space-y-1 text-gray-700 font-semibold">
-                        ${variantPeriodItems.map((line) => `<li>• ${line}</li>`).join('')}
-                      </ul>
-                    ` : `<p class="font-semibold text-gray-700">${startDate} - ${endDate}</p>`}
+                  <div class="mb-3 text-[10px] bg-indigo-50/80 backdrop-blur px-2.5 py-2 rounded-lg border border-indigo-200/50">
+                    <p class="font-extrabold text-indigo-700">Masa Aktif Event</p>
+                    <p class="font-semibold text-gray-700">${activeStartDate} - ${activeEndDate}</p>
                   </div>
 
                   <div class="space-y-2">
@@ -2174,21 +2177,23 @@
             priceBadge.innerHTML = `<i class="fas fa-tags"></i>Rp ${promoPrice.toLocaleString('id-ID')}`;
           }
 
-          const startDate = effectiveStartDateRaw ? new Date(effectiveStartDateRaw).toLocaleDateString('id-ID', {
+          const mainStartDateRaw = effectiveStartDateRaw || null;
+          const mainEndDateRaw = effectiveEndDateRaw || null;
+          const startDate = mainStartDateRaw ? new Date(mainStartDateRaw).toLocaleDateString('id-ID', {
             weekday: 'long',
             day: 'numeric',
             month: 'long',
             year: 'numeric'
           }) : '-';
-          const endDate = effectiveEndDateRaw ? new Date(effectiveEndDateRaw).toLocaleDateString('id-ID', {
+          const endDate = mainEndDateRaw ? new Date(mainEndDateRaw).toLocaleDateString('id-ID', {
             weekday: 'long',
             day: 'numeric',
             month: 'long',
             year: 'numeric'
           }) : '-';
 
-          document.getElementById('viewStartDate').textContent = startDate;
-          document.getElementById('viewEndDate').textContent = endDate;
+          document.getElementById('viewActiveStartDate').textContent = startDate;
+          document.getElementById('viewActiveEndDate').textContent = endDate;
           const variantDateListWrap = document.getElementById('viewVariantDateListWrap');
           const variantDateList = document.getElementById('viewVariantDateList');
           variantDateList.innerHTML = '';
@@ -2494,21 +2499,13 @@
             event.variants.forEach((v, idx) => addPeriod({
               start_date: v.start_date || (idx === 0 ? (event.start_date || '') : ''),
               end_date: v.end_date || (idx === 0 ? (event.end_date || '') : ''),
-            }));
+            }, false));
           } else {
-            addPeriod({ start_date: event.start_date || '', end_date: event.end_date || '' });
+            addPeriod({ start_date: event.start_date || '', end_date: event.end_date || '' }, false);
           }
           syncPeriodsWithVariants();
-          const periodRows = Array.from(document.querySelectorAll('#periodsList .period-item'));
-          const firstFilledRow = periodRows.find((row) => {
-            const s = row.querySelector('.period-start')?.value;
-            const e = row.querySelector('.period-end')?.value;
-            return Boolean(s || e);
-          }) || periodRows[0];
-          const firstStart = firstFilledRow?.querySelector('.period-start')?.value || event.start_date || '';
-          const firstEnd = firstFilledRow?.querySelector('.period-end')?.value || event.end_date || '';
-          document.getElementById('start_date').value = toDateInputValue(firstStart);
-          document.getElementById('end_date').value = toDateInputValue(firstEnd);
+          document.getElementById('active_start_date').value = toDateInputValue(event.active_start_date || '');
+          document.getElementById('active_end_date').value = toDateInputValue(event.active_end_date || '');
 
           const statusRadio = document.querySelector(`input[name="status"][value="${event.status || 'draft'}"]`);
           if (statusRadio) {
@@ -2909,7 +2906,7 @@
         }
 
         function syncPeriodsWithVariants() {
-          const variants = Array.from(document.querySelectorAll('.variant-item'));
+          const variants = Array.from(document.querySelectorAll('#variantsList .variant-item'));
           const periodsList = document.getElementById('periodsList');
           if (!periodsList) return;
           const required = Math.max(variants.length, 1);
@@ -2962,6 +2959,8 @@
             event_type: '',
             admin_whatsapp: document.getElementById('admin_whatsapp').value,
             status: status,
+            active_start_date: document.getElementById('active_start_date').value || null,
+            active_end_date: document.getElementById('active_end_date').value || null,
             headline: document.getElementById('headline').value,
             subheadline: document.getElementById('subheadline').value,
             hero_media_type: document.getElementById('hero_media_type').value,
@@ -3095,8 +3094,21 @@
           formData.start_date = formData.periods[0]?.start_date || null;
           formData.end_date = formData.periods[0]?.end_date || null;
 
-          if (formData.event_type === 'berbayar' && (!formData.start_date || !formData.end_date)) {
-            showError('Untuk varian utama berbayar, periode paket pertama wajib diisi');
+          if (formData.periods.length < formData.variants.length) {
+            showError('Jumlah periode harus sama dengan jumlah varian');
+            return;
+          }
+
+          for (let i = 0; i < formData.variants.length; i++) {
+            const p = formData.periods[i] || {};
+            if (!p.start_date || !p.end_date) {
+              showError(`Periode varian ke-${i + 1} wajib diisi lengkap (mulai dan berakhir)`);
+              return;
+            }
+          }
+
+          if ((formData.active_start_date && !formData.active_end_date) || (!formData.active_start_date && formData.active_end_date)) {
+            showError('Masa aktif event harus diisi lengkap (mulai dan berakhir)');
             return;
           }
 

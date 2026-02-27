@@ -1,8 +1,11 @@
 const db = require("../config/database");
 const landingPageService = require("../services/landingPageService");
+const { syncEventStatusesByActivePeriod } = require("../services/eventStatusService");
 
 const dashboard = async (req, res) => {
   try {
+    await syncEventStatusesByActivePeriod();
+
     const userId = req.user?.id || req.query.user_id || null;
 
     if (!userId) {
@@ -259,6 +262,8 @@ const dashboard = async (req, res) => {
 
 const getActiveEvents = async (req, res) => {
   try {
+    await syncEventStatusesByActivePeriod();
+
     const userId = req.user?.id || req.query.user_id || null;
 
     if (!userId) {
@@ -271,10 +276,9 @@ const getActiveEvents = async (req, res) => {
     // Get active events that can be promoted
     const [events] = await db.query(
       `SELECT id, title, slug, description, price_original, price_promo,
-              start_date, end_date, status, event_type
+              start_date, end_date, active_start_date, active_end_date, status, event_type
        FROM events
        WHERE status = 'active'
-       AND (end_date >= CURDATE() OR end_date IS NULL)
        ORDER BY created_at DESC`,
     );
 
@@ -349,6 +353,8 @@ const getActiveEvents = async (req, res) => {
 
 const generateLink = async (req, res) => {
   try {
+    await syncEventStatusesByActivePeriod();
+
     const userId = req.user?.id || null;
     const { eventId } = req.body;
 

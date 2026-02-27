@@ -1,8 +1,11 @@
 const db = require("../config/database");
 const whatsappService = require("../services/whatsappService");
+const { syncEventStatusesByActivePeriod } = require("../services/eventStatusService");
 
 async function createTransaction(req, res) {
   try {
+    await syncEventStatusesByActivePeriod();
+
     let {
       customer_name,
       customer_phone,
@@ -75,7 +78,7 @@ async function createTransaction(req, res) {
     let totalAmount = 0;
     if (resolvedEventId) {
       const [evRows] = await db.query(
-        "SELECT event_type, price_promo, price_original FROM events WHERE id = ? LIMIT 1",
+        "SELECT event_type, price_promo, price_original FROM events WHERE id = ? AND status = 'active' LIMIT 1",
         [resolvedEventId],
       );
       if (evRows.length > 0) {
@@ -84,6 +87,8 @@ async function createTransaction(req, res) {
           ev.event_type === "berbayar"
             ? ev.price_promo || ev.price_original || 0
             : 0;
+      } else {
+        return res.status(400).send("Event tidak aktif atau tidak ditemukan");
       }
     }
 

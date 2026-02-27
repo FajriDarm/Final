@@ -1,8 +1,11 @@
 const db = require("../config/database");
+const { syncEventStatusesByActivePeriod } = require("../services/eventStatusService");
 
 // Render Sales Dashboard mirip dashboard_admin
 exports.getSalesDashboard = async (req, res) => {
   try {
+    await syncEventStatusesByActivePeriod();
+
     // Total transaksi
     const [[{ totalTransactions }]] = await db.query(
       `SELECT COUNT(*) AS totalTransactions FROM transactions`,
