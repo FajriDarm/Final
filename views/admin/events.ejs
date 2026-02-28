@@ -1899,22 +1899,56 @@
         // ============================================================
 
         async function loadEvents() {
+          const container = document.getElementById('eventsContainer');
+          let timeoutId;
           try {
-            const response = await fetch('/api/admin/events');
+            const controller = new AbortController();
+            timeoutId = setTimeout(() => controller.abort(), 12000);
+            const response = await fetch('/api/admin/events', { signal: controller.signal });
+
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}`);
+            }
+
             const data = await response.json();
 
             if (data.success) {
-              allEvents = data.data;
-              updateStats(data.data);
-              displayEvents(data.data);
-              document.getElementById('totalEntries').textContent = data.data.length;
-              document.getElementById('endEntry').textContent = Math.min(6, data.data.length);
+              const events = Array.isArray(data.data) ? data.data : [];
+              allEvents = events;
+              updateStats(events);
+              displayEvents(events);
+              document.getElementById('totalEntries').textContent = events.length;
+              document.getElementById('endEntry').textContent = Math.min(6, events.length);
             } else {
-              showError(data.message || 'Gagal memuat event');
+              const msg = data.message || 'Gagal memuat event';
+              showError(msg);
+              if (container) {
+                container.innerHTML = `
+                  <div class="col-span-full text-center py-10">
+                    <p class="text-sm font-extrabold text-red-600">Gagal memuat data event</p>
+                    <p class="text-xs text-gray-600 mt-1">${msg}</p>
+                    <button onclick="loadEvents()" class="mt-4 px-4 py-2 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700">Coba Lagi</button>
+                  </div>
+                `;
+              }
             }
           } catch (error) {
             console.error('Error loading events:', error);
-            showError('Gagal memuat event');
+            const msg = error?.name === 'AbortError'
+              ? 'Request timeout saat memuat event'
+              : 'Gagal memuat event';
+            showError(msg);
+            if (container) {
+              container.innerHTML = `
+                <div class="col-span-full text-center py-10">
+                  <p class="text-sm font-extrabold text-red-600">Tidak bisa memuat event</p>
+                  <p class="text-xs text-gray-600 mt-1">${msg}</p>
+                  <button onclick="loadEvents()" class="mt-4 px-4 py-2 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700">Coba Lagi</button>
+                </div>
+              `;
+            }
+          } finally {
+            if (timeoutId) clearTimeout(timeoutId);
           }
         }
 
