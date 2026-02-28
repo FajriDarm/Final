@@ -1346,7 +1346,7 @@
                           Status</th>
                       </tr>
                     </thead>
-                    <tbody id="transactionsTableBody" class="divide-y divide-white/30">
+                    <tbody id="transactionsTableBody" class="divide-y divide-white-30">
                       <!-- Transactions will be rendered here by JavaScript -->
                     </tbody>
                   </table>
@@ -1457,60 +1457,6 @@
               </div>
               <div id="popularEventsList" class="space-y-2">
                 <!-- populated by JS -->
-              </div>
-            </div>
-
-            <!-- System Health - Premium -->
-            <div class="glass-premium rounded-2xl p-4 border border-white/50 card-luxury">
-              <div class="flex items-center justify-between mb-3">
-                <div class="flex items-center gap-2">
-                  <div
-                    class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow-lg">
-                    <i class="fas fa-shield-alt text-white text-xs"></i>
-                  </div>
-                  <div>
-                    <h4 class="text-sm font-extrabold text-gray-900">System Health</h4>
-                    <p class="text-[8px] text-emerald-700 font-medium mt-0.5">Status performa</p>
-                  </div>
-                </div>
-              </div>
-              <div id="systemHealthBlock" class="space-y-2">
-                <div class="flex items-center justify-between bg-white/60 p-2.5 rounded-xl border border-white/60">
-                  <div class="flex items-center gap-2">
-                    <div
-                      class="w-5 h-5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                      <i class="fas fa-server text-white text-[8px]"></i>
-                    </div>
-                    <span class="text-[9px] font-bold text-gray-700">Server Response</span>
-                  </div>
-                  <div class="flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                    <span id="sysServerResponse"
-                      class="text-[9px] font-extrabold text-emerald-700 bg-white/80 px-2 py-0.5 rounded-lg">98ms</span>
-                  </div>
-                </div>
-                <div class="flex items-center justify-between bg-white/60 p-2.5 rounded-xl border border-white/60">
-                  <div class="flex items-center gap-2">
-                    <div
-                      class="w-5 h-5 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                      <i class="fas fa-clock text-white text-[8px]"></i>
-                    </div>
-                    <span class="text-[9px] font-bold text-gray-700">Uptime</span>
-                  </div>
-                  <span id="sysUptime"
-                    class="text-[9px] font-extrabold text-emerald-700 bg-white/80 px-2 py-0.5 rounded-lg">99.9%</span>
-                </div>
-                <div class="flex items-center justify-between bg-white/60 p-2.5 rounded-xl border border-white/60">
-                  <div class="flex items-center gap-2">
-                    <div
-                      class="w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
-                      <i class="fas fa-users text-white text-[8px]"></i>
-                    </div>
-                    <span class="text-[9px] font-bold text-gray-700">Active Sessions</span>
-                  </div>
-                  <span id="sysActiveSessions"
-                    class="text-[9px] font-extrabold text-emerald-700 bg-white/80 px-2 py-0.5 rounded-lg">-</span>
-                </div>
               </div>
             </div>
 
@@ -2009,12 +1955,6 @@
                     </div>
                   `).join('');
                 }
-              }
-
-              if (data.systemHealth) {
-                document.getElementById('sysServerResponse').textContent = data.systemHealth.serverResponseMs + 'ms';
-                document.getElementById('sysUptime').textContent = data.systemHealth.uptimePct;
-                document.getElementById('sysActiveSessions').textContent = data.systemHealth.activeSessions;
               }
 
               if (data.lastChangesByRole) {

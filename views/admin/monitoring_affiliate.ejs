@@ -487,6 +487,19 @@
       box-shadow: 0 50px 100px -20px rgba(16, 185, 129, 0.3);
       position: relative;
       overflow: hidden;
+      animation: modalContentPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes modalContentPop {
+      0% {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
     }
 
     .modal-overlay.show .modal-content {
@@ -539,6 +552,26 @@
       color: white;
       font-size: 2rem;
       filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .modal-icon.success i {
+      animation: checkPop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes checkPop {
+      0% {
+        transform: scale(0.4) rotate(-10deg);
+        opacity: 0;
+      }
+
+      60% {
+        transform: scale(1.1) rotate(5deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1) rotate(0deg);
+      }
     }
 
     .modal-title {
@@ -1584,15 +1617,24 @@
         });
 
   // Export function dengan format Excel yang lebih baik
-  function exportAffiliateData() {
-    const confirmExport = confirm('Apakah Anda ingin mengekspor data affiliate ke Excel?');
+  async function exportAffiliateData() {
+    const confirmExport = await showConfirm({
+      title: 'Konfirmasi Download',
+      message: 'Apakah Anda ingin mengekspor data affiliate ke Excel?',
+      confirmText: 'Ya, Unduh',
+      cancelText: 'Batal'
+    });
     if (!confirmExport) return;
 
     // Get all visible rows
     const rows = document.querySelectorAll('#affiliatesTableBody tr.table-row');
 
     if (rows.length === 0) {
-      alert('Tidak ada data untuk diekspor');
+      showModal({
+        type: 'warning',
+        title: 'Tidak Ada Data',
+        message: 'Tidak ada data untuk diekspor.'
+      });
       return;
     }
 
@@ -1784,7 +1826,13 @@
     document.body.removeChild(link);
     
     URL.revokeObjectURL(url);
-    alert(`Data berhasil diekspor ke file: ${fileName}\n\nFile dapat dibuka langsung di Microsoft Excel dengan format yang rapi dan mudah dibaca.`);
+    showModal({
+      type: 'success',
+      title: 'Download Selesai',
+      message: `File tersimpan: ${fileName}`,
+      confirmText: 'OK',
+      autoClose: false
+    });
   }
 </script>
 </body>
