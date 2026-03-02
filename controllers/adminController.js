@@ -914,6 +914,13 @@ const updateEvent = async (req, res) => {
     await ensureEventActivePeriodColumns();
 
     const { eventId } = req.params;
+    const [lockRows] = await db.query("SELECT is_locked FROM events WHERE id = ? LIMIT 1", [eventId]);
+    if (!lockRows.length) {
+      return res.status(404).json({ success: false, message: "Event not found" });
+    }
+    if (Number(lockRows[0].is_locked) === 1) {
+      return res.status(423).json({ success: false, message: "Event terkunci dan tidak bisa diubah" });
+    }
     const {
       title,
       description,
@@ -1309,12 +1316,19 @@ const deleteEvent = async (req, res) => {
     connection = await db.getConnection();
     await connection.beginTransaction();
 
-    const [existingEvent] = await connection.query("SELECT id FROM events WHERE id = ? LIMIT 1", [eventId]);
+    const [existingEvent] = await connection.query("SELECT id, is_locked FROM events WHERE id = ? LIMIT 1", [eventId]);
     if (!existingEvent.length) {
       await connection.rollback();
       return res.status(404).json({
         success: false,
         message: "Event not found",
+      });
+    }
+    if (Number(existingEvent[0].is_locked) === 1) {
+      await connection.rollback();
+      return res.status(423).json({
+        success: false,
+        message: "Event terkunci dan tidak bisa dihapus",
       });
     }
 
@@ -1382,6 +1396,36 @@ const deleteEvent = async (req, res) => {
     });
   } finally {
     if (connection) connection.release();
+  }
+};
+
+const updateEventLock = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const raw = req.body?.is_locked;
+    const normalized = raw === true || raw === "1" || raw === 1 ? 1 : 0;
+
+    const [result] = await db.query(
+      "UPDATE events SET is_locked = ? WHERE id = ?",
+      [normalized, eventId],
+    );
+
+    if (!result.affectedRows) {
+      return res.status(404).json({ success: false, message: "Event not found" });
+    }
+
+    res.json({
+      success: true,
+      message: normalized ? "Event berhasil dikunci" : "Event berhasil dibuka kunci",
+      data: { id: Number(eventId), is_locked: normalized },
+    });
+  } catch (error) {
+    console.error("Update event lock error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 };
 
@@ -2052,6 +2096,7 @@ module.exports = {
   createEvent,
   updateEvent,
   deleteEvent,
+  updateEventLock,
   getPendingAffiliates,
   approveAffiliate,
   rejectAffiliate,

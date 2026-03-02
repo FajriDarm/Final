@@ -44,6 +44,7 @@ router.get("/events", adminController.getEvents);
 router.get("/events/:eventId", adminController.getEventById); // detail for edit
 router.post("/events", adminController.createEvent);
 router.put("/events/:eventId", adminController.updateEvent);
+router.put("/events/:eventId/lock", adminController.updateEventLock);
 router.delete("/events/:eventId", adminController.deleteEvent);
 
 // Upload hero media (image/video) - authenticated
