@@ -68,6 +68,17 @@ function isValidAdminContactValue(raw) {
   return phonePattern.test(value) || urlPattern.test(value);
 }
 
+const ALLOWED_LP_STYLES = ["classic", "modern", "elegant"];
+const ALLOWED_MEDIA_LAYOUT_STYLES = ["grid", "auto_slide"];
+function normalizeLandingStyle(value) {
+  const style = String(value || "").toLowerCase().trim();
+  return ALLOWED_LP_STYLES.includes(style) ? style : "classic";
+}
+function normalizeMediaLayoutStyle(value) {
+  const style = String(value || "").toLowerCase().trim();
+  return ALLOWED_MEDIA_LAYOUT_STYLES.includes(style) ? style : "grid";
+}
+
 let adminContactColumnReady = false;
 let ensureAdminContactColumnPromise = null;
 
@@ -489,7 +500,7 @@ const getEvents = async (req, res) => {
       let testimonials = [];
       try {
         const [rows] = await db.query(
-          `SELECT event_id, media_type, media_url, sort_order
+          `SELECT event_id, media_type, media_url, layout_style, sort_order
            FROM event_testimonials
            WHERE event_id IN (?)
            ORDER BY sort_order ASC`,
@@ -505,6 +516,7 @@ const getEvents = async (req, res) => {
         testimonialMap[t.event_id].push({
           media_type: t.media_type,
           media_url: t.media_url,
+          layout_style: normalizeMediaLayoutStyle(t.layout_style),
           sort_order: t.sort_order,
         });
       });
@@ -513,7 +525,7 @@ const getEvents = async (req, res) => {
       let activityDocs = [];
       try {
         const [rows] = await db.query(
-          `SELECT event_id, media_type, media_url, info_text, layout_orientation, sort_order
+          `SELECT event_id, media_type, media_url, info_text, layout_orientation, layout_style, sort_order
            FROM event_activity_docs
            WHERE event_id IN (?)
            ORDER BY sort_order ASC`,
@@ -531,6 +543,7 @@ const getEvents = async (req, res) => {
           media_url: d.media_url,
           info_text: d.info_text,
           layout_orientation: d.layout_orientation || "portrait",
+          layout_style: d.layout_style === "auto_slide" ? "auto_slide" : "grid",
           sort_order: d.sort_order,
         });
       });
@@ -712,14 +725,15 @@ const createEvent = async (req, res) => {
       pains,
       solutionTitle,
       solutionSubtitle,
-      solutions,
-      faqs,
-      testimonials,
-      activity_docs,
-      variants,
-      active_start_date,
-      active_end_date,
-    } = req.body;
+    solutions,
+    faqs,
+    testimonials,
+    activity_docs,
+    variants,
+    active_start_date,
+    active_end_date,
+    lp_style,
+  } = req.body;
 
     if ((active_start_date && !active_end_date) || (!active_start_date && active_end_date)) {
       return res.status(400).json({
@@ -748,6 +762,7 @@ const createEvent = async (req, res) => {
     const ignoredBankAccountName = null;
     const ignoredBankAccountNumber = null;
     const ignoredAccountHolderName = null;
+    const landingStyle = normalizeLandingStyle(lp_style);
 
     const insertValues = [
       req.body.title,
@@ -767,6 +782,7 @@ const createEvent = async (req, res) => {
       active_start_date || null,
       active_end_date || null,
       req.body.status || "draft",
+      landingStyle,
       userId,
     ];
 
@@ -776,8 +792,8 @@ const createEvent = async (req, res) => {
       `INSERT INTO events
        (title, slug, description, event_type, price_original, price_promo, payment_methods,
         bank_name, bank_account_name, bank_account_number, account_holder_name,
-        admin_whatsapp, start_date, end_date, active_start_date, active_end_date, status, created_by)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        admin_whatsapp, start_date, end_date, active_start_date, active_end_date, status, lp_style, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       insertValues,
     );
 
@@ -821,10 +837,11 @@ const createEvent = async (req, res) => {
             continue;
           }
           if (!normalized.heroMediaUrl) continue;
+          const layoutStyle = normalizeMediaLayoutStyle(t.layout_style);
           await db.query(
-            `INSERT INTO event_testimonials (event_id, media_type, media_url, sort_order)
-             VALUES (?, ?, ?, ?)`,
-            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, i],
+            `INSERT INTO event_testimonials (event_id, media_type, media_url, layout_style, sort_order)
+             VALUES (?, ?, ?, ?, ?)`,
+            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, layoutStyle, i],
           );
         }
       } catch (err) {
@@ -845,10 +862,11 @@ const createEvent = async (req, res) => {
           }
           if (!normalized.heroMediaUrl) continue;
           const layoutOrientation = d.layout_orientation === "landscape" ? "landscape" : "portrait";
+          const layoutStyle = d.layout_style === "auto_slide" ? "auto_slide" : "grid";
           await db.query(
-            `INSERT INTO event_activity_docs (event_id, media_type, media_url, info_text, layout_orientation, sort_order)
-             VALUES (?, ?, ?, ?, ?, ?)`,
-            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, d.info_text || null, layoutOrientation, i],
+            `INSERT INTO event_activity_docs (event_id, media_type, media_url, info_text, layout_orientation, layout_style, sort_order)
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, d.info_text || null, layoutOrientation, layoutStyle, i],
           );
         }
       } catch (err) {
@@ -1032,6 +1050,7 @@ const updateEvent = async (req, res) => {
       testimonials,
       activity_docs,
       variants,
+      lp_style,
     } = req.body;
 
     if ((active_start_date && !active_end_date) || (!active_start_date && active_end_date)) {
@@ -1066,7 +1085,7 @@ const updateEvent = async (req, res) => {
       `UPDATE events SET
        title = ?, description = ?, price_original = ?, price_promo = ?,
        payment_methods = ?, bank_name = ?, bank_account_name = ?,
-       bank_account_number = ?, account_holder_name = ?, admin_whatsapp = ?, start_date = ?, end_date = ?, active_start_date = ?, active_end_date = ?, status = ?
+       bank_account_number = ?, account_holder_name = ?, admin_whatsapp = ?, start_date = ?, end_date = ?, active_start_date = ?, active_end_date = ?, status = ?, lp_style = ?
        WHERE id = ?`,
       [
         title,
@@ -1084,6 +1103,7 @@ const updateEvent = async (req, res) => {
         active_start_date || null,
         active_end_date || null,
         status,
+        normalizeLandingStyle(lp_style),
         eventId,
       ],
     );
@@ -1182,10 +1202,11 @@ const updateEvent = async (req, res) => {
             continue;
           }
           if (!normalized.heroMediaUrl) continue;
+          const layoutStyle = normalizeMediaLayoutStyle(t.layout_style);
           await db.query(
-            `INSERT INTO event_testimonials (event_id, media_type, media_url, sort_order)
-             VALUES (?, ?, ?, ?)`,
-            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, i],
+            `INSERT INTO event_testimonials (event_id, media_type, media_url, layout_style, sort_order)
+             VALUES (?, ?, ?, ?, ?)`,
+            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, layoutStyle, i],
           );
         }
       } catch (err) {
@@ -1206,10 +1227,11 @@ const updateEvent = async (req, res) => {
           }
           if (!normalized.heroMediaUrl) continue;
           const layoutOrientation = d.layout_orientation === "landscape" ? "landscape" : "portrait";
+          const layoutStyle = d.layout_style === "auto_slide" ? "auto_slide" : "grid";
           await db.query(
-            `INSERT INTO event_activity_docs (event_id, media_type, media_url, info_text, layout_orientation, sort_order)
-             VALUES (?, ?, ?, ?, ?, ?)`,
-            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, d.info_text || null, layoutOrientation, i],
+            `INSERT INTO event_activity_docs (event_id, media_type, media_url, info_text, layout_orientation, layout_style, sort_order)
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, d.info_text || null, layoutOrientation, layoutStyle, i],
           );
         }
       } catch (err) {
@@ -1338,7 +1360,7 @@ const getEventById = async (req, res) => {
 
     try {
       const [testimonials] = await db.query(
-        `SELECT media_type, media_url, sort_order
+        `SELECT media_type, media_url, layout_style, sort_order
          FROM event_testimonials
          WHERE event_id = ?
          ORDER BY sort_order ASC`,
@@ -1351,7 +1373,7 @@ const getEventById = async (req, res) => {
 
     try {
       const [activityDocs] = await db.query(
-        `SELECT media_type, media_url, info_text, layout_orientation, sort_order
+        `SELECT media_type, media_url, info_text, layout_orientation, layout_style, sort_order
          FROM event_activity_docs
          WHERE event_id = ?
          ORDER BY sort_order ASC`,

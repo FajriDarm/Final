@@ -5,36 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= (typeof landingData !== 'undefined' && landingData && landingData.event && landingData.event.title) ? `${landingData.event.title} - Landing Page` : 'Umroh Syawal 9D - Pendampingian Tenang untuk Ibu' %></title>
-    <meta name="description"
-        content="Program Umroh Syawal 9 Hari oleh Rahmah Travel. Kepastian jadwal, hotel dekat, dan transparan biaya. Cocok untuk anak perempuan mendampingi ibu.">
+    <meta name="description" content="Program Umroh Syawal 9 Hari oleh Rahmah Travel. Kepastian jadwal, hotel dekat, dan transparan biaya. Cocok untuk anak perempuan mendampingi ibu.">
 
-    <!-- Fonts: Playfair Display (Trust/Authority) & Plus Jakarta Sans (Modern/Clean) -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <!-- Classic: Playfair Display + Plus Jakarta Sans (unchanged) -->
+    <!-- Modern: DM Serif Display + DM Sans -->
+    <!-- Elegant: Cormorant Garamond + Jost -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 
-    <!-- Tailwind CSS (via CDN for standalone usage) -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Tailwind Configuration for Custom Earthy Tones -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         earth: {
-                            50: '#FAFAF5',  /* Ultra light background */
+                            50: '#FAFAF5',
                             100: '#F5F5EB',
                             200: '#E6E6D6',
-                            800: '#5D4E37',  /* Primary Text/Headings */
-                            900: '#3E3328',  /* Darker Text */
+                            400: '#A89880',
+                            500: '#8A7560',
+                            600: '#6F5D48',
+                            800: '#5D4E37',
+                            900: '#3E3328',
                         },
                         brand: {
-                            brown: '#8B5E3C', /* Primary Button/Action */
-                            gold: '#C5A059',  /* Accent/Star */
+                            brown: '#8B5E3C',
+                            gold: '#C5A059',
                             light: '#FDFBF7',
                         }
                     },
@@ -48,59 +49,760 @@
     </script>
 
     <style>
-        /* GLOBAL STYLES & OVERRIDES */
+        /* =========================================
+           BASE / GLOBAL
+        ========================================= */
         body {
             overflow-x: hidden;
-            /* Rule 2: Prevent horizontal scroll */
             background-color: #FAFAF5;
-            /* Rule 4: Light Mode */
             color: #3E3328;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Rule 7: Button Consistency */
         .btn-primary {
             background-color: #8B5E3C !important;
             color: #FFFFFF !important;
             text-decoration: none !important;
             transition: transform 0.2s ease, opacity 0.2s ease;
         }
+        .btn-primary:active { transform: scale(0.98); }
 
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
+        html { scroll-behavior: smooth; }
+        img { display: block; width: 100%; height: auto; }
 
-        /* Smooth Scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Image styling */
-        img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-
-        /* Sticky CTA Mobile */
         .sticky-cta-wrapper {
+            position: fixed; bottom: 0; left: 0; width: 100%; z-index: 50;
+            background: white; box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+            padding: 12px 16px; border-top: 1px solid #E6E6D6;
+        }
+
+        section {
+            margin-bottom: 2.5rem;
+        }
+
+        section[data-aos]::after {
+            content: "";
+            position: absolute; inset: 1rem 2.5rem;
+            border-radius: 26px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        section[data-aos]:hover::after {
+            opacity: 0.35;
+        }
+
+        .benefit-pill {
+            border-radius: 999px;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            background: rgba(139, 94, 60, 0.08);
+            color: #8b5e3c;
+            padding: 4px 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .activity-docs-carousel {
+            display: flex; gap: 12px; overflow-x: auto;
+            scroll-snap-type: x mandatory; padding-bottom: 8px;
+        }
+        .activity-docs-carousel .activity-doc-slide-item {
+            flex: 0 0 calc(50% - 6px); scroll-snap-align: start;
+        }
+        .activity-docs-carousel::-webkit-scrollbar { height: 6px; }
+        .activity-docs-carousel::-webkit-scrollbar-thumb { background: #c9b79f; border-radius: 999px; }
+        @media (max-width: 640px) {
+            .activity-docs-carousel .activity-doc-slide-item { flex-basis: 100%; }
+        }
+        .activity-doc-dot {
+            width: 8px; height: 8px; border-radius: 999px;
+            background: #d8cbb7; transition: all 0.2s ease;
+        }
+        .activity-doc-dot.active { width: 20px; background: #8B5E3C; }
+
+        .testimonial-carousel {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 8px;
+        }
+        .testimonial-carousel .testimonial-slide {
+            flex: 0 0 calc(50% - 6px);
+            scroll-snap-align: start;
+            aspect-ratio: 3 / 4;
+            border-radius: 20px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+            overflow: hidden;
+        }
+        .testimonial-carousel::-webkit-scrollbar {
+            height: 6px;
+        }
+        .testimonial-carousel::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 999px;
+        }
+        @media (max-width: 768px) {
+            .testimonial-carousel .testimonial-slide {
+                flex: 0 0 90%;
+            }
+        }
+        .testimonial-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.4);
+            transition: all 0.2s ease;
+        }
+        .testimonial-dot.active {
+            width: 20px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* =========================================
+           MODERN STYLE — Teal-Emerald
+        ========================================= */
+        .lp-style-modern {
+            --m-teal: #0d9488;
+            --m-teal-dark: #0f766e;
+            --m-teal-light: #14b8a6;
+            --m-emerald: #059669;
+            --m-ink: #0f2027;
+            --m-ink-mid: #1e3a34;
+            --m-ink-soft: #2d5147;
+            --m-surface: #f0fdfb;
+            --m-surface-alt: #e6faf7;
+            --m-border: #b2e4de;
+            --m-white: #ffffff;
+
+            background: #f0fdfb;
+            color: var(--m-ink);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        /* Background geometric pattern */
+        .lp-style-modern::before {
+            content: '';
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            z-index: 50;
-            background: white;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
-            padding: 12px 16px;
-            border-top: 1px solid #E6E6D6;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 10% -10%, rgba(20,184,166,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 90% 110%, rgba(5,150,105,0.10) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .lp-style-modern * { position: relative; z-index: 1; }
+
+        /* Typography overrides */
+        .lp-style-modern .font-serif,
+        .lp-style-modern h1, .lp-style-modern h2, .lp-style-modern h3 {
+            font-family: 'DM Serif Display', serif !important;
+        }
+        .lp-style-modern .font-sans,
+        .lp-style-modern p, .lp-style-modern span, .lp-style-modern li, .lp-style-modern a {
+            font-family: 'DM Sans', sans-serif !important;
+        }
+
+        /* Color overrides */
+        .lp-style-modern .text-earth-900 { color: var(--m-ink) !important; }
+        .lp-style-modern .text-earth-800 { color: var(--m-ink-soft) !important; }
+        .lp-style-modern .text-earth-600 { color: #5b8c85 !important; }
+        .lp-style-modern .text-earth-500 { color: #7aa8a3 !important; }
+        .lp-style-modern .text-brand-brown { color: var(--m-teal-dark) !important; }
+        .lp-style-modern .text-brand-gold { color: var(--m-emerald) !important; }
+
+        /* Backgrounds */
+        .lp-style-modern .bg-brand-light { background-color: var(--m-surface) !important; }
+        .lp-style-modern .bg-earth-50 { background-color: var(--m-surface-alt) !important; }
+        .lp-style-modern .bg-white { background-color: #ffffff !important; }
+        .lp-style-modern .bg-brand-brown { background-color: var(--m-teal-dark) !important; }
+        .lp-style-modern .border-brand-brown { border-color: var(--m-teal) !important; }
+        .lp-style-modern .border-earth-200 { border-color: var(--m-border) !important; }
+        .lp-style-modern .border-earth-100 { border-color: #ccf0eb !important; }
+        .lp-style-modern .bg-earth-100 { background-color: #d4f5f0 !important; }
+
+        /* Hero */
+        .lp-style-modern header {
+            background: linear-gradient(135deg, #0f2027 0%, #1a3a33 40%, #0d4a3e 100%) !important;
+        }
+        .lp-style-modern #lpHeroCard {
+            background: rgba(255,255,255,0.97) !important;
+            border-top: 4px solid var(--m-teal) !important;
+            border-radius: 20px 20px 0 0 !important;
+            box-shadow: 0 -8px 40px rgba(13,148,136,0.15), 0 0 0 1px rgba(13,148,136,0.08) !important;
+        }
+
+        /* Tags pill modern */
+        .lp-style-modern #lpHeroTags span {
+            background: linear-gradient(135deg, rgba(13,148,136,0.08), rgba(5,150,105,0.06));
+            border: 1px solid rgba(13,148,136,0.2);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Authority section */
+        .lp-style-modern .bg-earth-50.p-5.rounded-lg.border {
+            background: linear-gradient(135deg, #e6faf7, #f0fdfb) !important;
+            border: 1px solid var(--m-border) !important;
+        }
+
+        /* Problem section */
+        .lp-style-modern .bg-white.p-5.rounded-xl.border-l-4 {
+            border-left: 4px solid var(--m-teal) !important;
+            background: linear-gradient(135deg, #f0fdfb, #e6faf7) !important;
+        }
+
+        /* Solution cards */
+        .lp-style-modern .bg-earth-50.p-5.rounded-lg {
+            background: linear-gradient(135deg, #e6faf7, #f0fdfb) !important;
+            border: 1px solid var(--m-border);
+            border-radius: 16px !important;
+        }
+        .lp-style-modern .bg-white.rounded-full.shadow-sm {
+            background: linear-gradient(135deg, var(--m-teal), var(--m-emerald)) !important;
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(13,148,136,0.3) !important;
+        }
+        .lp-style-modern .bg-white.rounded-full.shadow-sm svg {
+            stroke: white !important;
+        }
+
+        /* Pricing highlight card */
+        .lp-style-modern .border-2.border-brand-brown {
+            border: 2px solid var(--m-teal) !important;
+            background: linear-gradient(160deg, #f0fdfb, #e6faf7) !important;
+            box-shadow: 0 12px 40px rgba(13,148,136,0.15) !important;
+            border-radius: 20px !important;
+        }
+        .lp-style-modern .border-earth-200.rounded-xl {
+            border-radius: 16px !important;
+        }
+        .lp-style-modern .border.border-earth-200.rounded-xl.p-5 {
+            border-radius: 16px !important;
+        }
+
+        /* BEST SELLER badge */
+        .lp-style-modern .absolute.top-0.right-0.bg-brand-brown {
+            background: linear-gradient(135deg, var(--m-teal), var(--m-emerald)) !important;
+            border-radius: 0 16px 0 12px !important;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* Scarcity bar */
+        .lp-style-modern .bg-red-50 {
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important;
+            border: 1px solid #6ee7b7 !important;
+        }
+        .lp-style-modern .text-red-700 { color: #065f46 !important; }
+
+        /* Special offer block */
+        .lp-style-modern .bg-brand-brown.text-white.p-6.rounded-xl {
+            background: linear-gradient(135deg, #0f766e, #0d9488, #059669) !important;
+            border-radius: 20px !important;
+            box-shadow: 0 16px 40px rgba(13,148,136,0.3) !important;
+            position: relative;
+            overflow: hidden;
+        }
+        .lp-style-modern .bg-brand-brown.text-white.p-6.rounded-xl::after {
+            content: '';
+            position: absolute;
+            top: -30px; right: -30px;
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            pointer-events: none;
+        }
+
+        /* Pricing note box */
+        .lp-style-modern .bg-earth-50.p-5.rounded-lg.text-center {
+            background: linear-gradient(135deg, #e6faf7, #f0fdfb) !important;
+            border: 1px solid var(--m-border);
+            border-radius: 16px !important;
+        }
+
+        /* Trust section */
+        .lp-style-modern .grid.grid-cols-2 .bg-white.p-4.rounded-lg.shadow-sm {
+            background: linear-gradient(160deg, #ffffff, #f0fdfb) !important;
+            border: 1px solid var(--m-border) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 4px 20px rgba(13,148,136,0.08) !important;
+        }
+        .lp-style-modern .bg-brand-brown\/10 { background: rgba(13,148,136,0.1) !important; }
+        .lp-style-modern .bg-brand-brown\/10.rounded-full { background: rgba(13,148,136,0.12) !important; }
+
+        /* FAQ */
+        .lp-style-modern details.group {
+            border: 1px solid var(--m-border) !important;
+            border-radius: 14px !important;
+            overflow: hidden;
+        }
+        .lp-style-modern details summary {
+            background: linear-gradient(135deg, #e6faf7, #f0fdfb) !important;
+        }
+
+        /* Final CTA section */
+        .lp-style-modern #booking {
+            background: linear-gradient(135deg, #0f2027, #1a3a33, #0d4a3e) !important;
+            position: relative;
+            overflow: hidden;
+        }
+        .lp-style-modern #booking::before {
+            content: '';
+            position: absolute;
+            top: -60px; left: -60px;
+            width: 240px; height: 240px;
+            border-radius: 50%;
+            background: rgba(13,148,136,0.12);
+            pointer-events: none;
+        }
+        .lp-style-modern #booking::after {
+            content: '';
+            position: absolute;
+            bottom: -40px; right: -40px;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            background: rgba(5,150,105,0.10);
+            pointer-events: none;
+        }
+        .lp-style-modern #booking * { position: relative; z-index: 2; }
+
+        /* CTA buttons */
+        .lp-style-modern .btn-primary {
+            background: linear-gradient(135deg, var(--m-teal-dark), var(--m-teal), var(--m-emerald)) !important;
+            box-shadow: 0 8px 24px rgba(13,148,136,0.35) !important;
+            border-radius: 14px !important;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease !important;
+        }
+        .lp-style-modern .btn-primary:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 12px 32px rgba(13,148,136,0.45) !important;
+        }
+
+        /* Inline badge */
+        .lp-style-modern #lpSolutionBadge {
+            background: rgba(13,148,136,0.1) !important;
+            color: var(--m-teal-dark) !important;
+            border: 1px solid rgba(13,148,136,0.2) !important;
+            letter-spacing: 1.5px !important;
+        }
+
+        /* Authority quote */
+        .lp-style-modern .italic.text-brand-brown {
+            color: var(--m-teal-dark) !important;
+            font-style: italic;
+        }
+
+        /* Final white CTA on dark bg */
+        .lp-style-modern #booking a.block {
+            background: white !important;
+            color: var(--m-teal-dark) !important;
+            border-radius: 14px !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2) !important;
+            transition: all 0.3s ease !important;
+        }
+        .lp-style-modern #booking a.block:hover {
+            transform: translateY(-2px) !important;
+        }
+
+        /* Green checkmarks */
+        .lp-style-modern #lpBenefitsList svg,
+        .lp-style-modern .text-brand-brown svg { color: var(--m-teal) !important; }
+        .lp-style-modern .text-green-700 { color: var(--m-emerald) !important; }
+
+        /* Pain points */
+        .lp-style-modern .bg-red-100 { background: rgba(13,148,136,0.1) !important; }
+        .lp-style-modern .text-red-600 { color: var(--m-teal-dark) !important; }
+        .lp-style-modern .bg-red-50 { background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important; }
+
+        /* Footer */
+        .lp-style-modern footer { background: #f0fdfb !important; border-top: 1px solid var(--m-border) !important; }
+
+        /* Hotel/detail boxes inside pricing */
+        .lp-style-modern .bg-earth-50.rounded.p-2 {
+            background: #e6faf7 !important;
+            border: 1px solid var(--m-border) !important;
+            border-radius: 10px !important;
+        }
+        .lp-style-modern .bg-white.rounded.p-2 {
+            background: #f7fffe !important;
+            border: 1px solid var(--m-border) !important;
+            border-radius: 10px !important;
+        }
+
+        /* Modern animated border for hero card */
+        @keyframes modernGlow {
+            0%, 100% { box-shadow: 0 -8px 40px rgba(13,148,136,0.15), 0 0 0 1px rgba(13,148,136,0.08); }
+            50% { box-shadow: 0 -8px 50px rgba(13,148,136,0.22), 0 0 0 1px rgba(13,148,136,0.15); }
+        }
+        .lp-style-modern #lpHeroCard { animation: modernGlow 4s ease-in-out infinite; }
+
+
+        /* =========================================
+           ELEGANT STYLE — Gold & Cream
+        ========================================= */
+        .lp-style-elegant {
+            --e-gold: #b8943a;
+            --e-gold-light: #d4aa58;
+            --e-gold-pale: #f0dfa0;
+            --e-gold-dark: #8a6b1e;
+            --e-cream: #fdf9f0;
+            --e-cream-dark: #f5eddb;
+            --e-cream-mid: #ece0c8;
+            --e-ivory: #fefcf5;
+            --e-ink: #1a1208;
+            --e-ink-mid: #3d2e10;
+            --e-ink-soft: #6b5630;
+            --e-border: #d9c896;
+            --e-border-light: #e8dbb4;
+
+            background: var(--e-cream);
+            color: var(--e-ink);
+            font-family: 'Jost', sans-serif;
+        }
+
+        /* Noise texture overlay */
+        .lp-style-elegant::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 128px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .lp-style-elegant * { position: relative; z-index: 1; }
+
+        /* Typography */
+        .lp-style-elegant .font-serif,
+        .lp-style-elegant h1, .lp-style-elegant h2, .lp-style-elegant h3 {
+            font-family: 'Cormorant Garamond', serif !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.02em;
+        }
+        .lp-style-elegant .font-sans,
+        .lp-style-elegant p, .lp-style-elegant span, .lp-style-elegant li, .lp-style-elegant a {
+            font-family: 'Jost', sans-serif !important;
+            letter-spacing: 0.02em;
+        }
+        .lp-style-elegant h1, .lp-style-elegant h2 {
+            font-style: italic;
+        }
+
+        /* Color overrides */
+        .lp-style-elegant .text-earth-900 { color: var(--e-ink) !important; }
+        .lp-style-elegant .text-earth-800 { color: var(--e-ink-mid) !important; }
+        .lp-style-elegant .text-earth-600 { color: var(--e-ink-soft) !important; }
+        .lp-style-elegant .text-earth-500 { color: #9e8450 !important; }
+        .lp-style-elegant .text-earth-400 { color: #b09a68 !important; }
+        .lp-style-elegant .text-brand-brown { color: var(--e-gold-dark) !important; }
+
+        /* Backgrounds */
+        .lp-style-elegant .bg-brand-light { background-color: var(--e-ivory) !important; }
+        .lp-style-elegant .bg-earth-50 { background-color: var(--e-cream-dark) !important; }
+        .lp-style-elegant .bg-white { background-color: var(--e-ivory) !important; }
+        .lp-style-elegant .bg-brand-brown { background-color: var(--e-gold-dark) !important; }
+        .lp-style-elegant .border-brand-brown { border-color: var(--e-gold) !important; }
+        .lp-style-elegant .border-earth-200 { border-color: var(--e-border-light) !important; }
+        .lp-style-elegant .border-earth-100 { border-color: var(--e-border-light) !important; }
+        .lp-style-elegant .bg-earth-100 { background: var(--e-cream-mid) !important; }
+
+        /* Hero — dramatic dark gold */
+        .lp-style-elegant header {
+            background: linear-gradient(160deg, #1a1208 0%, #2e1f06 50%, #1a1208 100%) !important;
+        }
+        .lp-style-elegant #lpHeroCard {
+            background: var(--e-ivory) !important;
+            border-top: 3px solid var(--e-gold) !important;
+            border-radius: 0 !important;
+            box-shadow: 0 -4px 60px rgba(184,148,58,0.20), inset 0 1px 0 rgba(212,170,88,0.3) !important;
+        }
+
+        /* Decorative gold line under hero headlines */
+        .lp-style-elegant #lpHeroHeadline {
+            font-size: 2.4rem !important;
+            line-height: 1.15 !important;
+        }
+        .lp-style-elegant #lpHeroHeadline::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--e-gold), transparent);
+            margin: 12px auto 0;
+        }
+
+        /* Hero tags — refined */
+        .lp-style-elegant #lpHeroTags span {
+            background: transparent;
+            border: 1px solid var(--e-border);
+            padding: 4px 14px;
+            border-radius: 2px;
+            font-weight: 500;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Authority section */
+        .lp-style-elegant .bg-earth-50.p-5.rounded-lg.border {
+            background: linear-gradient(135deg, var(--e-cream-dark), var(--e-ivory)) !important;
+            border: 1px solid var(--e-border) !important;
+            border-radius: 2px !important;
+        }
+
+        /* Problem callout box */
+        .lp-style-elegant .bg-white.p-5.rounded-xl.border-l-4 {
+            border-left: 3px solid var(--e-gold) !important;
+            background: linear-gradient(135deg, var(--e-cream-dark), var(--e-ivory)) !important;
+            border-radius: 2px !important;
+        }
+
+        /* Solution cards — layered gold */
+        .lp-style-elegant .bg-earth-50.p-5.rounded-lg {
+            background: linear-gradient(160deg, var(--e-ivory), var(--e-cream-dark)) !important;
+            border: 1px solid var(--e-border) !important;
+            border-radius: 4px !important;
+            box-shadow: 0 4px 20px rgba(184,148,58,0.06) !important;
+        }
+        .lp-style-elegant .bg-white.rounded-full.shadow-sm {
+            background: linear-gradient(135deg, var(--e-gold), var(--e-gold-light)) !important;
+            box-shadow: 0 4px 16px rgba(184,148,58,0.3) !important;
+        }
+        .lp-style-elegant .bg-white.rounded-full.shadow-sm svg { stroke: white !important; }
+
+        /* Badge */
+        .lp-style-elegant #lpSolutionBadge {
+            background: rgba(184,148,58,0.08) !important;
+            color: var(--e-gold-dark) !important;
+            border: 1px solid rgba(184,148,58,0.25) !important;
+            border-radius: 2px !important;
+            letter-spacing: 2px !important;
+            font-size: 10px !important;
+        }
+
+        /* Pricing — BEST SELLER badge */
+        .lp-style-elegant .border-2.border-brand-brown {
+            border: 1px solid var(--e-gold) !important;
+            background: linear-gradient(160deg, var(--e-ivory), var(--e-cream-dark)) !important;
+            box-shadow: 0 12px 48px rgba(184,148,58,0.15), inset 0 1px 0 rgba(212,170,88,0.2) !important;
+            border-radius: 4px !important;
+        }
+        .lp-style-elegant .border.border-earth-200.rounded-xl.p-5 {
+            border-radius: 4px !important;
+            border: 1px solid var(--e-border-light) !important;
+        }
+        .lp-style-elegant .absolute.top-0.right-0.bg-brand-brown {
+            background: linear-gradient(135deg, var(--e-gold-dark), var(--e-gold)) !important;
+            border-radius: 0 4px 0 6px !important;
+            font-size: 9px;
+            letter-spacing: 2px;
+        }
+
+        /* Scarcity */
+        .lp-style-elegant .bg-red-50 {
+            background: linear-gradient(135deg, var(--e-cream-dark), var(--e-ivory)) !important;
+            border: 1px solid var(--e-border) !important;
+        }
+        .lp-style-elegant .text-red-700 { color: var(--e-gold-dark) !important; }
+
+        /* Special offer block — dramatic */
+        .lp-style-elegant .bg-brand-brown.text-white.p-6.rounded-xl {
+            background: linear-gradient(145deg, #1a1208, #2e1f06, #3d2a0a) !important;
+            border: 1px solid var(--e-gold) !important;
+            border-radius: 4px !important;
+            box-shadow: 0 20px 60px rgba(26,18,8,0.3), inset 0 1px 0 rgba(212,170,88,0.2) !important;
+            position: relative;
+            overflow: hidden;
+        }
+        .lp-style-elegant .bg-brand-brown.text-white.p-6.rounded-xl::before {
+            content: '◆';
+            position: absolute;
+            top: 12px; right: 16px;
+            font-size: 48px;
+            color: rgba(184,148,58,0.08);
+            pointer-events: none;
+        }
+
+        /* Prize highlight in offer block */
+        .lp-style-elegant .bg-white.text-earth-900.p-4.rounded-lg {
+            background: linear-gradient(135deg, #1a1208, #2a1c06) !important;
+            border: 1px solid var(--e-gold) !important;
+            border-radius: 2px !important;
+        }
+        .lp-style-elegant .bg-white.text-earth-900.p-4.rounded-lg .text-brand-brown {
+            color: var(--e-gold-light) !important;
+        }
+
+        /* Pricing note box */
+        .lp-style-elegant .bg-earth-50.p-5.rounded-lg.text-center {
+            background: linear-gradient(135deg, var(--e-cream-dark), var(--e-ivory)) !important;
+            border: 1px solid var(--e-border) !important;
+            border-radius: 4px !important;
+        }
+
+        /* Trust grid */
+        .lp-style-elegant .grid.grid-cols-2 .bg-white.p-4.rounded-lg.shadow-sm {
+            background: var(--e-ivory) !important;
+            border: 1px solid var(--e-border) !important;
+            border-radius: 4px !important;
+            box-shadow: 0 4px 20px rgba(184,148,58,0.06) !important;
+        }
+        .lp-style-elegant .bg-brand-brown\/10 { background: rgba(184,148,58,0.08) !important; }
+
+        /* FAQ */
+        .lp-style-elegant details.group {
+            border: 1px solid var(--e-border) !important;
+            border-radius: 2px !important;
+        }
+        .lp-style-elegant details summary {
+            background: linear-gradient(135deg, var(--e-cream-dark), var(--e-ivory)) !important;
+        }
+
+        /* Final CTA */
+        .lp-style-elegant #booking {
+            background: linear-gradient(145deg, #1a1208, #2e1f06, #1a1208) !important;
+            border-top: 1px solid var(--e-gold);
+            position: relative;
+            overflow: hidden;
+        }
+        .lp-style-elegant #booking::before {
+            content: '◆  ◆  ◆';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 120px;
+            color: rgba(184,148,58,0.03);
+            letter-spacing: 20px;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .lp-style-elegant #booking * { position: relative; z-index: 2; }
+
+        /* CTA Buttons */
+        .lp-style-elegant .btn-primary {
+            background: linear-gradient(135deg, var(--e-gold-dark), var(--e-gold), var(--e-gold-light)) !important;
+            box-shadow: 0 8px 28px rgba(184,148,58,0.35) !important;
+            border-radius: 2px !important;
+            letter-spacing: 1px !important;
+            text-transform: uppercase !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            transition: all 0.3s ease !important;
+        }
+        .lp-style-elegant .btn-primary:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 12px 36px rgba(184,148,58,0.45) !important;
+        }
+
+        /* Final CTA white button */
+        .lp-style-elegant #booking a.block {
+            background: linear-gradient(135deg, var(--e-gold-dark), var(--e-gold)) !important;
+            color: white !important;
+            border-radius: 2px !important;
+            letter-spacing: 1.5px !important;
+            text-transform: uppercase !important;
+            font-size: 13px !important;
+            box-shadow: 0 8px 28px rgba(184,148,58,0.4) !important;
+            border: 1px solid var(--e-gold-light) !important;
+            transition: all 0.3s ease !important;
+        }
+        .lp-style-elegant #booking a.block:hover {
+            transform: translateY(-2px) !important;
+        }
+
+        /* Checkmarks */
+        .lp-style-elegant #lpBenefitsList svg,
+        .lp-style-elegant .text-brand-brown svg { color: var(--e-gold) !important; }
+        .lp-style-elegant .text-green-700 { color: var(--e-gold-dark) !important; }
+
+        /* Pain points */
+        .lp-style-elegant .bg-red-100 { background: rgba(184,148,58,0.08) !important; }
+        .lp-style-elegant .text-red-600 { color: var(--e-gold-dark) !important; }
+
+        /* Hotel boxes inside pricing */
+        .lp-style-elegant .bg-earth-50.rounded.p-2 {
+            background: var(--e-cream-dark) !important;
+            border: 1px solid var(--e-border) !important;
+            border-radius: 2px !important;
+        }
+        .lp-style-elegant .bg-white.rounded.p-2 {
+            background: var(--e-ivory) !important;
+            border: 1px solid var(--e-border) !important;
+            border-radius: 2px !important;
+        }
+
+        /* Authority quote */
+        .lp-style-elegant .italic.text-brand-brown {
+            color: var(--e-gold-dark) !important;
+            font-family: 'Cormorant Garamond', serif !important;
+            font-size: 1.1em !important;
+        }
+
+        /* Footer */
+        .lp-style-elegant footer {
+            background: linear-gradient(135deg, var(--e-cream-dark), var(--e-ivory)) !important;
+            border-top: 1px solid var(--e-border) !important;
+        }
+
+        /* Elegant decorative divider — subtle gold line */
+        .lp-style-elegant section:not(#booking)::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--e-gold), transparent);
+            margin: 0 auto;
+            opacity: 0.5;
+        }
+
+        /* Uppercase section labels */
+        .lp-style-elegant .uppercase.tracking-wide,
+        .lp-style-elegant .uppercase.tracking-wider {
+            letter-spacing: 3px !important;
+        }
+
+        /* Subtle gold shimmer on headings */
+        @keyframes goldShimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .lp-style-elegant h2.font-serif {
+            background: linear-gradient(90deg, var(--e-ink), var(--e-gold-dark), var(--e-ink-mid), var(--e-gold), var(--e-ink));
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: goldShimmer 8s linear infinite;
         }
     </style>
 </head>
 
 <body class="font-sans antialiased w-full">
+    <div id="lpConceptPicker" class="hidden fixed top-3 right-3 z-[90] bg-white/95 border border-earth-200 shadow-lg rounded-xl px-3 py-2 backdrop-blur">
+        <label for="lpConceptSelect" class="block text-[10px] font-bold text-earth-900 mb-1">Pilih Konsep LP</label>
+        <select id="lpConceptSelect" class="text-xs px-2 py-1 border border-earth-200 rounded-lg">
+            <option value="classic">Classic</option>
+            <option value="modern">Modern</option>
+            <option value="elegant">Elegant</option>
+        </select>
+    </div>
 
-    <!-- MAIN WRAPPER: Full Width, No Max Width Container -->
-    <div class="w-full relative pb-24">
+    <div class="w-full relative pb-6">
 
         <!-- SECTION 1: HERO -->
         <header class="w-full relative bg-brand-light" data-aos="fade-up" data-aos-duration="800">
@@ -123,28 +825,15 @@
                     </div>
                     <div id="lpHeroTags" class="flex flex-wrap justify-center gap-2 text-sm font-semibold text-brand-brown mb-4">
                         <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                             Hotel dekat masjid
                         </span>
                         <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                </path>
-                            </svg>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             Jadwal sudah dikunci
                         </span>
                         <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             Biaya transparan
                         </span>
                     </div>
@@ -156,13 +845,10 @@
         <section class="w-full bg-white py-10 px-5 border-b border-earth-200" data-aos="fade-up" data-aos-duration="700">
             <div class="max-w-2xl mx-auto text-center">
                 <h2 class="font-serif text-xl font-bold text-earth-900 mb-4 tracking-wide uppercase">Rahmah Travel</h2>
-                <div
-                    class="flex flex-col gap-3 text-sm text-earth-800 bg-earth-50 p-5 rounded-lg border border-earth-200">
-                    <p class="font-semibold">PPIU Resmi Kemenag RI <br><span class="font-normal text-earth-600">No.
-                            16611230055337003</span></p>
+                <div class="flex flex-col gap-3 text-sm text-earth-800 bg-earth-50 p-5 rounded-lg border border-earth-200">
+                    <p class="font-semibold">PPIU Resmi Kemenag RI <br><span class="font-normal text-earth-600">No. 16611230055337003</span></p>
                     <div class="h-px bg-earth-200 w-1/2 mx-auto"></div>
-                    <p class="font-semibold">Terdaftar & Terakreditasi IATA <br><span
-                            class="font-normal text-earth-600">No. 15340883</span></p>
+                    <p class="font-semibold">Terdaftar & Terakreditasi IATA <br><span class="font-normal text-earth-600">No. 15340883</span></p>
                 </div>
                 <p class="mt-4 text-sm italic text-brand-brown font-medium">
                     "Kami bertahan karena jamaah kembali dan merekomendasikan - bukan karena janji manis."
@@ -170,62 +856,33 @@
             </div>
         </section>
 
-        <!-- SECTION 3: PROBLEM (Amplifier) -->
+        <!-- SECTION 3: PROBLEM -->
         <section class="w-full py-10 px-5 bg-earth-50" data-aos="fade-up" data-aos-duration="700">
             <div class="max-w-2xl mx-auto">
-                <h2 id="lpProblemTitle" class="font-serif text-2xl md:text-3xl font-bold text-earth-900 mb-6 text-center">Kenapa Masih Ragu?
-                </h2>
-                <p id="lpProblemSubtitle" class="text-center mb-6 text-earth-800">Biasanya bukan karena dananya. Tapi karena ketidakpastian
-                    ini:</p>
-
+                <h2 id="lpProblemTitle" class="font-serif text-2xl md:text-3xl font-bold text-earth-900 mb-6 text-center">Kenapa Masih Ragu?</h2>
+                <p id="lpProblemSubtitle" class="text-center mb-6 text-earth-800">Biasanya bukan karena dananya. Tapi karena ketidakpastian ini:</p>
                 <div id="lpPainsList" class="space-y-4">
                     <div class="flex items-start gap-3">
-                        <div
-                            class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">
-                            !</div>
-                        <div class="text-earth-800">
-                            <p class="font-semibold text-earth-900">Hotel katanya dekat</p>
-                            <p class="text-sm">Tapi tidak jelas detailnya.</p>
-                        </div>
+                        <div class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">!</div>
+                        <div class="text-earth-800"><p class="font-semibold text-earth-900">Hotel katanya dekat</p><p class="text-sm">Tapi tidak jelas detailnya.</p></div>
                     </div>
                     <div class="flex items-start gap-3">
-                        <div
-                            class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">
-                            !</div>
-                        <div class="text-earth-800">
-                            <p class="font-semibold text-earth-900">Jadwal bisa berubah</p>
-                            <p class="text-sm">Setelah DP terbayar.</p>
-                        </div>
+                        <div class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">!</div>
+                        <div class="text-earth-800"><p class="font-semibold text-earth-900">Jadwal bisa berubah</p><p class="text-sm">Setelah DP terbayar.</p></div>
                     </div>
                     <div class="flex items-start gap-3">
-                        <div
-                            class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">
-                            !</div>
-                        <div class="text-earth-800">
-                            <p class="font-semibold text-earth-900">Biaya tambahan</p>
-                            <p class="text-sm">Muncul belakangan.</p>
-                        </div>
+                        <div class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">!</div>
+                        <div class="text-earth-800"><p class="font-semibold text-earth-900">Biaya tambahan</p><p class="text-sm">Muncul belakangan.</p></div>
                     </div>
                     <div class="flex items-start gap-3">
-                        <div
-                            class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">
-                            !</div>
-                        <div class="text-earth-800">
-                            <p class="font-semibold text-earth-900">Takut Ibu kelelahan</p>
-                            <p class="text-sm">Karena sistem perjalanan tidak rapi.</p>
-                        </div>
+                        <div class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">!</div>
+                        <div class="text-earth-800"><p class="font-semibold text-earth-900">Takut Ibu kelelahan</p><p class="text-sm">Karena sistem perjalanan tidak rapi.</p></div>
                     </div>
                     <div class="flex items-start gap-3">
-                        <div
-                            class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">
-                            !</div>
-                        <div class="text-earth-800">
-                            <p class="font-semibold text-earth-900">Takut Ibu butuh bantuan mendadak</p>
-                            <p class="text-sm">Tapi tidak ada penanganan yang cepat.</p>
-                        </div>
+                        <div class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">!</div>
+                        <div class="text-earth-800"><p class="font-semibold text-earth-900">Takut Ibu butuh bantuan mendadak</p><p class="text-sm">Tapi tidak ada penanganan yang cepat.</p></div>
                     </div>
                 </div>
-
                 <div class="mt-8 p-5 bg-white rounded-xl border-l-4 border-brand-brown shadow-sm">
                     <p class="text-earth-900 font-medium leading-relaxed">
                         Kalau kamu berangkat sendiri mungkin masih bisa kompromi.<br><br>
@@ -235,24 +892,20 @@
                 </div>
             </div>
         </section>
-        <!-- SECTION 4: SOLUTION (Benefit Stacking) -->
+
+        <!-- SECTION 4: SOLUTION -->
         <section class="w-full py-10 px-5 bg-white" data-aos="fade-up" data-aos-duration="700">
             <div class="max-w-2xl mx-auto">
                 <div class="text-center mb-8">
-                    <span id="lpSolutionBadge"
-                        class="inline-block py-1 px-3 bg-brand-brown/10 text-brand-brown text-xs font-bold tracking-wider rounded-full uppercase mb-2">Solusi
-                        Tepat</span>
+                    <span id="lpSolutionBadge" class="inline-block py-1 px-3 bg-brand-brown/10 text-brand-brown text-xs font-bold tracking-wider rounded-full uppercase mb-2">Solusi Tepat</span>
                     <h2 id="lpSolutionTitle" class="font-serif text-2xl md:text-3xl font-bold text-earth-900">Solusi Event</h2>
                     <p id="lpSolutionSubtitle" class="text-earth-800 mt-2 text-sm">Rangkaian solusi yang disiapkan untuk menjawab masalah utama peserta.</p>
                 </div>
-
                 <div id="lpSolutionsList" class="flex flex-col gap-6">
                     <div class="bg-earth-50 p-5 rounded-lg">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="p-2 bg-white rounded-full shadow-sm text-brand-brown">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
                             <h3 class="font-serif font-bold text-lg text-earth-900">Solusi 1</h3>
                         </div>
@@ -262,18 +915,17 @@
             </div>
         </section>
 
-        <!-- CTA 1 (Direct to WA) -->
+        <!-- CTA 1 -->
         <section class="w-full py-8 px-5 bg-white border-t border-earth-100" data-aos="fade-up" data-aos-duration="650">
             <div class="max-w-md mx-auto text-center">
-                <p class="text-sm text-earth-800 mb-4">Jangan biarkan keraguan menghambat rencana ibu untuk berangkat.
-                </p>
-                <a href="https://konektor.id/wa/ishmah-waba"
-                    class="wa-cta btn-primary block w-full text-center py-3.5 rounded-xl font-bold text-base shadow-md">
+                <p class="text-sm text-earth-800 mb-4">Jangan biarkan keraguan menghambat rencana ibu untuk berangkat.</p>
+                <a href="https://konektor.id/wa/ishmah-waba" class="wa-cta btn-primary block w-full text-center py-3.5 rounded-xl font-bold text-base shadow-md">
                     Konsultasi Gratis Via Whatsapp
                 </a>
                 <p class="text-[10px] text-earth-400 mt-2">Gratis & Tanpa Kewajiban</p>
             </div>
         </section>
+
         <!-- TESTIMONI -->
         <section class="w-full py-10 px-5 bg-white border-b border-earth-200" data-aos="fade-up" data-aos-duration="700">
             <div class="max-w-2xl mx-auto">
@@ -283,169 +935,112 @@
                         <img src="https://i.ibb.co.com/Nd2m5GCd/1.png" alt="Testimoni 1" class="max-w-full max-h-[360px] object-contain rounded">
                     </div>
                 </div>
+                <div id="lpTestimonialsDots" class="hidden items-center justify-center gap-1.5 mt-3"></div>
             </div>
         </section>
 
-        <!-- SECTION 5: SOCIAL PROOF (6 Images) -->
+        <!-- SECTION 5: SOCIAL PROOF -->
         <section class="w-full py-10 px-5 bg-brand-light border-y border-earth-200" data-aos="fade-up" data-aos-duration="700">
             <div class="max-w-2xl mx-auto">
-                <h2 class="font-serif text-xl font-bold text-center text-earth-900 mb-6">Dokumentasi Aktivitas Jamaah
-                </h2>
+                <h2 class="font-serif text-xl font-bold text-center text-earth-900 mb-6">Dokumentasi Aktivitas Jamaah</h2>
                 <div id="lpActivityDocsList" class="grid grid-cols-2 gap-2">
                     <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
-                        <img src="https://i.ibb.co.com/vxf4chgB/Copy-of-IMG-9530-2.webp" alt="Dokumentasi Jamaah"
-                            class="w-full h-full object-cover">
-                        <div
-                            class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
-                            Khusyuk Beribadah</div>
+                        <img src="https://i.ibb.co.com/vxf4chgB/Copy-of-IMG-9530-2.webp" alt="Dokumentasi Jamaah" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">Khusyuk Beribadah</div>
                     </div>
                 </div>
+                <div id="lpActivityDocsDots" class="hidden items-center justify-center gap-1.5 mt-3"></div>
             </div>
         </section>
 
-        <!-- SECTION 6: PRICING & SCARCITY -->
+        <!-- SECTION 6: PRICING -->
         <section class="w-full py-10 px-5 bg-white" id="pricing" data-aos="fade-up" data-aos-duration="700">
             <div class="max-w-2xl mx-auto">
-                <h2 id="lpPricingTitle" class="font-serif text-2xl md:text-3xl font-bold text-center text-earth-900 mb-2">Pilihan Favorit
-                </h2>
+                <h2 id="lpPricingTitle" class="font-serif text-2xl md:text-3xl font-bold text-center text-earth-900 mb-2">Pilihan Favorit</h2>
                 <p id="lpPricingSubtitle" class="text-center text-earth-800 text-sm mb-6">Paket Umroh Syawal 9 Hari</p>
 
-                <div
-                    class="bg-red-50 text-red-700 border border-red-100 rounded-lg p-3 mb-6 flex items-center justify-between">
+                <div class="bg-red-50 text-red-700 border border-red-100 rounded-lg p-3 mb-6 flex items-center justify-between">
                     <span class="text-sm font-semibold">Peringatan: Permintaan Tinggi Syawal</span>
                     <span class="text-sm font-bold">Sisa Slot: 7</span>
                 </div>
 
                 <div id="lpPricingCards" class="flex flex-col gap-4">
-
-                    <!-- Option 1: IndiGo (Al Mokhtara) -->
+                    <!-- Option 1 -->
                     <div class="border border-earth-200 rounded-xl p-5 hover:border-brand-brown transition-colors">
                         <div class="flex justify-between items-start mb-2">
                             <div>
-                                <span
-                                    class="bg-earth-100 text-earth-800 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">Paket
-                                    Hemat</span>
+                                <span class="bg-earth-100 text-earth-800 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">Paket Hemat</span>
                                 <h3 class="font-serif font-bold text-lg text-earth-900 mt-2">IndiGo Airlines</h3>
                                 <p class="text-xs text-earth-600">Transit +/- 2 Jam</p>
                             </div>
                             <div class="text-right">
                                 <p class="text-xs text-earth-500 line-through">Rp 29.9 Jt</p>
-                                <p class="text-xl font-bold text-brand-brown">Rp 23.9 Jt <span
-                                        class="text-xs font-normal text-earth-600">/org (Quad)</span></p>
+                                <p class="text-xl font-bold text-brand-brown">Rp 23.9 Jt <span class="text-xs font-normal text-earth-600">/org (Quad)</span></p>
                             </div>
                         </div>
-                        <!-- Specific Hotel for IndiGo -->
                         <div class="bg-earth-50 rounded p-2 mb-3 border border-earth-100">
                             <p class="text-xs font-semibold text-earth-800 mb-1">Detail Hotel:</p>
-                            <p class="text-xs text-earth-600">Makkah: Al Mokhtara (5-7 menit)<br>Madinah: Al Mokhtara
-                                (2-3 menit)</p>
+                            <p class="text-xs text-earth-600">Makkah: Al Mokhtara (5-7 menit)<br>Madinah: Al Mokhtara (2-3 menit)</p>
                         </div>
                         <div class="bg-earth-50 rounded p-2 mb-3">
                             <p class="text-xs font-semibold text-earth-800 mb-1">Keberangkatan:</p>
                             <p class="text-xs text-earth-600">21 | 22 | 23 | 24 | 25 | 26 Maret 2026</p>
                         </div>
-                        <p class="text-xs text-earth-800 leading-relaxed">
-                            Cocok untuk yang fleksibel tanggal dan ingin biaya lebih efisien dengan sistem terjadwal.
-                        </p>
+                        <p class="text-xs text-earth-800 leading-relaxed">Cocok untuk yang fleksibel tanggal dan ingin biaya lebih efisien dengan sistem terjadwal.</p>
                     </div>
 
-                    <!-- Option 2: Lion Air (Winner Inn Ajyad & Bukit Madinah) -->
-                    <div
-                        class="border-2 border-brand-brown rounded-xl p-5 relative bg-brand-light overflow-hidden shadow-md">
-                        <div
-                            class="absolute top-0 right-0 bg-brand-brown text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg">
-                            BEST SELLER</div>
+                    <!-- Option 2 -->
+                    <div class="border-2 border-brand-brown rounded-xl p-5 relative bg-brand-light overflow-hidden shadow-md">
+                        <div class="absolute top-0 right-0 bg-brand-brown text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg">BEST SELLER</div>
                         <div class="flex justify-between items-start mb-2">
                             <div>
-                                <span
-                                    class="bg-brand-brown/10 text-brand-brown text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">Paket
-                                    Premium</span>
+                                <span class="bg-brand-brown/10 text-brand-brown text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">Paket Premium</span>
                                 <h3 class="font-serif font-bold text-lg text-earth-900 mt-2">Lion Air Direct</h3>
                                 <p class="text-xs text-earth-600">Non-Stop Jakarta - Jeddah PP</p>
                             </div>
                             <div class="text-right">
                                 <p class="text-xs text-earth-500 line-through">Rp 32.9 Jt</p>
-                                <p class="text-xl font-bold text-brand-brown">Rp 27.9 Jt <span
-                                        class="text-xs font-normal text-earth-600">/org (Quad)</span></p>
+                                <p class="text-xl font-bold text-brand-brown">Rp 27.9 Jt <span class="text-xs font-normal text-earth-600">/org (Quad)</span></p>
                             </div>
                         </div>
-                        <!-- Specific Hotel for Lion -->
                         <div class="bg-white rounded p-2 mb-3 border border-earth-100">
                             <p class="text-xs font-semibold text-earth-800 mb-1">Detail Hotel:</p>
-                            <p class="text-xs text-earth-600">Makkah: Winner Inn Ajyad (5-7 menit)<br>Madinah: Bukit
-                                Madinah (2-3 menit)</p>
+                            <p class="text-xs text-earth-600">Makkah: Winner Inn Ajyad (5-7 menit)<br>Madinah: Bukit Madinah (2-3 menit)</p>
                         </div>
                         <div class="bg-white rounded p-2 mb-3">
                             <p class="text-xs font-semibold text-earth-800 mb-1">Keberangkatan:</p>
                             <p class="text-xs text-earth-600">21 | 23 | 26 Maret 2026</p>
                         </div>
-                        <p class="text-xs text-earth-800 leading-relaxed">
-                            Cocok untuk yang ingin perjalanan lebih ringkas dan menjaga tenaga Ibu sejak awal tanpa
-                            transit.
-                        </p>
+                        <p class="text-xs text-earth-800 leading-relaxed">Cocok untuk yang ingin perjalanan lebih ringkas dan menjaga tenaga Ibu sejak awal tanpa transit.</p>
                     </div>
                 </div>
 
                 <div class="mt-8 mb-8">
-                    <h4 class="font-bold text-earth-900 mb-3 text-sm uppercase tracking-wide">Semua Sudah Termasuk:
-                    </h4>
+                    <h4 class="font-bold text-earth-900 mb-3 text-sm uppercase tracking-wide">Semua Sudah Termasuk:</h4>
                     <ul id="lpBenefitsList" class="grid grid-cols-1 gap-2 text-sm text-earth-800">
-                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg> Tiket PP & Visa Umroh</li>
-                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg> Hotel *4/5 Dekat Masjid</li>
-                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg> Makan 3x Sehari (Fullboard)</li>
-                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg> Transportasi Bus AC & Ziarah</li>
-                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg> Tour Leader & Muthowwif</li>
-                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg> Air Zam-zam 10 Liter</li>
-                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg> Perlengkapan Umroh (Koper & Mukena/Ihram)</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Tiket PP & Visa Umroh</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Hotel *4/5 Dekat Masjid</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Makan 3x Sehari (Fullboard)</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Transportasi Bus AC & Ziarah</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Tour Leader & Muthowwif</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Air Zam-zam 10 Liter</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Perlengkapan Umroh (Koper & Mukena/Ihram)</li>
                     </ul>
                     <p class="mt-3 text-xs font-bold text-green-700">Tidak ada biaya tambahan di tengah perjalanan.</p>
                 </div>
 
-                <!-- REVISED Special Offer Block -->
+                <!-- Special Offer -->
                 <div class="bg-brand-brown text-white p-6 rounded-xl text-center shadow-lg mb-8">
                     <h3 class="font-serif font-bold text-xl mb-4">Penawaran Syawal</h3>
-
-                    <div
-                        class="bg-white text-earth-900 p-4 rounded-lg shadow-sm border-2 border-brand-gold inline-flex flex-col items-center justify-center w-full max-w-xs mx-auto">
+                    <div class="bg-white text-earth-900 p-4 rounded-lg shadow-sm border-2 border-brand-gold inline-flex flex-col items-center justify-center w-full max-w-xs mx-auto">
                         <span class="text-xl font-bold text-brand-brown">🎁 Gratis Zamzam 10 Liter</span>
                     </div>
-
                     <p class="text-xs mt-4 opacity-90">Persediaan terbatas (S&K Berlaku)</p>
                 </div>
 
                 <div class="bg-earth-50 p-5 rounded-lg text-center mb-8">
                     <h4 class="font-serif font-bold text-lg mb-3">Soal Harga...</h4>
-                    <p class="text-sm text-earth-800 leading-relaxed mb-3">
-                        23-27 juta itu bukan angka kecil.
-                    </p>
+                    <p class="text-sm text-earth-800 leading-relaxed mb-3">23-27 juta itu bukan angka kecil.</p>
                     <p class="text-sm text-earth-900 font-medium leading-relaxed">
                         Tapi lebih mahal mana:<br>
                         Berangkat dengan sistem yang jelas...<br>
@@ -456,56 +1051,38 @@
                     </p>
                 </div>
 
-                <!-- CTA 2 (Direct to WA) -->
+                <!-- CTA 2 -->
                 <div class="w-full">
-                    <a href="https://konektor.id/wa/ishmah-waba"
-                        class="wa-cta btn-primary block w-full text-center py-4 rounded-xl font-bold text-lg shadow-lg">
+                    <a href="https://konektor.id/wa/ishmah-waba" class="wa-cta btn-primary block w-full text-center py-4 rounded-xl font-bold text-lg shadow-lg">
                         Konsultasi Gratis Via Whatsapp
                     </a>
-                    <p class="text-[10px] text-center text-earth-500 mt-2">
-                        Konsultasi Tanpa Kewajiban | Dana Jamaah Diatur Rekening Terpisah
-                    </p>
+                    <p class="text-[10px] text-center text-earth-500 mt-2">Konsultasi Tanpa Kewajiban | Dana Jamaah Diatur Rekening Terpisah</p>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 7: TRUST & SAFETY -->
+        <!-- SECTION 7: TRUST -->
         <section class="w-full py-10 px-5 bg-brand-light border-t border-earth-200" data-aos="fade-up" data-aos-duration="700">
             <div class="max-w-2xl mx-auto">
                 <h2 class="font-serif text-2xl font-bold text-center text-earth-900 mb-6">Garansi & Keamanan</h2>
                 <div class="grid grid-cols-2 gap-4 text-center">
                     <div class="bg-white p-4 rounded-lg shadow-sm">
-                        <div
-                            class="mx-auto w-10 h-10 bg-brand-brown/10 rounded-full flex items-center justify-center text-brand-brown mb-2">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                </path>
-                            </svg>
+                        <div class="mx-auto w-10 h-10 bg-brand-brown/10 rounded-full flex items-center justify-center text-brand-brown mb-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                         </div>
                         <h3 class="font-bold text-sm text-earth-900">Travel Resmi</h3>
                         <p class="text-xs text-earth-600 mt-1">Berizin PPIU & IATA</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm">
-                        <div
-                            class="mx-auto w-10 h-10 bg-brand-brown/10 rounded-full flex items-center justify-center text-brand-brown mb-2">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                </path>
-                            </svg>
+                        <div class="mx-auto w-10 h-10 bg-brand-brown/10 rounded-full flex items-center justify-center text-brand-brown mb-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
                         <h3 class="font-bold text-sm text-earth-900">Dana Aman</h3>
                         <p class="text-xs text-earth-600 mt-1">Rekening Terpisah</p>
                     </div>
                     <div class="bg-white p-4 rounded-lg shadow-sm col-span-2">
-                        <div
-                            class="mx-auto w-10 h-10 bg-brand-brown/10 rounded-full flex items-center justify-center text-brand-brown mb-2">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
-                                </path>
-                            </svg>
+                        <div class="mx-auto w-10 h-10 bg-brand-brown/10 rounded-full flex items-center justify-center text-brand-brown mb-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                         </div>
                         <h3 class="font-bold text-sm text-earth-900">Jadwal Transparan</h3>
                         <p class="text-xs text-earth-600 mt-1">Detail diverifikasi sebelum pembayaran</p>
@@ -514,111 +1091,61 @@
             </div>
         </section>
 
-        <!-- SECTION 8: FAQ (Added 1 more) -->
+        <!-- SECTION 8: FAQ -->
         <section class="w-full py-10 px-5 bg-white" id="consultation" data-aos="fade-up" data-aos-duration="700">
             <div class="max-w-2xl mx-auto">
                 <h2 class="font-serif text-2xl font-bold text-center text-earth-900 mb-6">Pertanyaan Umum</h2>
                 <div id="lpFaqContainer" class="space-y-4">
                     <details class="group border border-earth-200 rounded-lg">
-                        <summary
-                            class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
                             <span>Apakah aman mendampingi Ibu tanpa keluarga lain?</span>
-                            <span class="transition group-open:rotate-180">
-                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
-                                    <path d="M6 9l6 6 6-6"></path>
-                                </svg>
-                            </span>
+                            <span class="transition group-open:rotate-180"><svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg></span>
                         </summary>
-                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">
-                            Ya, karena perjalanan didampingi oleh TL Indonesia dan Muthowwif resmi yang berpengalaman.
-                            Sistemnya dibuat rapi agar kamu tidak merasa mengurus semuanya sendirian.
-                        </div>
+                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">Ya, karena perjalanan didampingi oleh TL Indonesia dan Muthowwif resmi yang berpengalaman. Sistemnya dibuat rapi agar kamu tidak merasa mengurus semuanya sendirian.</div>
                     </details>
                     <details class="group border border-earth-200 rounded-lg">
-                        <summary
-                            class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
                             <span>Apakah benar tidak ada biaya tambahan di tengah perjalanan?</span>
-                            <span class="transition group-open:rotate-180">
-                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
-                                    <path d="M6 9l6 6 6-6"></path>
-                                </svg>
-                            </span>
+                            <span class="transition group-open:rotate-180"><svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg></span>
                         </summary>
-                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">
-                            Semua komponen dijelaskan sejak awal sebelum pembayaran dilakukan. Tidak ada biaya
-                            tersembunyi di luar rincian yang sudah disepakati.
-                        </div>
+                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">Semua komponen dijelaskan sejak awal sebelum pembayaran dilakukan. Tidak ada biaya tersembunyi di luar rincian yang sudah disepakati.</div>
                     </details>
                     <details class="group border border-earth-200 rounded-lg">
-                        <summary
-                            class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
                             <span>Bisa cek hotel sebelum DP?</span>
-                            <span class="transition group-open:rotate-180">
-                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
-                                    <path d="M6 9l6 6 6-6"></path>
-                                </svg>
-                            </span>
+                            <span class="transition group-open:rotate-180"><svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg></span>
                         </summary>
-                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">
-                            Tentu bisa, kamu dapat meminta detail hotel untuk memverifikasi lokasinya terlebih dahulu.
-                            Kami justru menyarankan memastikan semuanya sebelum transfer.
-                        </div>
+                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">Tentu bisa, kamu dapat meminta detail hotel untuk memverifikasi lokasinya terlebih dahulu. Kami justru menyarankan memastikan semuanya sebelum transfer.</div>
                     </details>
                     <details class="group border border-earth-200 rounded-lg">
-                        <summary
-                            class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
                             <span>Apakah harus langsung daftar setelah konsultasi?</span>
-                            <span class="transition group-open:rotate-180">
-                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
-                                    <path d="M6 9l6 6 6-6"></path>
-                                </svg>
-                            </span>
+                            <span class="transition group-open:rotate-180"><svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg></span>
                         </summary>
-                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">
-                            Tidak. Konsultasi tidak mengikat dan tanpa kewajiban pembayaran. Kamu bebas berdiskusi
-                            sampai benar-benar yakin.
-                        </div>
+                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">Tidak. Konsultasi tidak mengikat dan tanpa kewajiban pembayaran. Kamu bebas berdiskusi sampai benar-benar yakin.</div>
                     </details>
-                    <!-- ADDED FAQ -->
                     <details class="group border border-earth-200 rounded-lg">
-                        <summary
-                            class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
+                        <summary class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
                             <span>Bagaimana jika Ibu membutuhkan bantuan mendadak di lapangan?</span>
-                            <span class="transition group-open:rotate-180">
-                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
-                                    <path d="M6 9l6 6 6-6"></path>
-                                </svg>
-                            </span>
+                            <span class="transition group-open:rotate-180"><svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg></span>
                         </summary>
-                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">
-                            Tim Muthowwif kami selalu siaga. Untuk kondisi darurat, kami memiliki prosedur penanganan
-                            cepat dan akses ke layanan medis terdekat di Tanah Suci.
-                        </div>
+                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">Tim Muthowwif kami selalu siaga. Untuk kondisi darurat, kami memiliki prosedur penanganan cepat dan akses ke layanan medis terdekat di Tanah Suci.</div>
                     </details>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 9: FINAL CALL TO ACTION -->
+        <!-- SECTION 9: FINAL CTA -->
         <section class="w-full py-12 px-5 bg-brand-brown text-white text-center" id="booking" data-aos="zoom-in" data-aos-duration="750">
             <div class="max-w-md mx-auto">
                 <h2 class="font-serif text-2xl font-bold mb-4">Masih Mempertimbangkan?</h2>
                 <p class="mb-8 text-white/90 text-sm leading-relaxed">
                     Kalau yang kamu cari adalah ketenangan untuk Ibu, mulailah dari memastikan sistemnya jelas.
                 </p>
-                <!-- CTA 3 (Direct to WA) -->
-                <a href="https://konektor.id/wa/ishmah-waba"
-                    class="wa-cta block w-full bg-white text-brand-brown font-bold text-lg py-4 rounded-xl shadow-xl hover:bg-gray-100 transition-colors mb-3">
+                <a href="https://konektor.id/wa/ishmah-waba" class="wa-cta block w-full bg-white text-brand-brown font-bold text-lg py-4 rounded-xl shadow-xl hover:bg-gray-100 transition-colors mb-3">
                     Konsultasi Gratis Via Whatsapp
                 </a>
-                <p class="text-xs text-white/70">
-                    Respons cepat | 24 jam
-                </p>
+                <p class="text-xs text-white/70">Respons cepat | 24 jam</p>
             </div>
         </section>
 
@@ -630,8 +1157,6 @@
             </p>
         </footer>
 
-
-
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -639,47 +1164,176 @@
         const serverLandingData = <%- JSON.stringify((typeof landingData !== 'undefined' && landingData) ? landingData : {}) %>;
 
         function esc(v) {
-            return String(v || "")
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#39;");
+            return String(v || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
         }
-
         function formatIDR(v) {
             const n = Number(v) || 0;
             return "Rp " + new Intl.NumberFormat("id-ID").format(Math.round(n));
         }
-
         function formatDateID(v) {
             if (!v) return "";
             const d = new Date(v);
             if (Number.isNaN(d.getTime())) return "";
             return d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
         }
-
         function parseDateSafe(v) {
             if (!v) return null;
             const d = new Date(v);
             return Number.isNaN(d.getTime()) ? null : d;
         }
-
         function isVariantWithinMainPeriod(variant, mainStartRaw, mainEndRaw) {
             const mainStart = parseDateSafe(mainStartRaw);
             const mainEnd = parseDateSafe(mainEndRaw);
             if (!mainStart || !mainEnd) return true;
-
             const variantStart = parseDateSafe(variant?.start_date) || mainStart;
             const variantEnd = parseDateSafe(variant?.end_date) || mainEnd;
             if (!variantStart || !variantEnd) return true;
-
-            // Keep variants with date overlap against main period.
             return variantStart <= mainEnd && variantEnd >= mainStart;
+        }
+
+        const ALLOWED_LP_STYLES = new Set(["classic", "modern", "elegant"]);
+        let activityDocsAutoSlideTimer = null;
+        let activityDocsScrollHandler = null;
+        let activityDocsAutoSlideContainer = null;
+        let testimonialAutoSlideTimer = null;
+        let testimonialScrollHandler = null;
+        let testimonialAutoSlideContainer = null;
+
+        function stopActivityDocsAutoSlide() {
+            if (activityDocsAutoSlideTimer) { clearInterval(activityDocsAutoSlideTimer); activityDocsAutoSlideTimer = null; }
+            if (activityDocsAutoSlideContainer && activityDocsScrollHandler) { activityDocsAutoSlideContainer.removeEventListener("scroll", activityDocsScrollHandler); }
+            activityDocsAutoSlideContainer = null; activityDocsScrollHandler = null;
+        }
+        function updateActivityDocDots(activeIndex) {
+            const dotsWrap = document.getElementById("lpActivityDocsDots");
+            if (!dotsWrap) return;
+            dotsWrap.querySelectorAll(".activity-doc-dot").forEach((dot, idx) => {
+                idx === activeIndex ? dot.classList.add("active") : dot.classList.remove("active");
+            });
+        }
+        function renderActivityDocDots(length) {
+            const dotsWrap = document.getElementById("lpActivityDocsDots");
+            if (!dotsWrap) return;
+            if (!length || length <= 1) { dotsWrap.classList.add("hidden"); dotsWrap.classList.remove("flex"); dotsWrap.innerHTML = ""; return; }
+            dotsWrap.classList.remove("hidden"); dotsWrap.classList.add("flex");
+            dotsWrap.innerHTML = Array.from({ length }).map((_, idx) => `<span class="activity-doc-dot ${idx === 0 ? "active" : ""}"></span>`).join("");
+        }
+        function startActivityDocsAutoSlide(container) {
+            stopActivityDocsAutoSlide();
+            if (!container || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+            const cards = Array.from(container.querySelectorAll(".activity-doc-slide-item"));
+            if (cards.length <= 1) return;
+            let activeIndex = 0;
+            activityDocsScrollHandler = () => {
+                const left = container.scrollLeft;
+                const nearest = cards.reduce((bestIdx, el, idx) => {
+                    return Math.abs(el.offsetLeft - left) < Math.abs(cards[bestIdx].offsetLeft - left) ? idx : bestIdx;
+                }, 0);
+                activeIndex = nearest; updateActivityDocDots(activeIndex);
+            };
+            container.addEventListener("scroll", activityDocsScrollHandler, { passive: true });
+            activityDocsAutoSlideContainer = container;
+            const cardWidth = cards[0]?.getBoundingClientRect()?.width || container.clientWidth;
+            const step = Math.min(cardWidth + 16, container.scrollWidth);
+            activityDocsAutoSlideTimer = setInterval(() => {
+                activeIndex = (activeIndex + 1) % cards.length;
+                const maxScrollLeft = container.scrollWidth - container.clientWidth;
+                let nextLeft = container.scrollLeft + step;
+                if (nextLeft > maxScrollLeft) nextLeft = 0;
+                container.scrollTo({ left: Math.max(0, nextLeft), behavior: "smooth" });
+                updateActivityDocDots(activeIndex);
+            }, 3500);
+        }
+
+        function stopTestimonialAutoSlide() {
+            if (testimonialAutoSlideTimer) { clearInterval(testimonialAutoSlideTimer); testimonialAutoSlideTimer = null; }
+            if (testimonialAutoSlideContainer && testimonialScrollHandler) { testimonialAutoSlideContainer.removeEventListener("scroll", testimonialScrollHandler); }
+            testimonialAutoSlideContainer = null; testimonialScrollHandler = null;
+        }
+        function updateTestimonialDots(activeIndex) {
+            const dotsWrap = document.getElementById("lpTestimonialsDots");
+            if (!dotsWrap) return;
+            dotsWrap.querySelectorAll(".testimonial-dot").forEach((dot, idx) => {
+                idx === activeIndex ? dot.classList.add("active") : dot.classList.remove("active");
+            });
+        }
+        function renderTestimonialDots(length) {
+            const dotsWrap = document.getElementById("lpTestimonialsDots");
+            if (!dotsWrap) return;
+            if (!length || length <= 1) { dotsWrap.classList.add("hidden"); dotsWrap.classList.remove("flex"); dotsWrap.innerHTML = ""; return; }
+            dotsWrap.classList.remove("hidden"); dotsWrap.classList.add("flex");
+            dotsWrap.innerHTML = Array.from({ length }).map((_, idx) => `<span class="testimonial-dot ${idx === 0 ? "active" : ""}"></span>`).join("");
+        }
+        function startTestimonialAutoSlide(container) {
+            stopTestimonialAutoSlide();
+            if (!container || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+            const cards = Array.from(container.querySelectorAll(".testimonial-slide"));
+            if (cards.length <= 1) return;
+            let activeIndex = 0;
+            testimonialScrollHandler = () => {
+                const left = container.scrollLeft;
+                const nearest = cards.reduce((bestIdx, el, idx) => {
+                    return Math.abs(el.offsetLeft - left) < Math.abs(cards[bestIdx].offsetLeft - left) ? idx : bestIdx;
+                }, 0);
+                activeIndex = nearest; updateTestimonialDots(activeIndex);
+            };
+            container.addEventListener("scroll", testimonialScrollHandler, { passive: true });
+            testimonialAutoSlideContainer = container;
+            const cardWidth = cards[0]?.getBoundingClientRect()?.width || container.clientWidth;
+            const step = Math.max(Math.min(cardWidth + 18, container.scrollWidth), Math.round(container.clientWidth * 0.7));
+            testimonialAutoSlideTimer = setInterval(() => {
+                activeIndex = (activeIndex + 1) % cards.length;
+                const maxScrollLeft = container.scrollWidth - container.clientWidth;
+                let nextLeft = container.scrollLeft + step;
+                if (nextLeft > maxScrollLeft) nextLeft = 0;
+                container.scrollTo({ left: Math.max(0, nextLeft), behavior: "smooth" });
+                updateTestimonialDots(activeIndex);
+            }, 3500);
+        }
+
+        function resolveLandingStyle(data) {
+            const params = new URLSearchParams(window.location.search || "");
+            const fromQuery = String(params.get("lp_style") || "").toLowerCase();
+            const pickerEnabled = params.get("lp_picker") === "1";
+            const stored = String(data?.style_variant || data?.template_variant || data?.lp_style || data?.event?.lp_style || "").toLowerCase();
+            if (pickerEnabled && ALLOWED_LP_STYLES.has(fromQuery)) return fromQuery;
+            if (ALLOWED_LP_STYLES.has(stored)) return stored;
+            return "classic";
+        }
+
+        function applyLandingStyle(style) {
+            document.body.classList.remove("lp-style-classic", "lp-style-modern", "lp-style-elegant");
+            document.body.classList.add(`lp-style-${style}`);
+        }
+
+        function initConceptPicker(activeStyle) {
+            const params = new URLSearchParams(window.location.search || "");
+            const isPickerEnabled = params.get("lp_picker") === "1";
+            const picker = document.getElementById("lpConceptPicker");
+            const select = document.getElementById("lpConceptSelect");
+            if (!picker || !select) return;
+            if (!isPickerEnabled) { picker.classList.add("hidden"); return; }
+            picker.classList.remove("hidden");
+            select.value = activeStyle;
+            select.addEventListener("change", () => {
+                const url = new URL(window.location.href);
+                url.searchParams.set("lp_picker", "1");
+                url.searchParams.set("lp_style", select.value);
+                window.location.href = url.toString();
+            });
+        }
+
+        function detectHeroMediaTypeFromUrl(url) {
+            if (!url) return "image";
+            const ext = url.split("?")[0].split(".").pop().toLowerCase();
+            return ["mp4","webm","ogg","mov"].includes(ext) ? "video" : "image";
         }
 
         function applyLandingData() {
             const data = serverLandingData || {};
+            const landingStyle = resolveLandingStyle(data);
+            applyLandingStyle(landingStyle);
+            initConceptPicker(landingStyle);
             const eventData = data.event || {};
             const hero = data.hero || {};
             const benefits = Array.isArray(data.benefits) ? data.benefits.filter(Boolean) : [];
@@ -693,23 +1347,12 @@
 
             const heroHeadline = document.getElementById("lpHeroHeadline");
             const heroSubheadline = document.getElementById("lpHeroSubheadline");
-            if (heroHeadline && (hero.headline || eventData.title)) {
-                heroHeadline.textContent = hero.headline || eventData.title;
-            }
-            if (heroSubheadline && (hero.subheadline || eventData.description)) {
-                heroSubheadline.textContent = hero.subheadline || eventData.description;
-            }
+            if (heroHeadline && (hero.headline || eventData.title)) heroHeadline.textContent = hero.headline || eventData.title;
+            if (heroSubheadline && (hero.subheadline || eventData.description)) heroSubheadline.textContent = hero.subheadline || eventData.description;
 
             const heroTags = document.getElementById("lpHeroTags");
             if (heroTags && benefits.length) {
-                heroTags.innerHTML = benefits.slice(0, 3).map((b) => `
-                    <span class="flex items-center gap-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        ${esc(b)}
-                    </span>
-                `).join("");
+                heroTags.innerHTML = benefits.slice(0, 3).map((b) => `<span class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>${esc(b)}</span>`).join("");
             }
 
             const heroWrap = document.getElementById("lpHeroMediaWrap");
@@ -721,62 +1364,30 @@
             const mediaType = String(hero.hero_media_type || "").toLowerCase();
             const mediaUrl = String(hero.hero_media_url || "").trim();
             const asBg = (hero.hero_as_background === 1 || String(hero.hero_as_background) === "1" || hero.hero_as_background === true) && mediaType === "image" && mediaUrl;
-            if (heroWrap) {
-                heroWrap.style.backgroundImage = "";
-                heroWrap.classList.remove("hidden");
-            }
-            if (heroContentWrap) {
-                heroContentWrap.classList.add("-mt-12");
-                heroContentWrap.classList.remove("mt-0");
-            }
-            if (heroCard) {
-                heroCard.classList.add("rounded-t-2xl");
-                heroCard.classList.remove("rounded-2xl");
-            }
+            if (heroWrap) { heroWrap.style.backgroundImage = ""; heroWrap.classList.remove("hidden"); }
+            if (heroContentWrap) { heroContentWrap.classList.add("-mt-12"); heroContentWrap.classList.remove("mt-0"); }
+            if (heroCard) { heroCard.classList.add("rounded-t-2xl"); heroCard.classList.remove("rounded-2xl"); }
             if (heroInlineMediaWrap) {
                 heroInlineMediaWrap.classList.add("hidden");
                 heroInlineMediaWrap.innerHTML = '<img id="lpHeroInlineImage" src="" alt="Media hero event" class="w-full h-auto max-h-[220px] md:max-h-[260px] object-contain rounded-xl mx-auto hidden">';
                 heroInlineImage = heroInlineMediaWrap.querySelector("#lpHeroInlineImage");
             }
-
             if (heroWrap && mediaUrl) {
                 if (asBg) {
                     heroWrap.style.backgroundImage = `url('${mediaUrl}')`;
-                    heroWrap.style.backgroundSize = "cover";
-                    heroWrap.style.backgroundPosition = "center";
+                    heroWrap.style.backgroundSize = "cover"; heroWrap.style.backgroundPosition = "center";
                     if (heroImage) heroImage.classList.add("hidden");
                 } else if (mediaType === "video") {
                     if (heroWrap) heroWrap.classList.add("hidden");
-                    if (heroContentWrap) {
-                        heroContentWrap.classList.remove("-mt-12");
-                        heroContentWrap.classList.add("mt-0");
-                    }
-                    if (heroCard) {
-                        heroCard.classList.remove("rounded-t-2xl");
-                        heroCard.classList.add("rounded-2xl");
-                    }
-                    if (heroInlineMediaWrap) {
-                        heroInlineMediaWrap.classList.remove("hidden");
-                        heroInlineMediaWrap.innerHTML = `<video src="${esc(mediaUrl)}" controls class="w-full h-auto max-h-[220px] md:max-h-[260px] object-contain rounded-xl mx-auto"></video>`;
-                    }
+                    if (heroContentWrap) { heroContentWrap.classList.remove("-mt-12"); heroContentWrap.classList.add("mt-0"); }
+                    if (heroCard) { heroCard.classList.remove("rounded-t-2xl"); heroCard.classList.add("rounded-2xl"); }
+                    if (heroInlineMediaWrap) { heroInlineMediaWrap.classList.remove("hidden"); heroInlineMediaWrap.innerHTML = `<video src="${esc(mediaUrl)}" controls class="w-full h-auto max-h-[220px] md:max-h-[260px] object-contain rounded-xl mx-auto"></video>`; }
                 } else if (heroImage) {
                     if (heroWrap) heroWrap.classList.add("hidden");
-                    if (heroContentWrap) {
-                        heroContentWrap.classList.remove("-mt-12");
-                        heroContentWrap.classList.add("mt-0");
-                    }
-                    if (heroCard) {
-                        heroCard.classList.remove("rounded-t-2xl");
-                        heroCard.classList.add("rounded-2xl");
-                    }
-                    if (heroInlineMediaWrap && heroInlineImage) {
-                        heroInlineMediaWrap.classList.remove("hidden");
-                        heroInlineImage.src = mediaUrl;
-                        heroInlineImage.classList.remove("hidden");
-                    } else if (heroInlineMediaWrap) {
-                        heroInlineMediaWrap.classList.remove("hidden");
-                        heroInlineMediaWrap.innerHTML = `<img src="${esc(mediaUrl)}" alt="Media hero event" class="w-full h-auto max-h-[220px] md:max-h-[260px] object-contain rounded-xl mx-auto">`;
-                    }
+                    if (heroContentWrap) { heroContentWrap.classList.remove("-mt-12"); heroContentWrap.classList.add("mt-0"); }
+                    if (heroCard) { heroCard.classList.remove("rounded-t-2xl"); heroCard.classList.add("rounded-2xl"); }
+                    if (heroInlineMediaWrap && heroInlineImage) { heroInlineMediaWrap.classList.remove("hidden"); heroInlineImage.src = mediaUrl; heroInlineImage.classList.remove("hidden"); }
+                    else if (heroInlineMediaWrap) { heroInlineMediaWrap.classList.remove("hidden"); heroInlineMediaWrap.innerHTML = `<img src="${esc(mediaUrl)}" alt="Media hero event" class="w-full h-auto max-h-[220px] md:max-h-[260px] object-contain rounded-xl mx-auto">`; }
                     if (heroImage) heroImage.classList.add("hidden");
                 }
             }
@@ -787,15 +1398,7 @@
             if (problemTitle && problem.title) problemTitle.textContent = problem.title;
             if (problemSubtitle && problem.subtitle) problemSubtitle.textContent = problem.subtitle;
             if (painsList && pains.length) {
-                painsList.innerHTML = pains.map((p, idx) => `
-                    <div class="flex items-start gap-3" data-aos="fade-up" data-aos-delay="${Math.min(idx * 70, 350)}">
-                        <div class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">!</div>
-                        <div class="text-earth-800">
-                            <p class="font-semibold text-earth-900">${esc(p.title || p.pain_title || p.description || p.pain_description || "")}</p>
-                            ${(p.description || p.pain_description) && (p.title || p.pain_title) ? `<p class="text-sm">${esc(p.description || p.pain_description)}</p>` : ""}
-                        </div>
-                    </div>
-                `).join("");
+                painsList.innerHTML = pains.map((p, idx) => `<div class="flex items-start gap-3" data-aos="fade-up" data-aos-delay="${Math.min(idx * 70, 350)}"><div class="mt-1 min-w-[20px] h-20px bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">!</div><div class="text-earth-800"><p class="font-semibold text-earth-900">${esc(p.title || p.pain_title || p.description || p.pain_description || "")}</p>${(p.description || p.pain_description) && (p.title || p.pain_title) ? `<p class="text-sm">${esc(p.description || p.pain_description)}</p>` : ""}</div></div>`).join("");
             }
 
             const solutionTitle = document.getElementById("lpSolutionTitle");
@@ -804,140 +1407,68 @@
             if (solutionTitle && solution.title) solutionTitle.textContent = solution.title;
             if (solutionSubtitle && solution.subtitle) solutionSubtitle.textContent = solution.subtitle;
             if (solutionList && solutionItems.length) {
-                solutionList.innerHTML = solutionItems.map((s, idx) => `
-                    <div class="bg-earth-50 p-5 rounded-lg" data-aos="fade-up" data-aos-delay="${Math.min(idx * 80, 320)}">
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="p-2 bg-white rounded-full shadow-sm text-brand-brown">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="font-serif font-bold text-lg text-earth-900">${esc(s.title || s.solution_title || "")}</h3>
-                        </div>
-                        <p class="text-earth-800 text-sm ml-11">${esc(s.description || s.solution_description || "")}</p>
-                    </div>
-                `).join("");
+                solutionList.innerHTML = solutionItems.map((s, idx) => `<div class="bg-earth-50 p-5 rounded-lg" data-aos="fade-up" data-aos-delay="${Math.min(idx * 80, 320)}"><div class="flex items-center gap-3 mb-2"><div class="p-2 bg-white rounded-full shadow-sm text-brand-brown"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div><h3 class="font-serif font-bold text-lg text-earth-900">${esc(s.title || s.solution_title || "")}</h3></div><p class="text-earth-800 text-sm ml-11">${esc(s.description || s.solution_description || "")}</p></div>`).join("");
             }
 
-                        const testimonialsList = document.getElementById("lpTestimonialsList");
+            const testimonialsList = document.getElementById("lpTestimonialsList");
             const testimonials = Array.isArray(data.testimonials) ? data.testimonials.filter((t) => t && t.media_url) : [];
             if (testimonialsList && testimonials.length) {
+                const isAutoTestimonial = String(testimonials[0]?.layout_style || "").toLowerCase() === "auto_slide";
+                testimonialsList.className = isAutoTestimonial ? "testimonial-carousel" : "grid grid-cols-1 sm:grid-cols-2 gap-3";
                 testimonialsList.innerHTML = testimonials.map((t, idx) => {
                     const type = String(t.media_type || "").toLowerCase();
                     const url = esc(t.media_url);
-                    if (type === "video") {
-                        return `
-                            <div class="relative overflow-hidden rounded-lg bg-black p-2 min-h-[260px] flex items-center justify-center" data-aos="zoom-in-up" data-aos-delay="${Math.min(idx * 80, 320)}">
-                                <video src="${url}" class="max-w-full max-h-[360px] object-contain rounded" controls preload="metadata"></video>
-                            </div>
-                        `;
-                    }
-                    return `
-                        <div class="relative overflow-hidden rounded-lg bg-earth-50 p-2 min-h-[260px] flex items-center justify-center pointer-events-none" data-aos="zoom-in-up" data-aos-delay="${Math.min(idx * 80, 320)}">
-                            <img src="${url}" alt="Testimoni ${idx + 1}" class="max-w-full max-h-[360px] object-contain rounded">
-                        </div>
-                    `;
+                    const itemClass = isAutoTestimonial ? `testimonial-slide relative overflow-hidden rounded-2xl bg-black/90 border border-white/40 shadow-xl snap-start` : `relative overflow-hidden rounded-lg bg-earth-50 p-2 min-h-[260px] flex items-center justify-center pointer-events-none`;
+                    const delay = Math.min(idx * 80, 320);
+                    if (type === "video") return `<div class="${itemClass}" data-aos="zoom-in-up" data-aos-delay="${delay}"><video src="${url}" class="w-full h-full object-cover rounded" controls preload="metadata"></video></div>`;
+                    return `<div class="${itemClass}" data-aos="zoom-in-up" data-aos-delay="${delay}"><img src="${url}" alt="Testimoni ${idx + 1}" class="w-full h-full object-cover rounded"></div>`;
                 }).join("");
-            }
+                if (isAutoTestimonial) { renderTestimonialDots(testimonials.length); startTestimonialAutoSlide(testimonialsList); }
+                else { renderTestimonialDots(0); stopTestimonialAutoSlide(); }
+            } else { renderTestimonialDots(0); stopTestimonialAutoSlide(); }
 
             const activityDocsList = document.getElementById("lpActivityDocsList");
             const activityDocs = Array.isArray(data.activity_docs) ? data.activity_docs.filter((d) => d && d.media_url) : [];
             if (activityDocsList && activityDocs.length) {
+                const isAutoSlide = String(activityDocs[0]?.layout_style || "").toLowerCase() === "auto_slide";
+                activityDocsList.className = isAutoSlide ? "activity-docs-carousel" : "grid grid-cols-2 gap-2";
                 activityDocsList.innerHTML = activityDocs.map((d, idx) => {
                     const type = String(d.media_type || "").toLowerCase();
-                    const url = esc(d.media_url);
-                    const info = esc(d.info_text || "");
+                    const url = esc(d.media_url); const info = esc(d.info_text || "");
                     const orientation = d.layout_orientation === "landscape" ? "landscape" : "portrait";
-                    const aspectClass = orientation === "landscape" ? "aspect-[4/3] col-span-2 sm:col-span-1" : "aspect-[3/4]";
-                    if (type === "video") {
-                        return `
-                            <div class="relative group overflow-hidden rounded-lg ${aspectClass} bg-black p-1" data-aos="zoom-in" data-aos-delay="${Math.min(idx * 70, 280)}">
-                                <video src="${url}" class="w-full h-full object-cover rounded" controls preload="metadata"></video>
-                                ${info ? `<div class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[10px] p-2 text-center font-medium">${info}</div>` : ""}
-                            </div>
-                        `;
-                    }
-                    return `
-                        <div class="relative group overflow-hidden rounded-lg ${aspectClass} pointer-events-none" data-aos="zoom-in" data-aos-delay="${Math.min(idx * 70, 280)}">
-                            <img src="${url}" alt="Dokumentasi Jamaah ${idx + 1}" class="w-full h-full object-cover">
-                            ${info ? `<div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">${info}</div>` : ""}
-                        </div>
-                    `;
+                    const aspectClass = isAutoSlide ? "aspect-[3/4]" : (orientation === "landscape" ? "aspect-[4/3]" : "aspect-[3/4]");
+                    const itemClass = isAutoSlide ? `activity-doc-slide-item relative group overflow-hidden rounded-lg ${aspectClass}` : `relative group overflow-hidden rounded-lg ${aspectClass} ${orientation === "landscape" ? "col-span-2 sm:col-span-1" : ""}`;
+                    if (type === "video") return `<div class="${itemClass} bg-black p-1" data-aos="zoom-in" data-aos-delay="${Math.min(idx * 70, 280)}"><video src="${url}" class="w-full h-full object-cover rounded" controls preload="metadata"></video>${info ? `<div class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[10px] p-2 text-center font-medium">${info}</div>` : ""}</div>`;
+                    return `<div class="${itemClass} pointer-events-none" data-aos="zoom-in" data-aos-delay="${Math.min(idx * 70, 280)}"><img src="${url}" alt="Dokumentasi Jamaah ${idx + 1}" class="w-full h-full object-cover">${info ? `<div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">${info}</div>` : ""}</div>`;
                 }).join("");
-            }
+                if (isAutoSlide) { renderActivityDocDots(activityDocs.length); startActivityDocsAutoSlide(activityDocsList); }
+                else { renderActivityDocDots(0); stopActivityDocsAutoSlide(); }
+            } else { renderActivityDocDots(0); stopActivityDocsAutoSlide(); }
 
             const pricingCards = document.getElementById("lpPricingCards");
             if (pricingCards) {
-                const items = variants.length ? variants : [{
-                    title: eventData.title || "Paket Event",
-                    description: eventData.description || "",
-                    event_type: eventData.event_type || "berbayar",
-                    price_original: eventData.price_original || 0,
-                    price_promo: eventData.price_promo || 0
-                }];
+                const items = variants.length ? variants : [{ title: eventData.title || "Paket Event", description: eventData.description || "", event_type: eventData.event_type || "berbayar", price_original: eventData.price_original || 0, price_promo: eventData.price_promo || 0 }];
                 pricingCards.innerHTML = items.map((v, i) => {
-                    const po = Number(v.price_original) || 0;
-                    const pp = Number(v.price_promo) || 0;
+                    const po = Number(v.price_original) || 0; const pp = Number(v.price_promo) || 0;
                     const free = v.event_type === "gratis" || (po === 0 && pp === 0);
                     const shown = (!free && pp > 0 && pp < po) ? pp : po;
                     const variantStart = v.start_date || eventData.start_date || null;
                     const variantEnd = v.end_date || eventData.end_date || null;
                     const logoUrl = String(v.logo_media_url || "").trim();
                     const logoType = String(v.logo_media_type || detectHeroMediaTypeFromUrl(logoUrl) || "image").toLowerCase();
-                    const logoBlock = logoUrl
-                        ? (logoType === "video"
-                            ? `<div class="mb-3 overflow-hidden rounded-lg border border-earth-200 bg-black"><video src="${esc(logoUrl)}" class="w-full h-auto" controls preload="metadata"></video></div>`
-                            : `<div class="mb-3 overflow-hidden rounded-lg border border-earth-200 bg-white"><img src="${esc(logoUrl)}" alt="Logo ${esc(v.title || "varian")}" class="w-full h-auto"></div>`)
-                        : "";
-                    return `
-                        <div class="${i === 0 ? "border-2 border-brand-brown bg-brand-light shadow-md" : "border border-earth-200"} rounded-xl p-5" data-aos="fade-up" data-aos-delay="${Math.min(i * 100, 400)}">
-                            ${logoBlock}
-                            <div class="flex justify-between items-start mb-2">
-                                <div>
-                                    <span class="${i === 0 ? "bg-brand-brown/10 text-brand-brown" : "bg-earth-100 text-earth-800"} text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">
-                                        ${free ? "Paket Gratis" : "Paket Berbayar"}
-                                    </span>
-                                    <h3 class="font-serif font-bold text-lg text-earth-900 mt-2">${esc(v.title || "Paket Event")}</h3>
-                                    <p class="text-xs text-earth-600">${esc(v.description || "")}</p>
-                                </div>
-                                <div class="text-right">
-                                    ${(!free && pp > 0 && pp < po) ? `<p class="text-xs text-earth-500 line-through">${formatIDR(po)}</p>` : ""}
-                                    <p class="text-xl font-bold text-brand-brown">${free ? "GRATIS" : formatIDR(shown)}</p>
-                                </div>
-                            </div>
-                            <p class="text-xs text-earth-700">Periode: ${esc(formatDateID(variantStart) || "-")} - ${esc(formatDateID(variantEnd) || "-")}</p>
-                        </div>
-                    `;
+                    const logoBlock = logoUrl ? (logoType === "video" ? `<div class="mb-3 overflow-hidden rounded-lg border border-earth-200 bg-black"><video src="${esc(logoUrl)}" class="w-full h-auto" controls preload="metadata"></video></div>` : `<div class="mb-3 overflow-hidden rounded-lg border border-earth-200 bg-white"><img src="${esc(logoUrl)}" alt="Logo ${esc(v.title || "varian")}" class="w-full h-auto"></div>`) : "";
+                    return `<div class="${i === 0 ? "border-2 border-brand-brown bg-brand-light shadow-md" : "border border-earth-200"} rounded-xl p-5" data-aos="fade-up" data-aos-delay="${Math.min(i * 100, 400)}">${logoBlock}<div class="flex justify-between items-start mb-2"><div><span class="${i === 0 ? "bg-brand-brown/10 text-brand-brown" : "bg-earth-100 text-earth-800"} text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">${free ? "Paket Gratis" : "Paket Berbayar"}</span><h3 class="font-serif font-bold text-lg text-earth-900 mt-2">${esc(v.title || "Paket Event")}</h3><p class="text-xs text-earth-600">${esc(v.description || "")}</p></div><div class="text-right">${(!free && pp > 0 && pp < po) ? `<p class="text-xs text-earth-500 line-through">${formatIDR(po)}</p>` : ""}<p class="text-xl font-bold text-brand-brown">${free ? "GRATIS" : formatIDR(shown)}</p></div></div><p class="text-xs text-earth-700">Periode: ${esc(formatDateID(variantStart) || "-")} - ${esc(formatDateID(variantEnd) || "-")}</p></div>`;
                 }).join("");
             }
 
             const benefitList = document.getElementById("lpBenefitsList");
             if (benefitList && benefits.length) {
-                benefitList.innerHTML = benefits.map((b) => `
-                    <li class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-brand-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        ${esc(b)}
-                    </li>
-                `).join("");
+                benefitList.innerHTML = benefits.map((b) => `<li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>${esc(b)}</li>`).join("");
             }
 
             const faqContainer = document.getElementById("lpFaqContainer");
             if (faqContainer && faqs.length) {
-                faqContainer.innerHTML = faqs.map((f, idx) => `
-                    <details class="group border border-earth-200 rounded-lg" data-aos="fade-up" data-aos-delay="${Math.min(idx * 60, 300)}">
-                        <summary class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none">
-                            <span>${esc(f.question)}</span>
-                            <span class="transition group-open:rotate-180">
-                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
-                                    <path d="M6 9l6 6 6-6"></path>
-                                </svg>
-                            </span>
-                        </summary>
-                        <div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">${esc(f.answer)}</div>
-                    </details>
-                `).join("");
+                faqContainer.innerHTML = faqs.map((f, idx) => `<details class="group border border-earth-200 rounded-lg" data-aos="fade-up" data-aos-delay="${Math.min(idx * 60, 300)}"><summary class="flex justify-between items-center cursor-pointer p-4 font-medium text-earth-900 bg-earth-50 list-none"><span>${esc(f.question)}</span><span class="transition group-open:rotate-180"><svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg></span></summary><div class="text-earth-800 text-sm p-4 leading-relaxed border-t border-earth-100 bg-white">${esc(f.answer)}</div></details>`).join("");
             }
 
             const params = new URLSearchParams(window.location.search || "");
@@ -956,20 +1487,10 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            if (window.AOS) {
-                window.AOS.init({
-                    once: true,
-                    duration: 700,
-                    easing: "ease-out-cubic",
-                    offset: 60
-                });
-            }
+            if (window.AOS) { window.AOS.init({ once: true, duration: 700, easing: "ease-out-cubic", offset: 60 }); }
             applyLandingData();
-            if (window.AOS) {
-                window.AOS.refreshHard();
-            }
+            if (window.AOS) { window.AOS.refreshHard(); }
         });
     </script>
 </body>
-
 </html>

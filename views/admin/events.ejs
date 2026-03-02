@@ -1366,6 +1366,24 @@
                 </div>
               </div>
 
+              <div class="space-y-2 bg-white/90 backdrop-blur p-4 rounded-xl border border-white/60">
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 bg-orange-50 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-ruler-combined text-orange-600 text-xs"></i>
+                  </div>
+                  <h5 class="text-sm font-extrabold text-gray-900">Konsep Tampilan Landing Page</h5>
+                </div>
+                <p class="text-[10px] text-gray-500">Pilih tema yang akan digunakan saat jamaah membuka LP.</p>
+                <div>
+                  <label class="block text-[10px] font-extrabold text-gray-800 mb-1">Tema</label>
+                  <select id="lpStyle" class="w-full px-3 py-2 bg-white/70 border border-white/60 rounded-lg text-xs uppercase tracking-[0.1em]">
+                    <option value="classic">Classic</option>
+                    <option value="modern">Modern</option>
+                    <option value="elegant">Elegant</option>
+                  </select>
+                </div>
+              </div>
+
               <!-- Dynamic Benefits -->
               <div id="benefitsSection" class="space-y-3 bg-gradient-to-r from-teal-50/80 to-emerald-50/80 backdrop-blur p-4 rounded-xl border border-teal-200/50">
                 <div class="flex items-center gap-2 mb-2">
@@ -1443,6 +1461,21 @@
                   </div>
                   <h5 class="text-sm font-extrabold text-amber-900">Testimoni (URL / File)</h5>
                 </div>
+                <div class="flex flex-col gap-2">
+                  <label class="block text-[10px] font-extrabold text-amber-800">Style Section Testimoni</label>
+                  <div class="flex flex-wrap gap-2 items-center text-[10px]">
+                    <select id="testimonialLayoutStyle" class="px-2 py-1 bg-white/70 border border-white/60 rounded-lg text-xs">
+                      <option value="grid">Grid (Seperti Sekarang)</option>
+                      <option value="auto_slide">Slide Otomatis</option>
+                    </select>
+                    <button type="button" onclick="setAllTestimonialStyle('grid')" class="text-[10px] font-bold text-amber-700 bg-amber-100 hover:bg-amber-200 px-2.5 py-1 rounded-lg border border-amber-200">
+                      Set Semua Grid
+                    </button>
+                    <button type="button" onclick="setAllTestimonialStyle('auto_slide')" class="text-[10px] font-bold text-orange-700 bg-orange-100 hover:bg-orange-200 px-2.5 py-1 rounded-lg border border-orange-200">
+                      Set Semua Slide
+                    </button>
+                  </div>
+                </div>
                 <div id="testimonialsList" class="space-y-3"></div>
                 <button type="button" onclick="addTestimonial()" class="text-[10px] font-bold text-amber-600 hover:underline">+ Tambah Testimoni</button>
               </div>
@@ -1455,12 +1488,25 @@
                   </div>
                   <h5 class="text-sm font-extrabold text-orange-900">Dokumentasi Aktivitas Jamaah (URL / File + Info)</h5>
                 </div>
+                <div>
+                  <label class="block text-[10px] font-extrabold text-orange-800 mb-1">Style Tampilan Section Dokumentasi</label>
+                  <select id="activityDocsDisplayStyle" class="w-full md:w-64 px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs">
+                    <option value="grid">Grid (Seperti Sekarang)</option>
+                    <option value="auto_slide">Slide Otomatis</option>
+                  </select>
+                </div>
                 <div class="flex flex-wrap items-center gap-2">
                   <button type="button" onclick="setAllActivityDocOrientation('portrait')" class="text-[10px] font-bold text-orange-700 bg-orange-100 hover:bg-orange-200 px-2.5 py-1 rounded-lg border border-orange-200">
                     Set Semua Potrait
                   </button>
                   <button type="button" onclick="setAllActivityDocOrientation('landscape')" class="text-[10px] font-bold text-amber-700 bg-amber-100 hover:bg-amber-200 px-2.5 py-1 rounded-lg border border-amber-200">
                     Set Semua Landscape
+                  </button>
+                  <button type="button" onclick="setAllActivityDocStyle('grid')" class="text-[10px] font-bold text-orange-700 bg-orange-100 hover:bg-orange-200 px-2.5 py-1 rounded-lg border border-orange-200">
+                    Set Semua Grid
+                  </button>
+                  <button type="button" onclick="setAllActivityDocStyle('auto_slide')" class="text-[10px] font-bold text-amber-700 bg-amber-100 hover:bg-amber-200 px-2.5 py-1 rounded-lg border border-amber-200">
+                    Set Semua Slide
                   </button>
                 </div>
                 <div id="activityDocsList" class="space-y-3"></div>
@@ -2670,6 +2716,9 @@
           document.getElementById('faqsList').innerHTML = '';
           document.getElementById('testimonialsList').innerHTML = '';
           document.getElementById('activityDocsList').innerHTML = '';
+          document.getElementById('activityDocsDisplayStyle').value = 'grid';
+          document.getElementById('lpStyle').value = 'classic';
+          document.getElementById('testimonialLayoutStyle').value = 'grid';
           document.getElementById('variantsList').innerHTML = '';
           document.getElementById('solutionsList').innerHTML = '';
           document.getElementById('periodsList').innerHTML = '';
@@ -2718,6 +2767,11 @@
             previewEl.innerHTML = '';
           }
           document.getElementById('hero_as_background').checked = !!event.hero_as_background;
+          document.getElementById('lpStyle').value = event.lp_style || 'classic';
+          const testimonialLayout = (event.testimonials && event.testimonials[0] && event.testimonials[0].layout_style === 'auto_slide')
+            ? 'auto_slide'
+            : 'grid';
+          document.getElementById('testimonialLayoutStyle').value = testimonialLayout;
 
           // populate benefits list
           document.getElementById('benefitsList').innerHTML = '';
@@ -2757,6 +2811,10 @@
 
           // activity docs
           document.getElementById('activityDocsList').innerHTML = '';
+          const docsDisplayStyle = (event.activity_docs && event.activity_docs[0] && event.activity_docs[0].layout_style === 'auto_slide')
+            ? 'auto_slide'
+            : 'grid';
+          document.getElementById('activityDocsDisplayStyle').value = docsDisplayStyle;
           if (event.activity_docs && Array.isArray(event.activity_docs) && event.activity_docs.length) {
             event.activity_docs.forEach((d) => addActivityDoc(d));
           } else {
@@ -3006,6 +3064,15 @@
             media_url: initial.media_url || '',
           });
 
+          const styleWrap = document.createElement('div');
+          styleWrap.innerHTML = `
+            <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Style Tampilan</label>
+            <select class="testimonial-style w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs">
+              <option value="grid">Grid (Seperti Sekarang)</option>
+              <option value="auto_slide">Slide Otomatis</option>
+            </select>
+          `;
+
           const removeBtn = document.createElement('button');
           removeBtn.type = 'button';
           removeBtn.className = 'text-[10px] font-bold text-red-600 hover:underline';
@@ -3013,8 +3080,12 @@
           removeBtn.addEventListener('click', () => item.remove());
 
           item.appendChild(media.wrapper);
+          item.appendChild(styleWrap);
           item.appendChild(removeBtn);
           list.appendChild(item);
+
+          const styleEl = item.querySelector('.testimonial-style');
+          styleEl.value = initial.layout_style || document.getElementById('testimonialLayoutStyle').value || 'grid';
         }
 
         function addActivityDoc(initial = {}) {
@@ -3029,6 +3100,13 @@
 
           const infoWrap = document.createElement('div');
           infoWrap.innerHTML = `
+            <div class="mb-2">
+              <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Style Tampilan</label>
+              <select class="activity-doc-style w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs">
+                <option value="grid">Grid (Seperti Sekarang)</option>
+                <option value="auto_slide">Slide Otomatis</option>
+              </select>
+            </div>
             <div class="mb-2">
               <label class="block text-[10px] font-extrabold text-gray-700 mb-1">Orientasi Tampilan</label>
               <select class="activity-doc-orientation w-full px-2 py-1.5 bg-white/70 border border-white/60 rounded-lg text-xs">
@@ -3053,11 +3131,31 @@
 
           const orientationEl = item.querySelector('.activity-doc-orientation');
           orientationEl.value = initial.layout_orientation || initial.orientation || 'portrait';
+          const styleEl = item.querySelector('.activity-doc-style');
+          styleEl.value = initial.layout_style || document.getElementById('activityDocsDisplayStyle').value || 'grid';
         }
 
         function setAllActivityDocOrientation(orientation) {
           const normalized = orientation === 'landscape' ? 'landscape' : 'portrait';
           document.querySelectorAll('.activity-doc-item .activity-doc-orientation').forEach((el) => {
+            el.value = normalized;
+          });
+        }
+
+        function setAllActivityDocStyle(style) {
+          const normalized = style === 'auto_slide' ? 'auto_slide' : 'grid';
+          const sectionStyleEl = document.getElementById('activityDocsDisplayStyle');
+          if (sectionStyleEl) sectionStyleEl.value = normalized;
+          document.querySelectorAll('.activity-doc-item .activity-doc-style').forEach((el) => {
+            el.value = normalized;
+          });
+        }
+
+        function setAllTestimonialStyle(style) {
+          const normalized = style === 'auto_slide' ? 'auto_slide' : 'grid';
+          const sectionStyleEl = document.getElementById('testimonialLayoutStyle');
+          if (sectionStyleEl) sectionStyleEl.value = normalized;
+          document.querySelectorAll('.testimonial-item .testimonial-style').forEach((el) => {
             el.value = normalized;
           });
         }
@@ -3305,11 +3403,12 @@
             active_start_date: document.getElementById('active_start_date').value || null,
             active_end_date: document.getElementById('active_end_date').value || null,
             headline: document.getElementById('headline').value,
-            subheadline: document.getElementById('subheadline').value,
-            hero_media_type: document.getElementById('hero_media_type').value,
-            hero_media_url: document.getElementById('hero_media_url').value.trim(),
-            hero_as_background: document.getElementById('hero_as_background').checked ? 1 : 0,
-            benefits: [],
+          subheadline: document.getElementById('subheadline').value,
+          hero_media_type: document.getElementById('hero_media_type').value,
+          hero_media_url: document.getElementById('hero_media_url').value.trim(),
+          hero_as_background: document.getElementById('hero_as_background').checked ? 1 : 0,
+          lp_style: document.getElementById('lpStyle') ? document.getElementById('lpStyle').value : 'classic',
+          benefits: [],
             problemTitle: document.getElementById('problemTitle').value,
             problemSubtitle: document.getElementById('problemSubtitle').value,
             pains: [],
@@ -3379,12 +3478,14 @@
           document.querySelectorAll('.testimonial-item').forEach((item) => {
             const typeEl = item.querySelector('.testimonial-media-type');
             const urlEl = item.querySelector('.testimonial-media-url');
+            const styleEl = item.querySelector('.testimonial-style');
             if (!typeEl || !urlEl) return;
             const mediaUrl = urlEl.value.trim();
             if (!mediaUrl) return;
             formData.testimonials.push({
               media_type: typeEl.value || detectHeroMediaTypeFromUrl(mediaUrl),
-              media_url: mediaUrl
+              media_url: mediaUrl,
+              layout_style: styleEl ? styleEl.value : (document.getElementById('testimonialLayoutStyle').value || 'grid')
             });
           });
 
@@ -3394,6 +3495,7 @@
             const urlEl = item.querySelector('.activity-doc-media-url');
             const infoEl = item.querySelector('.activity-doc-info');
             const orientationEl = item.querySelector('.activity-doc-orientation');
+            const styleEl = item.querySelector('.activity-doc-style');
             if (!typeEl || !urlEl) return;
             const mediaUrl = urlEl.value.trim();
             if (!mediaUrl) return;
@@ -3401,7 +3503,8 @@
               media_type: typeEl.value || detectHeroMediaTypeFromUrl(mediaUrl),
               media_url: mediaUrl,
               info_text: infoEl ? infoEl.value.trim() : '',
-              layout_orientation: orientationEl ? orientationEl.value : 'portrait'
+              layout_orientation: orientationEl ? orientationEl.value : 'portrait',
+              layout_style: styleEl ? styleEl.value : (document.getElementById('activityDocsDisplayStyle').value || 'grid')
             });
           });
 
@@ -3520,6 +3623,12 @@
             document.getElementById('hero_media_url').value.trim(),
             document.getElementById('hero_media_type').value
           );
+        });
+        document.getElementById('activityDocsDisplayStyle').addEventListener('change', function(e) {
+          setAllActivityDocStyle(e.target.value);
+        });
+        document.getElementById('testimonialLayoutStyle').addEventListener('change', function(e) {
+          setAllTestimonialStyle(e.target.value);
         });
 
         let searchTimeout;

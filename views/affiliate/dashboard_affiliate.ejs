@@ -2529,6 +2529,30 @@
           }
         }
       </script>
+      <script>
+        (function syncProfilePercent() {
+          const profileData = <%- JSON.stringify(affiliateProfile || {}) %>;
+          const fields = ['full_name', 'email', 'phone', 'bank_name', 'bank_account_number', 'bank_account_name'];
+          let filled = 0;
+          fields.forEach((key) => {
+            const value = profileData[key];
+            if (value && String(value).trim() !== '') filled++;
+          });
+          const percent = Math.round((filled / fields.length) * 100);
+
+          const percentEl = document.getElementById('profileCompletionPercent');
+          const barEl = document.getElementById('profileCompletionBar');
+          if (percentEl) {
+            percentEl.textContent = percent + '%';
+          }
+          if (barEl) {
+            barEl.style.width = percent + '%';
+            if (percent >= 70) barEl.className = 'profile-bar-fill green';
+            else if (percent >= 30) barEl.className = 'profile-bar-fill yellow';
+            else barEl.className = 'profile-bar-fill red';
+          }
+        })();
+      </script>
 </body>
 
 </html>

@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS event_activity_docs (
   media_url TEXT NOT NULL,
   info_text VARCHAR(255) DEFAULT NULL,
   layout_orientation ENUM('portrait','landscape') DEFAULT 'portrait',
+  layout_style ENUM('grid','auto_slide') DEFAULT 'grid',
   sort_order INT DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),

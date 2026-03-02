@@ -47,7 +47,7 @@ async function buildLandingData(eventId) {
   let testimonials = [];
   try {
     const [rows] = await db.query(
-      `SELECT media_type, media_url, sort_order
+      `SELECT media_type, media_url, layout_style, sort_order
        FROM event_testimonials
        WHERE event_id = ?
        ORDER BY sort_order ASC`,
@@ -59,7 +59,7 @@ async function buildLandingData(eventId) {
   let activityDocs = [];
   try {
     const [rows] = await db.query(
-      `SELECT media_type, media_url, info_text, layout_orientation, sort_order
+      `SELECT media_type, media_url, info_text, layout_orientation, layout_style, sort_order
        FROM event_activity_docs
        WHERE event_id = ?
        ORDER BY sort_order ASC`,
@@ -146,6 +146,7 @@ async function buildLandingData(eventId) {
       start_date: event.start_date,
       end_date: event.end_date,
       admin_whatsapp: event.admin_whatsapp,
+      lp_style: event.lp_style || "classic",
     },
     hero: {
       headline: event.headline || "",
@@ -159,6 +160,7 @@ async function buildLandingData(eventId) {
     testimonials: testimonials.map((t) => ({
       media_type: t.media_type,
       media_url: t.media_url,
+      layout_style: t.layout_style === "auto_slide" ? "auto_slide" : "grid",
       sort_order: t.sort_order,
     })),
     activity_docs: activityDocs.map((d) => ({
@@ -166,6 +168,7 @@ async function buildLandingData(eventId) {
       media_url: d.media_url,
       info_text: d.info_text,
       layout_orientation: d.layout_orientation || "portrait",
+      layout_style: d.layout_style === "auto_slide" ? "auto_slide" : "grid",
       sort_order: d.sort_order,
     })),
     variants: variants.map((v) => ({
