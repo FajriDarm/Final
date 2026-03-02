@@ -2253,11 +2253,13 @@
           showDeleteConfirm(
             `Anda yakin ingin membuka kunci event "${eventName}"?`,
             () => {
-              showDeleteConfirm(
-                `Konfirmasi terakhir: buka kunci event "${eventName}" sekarang?`,
-                onConfirm,
-                { id: eventName, name: eventName }
-              );
+              setTimeout(() => {
+                showDeleteConfirm(
+                  `Konfirmasi terakhir: buka kunci event "${eventName}" sekarang?`,
+                  onConfirm,
+                  { id: eventName, name: eventName }
+                );
+              }, 0);
             },
             { id: eventName, name: eventName }
           );
