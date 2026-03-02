@@ -11,6 +11,7 @@ const {
   authMiddlewarePage,
   checkAlreadyLoggedIn,
 } = require("./middleware/auth");
+const authController = require("./controllers/authController");
 
 // Middleware
 app.use(express.json());
@@ -116,6 +117,11 @@ app.get("/login", checkAlreadyLoggedIn, (req, res) => {
   res.render("login", { trackingRef: ref, trackingEvent: event });
 });
 
+app.get("/forgot-password", checkAlreadyLoggedIn, authController.showForgotPasswordPage);
+app.post("/forgot-password", checkAlreadyLoggedIn, authController.requestPasswordReset);
+app.get("/reset-password/:token", checkAlreadyLoggedIn, authController.showResetPasswordPage);
+app.post("/reset-password/:token", checkAlreadyLoggedIn, authController.resetPasswordWithToken);
+
 app.get("/register", checkAlreadyLoggedIn, (req, res) => {
   // Get tracking info from cookies or URL params
   const ref = req.query.ref || req.cookies.affiliate_ref;
@@ -148,7 +154,6 @@ app.get("/settings", authMiddlewarePage, (req, res) => {
 });
 
 // Endpoint untuk ganti password dari halaman settings
-const authController = require("./controllers/authController");
 app.post(
   "/settings/change-password",
   authMiddlewarePage,

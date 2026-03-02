@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 const db = require("../config/database");
+const { sendPasswordResetEmail } = require("../services/emailService");
 
 const register = async (req, res) => {
   try {
@@ -513,6 +515,267 @@ const updateSettings = async (req, res) => {
   }
 };
 
+const showForgotPasswordPage = async (req, res) => {
+  return res.render("forgot-password", {
+    error: req.query.error || null,
+    success: req.query.success || null,
+    email: req.query.email || "",
+  });
+};
+
+const requestPasswordReset = async (req, res) => {
+  try {
+    const email = String(req.body.email || "").trim().toLowerCase();
+    const isApi = req.originalUrl.startsWith("/api/");
+
+    if (!email) {
+      if (isApi) {
+        return res.status(400).json({ success: false, message: "Email is required" });
+      }
+      return res.redirect("/forgot-password?error=" + encodeURIComponent("Email wajib diisi"));
+    }
+
+    const [users] = await db.query(
+      "SELECT id, name, email, status FROM users WHERE email = ? LIMIT 1",
+      [email],
+    );
+
+    if (!users.length) {
+      if (isApi) {
+        return res.status(404).json({ success: false, message: "Email tidak terdaftar" });
+      }
+      return res.redirect(
+        "/forgot-password?error=" +
+          encodeURIComponent("Email tidak terdaftar") +
+          "&email=" +
+          encodeURIComponent(email),
+      );
+    }
+
+    const user = users[0];
+    if (user.status !== undefined && user.status !== "active") {
+      if (isApi) {
+        return res.status(403).json({ success: false, message: "Akun tidak aktif" });
+      }
+      return res.redirect(
+        "/forgot-password?error=" +
+          encodeURIComponent("Akun tidak aktif") +
+          "&email=" +
+          encodeURIComponent(email),
+      );
+    }
+
+    const token = crypto.randomBytes(32).toString("hex");
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+
+    await db.query("DELETE FROM password_reset_tokens WHERE user_id = ?", [user.id]);
+    await db.query(
+      `INSERT INTO password_reset_tokens (user_id, token_hash, expires_at, used_at)
+       VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR), NULL)`,
+      [user.id, tokenHash],
+    );
+
+    const appBaseUrl =
+      process.env.APP_BASE_URL || `${req.protocol}://${req.get("host")}`;
+    const resetUrl = `${appBaseUrl}/reset-password/${token}`;
+
+    await sendPasswordResetEmail({
+      to: user.email,
+      resetUrl,
+      name: user.name,
+    });
+
+    if (isApi) {
+      return res.json({
+        success: true,
+        message: "Email reset password telah dikirim",
+      });
+    }
+    return res.redirect(
+      "/forgot-password?success=" +
+        encodeURIComponent("Link reset password telah dikirim ke email Anda"),
+    );
+  } catch (error) {
+    console.error("requestPasswordReset error:", error);
+    const isApi = req.originalUrl.startsWith("/api/");
+    if (isApi) {
+      return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+    return res.redirect("/forgot-password?error=" + encodeURIComponent("Terjadi kesalahan server"));
+  }
+};
+
+const showResetPasswordPage = async (req, res) => {
+  try {
+    const token = String(req.params.token || "");
+    if (req.query.success) {
+      return res.render("reset-password", {
+        token,
+        validToken: true,
+        error: null,
+        success: req.query.success,
+      });
+    }
+
+    if (!token) {
+      return res.status(400).render("reset-password", {
+        token: "",
+        validToken: false,
+        error: "Token tidak valid",
+        success: null,
+      });
+    }
+
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+    const [rows] = await db.query(
+      `SELECT prt.id, prt.used_at, prt.expires_at, prt.created_at
+       FROM password_reset_tokens prt
+       WHERE LOWER(prt.token_hash) = LOWER(?)
+       LIMIT 1`,
+      [tokenHash],
+    );
+
+    let validToken = false;
+    let validationError = null;
+    if (!rows.length) {
+      validationError = "Token tidak ditemukan";
+    } else {
+      const row = rows[0];
+      const usedAt = row.used_at ? new Date(row.used_at) : null;
+      const expiresAt = row.expires_at ? new Date(row.expires_at) : null;
+      if (usedAt && !Number.isNaN(usedAt.getTime())) {
+        validationError = "Token sudah pernah digunakan";
+      } else if (!expiresAt || Number.isNaN(expiresAt.getTime())) {
+        validationError = "Masa berlaku token tidak valid";
+      } else if (expiresAt.getTime() <= Date.now()) {
+        validationError = "Token sudah kadaluarsa";
+      } else {
+        validToken = true;
+      }
+      console.log("[reset-password] token check:", {
+        tokenHashPrefix: tokenHash.slice(0, 10),
+        used_at: row.used_at || null,
+        expires_at: row.expires_at || null,
+        validToken,
+        validationError,
+      });
+    }
+
+    return res.render("reset-password", {
+      token,
+      validToken,
+      error: req.query.error || validationError,
+      success: req.query.success || null,
+    });
+  } catch (error) {
+    console.error("showResetPasswordPage error:", error);
+    return res.status(500).render("reset-password", {
+      token: "",
+      validToken: false,
+      error: "Terjadi kesalahan server",
+      success: null,
+    });
+  }
+};
+
+const resetPasswordWithToken = async (req, res) => {
+  try {
+    const token = String(req.params.token || "");
+    const newPassword = String(req.body.newPassword || req.body.password || "");
+    const confirmPassword = String(
+      req.body.confirmPassword || req.body.confirm_password || "",
+    );
+    const isApi = req.originalUrl.startsWith("/api/");
+
+    if (!token) {
+      if (isApi) return res.status(400).json({ success: false, message: "Token tidak valid" });
+      return res.redirect("/reset-password/invalid?error=" + encodeURIComponent("Token tidak valid"));
+    }
+
+    if (!newPassword || !confirmPassword) {
+      if (isApi) return res.status(400).json({ success: false, message: "Semua field password wajib diisi" });
+      return res.redirect(
+        `/reset-password/${encodeURIComponent(token)}?error=${encodeURIComponent("Semua field password wajib diisi")}`,
+      );
+    }
+
+    if (newPassword.length < 8) {
+      if (isApi) return res.status(400).json({ success: false, message: "Password minimal 8 karakter" });
+      return res.redirect(
+        `/reset-password/${encodeURIComponent(token)}?error=${encodeURIComponent("Password minimal 8 karakter")}`,
+      );
+    }
+
+    if (newPassword !== confirmPassword) {
+      if (isApi) return res.status(400).json({ success: false, message: "Konfirmasi password tidak sama" });
+      return res.redirect(
+        `/reset-password/${encodeURIComponent(token)}?error=${encodeURIComponent("Konfirmasi password tidak sama")}`,
+      );
+    }
+
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+    const [rows] = await db.query(
+      `SELECT prt.id, prt.user_id, prt.used_at, prt.expires_at
+       FROM password_reset_tokens prt
+       WHERE LOWER(prt.token_hash) = LOWER(?)
+       LIMIT 1`,
+      [tokenHash],
+    );
+
+    if (!rows.length) {
+      if (isApi) return res.status(400).json({ success: false, message: "Token reset tidak ditemukan" });
+      return res.redirect(
+        `/reset-password/${encodeURIComponent(token)}?error=${encodeURIComponent("Token reset tidak ditemukan")}`,
+      );
+    }
+
+    const resetRow = rows[0];
+    const usedAt = resetRow.used_at ? new Date(resetRow.used_at) : null;
+    const expiresAt = resetRow.expires_at ? new Date(resetRow.expires_at) : null;
+    if (usedAt && !Number.isNaN(usedAt.getTime())) {
+      if (isApi) return res.status(400).json({ success: false, message: "Token reset sudah digunakan" });
+      return res.redirect(
+        `/reset-password/${encodeURIComponent(token)}?error=${encodeURIComponent("Token reset sudah digunakan")}`,
+      );
+    }
+    if (!expiresAt || Number.isNaN(expiresAt.getTime()) || expiresAt.getTime() <= Date.now()) {
+      if (isApi) return res.status(400).json({ success: false, message: "Token reset sudah kadaluarsa" });
+      return res.redirect(
+        `/reset-password/${encodeURIComponent(token)}?error=${encodeURIComponent("Token reset sudah kadaluarsa")}`,
+      );
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await db.query("UPDATE users SET password = ? WHERE id = ?", [
+      hashedPassword,
+      resetRow.user_id,
+    ]);
+    await db.query("UPDATE password_reset_tokens SET used_at = NOW() WHERE id = ?", [
+      resetRow.id,
+    ]);
+
+    if (isApi) {
+      return res.json({
+        success: true,
+        message: "Password berhasil diperbarui",
+      });
+    }
+    return res.redirect(
+      `/reset-password/${encodeURIComponent(token)}?success=${encodeURIComponent("Password berhasil diperbarui. Silakan login.")}`,
+    );
+  } catch (error) {
+    console.error("resetPasswordWithToken error:", error);
+    const isApi = req.originalUrl.startsWith("/api/");
+    if (isApi) {
+      return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+    return res.redirect(
+      `/reset-password/${encodeURIComponent(req.params.token || "invalid")}?error=${encodeURIComponent("Terjadi kesalahan server")}`,
+    );
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -521,4 +784,8 @@ module.exports = {
   updateProfile,
   changePassword,
   updateSettings,
+  showForgotPasswordPage,
+  requestPasswordReset,
+  showResetPasswordPage,
+  resetPasswordWithToken,
 };
