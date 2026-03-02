@@ -1055,6 +1055,8 @@
                     class="px-3 py-1.5 rounded-lg text-[10px] font-extrabold flex items-center gap-1 border border-white/30"></span>
                   <span id="viewEventPriceBadge"
                     class="px-3 py-1.5 rounded-lg text-[10px] font-extrabold flex items-center gap-1 border border-white/30"></span>
+                  <span id="viewEventLockBadge"
+                    class="px-3 py-1.5 rounded-lg text-[10px] font-extrabold flex items-center gap-1 border border-white/30"></span>
                 </div>
                 <p id="viewEventDescription" class="text-sm text-gray-600 leading-relaxed hidden"></p>
                 <!-- Hero details -->
@@ -2090,6 +2092,7 @@
               'inactive': { bg: 'gradient-inactive', text: 'text-white', icon: 'fas fa-times-circle', badge: 'Tidak Aktif' }
             }[event.status] || { bg: 'bg-gray-500', text: 'text-white', icon: 'fas fa-file', badge: 'Tidak Diketahui' };
 
+            const isLocked = Number(event.is_locked) === 1;
             const variants = Array.isArray(event.variants) ? event.variants.filter(v => v && v.title) : [];
             const primaryVariant = variants[0] || null;
             const effectiveType = primaryVariant?.event_type || event.event_type || 'berbayar';
@@ -2110,6 +2113,34 @@
             const extraVariantCount = Math.max(variantCount - variantPreview.length, 0);
             const waText = event.admin_whatsapp ? `+62 ${event.admin_whatsapp}` : '-';
             const activeRangeText = `${activeStartDate} - ${activeEndDate}`;
+            const lockBadge = isLocked
+              ? `<span class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold bg-gray-900 text-white flex items-center gap-1 border border-white/30">
+                  <i class="fas fa-lock text-[8px]"></i>
+                  Terkunci
+                </span>`
+              : '';
+            const editButton = isLocked
+              ? `<button disabled class="flex-1 text-[9px] font-extrabold text-gray-400 py-2 rounded-lg bg-white/40 cursor-not-allowed flex items-center justify-center gap-1 border border-white/30">
+                  <i class="fas fa-edit text-[8px]"></i>
+                  Edit
+                </button>`
+              : `<button onclick="editEvent(${event.id})" class="flex-1 text-[9px] font-extrabold text-emerald-700 hover:text-emerald-800 py-2 rounded-lg hover:bg-white/60 transition-all duration-300 flex items-center justify-center gap-1 border border-white/30">
+                  <i class="fas fa-edit text-[8px]"></i>
+                  Edit
+                </button>`;
+            const deleteButton = isLocked
+              ? `<button disabled class="flex-1 text-[9px] font-extrabold text-gray-400 py-2 rounded-lg bg-white/40 cursor-not-allowed flex items-center justify-center gap-1 border border-white/30">
+                  <i class="fas fa-trash text-[8px]"></i>
+                  Hapus
+                </button>`
+              : `<button onclick="confirmDeleteEvent(${event.id})" class="flex-1 text-[9px] font-extrabold text-red-600 hover:text-red-700 py-2 rounded-lg hover:bg-white/60 transition-all duration-300 flex items-center justify-center gap-1 border border-white/30">
+                  <i class="fas fa-trash text-[8px]"></i>
+                  Hapus
+                </button>`;
+            const lockButton = `<button onclick="toggleEventLock(${event.id}, ${isLocked ? 0 : 1})" class="flex-1 text-[9px] font-extrabold ${isLocked ? 'text-amber-700' : 'text-gray-700'} py-2 rounded-lg bg-white/60 hover:bg-white/80 transition-all duration-300 flex items-center justify-center gap-1 border border-white/30">
+                <i class="fas ${isLocked ? 'fa-lock-open' : 'fa-lock'} text-[8px]"></i>
+                ${isLocked ? 'Buka Kunci' : 'Kunci'}
+              </button>`;
 
             return `
               <div class="glass-futuristic rounded-xl overflow-hidden group card-futuristic border border-white/50">
@@ -2124,6 +2155,7 @@
                       <i class="${typeConfig.icon} text-[8px]"></i>
                       ${typeConfig.badge}
                     </span>
+                    ${lockBadge}
                   </div>
                   <button onclick="viewEvent(${event.id})" class="w-7 h-7 rounded-lg bg-white/60 hover:bg-white/80 text-emerald-700 transition-all duration-300 flex items-center justify-center border border-white/30">
                     <i class="fas fa-eye text-[10px]"></i>
@@ -2191,14 +2223,9 @@
 
                 <!-- Footer -->
                 <div class="px-4 py-3 bg-white/30 backdrop-blur border-t border-white/30 flex gap-2">
-                  <button onclick="editEvent(${event.id})" class="flex-1 text-[9px] font-extrabold text-emerald-700 hover:text-emerald-800 py-2 rounded-lg hover:bg-white/60 transition-all duration-300 flex items-center justify-center gap-1 border border-white/30">
-                    <i class="fas fa-edit text-[8px]"></i>
-                    Edit
-                  </button>
-                  <button onclick="confirmDeleteEvent(${event.id})" class="flex-1 text-[9px] font-extrabold text-red-600 hover:text-red-700 py-2 rounded-lg hover:bg-white/60 transition-all duration-300 flex items-center justify-center gap-1 border border-white/30">
-                    <i class="fas fa-trash text-[8px]"></i>
-                    Hapus
-                  </button>
+                  ${lockButton}
+                  ${editButton}
+                  ${deleteButton}
                 </div>
               </div>
             `;
@@ -2208,6 +2235,10 @@
         function confirmDeleteEvent(eventId) {
           const event = allEvents.find(e => e.id === eventId);
           const eventName = event ? event.title : 'event ini';
+          if (event && Number(event.is_locked) === 1) {
+            showError('Event terkunci dan tidak bisa dihapus');
+            return;
+          }
 
           showDeleteConfirm(
             `Apakah Anda yakin ingin menghapus "${eventName}"?`,
@@ -2216,6 +2247,52 @@
             },
             { id: eventId, name: eventName }
           );
+        }
+
+        function confirmUnlockTwice(eventName, onConfirm) {
+          showDeleteConfirm(
+            `Anda yakin ingin membuka kunci event "${eventName}"?`,
+            () => {
+              showDeleteConfirm(
+                `Konfirmasi terakhir: buka kunci event "${eventName}" sekarang?`,
+                onConfirm,
+                { id: eventName, name: eventName }
+              );
+            },
+            { id: eventName, name: eventName }
+          );
+        }
+
+        async function performToggleEventLock(eventId, nextLocked) {
+          try {
+            const response = await fetch(`/api/admin/events/${eventId}/lock`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ is_locked: nextLocked })
+            });
+            const data = await response.json();
+            if (data.success) {
+              showSuccess(data.message || 'Status lock diperbarui');
+              loadEvents();
+            } else {
+              showError('Gagal memperbarui lock: ' + (data.message || 'Error tidak diketahui'));
+            }
+          } catch (error) {
+            console.error('Error updating lock:', error);
+            showError('Gagal memperbarui lock: ' + error.message);
+          }
+        }
+
+        function toggleEventLock(eventId, nextLocked) {
+          const event = allEvents.find(e => e.id === eventId);
+          const eventName = event ? (event.title || 'event ini') : 'event ini';
+          if (nextLocked === 0) {
+            confirmUnlockTwice(eventName, () => {
+              performToggleEventLock(eventId, nextLocked);
+            });
+            return;
+          }
+          performToggleEventLock(eventId, nextLocked);
         }
 
         async function deleteEvent(eventId) {
@@ -2252,6 +2329,7 @@
           const effectiveType = primaryVariant?.event_type || event.event_type || 'berbayar';
           const effectivePriceOriginal = primaryVariant ? (primaryVariant.price_original || 0) : (event.price_original || 0);
           const effectivePricePromo = primaryVariant ? (primaryVariant.price_promo || 0) : (event.price_promo || 0);
+          const isLocked = Number(event.is_locked) === 1;
           const useMainPeriodForDetail = variants.length > 2;
           const effectiveStartDateRaw = useMainPeriodForDetail
             ? (event.start_date || primaryVariant?.start_date || null)
@@ -2297,6 +2375,19 @@
             const promoPrice = parseInt(effectivePricePromo || 0);
             priceBadge.className = 'px-3 py-1.5 rounded-lg text-[9px] font-extrabold gradient-berbayar text-white flex items-center gap-1 border border-white/30';
             priceBadge.innerHTML = `<i class="fas fa-tags"></i>Rp ${promoPrice.toLocaleString('id-ID')}`;
+          }
+
+          const lockBadge = document.getElementById('viewEventLockBadge');
+          if (lockBadge) {
+            if (isLocked) {
+              lockBadge.style.display = 'inline-flex';
+              lockBadge.className = 'px-3 py-1.5 rounded-lg text-[9px] font-extrabold bg-gray-900 text-white flex items-center gap-1 border border-white/30';
+              lockBadge.innerHTML = '<i class="fas fa-lock"></i>TERKUNCI';
+            } else {
+              lockBadge.style.display = 'none';
+              lockBadge.className = 'px-3 py-1.5 rounded-lg text-[9px] font-extrabold flex items-center gap-1 border border-white/30';
+              lockBadge.innerHTML = '';
+            }
           }
 
           const mainStartDateRaw = effectiveStartDateRaw || null;
@@ -2525,7 +2616,22 @@
             viewModalContent.appendChild(viewContactBlock);
           }
 
-          document.getElementById('editFromViewBtn').setAttribute('onclick', `closeViewModal(); editEvent(${event.id})`);
+          const editBtn = document.getElementById('editFromViewBtn');
+          if (editBtn) {
+            if (isLocked) {
+              editBtn.setAttribute('disabled', 'disabled');
+              editBtn.classList.add('opacity-50', 'cursor-not-allowed');
+              editBtn.removeAttribute('onclick');
+              editBtn.onclick = (e) => {
+                e.preventDefault();
+                showError('Event terkunci dan tidak bisa diedit');
+              };
+            } else {
+              editBtn.removeAttribute('disabled');
+              editBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+              editBtn.setAttribute('onclick', `closeViewModal(); editEvent(${event.id})`);
+            }
+          }
 
           document.getElementById('viewModal').classList.remove('hidden');
           document.getElementById('viewModal').classList.add('flex');
@@ -2589,6 +2695,10 @@
           const event = allEvents.find(e => e.id === eventId);
           if (!event) {
             showError('Event tidak ditemukan');
+            return;
+          }
+          if (Number(event.is_locked) === 1) {
+            showError('Event terkunci dan tidak bisa diedit');
             return;
           }
 

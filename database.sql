@@ -70,6 +70,7 @@ CREATE TABLE events (
     active_end_date DATE,
 
     status ENUM('draft','active','inactive') DEFAULT 'draft',
+    is_locked TINYINT(1) NOT NULL DEFAULT 0,
 
     created_by BIGINT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
