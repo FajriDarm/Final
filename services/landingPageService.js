@@ -56,6 +56,18 @@ async function buildLandingData(eventId) {
     testimonials = rows;
   } catch (_) {}
 
+  let activityDocs = [];
+  try {
+    const [rows] = await db.query(
+      `SELECT media_type, media_url, info_text, sort_order
+       FROM event_activity_docs
+       WHERE event_id = ?
+       ORDER BY sort_order ASC`,
+      [eventId],
+    );
+    activityDocs = rows;
+  } catch (_) {}
+
   let variants = [];
   try {
     try {
@@ -148,6 +160,12 @@ async function buildLandingData(eventId) {
       media_type: t.media_type,
       media_url: t.media_url,
       sort_order: t.sort_order,
+    })),
+    activity_docs: activityDocs.map((d) => ({
+      media_type: d.media_type,
+      media_url: d.media_url,
+      info_text: d.info_text,
+      sort_order: d.sort_order,
     })),
     variants: variants.map((v) => ({
       event_type: v.event_type,

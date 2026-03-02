@@ -479,6 +479,31 @@ const getEvents = async (req, res) => {
         });
       });
 
+      // activity docs
+      let activityDocs = [];
+      try {
+        const [rows] = await db.query(
+          `SELECT event_id, media_type, media_url, info_text, sort_order
+           FROM event_activity_docs
+           WHERE event_id IN (?)
+           ORDER BY sort_order ASC`,
+          [eventIds],
+        );
+        activityDocs = rows;
+      } catch (err) {
+        console.warn("event_activity_docs table not ready:", err.message);
+      }
+      const activityDocMap = {};
+      activityDocs.forEach((d) => {
+        if (!activityDocMap[d.event_id]) activityDocMap[d.event_id] = [];
+        activityDocMap[d.event_id].push({
+          media_type: d.media_type,
+          media_url: d.media_url,
+          info_text: d.info_text,
+          sort_order: d.sort_order,
+        });
+      });
+
       // event variants
       let variants = [];
       try {
@@ -570,6 +595,7 @@ const getEvents = async (req, res) => {
         e.benefits = benefitMap[e.id] || [];
         e.faqs = faqMap[e.id] || [];
         e.testimonials = testimonialMap[e.id] || [];
+        e.activity_docs = activityDocMap[e.id] || [];
         e.variants = variantMap[e.id] || [];
         const sec = sectionMap[e.id];
         if (sec) {
@@ -657,6 +683,7 @@ const createEvent = async (req, res) => {
       solutions,
       faqs,
       testimonials,
+      activity_docs,
       variants,
       active_start_date,
       active_end_date,
@@ -770,6 +797,29 @@ const createEvent = async (req, res) => {
         }
       } catch (err) {
         console.warn("Failed to insert testimonials:", err.message);
+      }
+    }
+
+    // activity docs
+    if (Array.isArray(activity_docs)) {
+      try {
+        for (let i = 0; i < activity_docs.length; i++) {
+          const d = activity_docs[i] || {};
+          let normalized = { heroMediaType: null, heroMediaUrl: null };
+          try {
+            normalized = normalizeMediaPayload(d.media_type, d.media_url);
+          } catch (e) {
+            continue;
+          }
+          if (!normalized.heroMediaUrl) continue;
+          await db.query(
+            `INSERT INTO event_activity_docs (event_id, media_type, media_url, info_text, sort_order)
+             VALUES (?, ?, ?, ?, ?)`,
+            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, d.info_text || null, i],
+          );
+        }
+      } catch (err) {
+        console.warn("Failed to insert activity docs:", err.message);
       }
     }
 
@@ -939,6 +989,7 @@ const updateEvent = async (req, res) => {
       solutions,
       faqs,
       testimonials,
+      activity_docs,
       variants,
     } = req.body;
 
@@ -1009,9 +1060,10 @@ const updateEvent = async (req, res) => {
     }
     try {
       await db.query("DELETE FROM event_testimonials WHERE event_id = ?", [eventId]);
+      await db.query("DELETE FROM event_activity_docs WHERE event_id = ?", [eventId]);
       await db.query("DELETE FROM event_variants WHERE event_id = ?", [eventId]);
     } catch (err) {
-      console.warn("Failed to clear testimonials/variants:", err.message);
+      console.warn("Failed to clear testimonials/activity docs/variants:", err.message);
     }
 
     // reinsert relationships same as create
@@ -1096,6 +1148,29 @@ const updateEvent = async (req, res) => {
         }
       } catch (err) {
         console.warn("Failed to update testimonials:", err.message);
+      }
+    }
+
+    // activity docs reinsertion
+    if (Array.isArray(activity_docs)) {
+      try {
+        for (let i = 0; i < activity_docs.length; i++) {
+          const d = activity_docs[i] || {};
+          let normalized = { heroMediaType: null, heroMediaUrl: null };
+          try {
+            normalized = normalizeMediaPayload(d.media_type, d.media_url);
+          } catch (e) {
+            continue;
+          }
+          if (!normalized.heroMediaUrl) continue;
+          await db.query(
+            `INSERT INTO event_activity_docs (event_id, media_type, media_url, info_text, sort_order)
+             VALUES (?, ?, ?, ?, ?)`,
+            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, d.info_text || null, i],
+          );
+        }
+      } catch (err) {
+        console.warn("Failed to update activity docs:", err.message);
       }
     }
 
@@ -1229,6 +1304,19 @@ const getEventById = async (req, res) => {
       event.testimonials = testimonials;
     } catch (err) {
       event.testimonials = [];
+    }
+
+    try {
+      const [activityDocs] = await db.query(
+        `SELECT media_type, media_url, info_text, sort_order
+         FROM event_activity_docs
+         WHERE event_id = ?
+         ORDER BY sort_order ASC`,
+        [eventId],
+      );
+      event.activity_docs = activityDocs;
+    } catch (err) {
+      event.activity_docs = [];
     }
 
     try {

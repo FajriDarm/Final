@@ -290,48 +290,13 @@
             <div class="max-w-2xl mx-auto">
                 <h2 class="font-serif text-xl font-bold text-center text-earth-900 mb-6">Dokumentasi Aktivitas Jamaah
                 </h2>
-                <div class="grid grid-cols-2 gap-2">
+                <div id="lpActivityDocsList" class="grid grid-cols-2 gap-2">
                     <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
-                        <img src="https://i.ibb.co.com/vxf4chgB/Copy-of-IMG-9530-2.webp" alt="Tawaf"
+                        <img src="https://i.ibb.co.com/vxf4chgB/Copy-of-IMG-9530-2.webp" alt="Dokumentasi Jamaah"
                             class="w-full h-full object-cover">
                         <div
                             class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
                             Khusyuk Beribadah</div>
-                    </div>
-                    <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
-                        <img src="https://i.ibb.co.com/tPYdwGyZ/Salinan-45cd16f2-2839-4291-8322-6a3038741998.webp"
-                            alt="Raudha" class="w-full h-full object-cover">
-                        <div
-                            class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
-                            Ziarah di Raudhah</div>
-                    </div>
-                    <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
-                        <img src="https://i.ibb.co.com/FqYmYsHr/Copy-of-IMG-0459.webp" alt="Makan Bersama"
-                            class="w-full h-full object-cover">
-                        <div
-                            class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
-                            Makanan Catering Indonesia</div>
-                    </div>
-                    <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
-                        <img src="https://i.ibb.co.com/7dfSDrWp/hotel.webp" alt="View Hotel"
-                            class="w-full h-full object-cover">
-                        <div
-                            class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
-                            View Hotel Dekat Masjid</div>
-                    </div>
-                    <div class="relative group overflow-hidden rounded-lg aspect-[3/4]">
-                        <img src="https://kimi-web-img.moonshot.cn/img/umrah-alamanah.com/bf08f61eb7dae4a16f7852318dcdffbbc29a7379.jpg"
-                            alt="Bus" class="w-full h-full object-cover">
-                        <div
-                            class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
-                            Transportasi Nyaman</div>
-                    </div>
-                    <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
-                        <img src="https://i.ibb.co.com/7tNY8yb0/Copy-of-IMG-1249.webp" alt="Kebersamaan Jamaah"
-                            class="w-full h-full object-cover">
-                        <div
-                            class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">
-                            Kebersamaan Jamaah</div>
                     </div>
                 </div>
             </div>
@@ -868,6 +833,30 @@
                     return `
                         <div class="relative overflow-hidden rounded-lg bg-earth-50 p-2 min-h-[260px] flex items-center justify-center pointer-events-none">
                             <img src="${url}" alt="Testimoni ${idx + 1}" class="max-w-full max-h-[360px] object-contain rounded">
+                        </div>
+                    `;
+                }).join("");
+            }
+
+            const activityDocsList = document.getElementById("lpActivityDocsList");
+            const activityDocs = Array.isArray(data.activity_docs) ? data.activity_docs.filter((d) => d && d.media_url) : [];
+            if (activityDocsList && activityDocs.length) {
+                activityDocsList.innerHTML = activityDocs.map((d, idx) => {
+                    const type = String(d.media_type || "").toLowerCase();
+                    const url = esc(d.media_url);
+                    const info = esc(d.info_text || "");
+                    if (type === "video") {
+                        return `
+                            <div class="relative group overflow-hidden rounded-lg aspect-[3/4] bg-black p-1">
+                                <video src="${url}" class="w-full h-full object-cover rounded" controls preload="metadata"></video>
+                                ${info ? `<div class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[10px] p-2 text-center font-medium">${info}</div>` : ""}
+                            </div>
+                        `;
+                    }
+                    return `
+                        <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
+                            <img src="${url}" alt="Dokumentasi Jamaah ${idx + 1}" class="w-full h-full object-cover">
+                            ${info ? `<div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">${info}</div>` : ""}
                         </div>
                     `;
                 }).join("");
