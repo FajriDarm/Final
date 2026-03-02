@@ -74,7 +74,7 @@ CREATE TABLE events (
     affiliate_enabled BOOLEAN DEFAULT FALSE,
 
     -- ADMIN KONFIRMASI
-    admin_whatsapp VARCHAR(20),
+    admin_whatsapp VARCHAR(255),
 
     -- WAKTU EVENT
     start_date DATE,

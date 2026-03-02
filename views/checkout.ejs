@@ -787,13 +787,17 @@
     });
 
     // Proceed with actual submission
-    function normalizeWhatsappNumber(raw) {
+    function resolveAdminContactTarget(raw) {
       if (!raw) return '';
-      const digits = String(raw).replace(/[^\d]/g, '');
+      const value = String(raw).trim();
+      if (!value) return '';
+      if (/^https?:\/\//i.test(value)) return value;
+
+      const digits = value.replace(/[^\d]/g, '');
       if (!digits) return '';
-      if (digits.startsWith('0')) return `62${digits.slice(1)}`;
-      if (digits.startsWith('62')) return digits;
-      return digits;
+      if (digits.startsWith('0')) return `https://wa.me/62${digits.slice(1)}`;
+      if (digits.startsWith('62')) return `https://wa.me/${digits}`;
+      return `https://wa.me/${digits}`;
     }
 
     document.getElementById('proceedConfirmBtn').addEventListener('click', async function () {
@@ -814,13 +818,13 @@
         return;
       }
 
-      const normalized = normalizeWhatsappNumber(eventAdminWhatsapp);
-      if (!normalized) {
-        alert('Nomor WhatsApp belum diatur untuk event ini.');
+      const contactTarget = resolveAdminContactTarget(eventAdminWhatsapp);
+      if (!contactTarget) {
+        alert('Kontak admin belum diatur untuk event ini.');
         return;
       }
 
-      window.location.href = `https://wa.me/${normalized}`;
+      window.location.href = contactTarget;
     });
   </script>
 </body>

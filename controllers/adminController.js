@@ -60,6 +60,36 @@ function normalizeMediaPayload(mediaTypeRaw, mediaUrlRaw) {
   return sanitizeHeroMediaInput(mediaTypeRaw, mediaUrlRaw);
 }
 
+function isValidAdminContactValue(raw) {
+  if (!raw) return true;
+  const value = String(raw).trim();
+  const phonePattern = /^[0-9+\-\s()]{3,20}$/;
+  const urlPattern = /^https?:\/\/[^\s]+$/i;
+  return phonePattern.test(value) || urlPattern.test(value);
+}
+
+let adminContactColumnReady = false;
+let ensureAdminContactColumnPromise = null;
+
+async function ensureAdminContactColumnCapacity() {
+  if (adminContactColumnReady) return;
+  if (ensureAdminContactColumnPromise) {
+    await ensureAdminContactColumnPromise;
+    return;
+  }
+
+  ensureAdminContactColumnPromise = (async () => {
+    await db.query(`ALTER TABLE events MODIFY COLUMN admin_whatsapp VARCHAR(255) NULL`);
+    adminContactColumnReady = true;
+  })();
+
+  try {
+    await ensureAdminContactColumnPromise;
+  } finally {
+    ensureAdminContactColumnPromise = null;
+  }
+}
+
 const getActiveEvents = async (req, res) => {
   try {
     await syncEventStatusesByActivePeriod();
@@ -630,6 +660,7 @@ const getEvents = async (req, res) => {
 const createEvent = async (req, res) => {
   try {
     await ensureEventActivePeriodColumns();
+    await ensureAdminContactColumnCapacity();
 
     // Basic validation
     const allowedTypes = ['gratis', 'berbayar'];
@@ -658,9 +689,9 @@ const createEvent = async (req, res) => {
       }
     }
 
-    // sanitize whatsapp (digits only)
-    if (req.body.admin_whatsapp && !/^[0-9+\-\s()]{3,20}$/.test(req.body.admin_whatsapp)) {
-      return res.status(400).json({ success: false, message: 'Invalid admin_whatsapp format' });
+    const adminContact = typeof req.body.admin_whatsapp === "string" ? req.body.admin_whatsapp.trim() : "";
+    if (adminContact && !isValidAdminContactValue(adminContact)) {
+      return res.status(400).json({ success: false, message: "Invalid admin_whatsapp format. Use phone number or full URL." });
     }
 
     const {
@@ -730,7 +761,7 @@ const createEvent = async (req, res) => {
       ignoredBankAccountName,
       ignoredBankAccountNumber,
       ignoredAccountHolderName,
-      req.body.admin_whatsapp || "",
+      adminContact,
       req.body.start_date,
       req.body.end_date,
       active_start_date || null,
@@ -964,6 +995,7 @@ const createEvent = async (req, res) => {
 const updateEvent = async (req, res) => {
   try {
     await ensureEventActivePeriodColumns();
+    await ensureAdminContactColumnCapacity();
 
     const { eventId } = req.params;
     const [lockRows] = await db.query("SELECT is_locked FROM events WHERE id = ? LIMIT 1", [eventId]);
@@ -1025,8 +1057,9 @@ const updateEvent = async (req, res) => {
     if (status && !allowedStatus.includes(status)) {
       return res.status(400).json({ success: false, message: 'Invalid status' });
     }
-    if (req.body.admin_whatsapp && !/^[0-9+\-\s()]{3,20}$/.test(req.body.admin_whatsapp)) {
-      return res.status(400).json({ success: false, message: 'Invalid admin_whatsapp format' });
+    const adminContact = typeof req.body.admin_whatsapp === "string" ? req.body.admin_whatsapp.trim() : "";
+    if (adminContact && !isValidAdminContactValue(adminContact)) {
+      return res.status(400).json({ success: false, message: "Invalid admin_whatsapp format. Use phone number or full URL." });
     }
 
     await db.query(
@@ -1045,7 +1078,7 @@ const updateEvent = async (req, res) => {
         null,
         null,
         null,
-        admin_whatsapp || "",
+        adminContact,
         start_date,
         end_date,
         active_start_date || null,
