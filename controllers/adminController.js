@@ -483,7 +483,7 @@ const getEvents = async (req, res) => {
       let activityDocs = [];
       try {
         const [rows] = await db.query(
-          `SELECT event_id, media_type, media_url, info_text, sort_order
+          `SELECT event_id, media_type, media_url, info_text, layout_orientation, sort_order
            FROM event_activity_docs
            WHERE event_id IN (?)
            ORDER BY sort_order ASC`,
@@ -500,6 +500,7 @@ const getEvents = async (req, res) => {
           media_type: d.media_type,
           media_url: d.media_url,
           info_text: d.info_text,
+          layout_orientation: d.layout_orientation || "portrait",
           sort_order: d.sort_order,
         });
       });
@@ -812,10 +813,11 @@ const createEvent = async (req, res) => {
             continue;
           }
           if (!normalized.heroMediaUrl) continue;
+          const layoutOrientation = d.layout_orientation === "landscape" ? "landscape" : "portrait";
           await db.query(
-            `INSERT INTO event_activity_docs (event_id, media_type, media_url, info_text, sort_order)
-             VALUES (?, ?, ?, ?, ?)`,
-            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, d.info_text || null, i],
+            `INSERT INTO event_activity_docs (event_id, media_type, media_url, info_text, layout_orientation, sort_order)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, d.info_text || null, layoutOrientation, i],
           );
         }
       } catch (err) {
@@ -1170,10 +1172,11 @@ const updateEvent = async (req, res) => {
             continue;
           }
           if (!normalized.heroMediaUrl) continue;
+          const layoutOrientation = d.layout_orientation === "landscape" ? "landscape" : "portrait";
           await db.query(
-            `INSERT INTO event_activity_docs (event_id, media_type, media_url, info_text, sort_order)
-             VALUES (?, ?, ?, ?, ?)`,
-            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, d.info_text || null, i],
+            `INSERT INTO event_activity_docs (event_id, media_type, media_url, info_text, layout_orientation, sort_order)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [eventId, normalized.heroMediaType || "image", normalized.heroMediaUrl, d.info_text || null, layoutOrientation, i],
           );
         }
       } catch (err) {
@@ -1315,7 +1318,7 @@ const getEventById = async (req, res) => {
 
     try {
       const [activityDocs] = await db.query(
-        `SELECT media_type, media_url, info_text, sort_order
+        `SELECT media_type, media_url, info_text, layout_orientation, sort_order
          FROM event_activity_docs
          WHERE event_id = ?
          ORDER BY sort_order ASC`,

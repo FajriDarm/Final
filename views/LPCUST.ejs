@@ -845,16 +845,18 @@
                     const type = String(d.media_type || "").toLowerCase();
                     const url = esc(d.media_url);
                     const info = esc(d.info_text || "");
+                    const orientation = d.layout_orientation === "landscape" ? "landscape" : "portrait";
+                    const aspectClass = orientation === "landscape" ? "aspect-[4/3] col-span-2 sm:col-span-1" : "aspect-[3/4]";
                     if (type === "video") {
                         return `
-                            <div class="relative group overflow-hidden rounded-lg aspect-[3/4] bg-black p-1">
+                            <div class="relative group overflow-hidden rounded-lg ${aspectClass} bg-black p-1">
                                 <video src="${url}" class="w-full h-full object-cover rounded" controls preload="metadata"></video>
                                 ${info ? `<div class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[10px] p-2 text-center font-medium">${info}</div>` : ""}
                             </div>
                         `;
                     }
                     return `
-                        <div class="relative group overflow-hidden rounded-lg aspect-[3/4] pointer-events-none">
+                        <div class="relative group overflow-hidden rounded-lg ${aspectClass} pointer-events-none">
                             <img src="${url}" alt="Dokumentasi Jamaah ${idx + 1}" class="w-full h-full object-cover">
                             ${info ? `<div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">${info}</div>` : ""}
                         </div>
@@ -878,8 +880,16 @@
                     const shown = (!free && pp > 0 && pp < po) ? pp : po;
                     const variantStart = v.start_date || eventData.start_date || null;
                     const variantEnd = v.end_date || eventData.end_date || null;
+                    const logoUrl = String(v.logo_media_url || "").trim();
+                    const logoType = String(v.logo_media_type || detectHeroMediaTypeFromUrl(logoUrl) || "image").toLowerCase();
+                    const logoBlock = logoUrl
+                        ? (logoType === "video"
+                            ? `<div class="mb-3 overflow-hidden rounded-lg border border-earth-200 bg-black"><video src="${esc(logoUrl)}" class="w-full h-auto" controls preload="metadata"></video></div>`
+                            : `<div class="mb-3 overflow-hidden rounded-lg border border-earth-200 bg-white"><img src="${esc(logoUrl)}" alt="Logo ${esc(v.title || "varian")}" class="w-full h-auto"></div>`)
+                        : "";
                     return `
                         <div class="${i === 0 ? "border-2 border-brand-brown bg-brand-light shadow-md" : "border border-earth-200"} rounded-xl p-5">
+                            ${logoBlock}
                             <div class="flex justify-between items-start mb-2">
                                 <div>
                                     <span class="${i === 0 ? "bg-brand-brown/10 text-brand-brown" : "bg-earth-100 text-earth-800"} text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">

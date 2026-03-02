@@ -59,7 +59,7 @@ async function buildLandingData(eventId) {
   let activityDocs = [];
   try {
     const [rows] = await db.query(
-      `SELECT media_type, media_url, info_text, sort_order
+      `SELECT media_type, media_url, info_text, layout_orientation, sort_order
        FROM event_activity_docs
        WHERE event_id = ?
        ORDER BY sort_order ASC`,
@@ -165,6 +165,7 @@ async function buildLandingData(eventId) {
       media_type: d.media_type,
       media_url: d.media_url,
       info_text: d.info_text,
+      layout_orientation: d.layout_orientation || "portrait",
       sort_order: d.sort_order,
     })),
     variants: variants.map((v) => ({
