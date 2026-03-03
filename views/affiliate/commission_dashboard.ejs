@@ -1342,32 +1342,6 @@
             </div>
           </div>
 
-          <!-- Pagination Premium -->
-          <div class="mt-8 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span
-                class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
-                Menampilkan 1 - 10 dari <span id="total-pagination-count">0</span> komisi
-              </span>
-            </div>
-            <div class="flex items-center gap-2">
-              <button
-                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all disabled:opacity-50"
-                disabled>
-                <i class="fas fa-chevron-left text-xs"></i>
-              </button>
-              <button
-                class="w-8 h-8 rounded-lg gradient-primary text-white flex items-center justify-center text-xs font-bold shadow-lg">1</button>
-              <button
-                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">2</button>
-              <button
-                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">3</button>
-              <button
-                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all">
-                <i class="fas fa-chevron-right text-xs"></i>
-              </button>
-            </div>
-          </div>
         </div>
       </main>
 
@@ -1881,8 +1855,6 @@
             if (data.success && data.data) {
               const container = document.getElementById('withdrawalHistoryContainer');
               document.getElementById('historyTotal').textContent = data.data.length;
-              document.getElementById('total-pagination-count').textContent = data.data.length;
-
               if (data.data.length === 0) {
                 container.innerHTML = `
                   <div class="text-center py-12">

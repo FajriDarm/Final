@@ -556,28 +556,6 @@
                   </div>
                 </div>
 
-                <div class="mt-4 pt-3 border-t border-emerald-100/50">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-1.5">
-                      <div class="relative">
-                        <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                          <i class="fas fa-money-bill-wave text-emerald-600 text-[10px]"></i>
-                        </div>
-                        <span
-                          class="absolute -top-1 -right-1 w-2 h-2 bg-amber-500 rounded-full border border-white"></span>
-                      </div>
-                      <div>
-                        <span class="text-[8px] font-medium text-gray-500">Total Jumlah</span>
-                        <p class="text-xs font-extrabold text-emerald-700" id="pending-amount">Rp 0</p>
-                      </div>
-                    </div>
-
-                    <div class="flex items-center gap-1">
-                      <div class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
-                      <span class="text-[7px] font-bold text-amber-700">Pending</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -622,28 +600,6 @@
                   </div>
                 </div>
 
-                <div class="mt-4 pt-3 border-t border-emerald-100/50">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-1.5">
-                      <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                        <i class="fas fa-chart-line text-emerald-600 text-[10px]"></i>
-                      </div>
-                      <div>
-                        <span class="text-[8px] font-medium text-gray-500">Total Jumlah</span>
-                        <p class="text-xs font-extrabold text-emerald-700" id="approved-amount">Rp 0</p>
-                      </div>
-                    </div>
-
-                    <div class="w-12 h-12">
-                      <svg viewBox="0 0 36 36" class="w-12 h-12">
-                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                          fill="none" stroke="#e2e8f0" stroke-width="3" stroke-dasharray="85, 100" />
-                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                          fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="85, 100" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -688,24 +644,6 @@
                   </div>
                 </div>
 
-                <div class="mt-4 pt-3 border-t border-emerald-100/50">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-1.5">
-                      <div class="w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                        <i class="fas fa-calendar-alt text-emerald-600 text-[10px]"></i>
-                      </div>
-                      <div>
-                        <span class="text-[8px] font-medium text-gray-500">Total Jumlah</span>
-                        <p class="text-xs font-extrabold text-emerald-700" id="rejected-amount">Rp 0</p>
-                      </div>
-                    </div>
-
-                    <div class="flex items-center gap-1">
-                      <i class="fas fa-trend-down text-red-600 text-xs"></i>
-                      <span class="text-[7px] font-bold text-red-700">-2.5%</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -875,33 +813,6 @@
             </div>
           </div>
 
-          <!-- Pagination Premium -->
-          <div class="mt-8 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span
-                class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
-                Menampilkan <span id="startEntry">1</span> - <span id="endEntry">10</span> dari <span
-                  id="totalEntries">0</span> penarikan
-              </span>
-            </div>
-            <div class="flex items-center gap-2">
-              <button
-                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all disabled:opacity-50"
-                disabled>
-                <i class="fas fa-chevron-left text-xs"></i>
-              </button>
-              <button
-                class="w-8 h-8 rounded-lg gradient-primary text-white flex items-center justify-center text-xs font-bold shadow-lg">1</button>
-              <button
-                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">2</button>
-              <button
-                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all text-xs font-bold">3</button>
-              <button
-                class="w-8 h-8 rounded-lg bg-white/60 border border-white/50 flex items-center justify-center text-emerald-700 hover:bg-white/80 transition-all">
-                <i class="fas fa-chevron-right text-xs"></i>
-              </button>
-            </div>
-          </div>
         </div>
       </main>
 
@@ -1164,18 +1075,6 @@
             // Perbarui statistik
             document.getElementById(countId).textContent = result.data.length;
             document.getElementById(badgeId).textContent = result.data.length;
-
-            // Hitung total jumlah
-            const totalAmount = result.data.reduce((sum, payout) => {
-              return sum + parseFloat(payout.total_amount || 0);
-            }, 0);
-
-            document.getElementById(status + "-amount").textContent =
-              "Rp " + totalAmount.toLocaleString("id-ID");
-
-            // Update total entries untuk pagination
-            document.getElementById('totalEntries').textContent = result.data.length;
-            document.getElementById('endEntry').textContent = Math.min(10, result.data.length);
 
             if (result.data.length === 0) {
               document.getElementById(listId).innerHTML = `
