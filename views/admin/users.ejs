@@ -699,11 +699,11 @@
                       Manajemen Pengguna
                     </h1>
                     <span
-                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-sm font-bold tracking-wider shadow-lg">
                       SUPER ADMIN
                     </span>
                   </div>
-                  <p class="text-sm text-emerald-700 font-medium">Kelola semua pengguna sistem Affillink</p>
+                  <p class="text-base text-emerald-700 font-medium">Kelola semua pengguna sistem Affillink</p>
                 </div>
               </div>
             </div>
@@ -715,8 +715,8 @@
                   <i class="fas fa-calendar-alt text-white text-sm"></i>
                 </div>
                 <div>
-                  <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
-                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                  <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                  <p class="text-sm font-bold text-gray-800 whitespace-nowrap">
                     <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                   </p>
                 </div>
@@ -729,8 +729,8 @@
                   <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
                 </div>
                 <div>
-                  <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
-                  <p class="text-xs font-bold text-white">Updates Real-time</p>
+                  <p class="text-xs text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                  <p class="text-sm font-bold text-white">Updates Real-time</p>
                 </div>
               </div>
             </div>
@@ -758,20 +758,20 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Total Pengguna</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Total Pengguna</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-4xl font-black text-gray-900" id="totalUsers">-</p>
-                      <span class="text-xs font-bold text-emerald-600">users</span>
+                      <span class="text-sm font-bold text-emerald-600">users</span>
                     </div>
 
                     <div class="flex items-center gap-1.5 mt-2">
                       <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-arrow-up text-[8px] text-green-600"></i>
-                        <span class="text-[8px] font-extrabold text-green-700">+12.5%</span>
+                        <i class="fas fa-arrow-up text-xs text-green-600"></i>
+                        <span class="text-xs font-extrabold text-green-700">+12.5%</span>
                       </div>
-                      <span class="text-[7px] text-gray-500">vs bulan lalu</span>
+                      <span class="text-xs text-gray-500">vs bulan lalu</span>
                     </div>
                   </div>
 
@@ -803,18 +803,18 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Pengguna Aktif</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Pengguna Aktif</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-4xl font-black text-gray-900" id="activeUsers">-</p>
-                      <span class="text-xs font-bold text-emerald-600">active</span>
+                      <span class="text-sm font-bold text-emerald-600">active</span>
                     </div>
 
                     <div class="flex items-center gap-1.5 mt-2">
                       <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-check-circle text-[8px] text-green-600"></i>
-                        <span class="text-[8px] font-extrabold text-green-700">85% aktif</span>
+                        <i class="fas fa-check-circle text-xs text-green-600"></i>
+                        <span class="text-xs font-extrabold text-green-700">85% aktif</span>
                       </div>
                     </div>
                   </div>
@@ -847,18 +847,18 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Affiliates</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Affiliates</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-4xl font-black text-gray-900" id="affiliateUsers">-</p>
-                      <span class="text-xs font-bold text-emerald-600">affiliates</span>
+                      <span class="text-sm font-bold text-emerald-600">affiliates</span>
                     </div>
 
                     <div class="flex items-center gap-1.5 mt-2">
                       <div class="px-2 py-1 bg-orange-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-trophy text-[8px] text-orange-600"></i>
-                        <span class="text-[8px] font-extrabold text-orange-700" id="activeAffiliates">- aktif</span>
+                        <i class="fas fa-trophy text-xs text-orange-600"></i>
+                        <span class="text-xs font-extrabold text-orange-700" id="activeAffiliates">- aktif</span>
                       </div>
                     </div>
                   </div>
@@ -891,18 +891,18 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Affiliates Tertunda</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Affiliates Tertunda</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-4xl font-black text-gray-900" id="pendingCount">-</p>
-                      <span class="text-xs font-bold text-emerald-600">pending</span>
+                      <span class="text-sm font-bold text-emerald-600">pending</span>
                     </div>
 
                     <div class="flex items-center gap-1.5 mt-2">
                       <div class="px-2 py-1 bg-amber-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-clock text-[8px] text-amber-600"></i>
-                        <span class="text-[8px] font-extrabold text-amber-700">Butuh persetujuan</span>
+                        <i class="fas fa-clock text-xs text-amber-600"></i>
+                        <span class="text-xs font-extrabold text-amber-700">Butuh persetujuan</span>
                       </div>
                     </div>
                   </div>
@@ -952,7 +952,7 @@
                       <option value="user">Pengguna</option>
                     </select>
                     <i
-                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-sm"></i>
                   </div>
 
                   <div class="relative">
@@ -965,19 +965,19 @@
                       <option value="inactive">Tidak Aktif</option>
                     </select>
                     <i
-                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-sm"></i>
                   </div>
 
                   <button onclick="clearFilters()"
                     class="px-4 py-3 bg-white/60 backdrop-blur border border-white/50 text-emerald-700 hover:bg-white/80 rounded-xl transition-all duration-300 flex items-center gap-2 text-sm font-bold group">
-                    <i class="fas fa-redo group-hover:rotate-180 transition-transform duration-500 text-xs"></i>
+                    <i class="fas fa-redo group-hover:rotate-180 transition-transform duration-500 text-sm"></i>
                     <span>Hapus</span>
                   </button>
                 </div>
               </div>
 
               <!-- Active Filters Badge (Premium) -->
-              <div class="mt-3 flex items-center gap-2 text-[8px]">
+              <div class="mt-3 flex items-center gap-2 text-xs">
                 <!-- Filter Aktif dihapus sesuai permintaan -->
               </div>
             </div>
@@ -998,8 +998,8 @@
                     <span class="w-2 h-2 bg-green-500 rounded-full pulse-premium"></span>
                   </div>
                 </div>
-                <p class="text-base font-extrabold text-gray-900 mb-1">Memuat Pengguna</p>
-                <p class="text-xs text-emerald-700 font-medium">Mohon tunggu sebentar...</p>
+                <p class="text-lg font-extrabold text-gray-900 mb-1">Memuat Pengguna</p>
+                <p class="text-sm text-emerald-700 font-medium">Mohon tunggu sebentar...</p>
               </div>
             </div>
           </div>
@@ -1019,8 +1019,8 @@
                 <i class="fas fa-user text-white text-sm"></i>
               </div>
               <div>
-                <h3 class="text-base font-extrabold text-white">Detail Pengguna</h3>
-                <p class="text-emerald-100 text-xs mt-0.5">Informasi lengkap pengguna</p>
+                <h3 class="text-lg font-extrabold text-white">Detail Pengguna</h3>
+                <p class="text-emerald-100 text-sm mt-0.5">Informasi lengkap pengguna</p>
               </div>
             </div>
             <button onclick="closeViewModal()"
@@ -1052,11 +1052,11 @@
                     <i class="fas fa-user-tag text-emerald-600 text-sm"></i>
                   </div>
                   <div>
-                    <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Peran</p>
+                    <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Peran</p>
                     <p id="viewUserRole" class="text-sm font-extrabold text-gray-900"></p>
                   </div>
                 </div>
-                <span id="viewRoleBadge" class="px-3 py-1.5 rounded-lg text-[10px] font-extrabold"></span>
+                <span id="viewRoleBadge" class="px-3 py-1.5 rounded-lg text-xs font-extrabold"></span>
               </div>
 
               <!-- Status -->
@@ -1067,12 +1067,12 @@
                     <i class="fas fa-toggle-on text-emerald-600 text-sm"></i>
                   </div>
                   <div>
-                    <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Status Akun</p>
+                    <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Status Akun</p>
                     <p id="viewUserStatus" class="text-sm font-extrabold text-gray-900"></p>
                   </div>
                 </div>
                 <span id="viewStatusBadge"
-                  class="px-3 py-1.5 rounded-lg text-[10px] font-extrabold flex items-center gap-1"></span>
+                  class="px-3 py-1.5 rounded-lg text-xs font-extrabold flex items-center gap-1"></span>
               </div>
 
               <!-- Status Affiliate -->
@@ -1083,12 +1083,12 @@
                     <i class="fas fa-user-tie text-emerald-600 text-sm"></i>
                   </div>
                   <div>
-                    <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Status Affiliate</p>
+                    <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Status Affiliate</p>
                     <p id="viewAffiliateStatus" class="text-sm font-extrabold text-gray-900"></p>
                   </div>
                 </div>
                 <span id="viewAffiliateBadge"
-                  class="px-3 py-1.5 rounded-lg text-[10px] font-extrabold flex items-center gap-1"></span>
+                  class="px-3 py-1.5 rounded-lg text-xs font-extrabold flex items-center gap-1"></span>
               </div>
 
               <!-- Tanggal Bergabung -->
@@ -1099,7 +1099,7 @@
                     <i class="fas fa-calendar-plus text-emerald-600 text-sm"></i>
                   </div>
                   <div>
-                    <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Bergabung</p>
+                    <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Bergabung</p>
                     <p id="viewJoinDate" class="text-sm font-extrabold text-gray-900"></p>
                   </div>
                 </div>
@@ -1135,8 +1135,8 @@
                 <i class="fas fa-user-edit text-white text-sm"></i>
               </div>
               <div>
-                <h3 class="text-base font-extrabold text-white">Edit Pengguna</h3>
-                <p class="text-emerald-100 text-xs mt-0.5">Perbarui informasi pengguna</p>
+                <h3 class="text-lg font-extrabold text-white">Edit Pengguna</h3>
+                <p class="text-emerald-100 text-sm mt-0.5">Perbarui informasi pengguna</p>
               </div>
             </div>
             <button onclick="closeEditModal()"
@@ -1163,8 +1163,8 @@
               <div class="space-y-4">
                 <!-- Nama -->
                 <div>
-                  <label class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
-                    <i class="fas fa-user text-emerald-600 text-xs"></i>
+                  <label class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
+                    <i class="fas fa-user text-emerald-600 text-sm"></i>
                     Nama
                   </label>
                   <input type="text" id="editName" required
@@ -1173,8 +1173,8 @@
 
                 <!-- Email -->
                 <div>
-                  <label class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
-                    <i class="fas fa-envelope text-emerald-600 text-xs"></i>
+                  <label class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
+                    <i class="fas fa-envelope text-emerald-600 text-sm"></i>
                     Email
                   </label>
                   <input type="email" id="editEmail" required
@@ -1183,8 +1183,8 @@
 
                 <!-- Peran -->
                 <div>
-                  <label class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
-                    <i class="fas fa-user-tag text-emerald-600 text-xs"></i>
+                  <label class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
+                    <i class="fas fa-user-tag text-emerald-600 text-sm"></i>
                     Peran
                   </label>
                   <div class="relative">
@@ -1197,14 +1197,14 @@
                       <option value="affiliate">Affiliate</option>
                     </select>
                     <i
-                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-sm"></i>
                   </div>
                 </div>
 
                 <!-- Status -->
                 <div>
-                  <label class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
-                    <i class="fas fa-toggle-on text-emerald-600 text-xs"></i>
+                  <label class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
+                    <i class="fas fa-toggle-on text-emerald-600 text-sm"></i>
                     Status
                   </label>
                   <div class="grid grid-cols-2 gap-3">
@@ -1213,9 +1213,9 @@
                       <div
                         class="p-3 border-2 border-white/50 rounded-xl hover:border-emerald-300 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/50 transition-all duration-300 text-center bg-white/40 backdrop-blur">
                         <div class="w-7 h-7 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-1.5">
-                          <i class="fas fa-check-circle text-emerald-600 text-xs"></i>
+                          <i class="fas fa-check-circle text-emerald-600 text-sm"></i>
                         </div>
-                        <p class="text-xs font-extrabold text-gray-900">Aktif</p>
+                        <p class="text-sm font-extrabold text-gray-900">Aktif</p>
                       </div>
                     </label>
                     <label class="cursor-pointer type-radio">
@@ -1223,9 +1223,9 @@
                       <div
                         class="p-3 border-2 border-white/50 rounded-xl hover:border-red-300 peer-checked:border-red-500 peer-checked:bg-red-50/50 transition-all duration-300 text-center bg-white/40 backdrop-blur">
                         <div class="w-7 h-7 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-1.5">
-                          <i class="fas fa-times-circle text-red-600 text-xs"></i>
+                          <i class="fas fa-times-circle text-red-600 text-sm"></i>
                         </div>
-                        <p class="text-xs font-extrabold text-gray-900">Tidak Aktif</p>
+                        <p class="text-sm font-extrabold text-gray-900">Tidak Aktif</p>
                       </div>
                     </label>
                   </div>
@@ -1233,8 +1233,8 @@
 
                 <!-- Status Affiliate -->
                 <div id="affiliateStatusSection" class="hidden">
-                  <label class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
-                    <i class="fas fa-user-tie text-emerald-600 text-xs"></i>
+                  <label class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1.5">
+                    <i class="fas fa-user-tie text-emerald-600 text-sm"></i>
                     Status Affiliate
                   </label>
                   <div class="relative">
@@ -1246,7 +1246,7 @@
                       <option value="rejected">Ditolak</option>
                     </select>
                     <i
-                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                      class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-sm"></i>
                   </div>
                 </div>
               </div>
@@ -1666,67 +1666,67 @@
               <div class="flex items-center justify-between mb-3">
                 <div>
                   <h3 class="font-extrabold text-base text-gray-900 mb-0.5 line-clamp-1">${user.name}</h3>
-                  <div class="flex items-center gap-1.5 text-xs text-emerald-700">
-                    <i class="fas fa-envelope text-emerald-400 text-[10px]"></i>
+                  <div class="flex items-center gap-1.5 text-sm text-emerald-700">
+                    <i class="fas fa-envelope text-emerald-400 text-xs"></i>
                     <span class="truncate max-w-[120px] font-medium">${user.email}</span>
                   </div>
                 </div>
-                <span class="px-2.5 py-1.5 rounded-lg text-[9px] font-extrabold ${roleConfig.text} ${roleConfig.bg} flex items-center gap-1 shadow-md border border-white/20">
-                  <i class="${roleConfig.icon} text-[8px]"></i>
+                <span class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold ${roleConfig.text} ${roleConfig.bg} flex items-center gap-1 shadow-md border border-white/20">
+                  <i class="${roleConfig.icon} text-xs"></i>
                   ${roleConfig.badge}
                 </span>
               </div>
 
               <div class="space-y-2.5">
-                <div class="flex items-center justify-between text-xs">
+                <div class="flex items-center justify-between text-sm">
                   <span class="text-emerald-700 font-semibold flex items-center gap-1.5">
-                    <i class="fas fa-id-card text-emerald-400 text-[10px]"></i>
+                    <i class="fas fa-id-card text-emerald-400 text-xs"></i>
                     ID
                   </span>
-                  <span class="font-extrabold text-gray-900 bg-white/60 px-2.5 py-1 rounded-lg text-[10px] border border-white/60">#${user.id}</span>
+                  <span class="font-extrabold text-gray-900 bg-white/60 px-2.5 py-1 rounded-lg text-xs border border-white/60">#${user.id}</span>
                 </div>
 
-                <div class="flex items-center justify-between text-xs">
+                <div class="flex items-center justify-between text-sm">
                   <span class="text-emerald-700 font-semibold flex items-center gap-1.5">
-                    <i class="fas fa-user-tie text-emerald-400 text-[10px]"></i>
+                    <i class="fas fa-user-tie text-emerald-400 text-xs"></i>
                     Affiliate
                   </span>
-                  <span class="font-extrabold ${affiliateStatusConfig.text} bg-white/60 px-2.5 py-1 rounded-lg text-[9px] border border-white/60 flex items-center gap-1">
-                    <i class="${affiliateStatusConfig.icon} text-[8px]"></i>
+                  <span class="font-extrabold ${affiliateStatusConfig.text} bg-white/60 px-2.5 py-1 rounded-lg text-xs border border-white/60 flex items-center gap-1">
+                    <i class="${affiliateStatusConfig.icon} text-xs"></i>
                     ${affiliateStatusConfig.label}
                   </span>
                 </div>
 
-                <div class="flex items-center justify-between text-xs">
+                <div class="flex items-center justify-between text-sm">
                   <span class="text-emerald-700 font-semibold flex items-center gap-1.5">
-                    <i class="fas fa-toggle-on text-emerald-400 text-[10px]"></i>
+                    <i class="fas fa-toggle-on text-emerald-400 text-xs"></i>
                     Status
                   </span>
-                  <span class="font-extrabold ${statusConfig.text} bg-white/60 px-2.5 py-1 rounded-lg text-[9px] border border-white/60 flex items-center gap-1">
-                    <i class="${statusConfig.icon} text-[8px]"></i>
+                  <span class="font-extrabold ${statusConfig.text} bg-white/60 px-2.5 py-1 rounded-lg text-xs border border-white/60 flex items-center gap-1">
+                    <i class="${statusConfig.icon} text-xs"></i>
                     ${statusConfig.label}
                   </span>
                 </div>
 
-                <div class="flex items-center justify-between text-xs pt-2 border-t border-white/30">
+                <div class="flex items-center justify-between text-sm pt-2 border-t border-white/30">
                   <span class="text-emerald-700 font-semibold flex items-center gap-1.5">
-                    <i class="fas fa-calendar-plus text-emerald-400 text-[10px]"></i>
+                    <i class="fas fa-calendar-plus text-emerald-400 text-xs"></i>
                     Bergabung
                   </span>
-                  <span class="text-gray-900 font-extrabold text-[10px]">${joinDate}</span>
+                  <span class="text-gray-900 font-extrabold text-xs">${joinDate}</span>
                 </div>
               </div>
             </div>
 
             <!-- Footer dengan aksi cepat -->
             <div class="px-4 py-3 bg-white/30 backdrop-blur border-t border-white/30 flex gap-2">
-              <button onclick="viewUser(${user.id})" class="flex-1 text-[10px] font-extrabold text-emerald-700 hover:text-emerald-800 py-2 rounded-lg hover:bg-white/60 transition-all duration-300 flex items-center justify-center gap-1 border border-white/30">
-                <i class="fas fa-eye text-[8px]"></i>
+              <button onclick="viewUser(${user.id})" class="flex-1 text-xs font-extrabold text-emerald-700 hover:text-emerald-800 py-2 rounded-lg hover:bg-white/60 transition-all duration-300 flex items-center justify-center gap-1 border border-white/30">
+                <i class="fas fa-eye text-xs"></i>
                 Lihat
               </button>
               <div class="w-px bg-white/30"></div>
-              <button onclick="editUser(${user.id})" class="flex-1 text-[10px] font-extrabold text-emerald-700 hover:text-emerald-800 py-2 rounded-lg hover:bg-white/60 transition-all duration-300 flex items-center justify-center gap-1 border border-white/30">
-                <i class="fas fa-edit text-[8px]"></i>
+              <button onclick="editUser(${user.id})" class="flex-1 text-xs font-extrabold text-emerald-700 hover:text-emerald-800 py-2 rounded-lg hover:bg-white/60 transition-all duration-300 flex items-center justify-center gap-1 border border-white/30">
+                <i class="fas fa-edit text-xs"></i>
                 Edit
               </button>
             </div>
@@ -1757,7 +1757,7 @@
             }[user.role_name] || { bg: 'gradient-user', text: 'text-white', badge: 'Pengguna' };
 
             const roleBadge = document.getElementById('viewRoleBadge');
-            roleBadge.className = `px-3 py-1.5 rounded-lg text-[10px] font-extrabold ${roleConfig.bg} ${roleConfig.text}`;
+            roleBadge.className = `px-3 py-1.5 rounded-lg text-xs font-extrabold ${roleConfig.bg} ${roleConfig.text}`;
             roleBadge.textContent = roleConfig.badge;
 
             document.getElementById('viewUserStatus').textContent = user.status === 'active' ? 'Aktif' : 'Tidak Aktif';
@@ -1768,8 +1768,8 @@
             }[user.status] || { bg: 'bg-gray-500', text: 'text-white', icon: 'fas fa-question-circle' };
 
             const statusBadge = document.getElementById('viewStatusBadge');
-            statusBadge.className = `px-3 py-1.5 rounded-lg text-[10px] font-extrabold ${statusConfig.bg} ${statusConfig.text} flex items-center gap-1 border border-white/30`;
-            statusBadge.innerHTML = `<i class="${statusConfig.icon} text-[8px]"></i>${user.status === 'active' ? 'Aktif' : 'Tidak Aktif'}`;
+            statusBadge.className = `px-3 py-1.5 rounded-lg text-xs font-extrabold ${statusConfig.bg} ${statusConfig.text} flex items-center gap-1 border border-white/30`;
+            statusBadge.innerHTML = `<i class="${statusConfig.icon} text-xs"></i>${user.status === 'active' ? 'Aktif' : 'Tidak Aktif'}`;
 
             const affiliateStatus = user.affiliate_status || 'inactive';
             const affiliateLabel = {
@@ -1789,8 +1789,8 @@
             }[affiliateStatus] || { bg: 'bg-gray-100', text: 'text-gray-800', icon: 'fas fa-minus-circle' };
 
             const affiliateBadge = document.getElementById('viewAffiliateBadge');
-            affiliateBadge.className = `px-3 py-1.5 rounded-lg text-[10px] font-extrabold ${affiliateConfig.bg} ${affiliateConfig.text} flex items-center gap-1 border border-white/30`;
-            affiliateBadge.innerHTML = `<i class="${affiliateConfig.icon} text-[8px]"></i>${affiliateLabel}`;
+            affiliateBadge.className = `px-3 py-1.5 rounded-lg text-xs font-extrabold ${affiliateConfig.bg} ${affiliateConfig.text} flex items-center gap-1 border border-white/30`;
+            affiliateBadge.innerHTML = `<i class="${affiliateConfig.icon} text-xs"></i>${affiliateLabel}`;
 
             const joinDate = user.created_at ? new Date(user.created_at).toLocaleDateString('id-ID', {
               day: 'numeric',

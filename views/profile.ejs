@@ -514,7 +514,7 @@
       }
     }
 
-    /* Navigation Link Styles */
+    /* Navigation Link Styles - Diperbesar */
     .nav-link {
       display: flex;
       align-items: center;
@@ -608,11 +608,11 @@
                     Profile Saya
                   </h1>
                   <span
-                    class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                    class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-sm font-bold tracking-wider shadow-lg">
                     <%= user.role ? user.role.replace('_', ' ' ).toUpperCase() : 'USER' %>
                   </span>
                 </div>
-                <p class="text-sm text-emerald-700 font-medium">Kelola informasi profil dan rekening Anda</p>
+                <p class="text-base text-emerald-700 font-medium">Kelola informasi profil dan rekening Anda</p>
               </div>
             </div>
           </div>
@@ -624,8 +624,8 @@
                 <i class="fas fa-calendar-alt text-white text-sm"></i>
               </div>
               <div>
-                <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
-                <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                <p class="text-sm font-bold text-gray-800 whitespace-nowrap">
                   <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                 </p>
               </div>
@@ -638,13 +638,13 @@
                 <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
               </div>
               <div>
-                <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
-                <p class="text-xs font-bold text-white">Updates Real-time</p>
+                <p class="text-xs text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                <p class="text-sm font-bold text-white">Updates Real-time</p>
               </div>
             </div>
 
             <span
-              class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold <%= user.affiliate_status === 'approved' ? 'gradient-success' : 'gradient-warning' %> text-white border border-white/30 flex items-center gap-1">
+              class="px-3 py-1.5 rounded-lg text-xs font-extrabold <%= user.affiliate_status === 'approved' ? 'gradient-success' : 'gradient-warning' %> text-white border border-white/30 flex items-center gap-1">
               <i class="fas <%= user.affiliate_status === 'approved' ? 'fa-check-circle' : 'fa-clock' %>"></i>
               <%= user.affiliate_status ? user.affiliate_status.toUpperCase() : 'INACTIVE' %>
             </span>
@@ -660,8 +660,8 @@
                 <i class="fas fa-exclamation-circle text-white"></i>
               </div>
               <div class="flex-1">
-                <p class="font-extrabold text-gray-900 text-sm">Perhatian</p>
-                <p class="text-xs text-gray-600 mt-1">
+                <p class="font-extrabold text-gray-900 text-base">Perhatian</p>
+                <p class="text-sm text-gray-600 mt-1">
                   <%= error %>
                 </p>
               </div>
@@ -681,14 +681,14 @@
                   </div>
                   <div
                     class="absolute -bottom-1 -right-1 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-white">
-                    <i class="fas fa-chart-line text-emerald-600 text-xs"></i>
+                    <i class="fas fa-chart-line text-emerald-600 text-sm"></i>
                   </div>
                 </div>
                 <div class="flex-1 w-full">
                   <div class="flex justify-between items-center mb-2">
                     <div>
-                      <h3 class="text-sm font-extrabold text-gray-900">Kelengkapan Profil</h3>
-                      <p class="text-[10px] text-gray-500 mt-1">Lengkapi profil untuk pengalaman terbaik</p>
+                      <h3 class="text-base font-extrabold text-gray-900">Kelengkapan Profil</h3>
+                      <p class="text-xs text-gray-500 mt-1">Lengkapi profil untuk pengalaman terbaik</p>
                     </div>
                     <div class="text-xl font-extrabold text-emerald-700" id="profileRealtimeText">0%</div>
                   </div>
@@ -696,8 +696,8 @@
                     <div id="profileRealtimeBar" class="progress-bar-fill" style="width:0%"></div>
                   </div>
                   <div class="flex justify-between mt-1">
-                    <span class="text-[8px] text-gray-500">0%</span>
-                    <span class="text-[8px] text-gray-500">100%</span>
+                    <span class="text-xs text-gray-500">0%</span>
+                    <span class="text-xs text-gray-500">100%</span>
                   </div>
                 </div>
               </div>
@@ -715,8 +715,8 @@
                         <i class="fas fa-user-circle text-white"></i>
                       </div>
                       <div>
-                        <h3 class="text-base font-extrabold text-white">Informasi Akun</h3>
-                        <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Detail profil Anda</p>
+                        <h3 class="text-lg font-extrabold text-white">Informasi Akun</h3>
+                        <p class="text-emerald-100 text-sm font-medium mt-0.5">Detail profil Anda</p>
                       </div>
                     </div>
                   </div>
@@ -740,7 +740,7 @@
                       <h3 class="text-xl font-extrabold text-gray-900 mb-1">
                         <%= user.name %>
                       </h3>
-                      <p class="text-xs text-gray-500 mb-4 flex items-center justify-center gap-1">
+                      <p class="text-sm text-gray-500 mb-4 flex items-center justify-center gap-1">
                         <i class="fas fa-envelope text-emerald-400"></i>
                         <%= user.email %>
                       </p>
@@ -748,16 +748,16 @@
                       <div class="w-full space-y-2">
                         <div
                           class="flex items-center justify-between glass-futuristic p-3 rounded-xl border border-white/50">
-                          <span class="text-[9px] font-bold text-emerald-700">ID Member</span>
-                          <span class="text-xs font-extrabold text-gray-900">#<%= user.id ?
+                          <span class="text-xs font-bold text-emerald-700">ID Member</span>
+                          <span class="text-sm font-extrabold text-gray-900">#<%= user.id ?
                               user.id.toString().padStart(6, '0' ) : '000000' %></span>
                         </div>
 
                         <div
                           class="flex items-center justify-between glass-futuristic p-3 rounded-xl border border-white/50">
-                          <span class="text-[9px] font-bold text-emerald-700">Status</span>
+                          <span class="text-xs font-bold text-emerald-700">Status</span>
                           <span
-                            class="text-xs font-extrabold <%= user.status === 'active' ? 'text-emerald-700' : 'text-amber-600' %>">
+                            class="text-sm font-extrabold <%= user.status === 'active' ? 'text-emerald-700' : 'text-amber-600' %>">
                             <i class="fas fa-circle text-xs mr-1"></i>
                             <%= user.status==='active' ? 'Aktif' : user.status || 'Aktif' %>
                           </span>
@@ -765,15 +765,15 @@
                       </div>
                     </div>
 
-                    <!-- Navigation dengan Icon dan Text yang Sudah Diperbaiki -->
+                    <!-- Navigation dengan Icon dan Text yang Sudah Diperbesar -->
                     <nav class="space-y-2 mt-4 pt-4 border-t border-white/30">
                       <a href="/dashboard" class="nav-link <%= (activePage === 'dashboard') ? 'active' : '' %>">
                         <div class="nav-icon <%= (activePage === 'dashboard') ? 'bg-white/20' : 'bg-white/60' %>">
                           <i
                             class="fas fa-home <%= (activePage === 'dashboard') ? 'text-white' : 'text-emerald-600' %>"></i>
                         </div>
-                        <span class="text-xs font-extrabold flex-1">Dashboard</span>
-                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                        <span class="text-sm font-extrabold flex-1">Dashboard</span>
+                        <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
                       </a>
 
                       <a href="/settings" class="nav-link <%= (activePage === 'settings') ? 'active' : '' %>">
@@ -781,8 +781,8 @@
                           <i
                             class="fas fa-cog <%= (activePage === 'settings') ? 'text-white' : 'text-emerald-600' %>"></i>
                         </div>
-                        <span class="text-xs font-extrabold flex-1">Pengaturan</span>
-                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                        <span class="text-sm font-extrabold flex-1">Pengaturan</span>
+                        <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
                       </a>
 
                       <a href="/profile" class="nav-link <%= (activePage === 'profile') ? 'active' : '' %>">
@@ -790,8 +790,8 @@
                           <i
                             class="fas fa-user <%= (activePage === 'profile') ? 'text-white' : 'text-emerald-600' %>"></i>
                         </div>
-                        <span class="text-xs font-extrabold flex-1">Profil</span>
-                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                        <span class="text-sm font-extrabold flex-1">Profil</span>
+                        <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
                       </a>
                     </nav>
                   </div>
@@ -800,7 +800,7 @@
                 <!-- Stats Card Premium -->
                 <div class="glass-futuristic rounded-2xl p-5 border border-white/50 hover-lift">
                   <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xs font-extrabold text-gray-900">Statistik Akun</h3>
+                    <h3 class="text-sm font-extrabold text-gray-900">Statistik Akun</h3>
                     <div class="w-10 h-10 gradient-info rounded-lg flex items-center justify-center">
                       <i class="fas fa-chart-pie text-white"></i>
                     </div>
@@ -808,8 +808,8 @@
                   <div class="space-y-4">
                     <div>
                       <div class="flex justify-between items-center mb-1">
-                        <span class="text-[9px] font-bold text-emerald-700">Total Komisi</span>
-                        <span class="text-xs font-extrabold text-gray-900">Rp <%= (user.total_commission ||
+                        <span class="text-xs font-bold text-emerald-700">Total Komisi</span>
+                        <span class="text-sm font-extrabold text-gray-900">Rp <%= (user.total_commission ||
                             0).toLocaleString('id-ID') %></span>
                       </div>
                       <div class="progress-bar">
@@ -819,8 +819,8 @@
 
                     <div>
                       <div class="flex justify-between items-center mb-1">
-                        <span class="text-[9px] font-bold text-emerald-700">Total Penarikan</span>
-                        <span class="text-xs font-extrabold text-gray-900">Rp <%= (user.total_withdrawn ||
+                        <span class="text-xs font-bold text-emerald-700">Total Penarikan</span>
+                        <span class="text-sm font-extrabold text-gray-900">Rp <%= (user.total_withdrawn ||
                             0).toLocaleString('id-ID') %></span>
                       </div>
                       <div class="progress-bar">
@@ -830,8 +830,8 @@
 
                     <div>
                       <div class="flex justify-between items-center mb-1">
-                        <span class="text-[9px] font-bold text-emerald-700">Rate Komisi</span>
-                        <span class="text-xs font-extrabold text-gray-900">
+                        <span class="text-xs font-bold text-emerald-700">Rate Komisi</span>
+                        <span class="text-sm font-extrabold text-gray-900">
                           <%= user.commission_rate || 0 %>%
                         </span>
                       </div>
@@ -848,27 +848,27 @@
                     <div class="w-10 h-10 gradient-info rounded-lg flex items-center justify-center">
                       <i class="fas fa-info-circle text-white"></i>
                     </div>
-                    <h3 class="text-xs font-extrabold text-gray-900">Informasi Akun</h3>
+                    <h3 class="text-sm font-extrabold text-gray-900">Informasi Akun</h3>
                   </div>
                   <div class="space-y-3">
                     <div class="flex items-center justify-between py-2 border-b border-white/30">
-                      <span class="text-[9px] font-bold text-emerald-700">Terdaftar Sejak</span>
-                      <span class="text-xs font-extrabold text-gray-900">
+                      <span class="text-xs font-bold text-emerald-700">Terdaftar Sejak</span>
+                      <span class="text-sm font-extrabold text-gray-900">
                         <%= user.created_at ? new Date(user.created_at).toLocaleDateString('id-ID', { day: 'numeric' ,
                           month: 'short' , year: 'numeric' }) : new Date().toLocaleDateString('id-ID', { day: 'numeric'
                           , month: 'short' , year: 'numeric' }) %>
                       </span>
                     </div>
                     <div class="flex items-center justify-between py-2 border-b border-white/30">
-                      <span class="text-[9px] font-bold text-emerald-700">Terakhir Login</span>
-                      <span class="text-xs font-extrabold text-gray-900">
+                      <span class="text-xs font-bold text-emerald-700">Terakhir Login</span>
+                      <span class="text-sm font-extrabold text-gray-900">
                         <%= user.last_login ? new Date(user.last_login).toLocaleDateString('id-ID', { day: 'numeric' ,
                           month: 'short' }) : 'Hari ini' %>
                       </span>
                     </div>
                     <div class="flex items-center justify-between py-2">
-                      <span class="text-[9px] font-bold text-emerald-700">Total Referral</span>
-                      <span class="text-xs font-extrabold text-gray-900">
+                      <span class="text-xs font-bold text-emerald-700">Total Referral</span>
+                      <span class="text-sm font-extrabold text-gray-900">
                         <%= user.total_referrals || 0 %> orang
                       </span>
                     </div>
@@ -888,8 +888,8 @@
                         <i class="fas fa-user-edit text-white"></i>
                       </div>
                       <div>
-                        <h2 class="text-base font-extrabold text-white">Edit Profil</h2>
-                        <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Update informasi pribadi dan rekening
+                        <h2 class="text-lg font-extrabold text-white">Edit Profil</h2>
+                        <p class="text-emerald-100 text-sm font-medium mt-0.5">Update informasi pribadi dan rekening
                           bank Anda</p>
                       </div>
                     </div>
@@ -903,25 +903,25 @@
                         <div class="flex items-center gap-3 mb-4">
                           <div
                             class="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg flex items-center justify-center border border-white/60">
-                            <i class="fas fa-user-circle text-emerald-600 text-xs"></i>
+                            <i class="fas fa-user-circle text-emerald-600 text-sm"></i>
                           </div>
-                          <h3 class="text-xs font-extrabold text-gray-900">Informasi Pribadi</h3>
+                          <h3 class="text-sm font-extrabold text-gray-900">Informasi Pribadi</h3>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <!-- Name -->
                           <div>
                             <label for="name"
-                              class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                              class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center">
                               Nama Lengkap
                               <span class="text-red-500 ml-1">*</span>
                             </label>
                             <div class="input-container relative">
                               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i
-                                  class="fas fa-user text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                                  class="fas fa-user text-emerald-400 input-icon transition-all duration-200 text-sm"></i>
                               </div>
                               <input type="text" id="name" name="name" value="<%= user.name %>" required
-                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium"
                                 placeholder="Masukkan nama lengkap" />
                             </div>
                           </div>
@@ -929,36 +929,36 @@
                           <!-- Email -->
                           <div>
                             <label for="email"
-                              class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                              class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center">
                               Alamat Email
                               <span class="text-red-500 ml-1">*</span>
                             </label>
                             <div class="input-container relative">
                               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i
-                                  class="fas fa-envelope text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                                  class="fas fa-envelope text-emerald-400 input-icon transition-all duration-200 text-sm"></i>
                               </div>
                               <input type="email" id="email" name="email" value="<%= user.email %>" required
-                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium"
                                 placeholder="email@contoh.com" />
                             </div>
                           </div>
 
                           <!-- Phone -->
                           <div class="md:col-span-2">
-                            <label for="phone" class="block text-[9px] font-extrabold text-emerald-800 mb-1.5">
+                            <label for="phone" class="block text-xs font-extrabold text-emerald-800 mb-1.5">
                               Nomor Telepon/WhatsApp
                             </label>
                             <div class="input-container relative">
                               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i
-                                  class="fas fa-phone text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                                  class="fas fa-phone text-emerald-400 input-icon transition-all duration-200 text-sm"></i>
                               </div>
                               <input type="tel" id="phone" name="phone" value="<%= user.phone || '' %>"
-                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium"
                                 placeholder="08xxxxxxxxxx" />
                             </div>
-                            <p class="text-[8px] text-gray-500 mt-1 ml-1">
+                            <p class="text-xs text-gray-500 mt-1 ml-1">
                               <i class="fas fa-info-circle text-emerald-400 mr-1"></i>
                               Berguna untuk verifikasi dan notifikasi
                             </p>
@@ -971,24 +971,24 @@
                         <div class="flex items-center gap-3 mb-4">
                           <div
                             class="w-8 h-8 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
-                            <i class="fas fa-university text-blue-600 text-xs"></i>
+                            <i class="fas fa-university text-blue-600 text-sm"></i>
                           </div>
-                          <h3 class="text-xs font-extrabold text-gray-900">Informasi Rekening Bank</h3>
+                          <h3 class="text-sm font-extrabold text-gray-900">Informasi Rekening Bank</h3>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <!-- Bank Name -->
                           <div>
-                            <label for="bank_name" class="block text-[9px] font-extrabold text-emerald-800 mb-1.5">
+                            <label for="bank_name" class="block text-xs font-extrabold text-emerald-800 mb-1.5">
                               Nama Bank
                             </label>
                             <div class="input-container relative">
                               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i
-                                  class="fas fa-university text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                                  class="fas fa-university text-emerald-400 input-icon transition-all duration-200 text-sm"></i>
                               </div>
                               <div class="relative">
                                 <select id="bank_name" name="bank_name"
-                                  class="block w-full pl-9 pr-8 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium appearance-none">
+                                  class="block w-full pl-9 pr-8 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium appearance-none">
                                   <option value="">Pilih Bank</option>
                                   <option value="BCA" <%=user.bank_name==='BCA' ? 'selected' : '' %>>BCA</option>
                                   <option value="BNI" <%=user.bank_name==='BNI' ? 'selected' : '' %>>BNI</option>
@@ -1010,24 +1010,24 @@
                                     Lainnya</option>
                                 </select>
                                 <i
-                                  class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                                  class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-sm"></i>
                               </div>
                             </div>
                           </div>
 
                           <!-- Bank Account -->
                           <div>
-                            <label for="bank_account" class="block text-[9px] font-extrabold text-emerald-800 mb-1.5">
+                            <label for="bank_account" class="block text-xs font-extrabold text-emerald-800 mb-1.5">
                               Nomor Rekening
                             </label>
                             <div class="input-container relative">
                               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i
-                                  class="fas fa-credit-card text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                                  class="fas fa-credit-card text-emerald-400 input-icon transition-all duration-200 text-sm"></i>
                               </div>
                               <input type="text" id="bank_account" name="bank_account"
                                 value="<%= user.bank_account || '' %>"
-                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium"
                                 placeholder="Contoh: 1234567890" />
                             </div>
                           </div>
@@ -1035,21 +1035,21 @@
                           <!-- Bank Account Name -->
                           <div class="md:col-span-2">
                             <label for="bank_account_name"
-                              class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                              class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center">
                               Nama Pemilik Rekening
                               <span class="text-red-500 ml-1">*</span>
                             </label>
                             <div class="input-container relative">
                               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i
-                                  class="fas fa-user-tie text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                                  class="fas fa-user-tie text-emerald-400 input-icon transition-all duration-200 text-sm"></i>
                               </div>
                               <input type="text" id="bank_account_name" name="bank_account_name"
                                 value="<%= user.bank_account_name || '' %>"
-                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium"
                                 placeholder="Nama sesuai dengan rekening bank" required />
                             </div>
-                            <p class="text-[8px] text-gray-500 mt-1 ml-1">
+                            <p class="text-xs text-gray-500 mt-1 ml-1">
                               <i class="fas fa-exclamation-triangle text-amber-500 mr-1"></i>
                               Harus sama persis dengan nama di buku tabungan/KTP
                             </p>
@@ -1060,12 +1060,12 @@
                       <!-- Submit Button -->
                       <div class="pt-6 border-t border-white/30">
                         <button type="submit" id="submitBtn"
-                          class="w-full gradient-primary text-white py-4 px-6 rounded-xl font-extrabold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm shadow-lg">
+                          class="w-full gradient-primary text-white py-4 px-6 rounded-xl font-extrabold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-base shadow-lg">
                           <i class="fas fa-save"></i>
                           <span>Simpan Perubahan</span>
                           <i class="fas fa-arrow-right ml-1"></i>
                         </button>
-                        <p class="text-[8px] text-gray-500 text-center mt-3 flex items-center justify-center gap-1">
+                        <p class="text-xs text-gray-500 text-center mt-3 flex items-center justify-center gap-1">
                           <i class="fas fa-shield-alt text-emerald-400"></i>
                           Data Anda aman dan terenkripsi
                         </p>
@@ -1084,35 +1084,35 @@
                       </div>
                     </div>
                     <div class="flex-1">
-                      <h3 class="text-xs font-extrabold text-blue-900 mb-3">Tips & Informasi Penting</h3>
+                      <h3 class="text-sm font-extrabold text-blue-900 mb-3">Tips & Informasi Penting</h3>
                       <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                           <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-600 text-[8px]"></i>
+                            <i class="fas fa-check text-green-600 text-xs"></i>
                           </div>
-                          <span class="text-[9px] text-blue-800">Pastikan informasi rekening bank benar</span>
+                          <span class="text-xs text-blue-800">Pastikan informasi rekening bank benar</span>
                         </div>
                         <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                           <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-600 text-[8px]"></i>
+                            <i class="fas fa-check text-green-600 text-xs"></i>
                           </div>
-                          <span class="text-[9px] text-blue-800">Nama pemilik rekening harus sesuai KTP</span>
+                          <span class="text-xs text-blue-800">Nama pemilik rekening harus sesuai KTP</span>
                         </div>
                         <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                           <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-600 text-[8px]"></i>
+                            <i class="fas fa-check text-green-600 text-xs"></i>
                           </div>
-                          <span class="text-[9px] text-blue-800">Email untuk notifikasi dan reset password</span>
+                          <span class="text-xs text-blue-800">Email untuk notifikasi dan reset password</span>
                         </div>
                         <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                           <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-600 text-[8px]"></i>
+                            <i class="fas fa-check text-green-600 text-xs"></i>
                           </div>
-                          <span class="text-[9px] text-blue-800">Perubahan disimpan langsung ke database</span>
+                          <span class="text-xs text-blue-800">Perubahan disimpan langsung ke database</span>
                         </div>
                       </div>
                       <div class="mt-4 pt-3 border-t border-blue-200/50">
-                        <div class="flex items-center gap-2 text-[9px] text-blue-700">
+                        <div class="flex items-center gap-2 text-xs text-blue-700">
                           <i class="fas fa-clock text-blue-500"></i>
                           <span>Perubahan akan berlaku dalam 1-2 menit</span>
                         </div>
@@ -1138,7 +1138,7 @@
         </div>
         <div class="text-center">
           <h3 class="text-gray-900 font-extrabold text-xl mb-2">Memperbarui Profil</h3>
-          <p class="text-xs text-gray-600">Harap tunggu sebentar, data Anda sedang diproses...</p>
+          <p class="text-sm text-gray-600">Harap tunggu sebentar, data Anda sedang diproses...</p>
         </div>
         <!-- Progress Bar dengan Animasi Shimmer -->
         <div class="w-full bg-white/30 rounded-full h-2 overflow-hidden relative">

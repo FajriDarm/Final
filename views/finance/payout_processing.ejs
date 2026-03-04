@@ -433,13 +433,13 @@
       box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.15);
     }
 
-    /* Button Styles */
+    /* Button Styles - Diperbesar */
     .btn-primary {
       background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
       color: white;
       border-radius: 0.75rem;
       padding: 0.5rem 1rem;
-      font-size: 0.75rem;
+      font-size: 0.875rem;
       font-weight: 800;
       transition: all 0.3s ease;
       border: 1px solid rgba(255, 255, 255, 0.3);
@@ -457,7 +457,7 @@
       color: #374151;
       border-radius: 0.75rem;
       padding: 0.5rem 1rem;
-      font-size: 0.75rem;
+      font-size: 0.875rem;
       font-weight: 800;
       transition: all 0.3s ease;
       border: 1px solid rgba(255, 255, 255, 0.5);
@@ -530,11 +530,11 @@
                       Payout Processing
                     </h1>
                     <span
-                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-sm font-bold tracking-wider shadow-lg">
                       FINANCE
                     </span>
                   </div>
-                  <p class="text-sm text-emerald-700 font-medium">Kelola dan proses pembayaran payout affiliate</p>
+                  <p class="text-base text-emerald-700 font-medium">Kelola dan proses pembayaran payout affiliate</p>
                 </div>
               </div>
             </div>
@@ -546,8 +546,8 @@
                   <i class="fas fa-calendar-alt text-white text-sm"></i>
                 </div>
                 <div>
-                  <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
-                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                  <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                  <p class="text-sm font-bold text-gray-800 whitespace-nowrap">
                     <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                   </p>
                 </div>
@@ -560,14 +560,14 @@
                   <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
                 </div>
                 <div>
-                  <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
-                  <p class="text-xs font-bold text-white">Updates Real-time</p>
+                  <p class="text-xs text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                  <p class="text-sm font-bold text-white">Updates Real-time</p>
                 </div>
               </div>
 
               <a href="/finance/withdrawals" class="btn-primary px-4 py-2.5 flex items-center gap-2">
                 <i class="fas fa-clipboard-list"></i>
-                <span class="text-xs font-extrabold">Manage Withdrawals</span>
+                <span class="text-sm font-extrabold">Manage Withdrawals</span>
               </a>
             </div>
           </div>
@@ -579,7 +579,7 @@
                 <i class="fas fa-credit-card text-white"></i>
               </div>
               <div>
-                <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Total Payout</p>
+                <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Total Payout</p>
                 <p class="text-2xl font-extrabold text-gray-900">
                   <%= payouts ? payouts.length : 0 %>
                 </p>
@@ -591,7 +591,7 @@
                 <i class="fas fa-coins text-white"></i>
               </div>
               <div>
-                <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Total Amount</p>
+                <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Total Amount</p>
                 <p class="text-2xl font-extrabold text-gray-900">
                   Rp <% let totalAmount=0; if (payouts && payouts.length> 0) {
                     payouts.forEach(p => {
@@ -609,7 +609,7 @@
                 <i class="fas fa-clock text-white"></i>
               </div>
               <div>
-                <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Processing</p>
+                <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Processing</p>
                 <p class="text-2xl font-extrabold text-gray-900">
                   <%= payouts ? payouts.length : 0 %>
                 </p>
@@ -621,7 +621,7 @@
                 <i class="fas fa-check-circle text-white"></i>
               </div>
               <div>
-                <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Approved By</p>
+                <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Approved By</p>
                 <p class="text-2xl font-extrabold text-gray-900">
                   <% let uniqueAdmins=new Set(); if (payouts && payouts.length> 0) {
                     payouts.forEach(p => {
@@ -645,13 +645,13 @@
                   <i class="fas fa-credit-card text-white"></i>
                 </div>
                 <div>
-                  <h2 class="text-base font-extrabold text-white">Daftar Payout Diproses</h2>
-                  <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Payout yang sedang dalam proses pembayaran
+                  <h2 class="text-lg font-extrabold text-white">Daftar Payout Diproses</h2>
+                  <p class="text-emerald-100 text-sm font-medium mt-0.5">Payout yang sedang dalam proses pembayaran
                   </p>
                 </div>
               </div>
               <span
-                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-xs font-extrabold border border-white/30">
                 <i class="fas fa-bolt mr-1"></i>
                 Live
               </span>
@@ -663,22 +663,22 @@
                 <thead class="bg-white/10 backdrop-blur border-b border-white/30">
                   <tr>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       ID</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Affiliate</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Jumlah Total</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Disetujui Oleh</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Tanggal Pembayaran</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Status</th>
                   </tr>
                 </thead>
@@ -708,7 +708,7 @@
                           class="table-row hover:bg-white/40 transition-all duration-300 border-b border-white/30 last:border-b-0 bg-white/20 backdrop-blur fade-in"
                           data-delay="<%= index * 50 %>">
                           <td class="py-4 px-6 whitespace-nowrap">
-                            <span class="font-extrabold text-xs text-gray-900">#<%= payout.id %></span>
+                            <span class="font-extrabold text-sm text-gray-900">#<%= payout.id %></span>
                           </td>
                           <td class="py-4 px-6">
                             <div class="flex items-center gap-3">
@@ -717,38 +717,38 @@
                                 <i class="fas fa-user-tie text-emerald-600"></i>
                               </div>
                               <div>
-                                <div class="font-extrabold text-sm text-gray-900">
+                                <div class="font-extrabold text-base text-gray-900">
                                   <%= payout.affiliate_name %>
                                 </div>
-                                <div class="text-[8px] font-medium text-emerald-700">Affiliate</div>
+                                <div class="text-xs font-medium text-emerald-700">Affiliate</div>
                               </div>
                             </div>
                           </td>
                           <td class="py-4 px-6 whitespace-nowrap">
-                            <span class="font-extrabold text-lg text-emerald-700">Rp <%= parseInt(payout.total_amount ||
+                            <span class="font-extrabold text-xl text-emerald-700">Rp <%= parseInt(payout.total_amount ||
                                 0).toLocaleString('id-ID') %></span>
                           </td>
                           <td class="py-4 px-6">
                             <div class="flex items-center gap-2">
                               <div
                                 class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center border border-white/60">
-                                <i class="fas fa-shield-alt text-purple-600 text-xs"></i>
+                                <i class="fas fa-shield-alt text-purple-600 text-sm"></i>
                               </div>
-                              <span class="font-extrabold text-sm text-gray-700">
+                              <span class="font-extrabold text-base text-gray-700">
                                 <%= payout.admin_approved_name ? payout.admin_approved_name : '-' %>
                               </span>
                             </div>
                           </td>
                           <td class="py-4 px-6 whitespace-nowrap">
-                            <span class="font-extrabold text-sm text-gray-600">
+                            <span class="font-extrabold text-base text-gray-600">
                               <%= payout.paid_at ? new Date(payout.paid_at).toLocaleDateString('id-ID', { day: 'numeric'
                                 , month: 'long' , year: 'numeric' }) : '-' %>
                             </span>
                           </td>
                           <td class="py-4 px-6">
                             <span
-                              class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold status-processing text-white flex items-center gap-1 border border-white/30 w-fit">
-                              <i class="fas fa-circle text-[5px] mr-1"></i>
+                              class="px-3 py-1.5 rounded-lg text-xs font-extrabold status-processing text-white flex items-center gap-1 border border-white/30 w-fit">
+                              <i class="fas fa-circle text-[6px] mr-1"></i>
                               <%= payout.status ? payout.status.toUpperCase() : 'PROCESSING' %>
                             </span>
                           </td>
@@ -764,14 +764,14 @@
               <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                 <div class="flex items-center gap-2">
                   <span
-                    class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                    class="text-xs font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
                     Total dalam proses: <span class="font-extrabold">
                       <%= payouts ? payouts.length : 0 %>
                     </span> payout
                   </span>
                 </div>
                 <span
-                  class="text-[9px] font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                  class="text-xs font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
                   <i class="fas fa-clock mr-1"></i>
                   Terakhir diperbarui: Sekarang
                 </span>

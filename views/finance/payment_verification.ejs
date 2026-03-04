@@ -434,7 +434,7 @@
       box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.15);
     }
 
-    /* Tab Styles */
+    /* Tab Styles - Diperbesar */
     .tab-active {
       background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
       color: white;
@@ -452,14 +452,14 @@
       background: rgba(255, 255, 255, 0.8);
     }
 
-    /* Select Styles */
+    /* Select Styles - Diperbesar */
     .status-select {
       background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.5);
       border-radius: 0.75rem;
       padding: 0.5rem 2rem 0.5rem 0.75rem;
-      font-size: 0.75rem;
+      font-size: 0.875rem;
       font-weight: 500;
       color: #374151;
       appearance: none;
@@ -475,13 +475,13 @@
       border-color: transparent;
     }
 
-    /* Button Styles */
+    /* Button Styles - Diperbesar */
     .btn-success {
       background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
       color: white;
       border-radius: 0.75rem;
       padding: 0.5rem 1rem;
-      font-size: 0.75rem;
+      font-size: 0.875rem;
       font-weight: 800;
       transition: all 0.3s ease;
       border: 1px solid rgba(255, 255, 255, 0.3);
@@ -498,7 +498,7 @@
       color: white;
       border-radius: 0.75rem;
       padding: 0.5rem 1rem;
-      font-size: 0.75rem;
+      font-size: 0.875rem;
       font-weight: 800;
       transition: all 0.3s ease;
       border: 1px solid rgba(255, 255, 255, 0.3);
@@ -516,7 +516,7 @@
       color: #374151;
       border-radius: 0.75rem;
       padding: 0.5rem 1rem;
-      font-size: 0.75rem;
+      font-size: 0.875rem;
       font-weight: 800;
       transition: all 0.3s ease;
       border: 1px solid rgba(255, 255, 255, 0.5);
@@ -607,11 +607,11 @@
                       Payment Verification
                     </h1>
                     <span
-                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-sm font-bold tracking-wider shadow-lg">
                       FINANCE
                     </span>
                   </div>
-                  <p class="text-sm text-emerald-700 font-medium">Verifikasi dan setujui pembayaran pelanggan</p>
+                  <p class="text-base text-emerald-700 font-medium">Verifikasi dan setujui pembayaran pelanggan</p>
                 </div>
               </div>
             </div>
@@ -623,8 +623,8 @@
                   <i class="fas fa-calendar-alt text-white text-sm"></i>
                 </div>
                 <div>
-                  <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
-                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                  <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                  <p class="text-sm font-bold text-gray-800 whitespace-nowrap">
                     <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                   </p>
                 </div>
@@ -637,15 +637,15 @@
                   <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
                 </div>
                 <div>
-                  <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
-                  <p class="text-xs font-bold text-white">Updates Real-time</p>
+                  <p class="text-xs text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                  <p class="text-sm font-bold text-white">Updates Real-time</p>
                 </div>
               </div>
 
               <div
                 class="px-4 py-2.5 gradient-warning rounded-xl text-white shadow-lg flex items-center gap-2 border border-white/30">
                 <i class="fas fa-clock"></i>
-                <span class="text-xs font-extrabold">Pending: <%= pendingPayments ? pendingPayments.length : 0 %></span>
+                <span class="text-sm font-extrabold">Pending: <%= pendingPayments ? pendingPayments.length : 0 %></span>
               </div>
             </div>
           </div>
@@ -657,7 +657,7 @@
                 <i class="fas fa-clock text-white"></i>
               </div>
               <div>
-                <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Menunggu</p>
+                <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Menunggu</p>
                 <p class="text-2xl font-extrabold text-gray-900">
                   <%= pendingPayments ? pendingPayments.length : 0 %>
                 </p>
@@ -669,7 +669,7 @@
                 <i class="fas fa-fire text-white"></i>
               </div>
               <div>
-                <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">HOT</p>
+                <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">HOT</p>
                 <p class="text-2xl font-extrabold text-gray-900" id="hotCount">0</p>
               </div>
             </div>
@@ -679,7 +679,7 @@
                 <i class="fas fa-money-bill-wave text-white"></i>
               </div>
               <div>
-                <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">DP</p>
+                <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">DP</p>
                 <p class="text-2xl font-extrabold text-gray-900" id="dpCount">0</p>
               </div>
             </div>
@@ -689,7 +689,7 @@
                 <i class="fas fa-check-circle text-white"></i>
               </div>
               <div>
-                <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Lunas</p>
+                <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Lunas</p>
                 <p class="text-2xl font-extrabold text-gray-900" id="lunasCount">0</p>
               </div>
             </div>
@@ -705,13 +705,13 @@
                   <i class="fas fa-money-bill-wave text-white"></i>
                 </div>
                 <div>
-                  <h2 class="text-base font-extrabold text-white">Pembayaran Menunggu Verifikasi</h2>
-                  <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Review dan verifikasi pembayaran pelanggan
+                  <h2 class="text-lg font-extrabold text-white">Pembayaran Menunggu Verifikasi</h2>
+                  <p class="text-emerald-100 text-sm font-medium mt-0.5">Review dan verifikasi pembayaran pelanggan
                   </p>
                 </div>
               </div>
               <span
-                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-xs font-extrabold border border-white/30">
                 <i class="fas fa-bolt mr-1"></i>
                 Live
               </span>
@@ -720,26 +720,26 @@
             <!-- Premium Tabs -->
             <div class="px-5 py-3 bg-white/20 backdrop-blur border-b border-white/30 flex items-center gap-2">
               <button
-                class="status-tab tab-active px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2 transition-all duration-300"
+                class="status-tab tab-active px-4 py-2 rounded-xl text-sm font-extrabold flex items-center gap-2 transition-all duration-300"
                 data-status="HOT">
                 <i class="fas fa-fire"></i>
                 <span>HOT</span>
-                <span class="ml-1 bg-white/30 px-2 py-0.5 rounded-lg text-[9px] badge-count" data-for="HOT">0</span>
+                <span class="ml-1 bg-white/30 px-2 py-0.5 rounded-lg text-xs badge-count" data-for="HOT">0</span>
               </button>
               <button
-                class="status-tab tab-inactive px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2 transition-all duration-300"
+                class="status-tab tab-inactive px-4 py-2 rounded-xl text-sm font-extrabold flex items-center gap-2 transition-all duration-300"
                 data-status="DP">
                 <i class="fas fa-money-bill-wave"></i>
                 <span>DP</span>
-                <span class="ml-1 bg-white/30 px-2 py-0.5 rounded-lg text-[9px] badge-count" data-for="DP">0</span>
+                <span class="ml-1 bg-white/30 px-2 py-0.5 rounded-lg text-xs badge-count" data-for="DP">0</span>
               </button>
               <div class="ml-auto flex items-center gap-2">
                 <div class="relative">
-                  <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-400 text-[10px]"></i>
+                  <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-400 text-sm"></i>
                   <input id="paymentsSearch" type="text" placeholder="Cari ID, customer, affiliate, event..."
-                    class="pl-8 pr-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-[10px] font-medium w-[220px]" />
+                    class="pl-8 pr-3 py-2 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium w-[250px]" />
                 </div>
-                <div class="text-[10px] font-medium text-emerald-700">Pilih tab untuk melihat lead sesuai status</div>
+                <div class="text-xs font-medium text-emerald-700">Pilih tab untuk melihat lead sesuai status</div>
               </div>
             </div>
 
@@ -749,31 +749,31 @@
                 <thead class="bg-white/10 backdrop-blur border-b border-white/30">
                   <tr>
                     <th
-                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-4 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       ID</th>
                     <th
-                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-4 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Customer</th>
                     <th
-                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-4 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Affiliate</th>
                     <th
-                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-4 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Event</th>
                     <th
-                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-4 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Jumlah</th>
                     <th
-                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-4 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Metode</th>
                     <th
-                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-4 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Komisi</th>
                     <th
-                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-4 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Status</th>
                     <th
-                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-4 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Aksi</th>
                   </tr>
                 </thead>
@@ -804,7 +804,7 @@
                           data-delay="<%= index * 50 %>"
                           data-lead-status="<%= (payment.lead_status || '').toUpperCase() %>">
                           <td class="py-4 px-4 align-top whitespace-nowrap">
-                            <span class="font-extrabold text-xs text-gray-900">#<%= payment.id %></span>
+                            <span class="font-extrabold text-sm text-gray-900">#<%= payment.id %></span>
                           </td>
                           <td class="py-4 px-4 align-top">
                             <div class="flex items-start gap-3">
@@ -813,82 +813,82 @@
                                 <i class="fas fa-user text-emerald-600"></i>
                               </div>
                               <div class="min-w-0">
-                                <div class="font-extrabold text-sm text-gray-900 truncate-col">
+                                <div class="font-extrabold text-base text-gray-900 truncate-col">
                                   <%= payment.customer_name || 'Unknown' %>
                                 </div>
-                                <div class="text-[8px] font-medium text-emerald-700">Customer</div>
+                                <div class="text-xs font-medium text-emerald-700">Customer</div>
                               </div>
                             </div>
                           </td>
                           <td class="py-4 px-4 align-top">
-                            <div class="font-extrabold text-sm text-gray-900 truncate-col">
+                            <div class="font-extrabold text-base text-gray-900 truncate-col">
                               <%= payment.affiliate_name || '-' %>
                             </div>
-                            <div class="text-[8px] font-medium text-emerald-700">Affiliate</div>
+                            <div class="text-xs font-medium text-emerald-700">Affiliate</div>
                           </td>
                           <td class="py-4 px-4 align-top">
-                            <div class="font-extrabold text-sm text-gray-900 wrap-col">
+                            <div class="font-extrabold text-base text-gray-900 wrap-col">
                               <%= payment.event_name || ('#' + payment.event_id) || '-' %>
                             </div>
-                            <div class="text-[8px] font-medium text-emerald-700">Event</div>
+                            <div class="text-xs font-medium text-emerald-700">Event</div>
                           </td>
                           <td class="py-4 px-4 align-top whitespace-nowrap">
-                            <span class="font-extrabold text-sm text-emerald-700">
+                            <span class="font-extrabold text-base text-emerald-700">
                               Rp <%= parseInt(payment.total_amount || 0).toLocaleString('id-ID') %>
                             </span>
                           </td>
                           <td class="py-4 px-4 align-top whitespace-nowrap">
                             <div class="flex items-center gap-2">
                               <% if (payment.payment_method==='transfer' ) { %>
-                                <i class="fas fa-university text-emerald-500 text-xs"></i>
+                                <i class="fas fa-university text-emerald-500 text-sm"></i>
                                 <% } else { %>
-                                  <i class="fas fa-money-bill-wave text-emerald-500 text-xs"></i>
+                                  <i class="fas fa-money-bill-wave text-emerald-500 text-sm"></i>
                                   <% } %>
-                                    <span class="text-xs font-medium text-gray-700 truncate-col">
+                                    <span class="text-sm font-medium text-gray-700 truncate-col">
                                       <%= payment.payment_method ? payment.payment_method.toUpperCase() : 'N/A' %>
                                     </span>
                             </div>
                           </td>
                           <td class="py-4 px-4 align-top wrap-col">
                             <% if (typeof payment.commission_amount !=='undefined' && payment.commission_amount> 0) { %>
-                              <span class="font-extrabold text-xs text-purple-700">
+                              <span class="font-extrabold text-sm text-purple-700">
                                 Rp <%= Number(payment.commission_amount).toLocaleString('id-ID', {
                                   minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                               </span>
                               <% } else if (payment.projected_commission) { %>
-                                <span class="font-extrabold text-xs text-amber-600">
+                                <span class="font-extrabold text-sm text-amber-600">
                                   Rp <%= parseFloat(payment.projected_commission).toLocaleString('id-ID', {
                                     minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                 </span>
                                 <% if (payment.projected_stage && payment.projected_stage !==2) { %>
-                                  <div class="text-[8px] text-gray-500 mt-1">(stage <%= payment.projected_stage %>)
+                                  <div class="text-xs text-gray-500 mt-1">(stage <%= payment.projected_stage %>)
                                   </div>
                                   <% } %>
                                     <% } else { %>
-                                      <span class="text-xs text-gray-400">-</span>
+                                      <span class="text-sm text-gray-400">-</span>
                                       <% } %>
                           </td>
                           <td class="py-4 px-4 align-top whitespace-nowrap">
                             <div class="flex items-center gap-2">
                               <span
-                                class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold badge-pending text-white flex items-center gap-1 border border-white/30">
-                                <i class="fas fa-hourglass-half text-[7px]"></i>
+                                class="px-3 py-1.5 rounded-lg text-xs font-extrabold badge-pending text-white flex items-center gap-1 border border-white/30">
+                                <i class="fas fa-hourglass-half text-xs"></i>
                                 <%= payment.payment_status ? payment.payment_status.toUpperCase() : 'PENDING' %>
                               </span>
                               <% if ((payment.lead_status || '' ).toUpperCase()==='HOT' ) { %>
                                 <span
-                                  class="px-2 py-0.5 rounded-lg text-[8px] font-extrabold badge-hot text-white">HOT</span>
+                                  class="px-2 py-0.5 rounded-lg text-xs font-extrabold badge-hot text-white">HOT</span>
                                 <% } else if ((payment.lead_status || '' ).toUpperCase()==='DP' ) { %>
                                   <span
-                                    class="px-2 py-0.5 rounded-lg text-[8px] font-extrabold badge-dp text-white">DP</span>
+                                    class="px-2 py-0.5 rounded-lg text-xs font-extrabold badge-dp text-white">DP</span>
                                   <% } %>
                             </div>
                           </td>
                           <td class="py-4 px-4 align-top action-cell">
                             <div class="flex flex-col gap-2">
                               <div class="flex items-center gap-2">
-                                <span class="text-[8px] font-medium text-gray-500">Lead Status:</span>
-                                <span class="text-[9px] font-extrabold text-gray-700">
+                                <span class="text-xs font-medium text-gray-500">Lead Status:</span>
+                                <span class="text-sm font-extrabold text-gray-700">
                                   <%= payment.lead_status || '—' %>
                                 </span>
                               </div>
@@ -896,7 +896,7 @@
                                 action="/finance/payment-verification/<%= payment.id %>/set-lead-status" method="POST"
                                 class="finance-action-form flex items-center gap-2">
                                 <div class="relative">
-                                  <select name="lead_status" class="status-select min-w-[100px]">
+                                  <select name="lead_status" class="status-select min-w-[120px]">
                                     <option value="">-- pilih aksi --</option>
                                     <% if ((payment.lead_status || '' ).toUpperCase()==='DP' ) { %>
                                       <option value="DP" disabled>DP (sudah DP)</option>
@@ -906,7 +906,7 @@
                                           <option value="LUNAS">LUNAS</option>
                                   </select>
                                 </div>
-                                <button type="submit" class="btn-success text-[8px] px-3 py-1.5"
+                                <button type="submit" class="btn-success text-sm px-3 py-1.5"
                                   data-confirm="Simpan perubahan status?">
                                   <i class="fas fa-check-circle mr-1"></i>
                                   Simpan
@@ -914,7 +914,7 @@
                               </form>
                               <form data-action="reject" action="/finance/payment-verification/<%= payment.id %>/reject"
                                 method="POST" class="finance-action-form">
-                                <button type="submit" class="btn-danger text-[8px] px-3 py-1.5 w-full"
+                                <button type="submit" class="btn-danger text-sm px-3 py-1.5 w-full"
                                   data-confirm="Tolak pembayaran ini?">
                                   <i class="fas fa-times-circle mr-1"></i>
                                   Reject
@@ -934,14 +934,14 @@
               <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                 <div class="flex items-center gap-2">
                   <span
-                    class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                    class="text-xs font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
                     Total menunggu verifikasi: <span class="font-extrabold">
                       <%= pendingPayments ? pendingPayments.length : 0 %>
                     </span> pembayaran
                   </span>
                 </div>
                 <span
-                  class="text-[9px] font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                  class="text-xs font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
                   <i class="fas fa-clock mr-1"></i>
                   Terakhir diperbarui: Sekarang
                 </span>
@@ -1017,7 +1017,7 @@
               f.querySelectorAll('select, button').forEach(el => el.disabled = true);
             });
             const notice = document.createElement('div');
-            notice.className = 'text-[10px] text-red-600 bg-red-50/80 backdrop-blur px-4 py-2 rounded-lg border border-red-200/50 mt-2';
+            notice.className = 'text-xs text-red-600 bg-red-50/80 backdrop-blur px-4 py-2 rounded-lg border border-red-200/50 mt-2';
             notice.textContent = 'Anda tidak memiliki izin mengubah status pada halaman ini. Silakan login sebagai Finance.';
             const container = document.querySelector('.glass-futuristic .px-5.py-4');
             if (container) container.insertAdjacentElement('afterend', notice);

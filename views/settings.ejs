@@ -546,7 +546,7 @@
       }
     }
 
-    /* Navigation Link Styles */
+    /* Navigation Link Styles - Diperbesar */
     .nav-link {
       display: flex;
       align-items: center;
@@ -640,11 +640,11 @@
                     Pengaturan Akun
                   </h1>
                   <span
-                    class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                    class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-sm font-bold tracking-wider shadow-lg">
                     <%= user.role ? user.role.replace('_', ' ' ).toUpperCase() : 'USER' %>
                   </span>
                 </div>
-                <p class="text-sm text-emerald-700 font-medium">Kelola keamanan dan preferensi akun Anda</p>
+                <p class="text-base text-emerald-700 font-medium">Kelola keamanan dan preferensi akun Anda</p>
               </div>
             </div>
           </div>
@@ -656,8 +656,8 @@
                 <i class="fas fa-calendar-alt text-white text-sm"></i>
               </div>
               <div>
-                <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
-                <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                <p class="text-sm font-bold text-gray-800 whitespace-nowrap">
                   <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                 </p>
               </div>
@@ -670,13 +670,13 @@
                 <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
               </div>
               <div>
-                <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
-                <p class="text-xs font-bold text-white">Updates Real-time</p>
+                <p class="text-xs text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                <p class="text-sm font-bold text-white">Updates Real-time</p>
               </div>
             </div>
 
             <span
-              class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold <%= user.affiliate_status === 'approved' ? 'gradient-success' : 'gradient-warning' %> text-white border border-white/30 flex items-center gap-1">
+              class="px-3 py-1.5 rounded-lg text-xs font-extrabold <%= user.affiliate_status === 'approved' ? 'gradient-success' : 'gradient-warning' %> text-white border border-white/30 flex items-center gap-1">
               <i class="fas <%= user.affiliate_status === 'approved' ? 'fa-check-circle' : 'fa-clock' %>"></i>
               <%= user.affiliate_status ? user.affiliate_status.toUpperCase() : 'INACTIVE' %>
             </span>
@@ -692,8 +692,8 @@
                 <i class="fas fa-check-circle text-white"></i>
               </div>
               <div class="flex-1">
-                <p class="font-extrabold text-gray-900 text-sm">Berhasil!</p>
-                <p class="text-xs text-gray-600 mt-1">
+                <p class="font-extrabold text-gray-900 text-base">Berhasil!</p>
+                <p class="text-sm text-gray-600 mt-1">
                   <%= success %>
                 </p>
               </div>
@@ -709,8 +709,8 @@
                     <i class="fas fa-exclamation-circle text-white"></i>
                   </div>
                   <div class="flex-1">
-                    <p class="font-extrabold text-gray-900 text-sm">Perhatian</p>
-                    <p class="text-xs text-gray-600 mt-1">
+                    <p class="font-extrabold text-gray-900 text-base">Perhatian</p>
+                    <p class="text-sm text-gray-600 mt-1">
                       <%= error %>
                     </p>
                   </div>
@@ -730,8 +730,8 @@
                             <i class="fas fa-user-circle text-white"></i>
                           </div>
                           <div>
-                            <h3 class="text-base font-extrabold text-white">Informasi Akun</h3>
-                            <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Detail profil Anda</p>
+                            <h3 class="text-lg font-extrabold text-white">Informasi Akun</h3>
+                            <p class="text-emerald-100 text-sm font-medium mt-0.5">Detail profil Anda</p>
                           </div>
                         </div>
                       </div>
@@ -755,7 +755,7 @@
                           <h3 class="text-xl font-extrabold text-gray-900 mb-1">
                             <%= user.name %>
                           </h3>
-                          <p class="text-xs text-gray-500 mb-4 flex items-center justify-center gap-1">
+                          <p class="text-sm text-gray-500 mb-4 flex items-center justify-center gap-1">
                             <i class="fas fa-envelope text-emerald-400"></i>
                             <%= user.email %>
                           </p>
@@ -763,16 +763,16 @@
                           <div class="w-full space-y-2">
                             <div
                               class="flex items-center justify-between glass-futuristic p-3 rounded-xl border border-white/50">
-                              <span class="text-[9px] font-bold text-emerald-700">ID Member</span>
-                              <span class="text-xs font-extrabold text-gray-900">#<%= user.id ?
+                              <span class="text-xs font-bold text-emerald-700">ID Member</span>
+                              <span class="text-sm font-extrabold text-gray-900">#<%= user.id ?
                                   user.id.toString().padStart(6, '0' ) : '000000' %></span>
                             </div>
 
                             <div
                               class="flex items-center justify-between glass-futuristic p-3 rounded-xl border border-white/50">
-                              <span class="text-[9px] font-bold text-emerald-700">Status</span>
+                              <span class="text-xs font-bold text-emerald-700">Status</span>
                               <span
-                                class="text-xs font-extrabold <%= user.status === 'active' ? 'text-emerald-700' : 'text-amber-600' %>">
+                                class="text-sm font-extrabold <%= user.status === 'active' ? 'text-emerald-700' : 'text-amber-600' %>">
                                 <i class="fas fa-circle text-xs mr-1"></i>
                                 <%= user.status==='active' ? 'Aktif' : user.status || 'Aktif' %>
                               </span>
@@ -780,15 +780,15 @@
                           </div>
                         </div>
 
-                        <!-- Navigation dengan Icon dan Text yang Sudah Diperbaiki -->
+                        <!-- Navigation dengan Icon dan Text yang Sudah Diperbesar -->
                         <nav class="space-y-2 mt-4 pt-4 border-t border-white/30">
                           <a href="/dashboard" class="nav-link <%= (activePage === 'dashboard') ? 'active' : '' %>">
                             <div class="nav-icon <%= (activePage === 'dashboard') ? 'bg-white/20' : 'bg-white/60' %>">
                               <i
                                 class="fas fa-home <%= (activePage === 'dashboard') ? 'text-white' : 'text-emerald-600' %>"></i>
                             </div>
-                            <span class="text-xs font-extrabold flex-1">Dashboard</span>
-                            <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                            <span class="text-sm font-extrabold flex-1">Dashboard</span>
+                            <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
                           </a>
 
                           <a href="/settings" class="nav-link <%= (activePage === 'settings') ? 'active' : '' %>">
@@ -796,8 +796,8 @@
                               <i
                                 class="fas fa-cog <%= (activePage === 'settings') ? 'text-white' : 'text-emerald-600' %>"></i>
                             </div>
-                            <span class="text-xs font-extrabold flex-1">Pengaturan</span>
-                            <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                            <span class="text-sm font-extrabold flex-1">Pengaturan</span>
+                            <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
                           </a>
 
                           <a href="/profile" class="nav-link <%= (activePage === 'profile') ? 'active' : '' %>">
@@ -805,8 +805,8 @@
                               <i
                                 class="fas fa-user <%= (activePage === 'profile') ? 'text-white' : 'text-emerald-600' %>"></i>
                             </div>
-                            <span class="text-xs font-extrabold flex-1">Profil</span>
-                            <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                            <span class="text-sm font-extrabold flex-1">Profil</span>
+                            <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
                           </a>
                         </nav>
                       </div>
@@ -815,7 +815,7 @@
                     <!-- Stats Card Premium -->
                     <div class="glass-futuristic rounded-2xl p-5 border border-white/50 hover-lift">
                       <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xs font-extrabold text-gray-900">Statistik Akun</h3>
+                        <h3 class="text-sm font-extrabold text-gray-900">Statistik Akun</h3>
                         <div class="w-10 h-10 gradient-info rounded-lg flex items-center justify-center">
                           <i class="fas fa-chart-pie text-white"></i>
                         </div>
@@ -823,8 +823,8 @@
                       <div class="space-y-4">
                         <div>
                           <div class="flex justify-between items-center mb-1">
-                            <span class="text-[9px] font-bold text-emerald-700">Total Komisi</span>
-                            <span class="text-xs font-extrabold text-gray-900">Rp <%= (user.total_commission ||
+                            <span class="text-xs font-bold text-emerald-700">Total Komisi</span>
+                            <span class="text-sm font-extrabold text-gray-900">Rp <%= (user.total_commission ||
                                 0).toLocaleString('id-ID') %></span>
                           </div>
                           <div class="progress-bar">
@@ -834,8 +834,8 @@
 
                         <div>
                           <div class="flex justify-between items-center mb-1">
-                            <span class="text-[9px] font-bold text-emerald-700">Total Penarikan</span>
-                            <span class="text-xs font-extrabold text-gray-900">Rp <%= (user.total_withdrawn ||
+                            <span class="text-xs font-bold text-emerald-700">Total Penarikan</span>
+                            <span class="text-sm font-extrabold text-gray-900">Rp <%= (user.total_withdrawn ||
                                 0).toLocaleString('id-ID') %></span>
                           </div>
                           <div class="progress-bar">
@@ -845,8 +845,8 @@
 
                         <div>
                           <div class="flex justify-between items-center mb-1">
-                            <span class="text-[9px] font-bold text-emerald-700">Rate Komisi</span>
-                            <span class="text-xs font-extrabold text-gray-900">
+                            <span class="text-xs font-bold text-emerald-700">Rate Komisi</span>
+                            <span class="text-sm font-extrabold text-gray-900">
                               <%= user.commission_rate || 0 %>%
                             </span>
                           </div>
@@ -863,32 +863,32 @@
                         <div class="w-10 h-10 gradient-info rounded-lg flex items-center justify-center">
                           <i class="fas fa-shield-alt text-white"></i>
                         </div>
-                        <h3 class="text-xs font-extrabold text-blue-900">Tips Keamanan</h3>
+                        <h3 class="text-sm font-extrabold text-blue-900">Tips Keamanan</h3>
                       </div>
                       <div class="space-y-3">
                         <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                           <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-600 text-[8px]"></i>
+                            <i class="fas fa-check text-green-600 text-xs"></i>
                           </div>
-                          <span class="text-[9px] text-blue-800">Gunakan password minimal 8 karakter</span>
+                          <span class="text-xs text-blue-800">Gunakan password minimal 8 karakter</span>
                         </div>
                         <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                           <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-600 text-[8px]"></i>
+                            <i class="fas fa-check text-green-600 text-xs"></i>
                           </div>
-                          <span class="text-[9px] text-blue-800">Campurkan huruf, angka, dan simbol</span>
+                          <span class="text-xs text-blue-800">Campurkan huruf, angka, dan simbol</span>
                         </div>
                         <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                           <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-600 text-[8px]"></i>
+                            <i class="fas fa-check text-green-600 text-xs"></i>
                           </div>
-                          <span class="text-[9px] text-blue-800">Jangan gunakan password yang sama</span>
+                          <span class="text-xs text-blue-800">Jangan gunakan password yang sama</span>
                         </div>
                         <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                           <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-green-600 text-[8px]"></i>
+                            <i class="fas fa-check text-green-600 text-xs"></i>
                           </div>
-                          <span class="text-[9px] text-blue-800">Ganti password secara berkala</span>
+                          <span class="text-xs text-blue-800">Ganti password secara berkala</span>
                         </div>
                       </div>
                     </div>
@@ -906,8 +906,8 @@
                             <i class="fas fa-key text-white"></i>
                           </div>
                           <div>
-                            <h2 class="text-base font-extrabold text-white">Ganti Password</h2>
-                            <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Update password untuk keamanan
+                            <h2 class="text-lg font-extrabold text-white">Ganti Password</h2>
+                            <p class="text-emerald-100 text-sm font-medium mt-0.5">Update password untuk keamanan
                               akun Anda</p>
                           </div>
                         </div>
@@ -919,22 +919,22 @@
                           <!-- Current Password -->
                           <div>
                             <label for="current_password"
-                              class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
-                              <i class="fas fa-lock text-emerald-600 text-xs mr-1"></i>
+                              class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                              <i class="fas fa-lock text-emerald-600 text-sm mr-1"></i>
                               Password Saat Ini
                               <span class="text-red-500 ml-1">*</span>
                             </label>
                             <div class="input-container relative">
                               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i
-                                  class="fas fa-lock text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                                  class="fas fa-lock text-emerald-400 input-icon transition-all duration-200 text-sm"></i>
                               </div>
                               <input type="password" id="current_password" name="current_password" required
-                                class="block w-full pl-9 pr-12 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                class="block w-full pl-9 pr-12 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium"
                                 placeholder="Masukkan password saat ini" />
                               <button type="button" onclick="togglePassword('current_password', this)"
                                 class="absolute inset-y-0 right-0 pr-3 flex items-center text-emerald-400 hover:text-emerald-600 transition-colors">
-                                <i class="fas fa-eye"></i>
+                                <i class="fas fa-eye text-sm"></i>
                               </button>
                             </div>
                           </div>
@@ -942,30 +942,30 @@
                           <!-- New Password -->
                           <div>
                             <label for="new_password"
-                              class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
-                              <i class="fas fa-key text-emerald-600 text-xs mr-1"></i>
+                              class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                              <i class="fas fa-key text-emerald-600 text-sm mr-1"></i>
                               Password Baru
                               <span class="text-red-500 ml-1">*</span>
                             </label>
                             <div class="input-container relative">
                               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i
-                                  class="fas fa-key text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                                  class="fas fa-key text-emerald-400 input-icon transition-all duration-200 text-sm"></i>
                               </div>
                               <input type="password" id="new_password" name="new_password" required minlength="8"
-                                class="block w-full pl-9 pr-12 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                class="block w-full pl-9 pr-12 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium"
                                 placeholder="Minimal 8 karakter" />
                               <button type="button" onclick="togglePassword('new_password', this)"
                                 class="absolute inset-y-0 right-0 pr-3 flex items-center text-emerald-400 hover:text-emerald-600 transition-colors">
-                                <i class="fas fa-eye"></i>
+                                <i class="fas fa-eye text-sm"></i>
                               </button>
                             </div>
 
                             <!-- Password Strength Indicator -->
                             <div class="mt-3">
                               <div class="flex justify-between items-center mb-1">
-                                <span class="text-[8px] font-bold text-emerald-700">Kekuatan Password</span>
-                                <span id="strength-text" class="text-[8px] font-extrabold">-</span>
+                                <span class="text-xs font-bold text-emerald-700">Kekuatan Password</span>
+                                <span id="strength-text" class="text-xs font-extrabold">-</span>
                               </div>
                               <div class="flex gap-1">
                                 <div id="strength-1"
@@ -983,39 +983,39 @@
                           <!-- Confirm Password -->
                           <div>
                             <label for="confirm_password"
-                              class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
-                              <i class="fas fa-check-double text-emerald-600 text-xs mr-1"></i>
+                              class="block text-xs font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                              <i class="fas fa-check-double text-emerald-600 text-sm mr-1"></i>
                               Konfirmasi Password Baru
                               <span class="text-red-500 ml-1">*</span>
                             </label>
                             <div class="input-container relative">
                               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i
-                                  class="fas fa-check-double text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                                  class="fas fa-check-double text-emerald-400 input-icon transition-all duration-200 text-sm"></i>
                               </div>
                               <input type="password" id="confirm_password" name="confirm_password" required
-                                class="block w-full pl-9 pr-12 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                                class="block w-full pl-9 pr-12 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium"
                                 placeholder="Ulangi password baru" />
                               <button type="button" onclick="togglePassword('confirm_password', this)"
                                 class="absolute inset-y-0 right-0 pr-3 flex items-center text-emerald-400 hover:text-emerald-600 transition-colors">
-                                <i class="fas fa-eye"></i>
+                                <i class="fas fa-eye text-sm"></i>
                               </button>
                             </div>
                             <div id="match-indicator" class="mt-2 flex items-center gap-1">
-                              <i id="match-icon" class="fas text-xs"></i>
-                              <span id="match-text" class="text-[8px] font-medium"></span>
+                              <i id="match-icon" class="fas text-sm"></i>
+                              <span id="match-text" class="text-xs font-medium"></span>
                             </div>
                           </div>
 
                           <!-- Submit Button -->
                           <div class="pt-4 border-t border-white/30">
                             <button type="submit" id="submitBtn"
-                              class="w-full gradient-primary text-white py-4 px-6 rounded-xl font-extrabold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm shadow-lg">
+                              class="w-full gradient-primary text-white py-4 px-6 rounded-xl font-extrabold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-base shadow-lg">
                               <i class="fas fa-save"></i>
                               <span>Simpan Password Baru</span>
                               <i class="fas fa-arrow-right ml-1"></i>
                             </button>
-                            <p class="text-[8px] text-gray-500 text-center mt-3 flex items-center justify-center gap-1">
+                            <p class="text-xs text-gray-500 text-center mt-3 flex items-center justify-center gap-1">
                               <i class="fas fa-shield-alt text-emerald-400"></i>
                               Password Anda dienkripsi sebelum disimpan
                             </p>
@@ -1034,42 +1034,42 @@
                           </div>
                         </div>
                         <div class="flex-1">
-                          <h3 class="text-xs font-extrabold text-blue-900 mb-3">Informasi Keamanan</h3>
+                          <h3 class="text-sm font-extrabold text-blue-900 mb-3">Informasi Keamanan</h3>
                           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                               <div
                                 class="w-5 h-5 bg-blue-100 rounded-md flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-lock text-blue-600 text-[8px]"></i>
+                                <i class="fas fa-lock text-blue-600 text-xs"></i>
                               </div>
-                              <span class="text-[9px] text-blue-800">Password harus berbeda dengan password saat
+                              <span class="text-xs text-blue-800">Password harus berbeda dengan password saat
                                 ini</span>
                             </div>
                             <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                               <div
                                 class="w-5 h-5 bg-blue-100 rounded-md flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-brain text-blue-600 text-[8px]"></i>
+                                <i class="fas fa-brain text-blue-600 text-xs"></i>
                               </div>
-                              <span class="text-[9px] text-blue-800">Pastikan Anda mengingat password baru dengan
+                              <span class="text-xs text-blue-800">Pastikan Anda mengingat password baru dengan
                                 baik</span>
                             </div>
                             <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                               <div
                                 class="w-5 h-5 bg-blue-100 rounded-md flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-user-check text-blue-600 text-[8px]"></i>
+                                <i class="fas fa-user-check text-blue-600 text-xs"></i>
                               </div>
-                              <span class="text-[9px] text-blue-800">Setelah berhasil, Anda akan tetap login</span>
+                              <span class="text-xs text-blue-800">Setelah berhasil, Anda akan tetap login</span>
                             </div>
                             <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                               <div
                                 class="w-5 h-5 bg-blue-100 rounded-md flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-database text-blue-600 text-[8px]"></i>
+                                <i class="fas fa-database text-blue-600 text-xs"></i>
                               </div>
-                              <span class="text-[9px] text-blue-800">Password dienkripsi sebelum disimpan ke
+                              <span class="text-xs text-blue-800">Password dienkripsi sebelum disimpan ke
                                 database</span>
                             </div>
                           </div>
                           <div class="mt-4 pt-3 border-t border-blue-200/50">
-                            <div class="flex items-center gap-2 text-[9px] text-blue-700">
+                            <div class="flex items-center gap-2 text-xs text-blue-700">
                               <i class="fas fa-clock text-blue-500"></i>
                               <span>Perubahan password berlaku segera setelah disimpan</span>
                             </div>
@@ -1095,7 +1095,7 @@
         </div>
         <div class="text-center">
           <h3 class="text-gray-900 font-extrabold text-xl mb-2">Memperbarui Password</h3>
-          <p class="text-xs text-gray-600">Harap tunggu sebentar, password Anda sedang dienkripsi...</p>
+          <p class="text-sm text-gray-600">Harap tunggu sebentar, password Anda sedang dienkripsi...</p>
         </div>
         <!-- Progress Bar dengan Animasi Shimmer -->
         <div class="w-full bg-white/30 rounded-full h-2 overflow-hidden relative">
@@ -1169,10 +1169,10 @@
 
         if (password.length > 0) {
           strengthText.textContent = texts[strength - 1] || 'Lemah';
-          strengthText.className = `text-[8px] font-extrabold ${textColors[strength - 1] || 'text-red-600'}`;
+          strengthText.className = `text-xs font-extrabold ${textColors[strength - 1] || 'text-red-600'}`;
         } else {
           strengthText.textContent = '-';
-          strengthText.className = 'text-[8px] font-extrabold text-gray-500';
+          strengthText.className = 'text-xs font-extrabold text-gray-500';
         }
       });
 
@@ -1193,13 +1193,13 @@
 
         matchIndicator.classList.remove('hidden');
         if (password === confirm) {
-          matchIcon.className = 'fas fa-check-circle text-green-500 text-xs';
+          matchIcon.className = 'fas fa-check-circle text-green-500 text-sm';
           matchText.textContent = 'Password cocok';
-          matchText.className = 'text-[8px] font-extrabold text-green-600';
+          matchText.className = 'text-xs font-extrabold text-green-600';
         } else {
-          matchIcon.className = 'fas fa-times-circle text-red-500 text-xs';
+          matchIcon.className = 'fas fa-times-circle text-red-500 text-sm';
           matchText.textContent = 'Password tidak cocok';
-          matchText.className = 'text-[8px] font-extrabold text-red-600';
+          matchText.className = 'text-xs font-extrabold text-red-600';
         }
       }
 

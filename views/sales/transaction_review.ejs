@@ -626,11 +626,11 @@
                       Transaction Review
                     </h1>
                     <span
-                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-sm font-bold tracking-wider shadow-lg">
                       SALES
                     </span>
                   </div>
-                  <p class="text-sm text-emerald-700 font-medium">Review dan monitor semua transaksi sales</p>
+                  <p class="text-base text-emerald-700 font-medium">Review dan monitor semua transaksi sales</p>
                 </div>
               </div>
             </div>
@@ -642,8 +642,8 @@
                   <i class="fas fa-calendar-alt text-white text-sm"></i>
                 </div>
                 <div>
-                  <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
-                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                  <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                  <p class="text-sm font-bold text-gray-800 whitespace-nowrap">
                     <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                   </p>
                 </div>
@@ -656,8 +656,8 @@
                   <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
                 </div>
                 <div>
-                  <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
-                  <p class="text-xs font-bold text-white">Updates Real-time</p>
+                  <p class="text-xs text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                  <p class="text-sm font-bold text-white">Updates Real-time</p>
                 </div>
               </div>
             </div>
@@ -684,14 +684,14 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Total Transaksi</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Total Transaksi</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-4xl font-black text-gray-900" id="totalTransactions">
                         <%= transactions.length || 0 %>
                       </p>
-                      <span class="text-xs font-bold text-emerald-600">transactions</span>
+                      <span class="text-sm font-bold text-emerald-600">transactions</span>
                     </div>
                   </div>
 
@@ -723,11 +723,11 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Total Amount</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Total Amount</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
-                      <p class="text-4xl font-black text-gray-900">
+                      <p class="text-3xl font-black text-gray-900">
                         Rp <% let totalAmount=0; if (transactions && transactions.length> 0) {
                           transactions.forEach(trx => {
                           totalAmount += parseFloat(trx.total_amount) || 0;
@@ -767,11 +767,11 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Avg. Transaction</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Avg. Transaction</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
-                      <p class="text-4xl font-black text-gray-900">
+                      <p class="text-3xl font-black text-gray-900">
                         Rp <% let sumAmount=0; if (transactions && transactions.length> 0) {
                           transactions.forEach(trx => {
                           sumAmount += parseFloat(trx.total_amount) || 0;
@@ -815,7 +815,7 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Unique Affiliates</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Unique Affiliates</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
@@ -830,7 +830,7 @@
                           %>
                           <%= affiliateSet.size %>
                       </p>
-                      <span class="text-xs font-bold text-emerald-600">affiliates</span>
+                      <span class="text-sm font-bold text-emerald-600">affiliates</span>
                     </div>
                   </div>
 
@@ -853,12 +853,12 @@
                   <i class="fas fa-search text-white"></i>
                 </div>
                 <div>
-                  <h2 class="text-base font-extrabold text-white">Review Transaksi</h2>
-                  <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Detail semua transaksi dalam sistem</p>
+                  <h2 class="text-lg font-extrabold text-white">Review Transaksi</h2>
+                  <p class="text-emerald-100 text-sm font-medium mt-0.5">Detail semua transaksi dalam sistem</p>
                 </div>
               </div>
               <span
-                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-xs font-extrabold border border-white/30">
                 <i class="fas fa-bolt mr-1"></i>
                 Live
               </span>
@@ -869,25 +869,25 @@
                 <thead class="bg-white/10 backdrop-blur border-b border-white/30">
                   <tr>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       ID</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       Customer</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       Affiliate</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       Amount</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       Payment</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       Status</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       Created At</th>
                   </tr>
                 </thead>
@@ -947,8 +947,8 @@
                             style="animation-delay: <%= index * 0.05 %>s">
                             <td class="py-4 px-6">
                               <div class="flex flex-col">
-                                <span class="font-extrabold text-sm text-gray-900">#<%= trx.id %></span>
-                                <span class="text-[8px] font-medium text-emerald-700">Transaction</span>
+                                <span class="font-extrabold text-base text-gray-900">#<%= trx.id %></span>
+                                <span class="text-xs font-medium text-emerald-700">Transaction</span>
                               </div>
                             </td>
                             <td class="py-4 px-6">
@@ -958,10 +958,10 @@
                                   <i class="fas fa-user text-emerald-600"></i>
                                 </div>
                                 <div>
-                                  <div class="font-extrabold text-sm text-gray-900">
+                                  <div class="font-extrabold text-base text-gray-900">
                                     <%= trx.customer_name || '-' %>
                                   </div>
-                                  <div class="text-[8px] font-medium text-emerald-700">Customer</div>
+                                  <div class="text-xs font-medium text-emerald-700">Customer</div>
                                 </div>
                               </div>
                             </td>
@@ -973,10 +973,10 @@
                                     <i class="fas fa-user-tie text-purple-600"></i>
                                   </div>
                                   <div>
-                                    <div class="font-extrabold text-sm text-gray-900">
+                                    <div class="font-extrabold text-base text-gray-900">
                                       <%= trx.affiliate_name %>
                                     </div>
-                                    <div class="text-[8px] font-medium text-purple-700">Affiliate</div>
+                                    <div class="text-xs font-medium text-purple-700">Affiliate</div>
                                   </div>
                                   <% } else { %>
                                     <div
@@ -984,8 +984,8 @@
                                       <i class="fas fa-times text-gray-500"></i>
                                     </div>
                                     <div>
-                                      <div class="font-extrabold text-sm text-gray-400">No Affiliate</div>
-                                      <div class="text-[8px] font-medium text-gray-500">Direct Sale</div>
+                                      <div class="font-extrabold text-base text-gray-400">No Affiliate</div>
+                                      <div class="text-xs font-medium text-gray-500">Direct Sale</div>
                                     </div>
                                     <% } %>
                               </div>
@@ -993,11 +993,11 @@
                             <td class="py-4 px-6">
                               <div class="flex flex-col">
                                 <span
-                                  class="font-extrabold text-lg <%= isHighValue ? 'text-emerald-700' : 'text-gray-900' %>">
+                                  class="font-extrabold text-xl <%= isHighValue ? 'text-emerald-700' : 'text-gray-900' %>">
                                   Rp <%= amount.toLocaleString('id-ID') %>
                                 </span>
                                 <% if (trx.commission_amount) { %>
-                                  <span class="text-[8px] font-medium text-gray-500 flex items-center gap-1 mt-0.5">
+                                  <span class="text-xs font-medium text-gray-500 flex items-center gap-1 mt-0.5">
                                     <i class="fas fa-coins text-emerald-400"></i>
                                     Komisi: Rp <%= parseInt(trx.commission_amount).toLocaleString('id-ID') %>
                                   </span>
@@ -1007,31 +1007,31 @@
                             <td class="py-4 px-6">
                               <div class="flex flex-col gap-1">
                                 <div class="flex items-center gap-2">
-                                  <i class="<%= methodIcon %> text-emerald-500 text-xs"></i>
-                                  <span class="text-xs font-medium text-gray-700">
+                                  <i class="<%= methodIcon %> text-emerald-500 text-sm"></i>
+                                  <span class="text-sm font-medium text-gray-700">
                                     <%= trx.payment_method %>
                                   </span>
                                 </div>
                                 <span
-                                  class="px-2 py-1 rounded-lg text-[8px] font-extrabold <%= paymentStatusClass %> flex items-center gap-1 border border-white/30 w-fit">
-                                  <i class="fas fa-circle text-[5px] mr-1"></i>
+                                  class="px-2 py-1 rounded-lg text-xs font-extrabold <%= paymentStatusClass %> flex items-center gap-1 border border-white/30 w-fit">
+                                  <i class="fas fa-circle text-[6px] mr-1"></i>
                                   <%= trx.payment_status %>
                                 </span>
                               </div>
                             </td>
                             <td class="py-4 px-6">
                               <span
-                                class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold <%= statusClass %> flex items-center gap-1 border border-white/30 w-fit">
-                                <i class="fas fa-circle text-[5px] mr-1"></i>
+                                class="px-3 py-1.5 rounded-lg text-xs font-extrabold <%= statusClass %> flex items-center gap-1 border border-white/30 w-fit">
+                                <i class="fas fa-circle text-[6px] mr-1"></i>
                                 <%= trx.status.toUpperCase() %>
                               </span>
                             </td>
                             <td class="py-4 px-6">
                               <div class="flex flex-col">
-                                <span class="font-extrabold text-xs text-gray-900">
+                                <span class="font-extrabold text-sm text-gray-900">
                                   <%= formattedDate %>
                                 </span>
-                                <span class="text-[8px] font-medium text-gray-500 flex items-center gap-1 mt-0.5">
+                                <span class="text-xs font-medium text-gray-500 flex items-center gap-1 mt-0.5">
                                   <i class="fas fa-clock text-emerald-400"></i>
                                   <%= formattedTime %>
                                 </span>
@@ -1048,14 +1048,14 @@
               <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                 <div class="flex items-center gap-2">
                   <span
-                    class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                    class="text-xs font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
                     Menampilkan <span class="font-extrabold">
                       <%= transactions.length || 0 %>
                     </span> transaksi
                   </span>
                 </div>
                 <span
-                  class="text-[9px] font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                  class="text-xs font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
                   <i class="fas fa-clock mr-1"></i>
                   Terakhir diperbarui: Sekarang
                 </span>

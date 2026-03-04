@@ -584,11 +584,11 @@
                       Dashboard Sales
                     </h1>
                     <span
-                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-sm font-bold tracking-wider shadow-lg">
                       SALES
                     </span>
                   </div>
-                  <p class="text-sm text-emerald-700 font-medium">Selamat datang di panel sales Affillink</p>
+                  <p class="text-base text-emerald-700 font-medium">Selamat datang di panel sales Affillink</p>
                 </div>
               </div>
             </div>
@@ -600,8 +600,8 @@
                   <i class="fas fa-calendar-alt text-white text-sm"></i>
                 </div>
                 <div>
-                  <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
-                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                  <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                  <p class="text-sm font-bold text-gray-800 whitespace-nowrap">
                     <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                   </p>
                 </div>
@@ -614,8 +614,8 @@
                   <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
                 </div>
                 <div>
-                  <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
-                  <p class="text-xs font-bold text-white">Updates Real-time</p>
+                  <p class="text-xs text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                  <p class="text-sm font-bold text-white">Updates Real-time</p>
                 </div>
               </div>
             </div>
@@ -643,22 +643,22 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Total Transaksi</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Total Transaksi</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-4xl font-black text-gray-900" id="totalTransactions">
                         <%= stats.totalTransactions || 0 %>
                       </p>
-                      <span class="text-xs font-bold text-emerald-600">transactions</span>
+                      <span class="text-sm font-bold text-emerald-600">transactions</span>
                     </div>
 
                     <div class="flex items-center gap-1.5 mt-2">
                       <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-arrow-up text-[8px] text-green-600"></i>
-                        <span class="text-[8px] font-extrabold text-green-700">+12.5%</span>
+                        <i class="fas fa-arrow-up text-xs text-green-600"></i>
+                        <span class="text-xs font-extrabold text-green-700">+12.5%</span>
                       </div>
-                      <span class="text-[7px] text-gray-500">vs bulan lalu</span>
+                      <span class="text-xs text-gray-500">vs bulan lalu</span>
                     </div>
                   </div>
 
@@ -690,20 +690,20 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Transaksi Selesai</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Transaksi Selesai</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-4xl font-black text-gray-900" id="completedTransactions">
                         <%= stats.completedTransactions || 0 %>
                       </p>
-                      <span class="text-xs font-bold text-emerald-600">completed</span>
+                      <span class="text-sm font-bold text-emerald-600">completed</span>
                     </div>
 
                     <div class="flex items-center gap-1.5 mt-2">
                       <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-check-circle text-[8px] text-green-600"></i>
-                        <span class="text-[8px] font-extrabold text-green-700">
+                        <i class="fas fa-check-circle text-xs text-green-600"></i>
+                        <span class="text-xs font-extrabold text-green-700">
                           <% if (stats.totalTransactions> 0) { %>
                             <%= Math.round((stats.completedTransactions / stats.totalTransactions) * 100) %>%
                               <% } else { %>
@@ -711,7 +711,7 @@
                                 <% } %>
                         </span>
                       </div>
-                      <span class="text-[7px] text-gray-500">success rate</span>
+                      <span class="text-xs text-gray-500">success rate</span>
                     </div>
                   </div>
 
@@ -743,14 +743,14 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Total Affiliates</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Total Affiliates</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-4xl font-black text-gray-900" id="totalAffiliates">
                         <%= stats.totalAffiliates || 0 %>
                       </p>
-                      <span class="text-xs font-bold text-emerald-600">affiliates</span>
+                      <span class="text-sm font-bold text-emerald-600">affiliates</span>
                     </div>
 
                     <div id="pendingAffiliatesBadge" class="mt-2"></div>
@@ -784,20 +784,20 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Active Events</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Active Events</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-4xl font-black text-gray-900" id="activeEvents">
                         <%= stats.activeEvents || 0 %>
                       </p>
-                      <span class="text-xs font-bold text-emerald-600">events</span>
+                      <span class="text-sm font-bold text-emerald-600">events</span>
                     </div>
 
                     <div class="flex items-center gap-1.5 mt-2">
                       <div class="px-2 py-1 bg-blue-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-play-circle text-[8px] text-blue-600"></i>
-                        <span class="text-[8px] font-extrabold text-blue-700">Running</span>
+                        <i class="fas fa-play-circle text-xs text-blue-600"></i>
+                        <span class="text-xs font-extrabold text-blue-700">Running</span>
                       </div>
                     </div>
                   </div>
@@ -821,12 +821,12 @@
                   <i class="fas fa-exchange-alt text-white"></i>
                 </div>
                 <div>
-                  <h2 class="text-base font-extrabold text-white">Transaksi Terbaru</h2>
-                  <p class="text-emerald-100 text-[10px] font-medium mt-0.5">10 transaksi terakhir</p>
+                  <h2 class="text-lg font-extrabold text-white">Transaksi Terbaru</h2>
+                  <p class="text-emerald-100 text-sm font-medium mt-0.5">10 transaksi terakhir</p>
                 </div>
               </div>
               <span
-                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-xs font-extrabold border border-white/30">
                 <i class="fas fa-bolt mr-1"></i>
                 Live
               </span>
@@ -837,16 +837,16 @@
                 <thead class="bg-white/10 backdrop-blur border-b border-white/30">
                   <tr>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       Customer</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       Affiliate</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       Amount</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                      class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       Status</th>
                   </tr>
                 </thead>
@@ -898,10 +898,10 @@
                                   <i class="fas fa-user text-emerald-600"></i>
                                 </div>
                                 <div>
-                                  <div class="font-extrabold text-sm text-gray-900">
+                                  <div class="font-extrabold text-base text-gray-900">
                                     <%= t.customer_name || 'Unknown' %>
                                   </div>
-                                  <div class="text-[8px] font-medium text-emerald-700">Customer</div>
+                                  <div class="text-xs font-medium text-emerald-700">Customer</div>
                                 </div>
                               </div>
                             </td>
@@ -912,20 +912,20 @@
                                   <i class="fas fa-user-tie text-purple-600"></i>
                                 </div>
                                 <div>
-                                  <div class="font-extrabold text-sm text-gray-900">
+                                  <div class="font-extrabold text-base text-gray-900">
                                     <%= t.affiliate_name || 'No Affiliate' %>
                                   </div>
-                                  <div class="text-[8px] font-medium text-purple-700">Affiliate</div>
+                                  <div class="text-xs font-medium text-purple-700">Affiliate</div>
                                 </div>
                               </div>
                             </td>
                             <td class="py-4 px-6">
                               <div class="flex flex-col">
                                 <span
-                                  class="font-extrabold text-lg <%= isHighValue ? 'text-emerald-700' : 'text-gray-900' %>">
+                                  class="font-extrabold text-xl <%= isHighValue ? 'text-emerald-700' : 'text-gray-900' %>">
                                   Rp <%= amount.toLocaleString('id-ID') %>
                                 </span>
-                                <span class="text-[8px] font-medium text-gray-500 flex items-center gap-1 mt-0.5">
+                                <span class="text-xs font-medium text-gray-500 flex items-center gap-1 mt-0.5">
                                   <i class="fas fa-calendar-alt text-emerald-400"></i>
                                   <%= formattedDate %>
                                 </span>
@@ -933,8 +933,8 @@
                             </td>
                             <td class="py-4 px-6">
                               <span
-                                class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold <%= statusClass %> flex items-center gap-1 border border-white/30 w-fit">
-                                <i class="fas fa-circle text-[5px] mr-1"></i>
+                                class="px-3 py-1.5 rounded-lg text-xs font-extrabold <%= statusClass %> flex items-center gap-1 border border-white/30 w-fit">
+                                <i class="fas fa-circle text-[6px] mr-1"></i>
                                 <%= t.status.toUpperCase() %>
                               </span>
                             </td>
@@ -948,12 +948,12 @@
             <div class="px-6 py-4 bg-white/30 backdrop-blur border-t border-white/30 rounded-b-2xl">
               <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                 <a href="/sales/transactions"
-                  class="text-emerald-700 hover:text-emerald-800 font-extrabold text-xs flex items-center gap-2 group">
+                  class="text-emerald-700 hover:text-emerald-800 font-extrabold text-sm flex items-center gap-2 group">
                   <i class="fas fa-external-link-alt group-hover:translate-x-1 transition-transform duration-300"></i>
                   Lihat Semua Transaksi
                 </a>
                 <span
-                  class="text-[9px] font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                  class="text-xs font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
                   <i class="fas fa-clock mr-1"></i>
                   Terakhir diperbarui: Sekarang
                 </span>
@@ -1005,15 +1005,15 @@
               if (data.stats.pendingAffiliates > 0) {
                 pendingBadge.innerHTML = `
                   <span class="px-3 py-1 bg-amber-100 rounded-lg flex items-center gap-1 w-fit">
-                    <i class="fas fa-clock text-[8px] text-amber-600"></i>
-                    <span class="text-[8px] font-extrabold text-amber-700">${data.stats.pendingAffiliates} menunggu persetujuan</span>
+                    <i class="fas fa-clock text-xs text-amber-600"></i>
+                    <span class="text-xs font-extrabold text-amber-700">${data.stats.pendingAffiliates} menunggu persetujuan</span>
                   </span>
                 `;
               } else {
                 pendingBadge.innerHTML = `
                   <span class="px-3 py-1 bg-green-100 rounded-lg flex items-center gap-1 w-fit">
-                    <i class="fas fa-check-circle text-[8px] text-green-600"></i>
-                    <span class="text-[8px] font-extrabold text-green-700">Semua disetujui</span>
+                    <i class="fas fa-check-circle text-xs text-green-600"></i>
+                    <span class="text-xs font-extrabold text-green-700">Semua disetujui</span>
                   </span>
                 `;
               }
@@ -1035,8 +1035,8 @@
                   <i class="fas fa-exclamation-triangle text-white"></i>
                 </div>
                 <div>
-                  <p class="font-extrabold text-gray-900 text-sm">${message}</p>
-                  <p class="text-[9px] text-gray-600 mt-1">Coba refresh halaman atau hubungi support</p>
+                  <p class="font-extrabold text-gray-900 text-base">${message}</p>
+                  <p class="text-xs text-gray-600 mt-1">Coba refresh halaman atau hubungi support</p>
                 </div>
               </div>
             </div>
