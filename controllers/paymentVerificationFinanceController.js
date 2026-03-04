@@ -1,58 +1,91 @@
 const db = require("../config/database");
 
+function calculateProjectedAmount(totalAmount, rule) {
+  if (!rule) return null;
+  const base = Number(totalAmount) || 0;
+  if (rule.commission_type === "flat") return Number(rule.commission_value) || 0;
+  if (rule.commission_type === "percentage") {
+    return Math.round((((Number(rule.commission_value) || 0) / 100) * base + Number.EPSILON) * 100) / 100;
+  }
+  return null;
+}
+
+function pickRule(ruleBuckets, eventId, stage) {
+  const eventRules = ruleBuckets.byEvent.get(eventId) || [];
+  const globalRules = ruleBuckets.global || [];
+  return (
+    eventRules.find((r) => Number(r.min_stage) <= stage) ||
+    globalRules.find((r) => Number(r.min_stage) <= stage) ||
+    null
+  );
+}
+
+async function attachProjectedCommissions(rows, preferredStages) {
+  if (!rows.length) return;
+
+  const [rules] = await db.query(
+    `SELECT id, event_id, commission_type, commission_value, min_stage
+     FROM commission_rules
+     WHERE is_active = 1
+     ORDER BY (event_id IS NOT NULL) DESC, id DESC`,
+  );
+
+  const byEvent = new Map();
+  const global = [];
+
+  for (const rule of rules) {
+    if (rule.event_id === null || typeof rule.event_id === "undefined") {
+      global.push(rule);
+      continue;
+    }
+    if (!byEvent.has(rule.event_id)) byEvent.set(rule.event_id, []);
+    byEvent.get(rule.event_id).push(rule);
+  }
+
+  const buckets = { byEvent, global };
+
+  for (const row of rows) {
+    let projected = null;
+    let projectedStage = null;
+
+    for (const stage of preferredStages) {
+      const selectedRule = pickRule(buckets, row.event_id, stage);
+      const amount = calculateProjectedAmount(row.total_amount, selectedRule);
+      if (amount !== null) {
+        projected = amount;
+        projectedStage = stage;
+        break;
+      }
+    }
+
+    row.projected_commission = projected;
+    row.projected_stage = projectedStage;
+  }
+}
+
 // Render Payment Verification Page
 exports.getPaymentVerification = async (req, res) => {
   try {
     // Ambil transaksi yang memiliki lead_status = 'HOT' (dikirim dari sales)
     // atau transaksi yang sudah disetujui tahap 1 dan payment_status pending
     const [pendingPayments] = await db.query(`
-      SELECT t.id, COALESCE(t.customer_name, c.name) AS customer_name, u.name AS affiliate_name, e.title AS event_name, t.total_amount, t.payment_status, t.payment_method, t.created_at, ls.status as lead_status
+      SELECT t.id, t.event_id, COALESCE(t.customer_name, c.name) AS customer_name, u.name AS affiliate_name, e.title AS event_name, t.total_amount, t.payment_status, t.payment_method, t.created_at, ls.status as lead_status, COALESCE(cs.total_commission, 0) AS commission_amount
       FROM transactions t
       LEFT JOIN customers c ON t.customer_id = c.id
       LEFT JOIN users u ON t.affiliate_id = u.id
       LEFT JOIN events e ON t.event_id = e.id
       LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id
+      LEFT JOIN (
+        SELECT transaction_id, SUM(amount) AS total_commission
+        FROM commissions
+        GROUP BY transaction_id
+      ) cs ON cs.transaction_id = t.id
       WHERE ls.status IN ('HOT','DP')
       ORDER BY t.created_at DESC
     `);
-    // Compute per-lead commission: prefer actual commission if exists, else projected for stage 2.
+
     try {
-      const {
-        getProjectedCommissionForTransaction,
-      } = require("./commissionService");
-      for (const p of pendingPayments) {
-        // try actual commissions
-        try {
-          const [rowsC] = await db.query(
-            `SELECT COALESCE(SUM(amount),0) as total FROM commissions WHERE transaction_id = ?`,
-            [p.id],
-          );
-          p.commission_amount =
-            rowsC && rowsC[0] ? Number(rowsC[0].total) || 0 : 0;
-        } catch (e) {
-          p.commission_amount = 0;
-        }
-
-        // projected commission: prefer stage 2 but if none, try stage 3 (or next available)
-        let proj = await getProjectedCommissionForTransaction(p.id, 2);
-        if (!proj || proj.amount === null) {
-          const tryStages = [3, 1];
-          for (const s of tryStages) {
-            const p2 = await getProjectedCommissionForTransaction(p.id, s);
-            if (p2 && typeof p2.amount !== "undefined" && p2.amount !== null) {
-              proj = p2;
-              proj.stage = s;
-              break;
-            }
-          }
-        } else {
-          proj.stage = 2;
-        }
-
-        p.projected_commission = proj && proj.amount ? proj.amount : null;
-        p.projected_stage =
-          proj && proj.stage ? proj.stage : proj && proj.amount ? 2 : null;
-      }
+      await attachProjectedCommissions(pendingPayments, [2, 3, 1]);
     } catch (e) {
       console.error("Error computing projected commissions (stage 2)", e);
     }
@@ -69,46 +102,23 @@ exports.getPaymentVerification = async (req, res) => {
 exports.getPendingPaymentsJSON = async (req, res) => {
   try {
     const [pendingPayments] = await db.query(`
-      SELECT t.id, COALESCE(t.customer_name, c.name) AS customer_name, u.name AS affiliate_name, e.title AS event_name, t.total_amount, t.payment_status, t.payment_method, t.created_at, ls.status as lead_status
+      SELECT t.id, t.event_id, COALESCE(t.customer_name, c.name) AS customer_name, u.name AS affiliate_name, e.title AS event_name, t.total_amount, t.payment_status, t.payment_method, t.created_at, ls.status as lead_status, COALESCE(cs.total_commission, 0) AS commission_amount
       FROM transactions t
       LEFT JOIN customers c ON t.customer_id = c.id
       LEFT JOIN users u ON t.affiliate_id = u.id
       LEFT JOIN events e ON t.event_id = e.id
       LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id
+      LEFT JOIN (
+        SELECT transaction_id, SUM(amount) AS total_commission
+        FROM commissions
+        GROUP BY transaction_id
+      ) cs ON cs.transaction_id = t.id
       WHERE ls.status IN ('HOT','DP')
       ORDER BY t.created_at DESC
     `);
 
-    // compute per-row commission similarly
     try {
-      const {
-        getProjectedCommissionForTransaction,
-      } = require("./commissionService");
-      for (const p of pendingPayments) {
-        const [rowsC] = await db.query(
-          `SELECT COALESCE(SUM(amount),0) as total FROM commissions WHERE transaction_id = ?`,
-          [p.id],
-        );
-        p.commission_amount =
-          rowsC && rowsC[0] ? Number(rowsC[0].total) || 0 : 0;
-        let proj = await getProjectedCommissionForTransaction(p.id, 2);
-        if (!proj || proj.amount === null) {
-          const tryStages = [3, 1];
-          for (const s of tryStages) {
-            const p2 = await getProjectedCommissionForTransaction(p.id, s);
-            if (p2 && typeof p2.amount !== "undefined" && p2.amount !== null) {
-              proj = p2;
-              proj.stage = s;
-              break;
-            }
-          }
-        } else {
-          proj.stage = 2;
-        }
-        p.projected_commission = proj && proj.amount ? proj.amount : null;
-        p.projected_stage =
-          proj && proj.stage ? proj.stage : proj && proj.amount ? 2 : null;
-      }
+      await attachProjectedCommissions(pendingPayments, [2, 3, 1]);
     } catch (e) {
       // ignore
     }
@@ -149,15 +159,6 @@ exports.setLeadStatus = async (req, res) => {
     if (!["DP", "LUNAS"].includes(lead_status)) {
       return res.status(400).send("Invalid lead status");
     }
-
-    // ensure lead_statuses table
-    await db.query(`
-      CREATE TABLE IF NOT EXISTS lead_statuses (
-        transaction_id INT PRIMARY KEY,
-        status VARCHAR(191),
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-    `);
 
     await db.query(
       `INSERT INTO lead_statuses (transaction_id, status, updated_at) VALUES (?, ?, NOW())

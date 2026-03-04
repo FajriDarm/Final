@@ -202,46 +202,32 @@ const getDashboardStats = async (req, res) => {
   try {
     await syncEventStatusesByActivePeriod();
 
-    // Total Users
-    const [totalUsers] = await db.query("SELECT COUNT(*) as count FROM users");
-
-    // Total Affiliates
-    const [totalAffiliates] = await db.query(
-      "SELECT COUNT(*) as count FROM users WHERE role_id = 4",
-    );
-
-    // Pending Affiliates
-    const [pendingAffiliates] = await db.query(
-      'SELECT COUNT(*) as count FROM users WHERE affiliate_status = "pending"',
-    );
-
-    // Active Events
-    const [activeEvents] = await db.query(
-      'SELECT COUNT(*) as count FROM events WHERE status = "active"',
-    );
-
-    // Total Transactions
-    const [totalTransactions] = await db.query(
-      "SELECT COUNT(*) as count FROM transactions",
-    );
-
-    // Completed Transactions
-    const [completedTransactions] = await db.query(
-      'SELECT COUNT(*) as count FROM transactions WHERE status = "completed"',
-    );
-
-    // Total Revenue (from completed transactions)
-    const [totalRevenue] = await db.query(
-      'SELECT COALESCE(SUM(total_amount), 0) as revenue FROM transactions WHERE status = "completed"',
-    );
-
-    // Revenue trend --- last 14 days (we'll split into this week / previous week)
-    const [revenueRows] = await db.query(
-      `SELECT DATE(created_at) as day, COALESCE(SUM(total_amount), 0) as revenue
-       FROM transactions
-       WHERE status = 'completed' AND created_at >= DATE_SUB(CURDATE(), INTERVAL 13 DAY)
-       GROUP BY DATE(created_at)`,
-    );
+    const [
+      [totalUsers],
+      [totalAffiliates],
+      [pendingAffiliates],
+      [activeEvents],
+      [totalTransactions],
+      [completedTransactions],
+      [totalRevenue],
+      [revenueRows],
+    ] = await Promise.all([
+      db.query("SELECT COUNT(*) as count FROM users"),
+      db.query("SELECT COUNT(*) as count FROM users WHERE role_id = 4"),
+      db.query('SELECT COUNT(*) as count FROM users WHERE affiliate_status = "pending"'),
+      db.query('SELECT COUNT(*) as count FROM events WHERE status = "active"'),
+      db.query("SELECT COUNT(*) as count FROM transactions"),
+      db.query('SELECT COUNT(*) as count FROM transactions WHERE status = "completed"'),
+      db.query(
+        'SELECT COALESCE(SUM(total_amount), 0) as revenue FROM transactions WHERE status = "completed"',
+      ),
+      db.query(
+        `SELECT DATE(created_at) as day, COALESCE(SUM(total_amount), 0) as revenue
+         FROM transactions
+         WHERE status = 'completed' AND created_at >= DATE_SUB(CURDATE(), INTERVAL 13 DAY)
+         GROUP BY DATE(created_at)`,
+      ),
+    ]);
 
     // Build maps for quick lookup
     const revenueMap = {};
@@ -265,62 +251,105 @@ const getDashboardStats = async (req, res) => {
       revenueLastWeek.push(revenueMap[key] || 0);
     }
 
-    // Traffic sources (heuristic using available tables over last 30 days)
-    const [directCount] = await db.query(
-      `SELECT COUNT(*) as cnt FROM transactions WHERE (affiliate_id IS NULL OR affiliate_id = 0) AND created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
-    );
-
-    const [referralCount] = await db.query(
-      `SELECT COUNT(*) as cnt FROM transactions WHERE (affiliate_id IS NOT NULL AND affiliate_id != 0) AND created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
-    );
-
-    const [clicksSum] = await db.query(
-      `SELECT COALESCE(SUM(clicks),0) as clicks FROM affiliate_links WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
-    );
-
-    const [emailSignups] = await db.query(
-      `SELECT COUNT(*) as cnt FROM customers WHERE email IS NOT NULL AND email <> '' AND created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
-    );
+    const [
+      [directCount],
+      [referralCount],
+      [clicksSum],
+      [emailSignups],
+      [pendingPayouts],
+      [topAffiliatesRows],
+      [popularEventsRows],
+      [activeSessionsRows],
+      [recentTransactions],
+      [recentActivities],
+      [roleActivityRows],
+    ] = await Promise.all([
+      db.query(
+        `SELECT COUNT(*) as cnt FROM transactions WHERE (affiliate_id IS NULL OR affiliate_id = 0) AND created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
+      ),
+      db.query(
+        `SELECT COUNT(*) as cnt FROM transactions WHERE (affiliate_id IS NOT NULL AND affiliate_id != 0) AND created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
+      ),
+      db.query(
+        `SELECT COALESCE(SUM(clicks),0) as clicks FROM affiliate_links WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
+      ),
+      db.query(
+        `SELECT COUNT(*) as cnt FROM customers WHERE email IS NOT NULL AND email <> '' AND created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
+      ),
+      db.query('SELECT COUNT(*) as count FROM payouts WHERE status = "pending"'),
+      db.query(
+        `SELECT u.id, u.name, COALESCE(SUM(c.amount),0) as total_commission
+         FROM commissions c
+         LEFT JOIN users u ON c.affiliate_id = u.id
+         WHERE c.commission_status IN ('approved','paid')
+           AND c.created_at >= DATE_SUB(CURDATE(), INTERVAL 90 DAY)
+         GROUP BY u.id, u.name
+         ORDER BY total_commission DESC
+         LIMIT 3`,
+      ),
+      db.query(
+        `SELECT e.id, e.title, COUNT(t.id) as tx_count
+         FROM events e
+         LEFT JOIN transactions t ON t.event_id = e.id AND t.created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+         GROUP BY e.id, e.title
+         ORDER BY tx_count DESC
+         LIMIT 3`,
+      ),
+      db.query(
+        `SELECT COUNT(DISTINCT user_id_val) as cnt FROM (
+           SELECT approved_by as user_id_val, created_at FROM activity_logs WHERE approved_by IS NOT NULL AND created_at >= DATE_SUB(NOW(), INTERVAL 30 MINUTE)
+           UNION ALL
+           SELECT target_user_id as user_id_val, created_at FROM activity_logs WHERE target_user_id IS NOT NULL AND created_at >= DATE_SUB(NOW(), INTERVAL 30 MINUTE)
+         ) t`,
+      ),
+      db.query(
+        `SELECT t.id, t.total_amount, t.status, t.payment_status, t.created_at,
+                COALESCE(c.name, 'Unknown') as customer_name, u.name as affiliate_name
+         FROM transactions t
+         LEFT JOIN customers c ON t.customer_id = c.id
+         LEFT JOIN users u ON t.affiliate_id = u.id
+         ORDER BY t.created_at DESC
+         LIMIT 10`,
+      ),
+      db.query(
+        `SELECT al.*, 
+                approver.name as approver_name,
+                approver.email as approver_email,
+                target.name as target_user_name,
+                target.email as target_user_email
+         FROM activity_logs al
+         LEFT JOIN users approver ON al.approved_by = approver.id
+         LEFT JOIN users target ON al.target_user_id = target.id
+         ORDER BY al.created_at DESC
+         LIMIT 10`,
+      ),
+      db.query(
+        `SELECT al.id, al.action, al.description, al.created_at,
+                approver.id as approver_id,
+                approver.name as approver_name,
+                approver.email as approver_email,
+                r.name as role_name
+         FROM activity_logs al
+         INNER JOIN users approver ON al.approved_by = approver.id
+         INNER JOIN roles r ON approver.role_id = r.id
+         WHERE r.name IN ('sales', 'finance', 'admin')
+         ORDER BY al.created_at DESC
+         LIMIT 200`,
+      ),
+    ]);
 
     const trafficSources = {
-      direct: Number(directCount[0].cnt) || 0,
-      social: Number(clicksSum[0].clicks) || 0,
-      email: Number(emailSignups[0].cnt) || 0,
-      referral: Number(referralCount[0].cnt) || 0,
+      direct: Number(directCount[0]?.cnt) || 0,
+      social: Number(clicksSum[0]?.clicks) || 0,
+      email: Number(emailSignups[0]?.cnt) || 0,
+      referral: Number(referralCount[0]?.cnt) || 0,
     };
-
-    // Pending Payouts
-    const [pendingPayouts] = await db.query(
-      'SELECT COUNT(*) as count FROM payouts WHERE status = "pending"',
-    );
-
-    // Top affiliates by total approved/paid commissions (last 90 days)
-    const [topAffiliatesRows] = await db.query(
-      `SELECT u.id, u.name, COALESCE(SUM(c.amount),0) as total_commission
-       FROM commissions c
-       LEFT JOIN users u ON c.affiliate_id = u.id
-       WHERE c.commission_status IN ('approved','paid')
-         AND c.created_at >= DATE_SUB(CURDATE(), INTERVAL 90 DAY)
-       GROUP BY u.id, u.name
-       ORDER BY total_commission DESC
-       LIMIT 3`,
-    );
 
     const topAffiliates = topAffiliatesRows.map(r => ({
       id: r.id,
-      name: r.name || '—',
+      name: r.name || "-",
       total: Number(r.total_commission || 0),
     }));
-
-    // Popular events (by transactions in last 30 days)
-    const [popularEventsRows] = await db.query(
-      `SELECT e.id, e.title, COUNT(t.id) as tx_count
-       FROM events e
-       LEFT JOIN transactions t ON t.event_id = e.id AND t.created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
-       GROUP BY e.id, e.title
-       ORDER BY tx_count DESC
-       LIMIT 3`,
-    );
 
     const popularEvents = popularEventsRows.map(r => ({
       id: r.id,
@@ -330,59 +359,11 @@ const getDashboardStats = async (req, res) => {
 
     // System health (simple heuristics)
     // activeSessions := distinct users appearing in activity_logs in last 30 minutes
-    const [activeSessionsRows] = await db.query(
-      `SELECT COUNT(DISTINCT user_id_val) as cnt FROM (
-         SELECT approved_by as user_id_val, created_at FROM activity_logs WHERE approved_by IS NOT NULL AND created_at >= DATE_SUB(NOW(), INTERVAL 30 MINUTE)
-         UNION ALL
-         SELECT target_user_id as user_id_val, created_at FROM activity_logs WHERE target_user_id IS NOT NULL AND created_at >= DATE_SUB(NOW(), INTERVAL 30 MINUTE)
-       ) t`,
-    );
-
     const systemHealth = {
       serverResponseMs: 98, // static estimate (ms)
       uptimePct: '99.9%',
       activeSessions: Number(activeSessionsRows[0]?.cnt || 0),
     };
-
-    // Recent Transactions
-    const [recentTransactions] = await db.query(
-      `SELECT t.id, t.total_amount, t.status, t.payment_status, t.created_at,
-              COALESCE(c.name, 'Unknown') as customer_name, u.name as affiliate_name
-       FROM transactions t
-       LEFT JOIN customers c ON t.customer_id = c.id
-       LEFT JOIN users u ON t.affiliate_id = u.id
-       ORDER BY t.created_at DESC
-       LIMIT 10`,
-    );
-
-    // Recent Activity Logs
-    const [recentActivities] = await db.query(
-      `SELECT al.*, 
-              approver.name as approver_name,
-              approver.email as approver_email,
-              target.name as target_user_name,
-              target.email as target_user_email
-       FROM activity_logs al
-       LEFT JOIN users approver ON al.approved_by = approver.id
-       LEFT JOIN users target ON al.target_user_id = target.id
-       ORDER BY al.created_at DESC
-       LIMIT 10`,
-    );
-
-    // Last activity per role (sales, finance, admin)
-    const [roleActivityRows] = await db.query(
-      `SELECT al.id, al.action, al.description, al.created_at,
-              approver.id as approver_id,
-              approver.name as approver_name,
-              approver.email as approver_email,
-              r.name as role_name
-       FROM activity_logs al
-       INNER JOIN users approver ON al.approved_by = approver.id
-       INNER JOIN roles r ON approver.role_id = r.id
-       WHERE r.name IN ('sales', 'finance', 'admin')
-       ORDER BY al.created_at DESC
-       LIMIT 200`,
-    );
 
     const lastChangesByRole = {
       sales: null,
@@ -406,14 +387,14 @@ const getDashboardStats = async (req, res) => {
     res.json({
       success: true,
       stats: {
-        totalUsers: totalUsers[0].count,
-        totalAffiliates: totalAffiliates[0].count,
-        pendingAffiliates: pendingAffiliates[0].count,
-        activeEvents: activeEvents[0].count,
-        totalTransactions: totalTransactions[0].count,
-        completedTransactions: completedTransactions[0].count,
-        totalRevenue: totalRevenue[0].revenue,
-        pendingPayouts: pendingPayouts[0].count,
+        totalUsers: totalUsers[0]?.count || 0,
+        totalAffiliates: totalAffiliates[0]?.count || 0,
+        pendingAffiliates: pendingAffiliates[0]?.count || 0,
+        activeEvents: activeEvents[0]?.count || 0,
+        totalTransactions: totalTransactions[0]?.count || 0,
+        completedTransactions: completedTransactions[0]?.count || 0,
+        totalRevenue: totalRevenue[0]?.revenue || 0,
+        pendingPayouts: pendingPayouts[0]?.count || 0,
       },
       // added chart data
       revenueThisWeek,

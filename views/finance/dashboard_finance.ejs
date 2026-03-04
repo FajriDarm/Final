@@ -778,16 +778,13 @@
                       Status</th>
                     <th
                       class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
-                      Metode</th>
-                    <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
                       Tanggal</th>
                   </tr>
                 </thead>
                 <tbody id="paymentsTableBody" class="divide-y divide-white/30">
                   <% if (!recentPayments || recentPayments.length===0) { %>
                     <tr class="placeholder-row">
-                      <td colspan="5" class="py-12 px-6 text-center">
+                      <td colspan="4" class="py-12 px-6 text-center">
                         <div class="flex flex-col items-center justify-center">
                           <div class="relative">
                             <div
@@ -813,13 +810,7 @@
                           statusClass='status-rejected text-white' ; statusGradient='status-rejected' ; } else {
                           statusClass='bg-gray-500 text-white' ; statusGradient='bg-gray-500' ; } const
                           amount=parseInt(t.total_amount || 0); const isHighValue=amount> 1000000;
-
-                          const methodIcon = {
-                          'bank_transfer': 'fas fa-university',
-                          'credit_card': 'fas fa-credit-card',
-                          'e-wallet': 'fas fa-wallet',
-                          'cash': 'fas fa-money-bill'
-                          }[t.payment_method] || 'fas fa-money-bill-wave';
+                          const transactionId = t.id || t.transaction_id || t.transactionId || '-';
 
                           const date = new Date(t.created_at);
                           const formattedDate = date.toLocaleDateString('id-ID', {
@@ -845,7 +836,7 @@
                                   <div class="font-extrabold text-sm text-gray-900">
                                     <%= t.customer_name || 'Unknown' %>
                                   </div>
-                                  <div class="text-[8px] font-medium text-emerald-700">ID: <%= t.transaction_id || 'N/A'
+                                  <div class="text-[8px] font-medium text-emerald-700">ID: <%= transactionId
                                       %>
                                   </div>
                                 </div>
@@ -871,14 +862,6 @@
                                 <i class="fas fa-circle text-[5px] mr-1"></i>
                                 <%= t.payment_status.toUpperCase() %>
                               </span>
-                            </td>
-                            <td class="py-4 px-6">
-                              <div class="flex items-center gap-2">
-                                <i class="<%= methodIcon %> text-emerald-500 text-xs"></i>
-                                <span class="text-xs font-medium text-gray-700">
-                                  <%= t.payment_method %>
-                                </span>
-                              </div>
                             </td>
                             <td class="py-4 px-6">
                               <div class="flex flex-col">

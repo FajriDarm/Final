@@ -93,21 +93,6 @@ async function createTransaction(req, res) {
     }
 
     // 4) Insert transaction
-    // Ensure transactions has `customer_name` snapshot column (best-effort).
-    try {
-      await db.query(
-        "ALTER TABLE transactions ADD COLUMN IF NOT EXISTS customer_name VARCHAR(100) NULL",
-      );
-    } catch (err) {
-      // Some MySQL versions don't support IF NOT EXISTS for ADD COLUMN; try fallback
-      try {
-        await db.query(
-          "ALTER TABLE transactions ADD COLUMN customer_name VARCHAR(100) NULL",
-        );
-      } catch (e) {
-        // ignore - schema may already exist or DB doesn't permit altering here
-      }
-    }
     const [trxRes] = await db.query(
       `INSERT INTO transactions (event_id, affiliate_id, customer_id, customer_name, payment_status, total_amount, status)
        VALUES (?, ?, ?, ?, 'pending', ?, 'pending')`,
