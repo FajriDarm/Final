@@ -777,9 +777,6 @@
                       class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       Status</th>
                     <th
-                      class="py-4 px-6 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
-                      Metode</th>
-                    <th
                       class="py-4 px-6 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider">
                       Tanggal</th>
                   </tr>
@@ -839,7 +836,7 @@
                                   <div class="font-extrabold text-base text-gray-900">
                                     <%= t.customer_name || 'Unknown' %>
                                   </div>
-                                  <div class="text-[8px] font-medium text-emerald-700">ID: <%= t.transaction_id || 'N/A'
+                                  <div class="text-[8px] font-medium text-emerald-700">ID: <%= transactionId
                                       %>
                                   </div>
                                 </div>
@@ -865,14 +862,6 @@
                                 <i class="fas fa-circle text-[6px] mr-1"></i>
                                 <%= t.payment_status.toUpperCase() %>
                               </span>
-                            </td>
-                            <td class="py-4 px-6">
-                              <div class="flex items-center gap-2">
-                                <i class="<%= methodIcon %> text-emerald-500 text-xs"></i>
-                                <span class="text-xs font-medium text-gray-700">
-                                  <%= t.payment_method %>
-                                </span>
-                              </div>
                             </td>
                             <td class="py-4 px-6">
                               <div class="flex flex-col">
