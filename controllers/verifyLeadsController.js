@@ -1,33 +1,51 @@
 const db = require("../config/database");
 const leadEvents = require("../services/leadEvents");
 
+function calculateProjectedAmount(totalAmount, rule) {
+  if (!rule) return null;
+  const base = Number(totalAmount) || 0;
+  if (rule.commission_type === "flat") return Number(rule.commission_value) || 0;
+  if (rule.commission_type === "percentage") {
+    return Math.round((((Number(rule.commission_value) || 0) / 100) * base + Number.EPSILON) * 100) / 100;
+  }
+  return null;
+}
+
+function pickRule(ruleBuckets, eventId, stage) {
+  const eventRules = ruleBuckets.byEvent.get(eventId) || [];
+  const globalRules = ruleBuckets.global || [];
+  return (
+    eventRules.find((r) => Number(r.min_stage) <= stage) ||
+    globalRules.find((r) => Number(r.min_stage) <= stage) ||
+    null
+  );
+}
+
 // Combined view for sales to manage leads (stage1 + stage3)
 exports.getVerifyLeads = async (req, res) => {
   try {
     const [transactions] = await db.query(`
       SELECT t.id, t.total_amount, t.status, t.payment_method, t.payment_status, t.created_at, t.event_id, e.title AS event_name,
              COALESCE(t.customer_name, c.name) AS customer_name, u.name AS affiliate_name,
-             ls.status AS lead_status, ls.updated_at AS lead_updated_at
+             ls.status AS lead_status, ls.updated_at AS lead_updated_at,
+             COALESCE(cs.total_commission, 0) AS commission_amount
       FROM transactions t
       LEFT JOIN customers c ON t.customer_id = c.id
       LEFT JOIN users u ON t.affiliate_id = u.id
       LEFT JOIN events e ON t.event_id = e.id
       LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id
+      LEFT JOIN (
+        SELECT transaction_id, SUM(amount) AS total_commission
+        FROM commissions
+        GROUP BY transaction_id
+      ) cs ON cs.transaction_id = t.id
       WHERE t.status IN ('pending', 'stage_2_approved')
       AND (ls.status IS NULL OR ls.status NOT IN ('SEDANG BERANGKAT','REJECTED'))
       ORDER BY t.created_at DESC
     `);
 
-    // Ensure 'lead_statuses' table exists and default missing lead statuses to 'LEAD BARU'
+    // Default missing lead statuses to 'LEAD BARU'
     try {
-      await db.query(`
-        CREATE TABLE IF NOT EXISTS lead_statuses (
-          transaction_id INT PRIMARY KEY,
-          status VARCHAR(191),
-          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-      `);
-
       const missing = (transactions || [])
         .filter((t) => !t.lead_status)
         .map((t) => t.id);
@@ -53,34 +71,40 @@ exports.getVerifyLeads = async (req, res) => {
       console.error("verifyLeads: set default lead status error", e);
     }
 
-    // Compute projected commission for each transaction if service available
+    // Compute projected commission for each transaction without per-row DB round-trips.
     try {
-      const {
-        getProjectedCommissionForTransaction,
-      } = require("./commissionService");
+      const [rules] = await db.query(
+        `SELECT id, event_id, commission_type, commission_value, min_stage
+         FROM commission_rules
+         WHERE is_active = 1
+         ORDER BY (event_id IS NOT NULL) DESC, id DESC`,
+      );
+
+      const byEvent = new Map();
+      const global = [];
+      for (const rule of rules) {
+        if (rule.event_id === null || typeof rule.event_id === "undefined") {
+          global.push(rule);
+          continue;
+        }
+        if (!byEvent.has(rule.event_id)) byEvent.set(rule.event_id, []);
+        byEvent.get(rule.event_id).push(rule);
+      }
+
+      const buckets = { byEvent, global };
+
       for (const t of transactions) {
-        // Try to find the most-relevant projected commission (prefer later stages)
         const stagesToTry = [3, 2, 1];
-        let proj = null;
+        let projectedAmount = null;
         for (const s of stagesToTry) {
-          const p = await getProjectedCommissionForTransaction(t.id, s);
-          if (p && typeof p.amount !== "undefined" && p.amount !== null) {
-            proj = p;
+          const selectedRule = pickRule(buckets, t.event_id, s);
+          const amount = calculateProjectedAmount(t.total_amount, selectedRule);
+          if (amount !== null) {
+            projectedAmount = amount;
             break;
           }
         }
-        t.projected_commission = proj && proj.amount ? proj.amount : null;
-        // try fetch actual commission from commissions table (safe)
-        try {
-          const [rowsC] = await db.query(
-            `SELECT COALESCE(SUM(amount),0) as total FROM commissions WHERE transaction_id = ?`,
-            [t.id],
-          );
-          t.commission_amount =
-            rowsC && rowsC[0] ? Number(rowsC[0].total) || 0 : 0;
-        } catch (e) {
-          t.commission_amount = null; // table may not exist or other error
-        }
+        t.projected_commission = projectedAmount;
       }
     } catch (e) {
       // ignore missing commission service
@@ -146,15 +170,6 @@ exports.postUpdateLeadStatus = async (req, res) => {
     // Feature-flag: control whether system auto-creates & auto-marks payouts when lead -> SEDANG BERANGKAT
     // Default: false (safe) — enable with AUTO_PAYOUT_ON_STAGE3=true in environment if you explicitly want auto-pay behavior.
     const autoPayoutEnabled = (process.env.AUTO_PAYOUT_ON_STAGE3 || "false").toString().toLowerCase() === "true";
-
-    // ensure table exists (safe to call repeatedly)
-    await db.query(`
-      CREATE TABLE IF NOT EXISTS lead_statuses (
-        transaction_id INT PRIMARY KEY,
-        status VARCHAR(191),
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-    `);
 
     // upsert
     await db.query(

@@ -1,41 +1,36 @@
 const db = require("../config/database");
-const { syncEventStatusesByActivePeriod } = require("../services/eventStatusService");
 
 // Render Sales Dashboard mirip dashboard_admin
 exports.getSalesDashboard = async (req, res) => {
   try {
-    await syncEventStatusesByActivePeriod();
-
-    // Total transaksi
-    const [[{ totalTransactions }]] = await db.query(
-      `SELECT COUNT(*) AS totalTransactions FROM transactions`,
-    );
-    // Total transaksi selesai
-    const [[{ completedTransactions }]] = await db.query(
-      `SELECT COUNT(*) AS completedTransactions FROM transactions WHERE status = 'completed'`,
-    );
-    // Total affiliate aktif
-    const [[{ totalAffiliates }]] = await db.query(
-      `SELECT COUNT(*) AS totalAffiliates FROM users WHERE role_id = (SELECT id FROM roles WHERE name = 'affiliate') AND affiliate_status = 'approved'`,
-    );
-    // Total event aktif
-    const [[{ activeEvents }]] = await db.query(
-      `SELECT COUNT(*) AS activeEvents FROM events WHERE status = 'active'`,
-    );
-    // Total revenue
-    const [[{ totalRevenue }]] = await db.query(
-      `SELECT SUM(total_amount) AS totalRevenue FROM transactions WHERE status = 'completed'`,
-    );
-
-    // 10 transaksi terakhir
-    const [recentTransactions] = await db.query(`
+    const [
+      [[{ totalTransactions }]],
+      [[{ completedTransactions }]],
+      [[{ totalAffiliates }]],
+      [[{ activeEvents }]],
+      [[{ totalRevenue }]],
+      [recentTransactions],
+    ] = await Promise.all([
+      db.query(`SELECT COUNT(*) AS totalTransactions FROM transactions`),
+      db.query(
+        `SELECT COUNT(*) AS completedTransactions FROM transactions WHERE status = 'completed'`,
+      ),
+      db.query(
+        `SELECT COUNT(*) AS totalAffiliates FROM users WHERE role_id = (SELECT id FROM roles WHERE name = 'affiliate') AND affiliate_status = 'approved'`,
+      ),
+      db.query(`SELECT COUNT(*) AS activeEvents FROM events WHERE status = 'active'`),
+      db.query(
+        `SELECT SUM(total_amount) AS totalRevenue FROM transactions WHERE status = 'completed'`,
+      ),
+      db.query(`
       SELECT t.id, COALESCE(t.customer_name, c.name) AS customer_name, u.name AS affiliate_name, t.total_amount, t.status
       FROM transactions t
       LEFT JOIN customers c ON t.customer_id = c.id
       LEFT JOIN users u ON t.affiliate_id = u.id
       ORDER BY t.created_at DESC
       LIMIT 10
-    `);
+    `),
+    ]);
 
     res.render("sales/dashboard_sales", {
       stats: {

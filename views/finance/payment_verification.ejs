@@ -764,7 +764,7 @@
                       class="py-4 px-4 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Jumlah</th>
                     <th
-                      class="py-4 px-4 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
+                      class="py-4 px-4 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
                       Metode</th>
                     <th
                       class="py-4 px-4 text-left text-xs font-extrabold text-emerald-900 uppercase tracking-wider whitespace-nowrap">
@@ -780,7 +780,7 @@
                 <tbody id="paymentsTableBody" class="divide-y divide-white/30">
                   <% if (!pendingPayments || pendingPayments.length===0) { %>
                     <tr class="placeholder-row">
-                      <td colspan="9" class="py-12 px-4 text-center">
+                      <td colspan="8" class="py-12 px-4 text-center">
                         <div class="flex flex-col items-center justify-center">
                           <div class="relative">
                             <div
@@ -799,12 +799,13 @@
                     </tr>
                     <% } else { %>
                       <% pendingPayments.forEach(function(payment, index) { %>
+                        <% const paymentId = payment.id || payment.transaction_id || payment.transactionId || '-'; %>
                         <tr
                           class="table-row hover:bg-white/40 transition-all duration-300 border-b border-white/30 last:border-b-0 bg-white/20 backdrop-blur fade-in"
                           data-delay="<%= index * 50 %>"
                           data-lead-status="<%= (payment.lead_status || '').toUpperCase() %>">
                           <td class="py-4 px-4 align-top whitespace-nowrap">
-                            <span class="font-extrabold text-sm text-gray-900">#<%= payment.id %></span>
+                            <span class="font-extrabold text-xs text-gray-900">#<%= payment.id %></span>
                           </td>
                           <td class="py-4 px-4 align-top">
                             <div class="flex items-start gap-3">
@@ -840,11 +841,11 @@
                           <td class="py-4 px-4 align-top whitespace-nowrap">
                             <div class="flex items-center gap-2">
                               <% if (payment.payment_method==='transfer' ) { %>
-                                <i class="fas fa-university text-emerald-500 text-sm"></i>
+                                <i class="fas fa-university text-emerald-500 text-xs"></i>
                                 <% } else { %>
-                                  <i class="fas fa-money-bill-wave text-emerald-500 text-sm"></i>
+                                  <i class="fas fa-money-bill-wave text-emerald-500 text-xs"></i>
                                   <% } %>
-                                    <span class="text-sm font-medium text-gray-700 truncate-col">
+                                    <span class="text-xs font-medium text-gray-700 truncate-col">
                                       <%= payment.payment_method ? payment.payment_method.toUpperCase() : 'N/A' %>
                                     </span>
                             </div>
@@ -893,7 +894,7 @@
                                 </span>
                               </div>
                               <form data-action="set-lead-status"
-                                action="/finance/payment-verification/<%= payment.id %>/set-lead-status" method="POST"
+                                action="/finance/payment-verification/<%= paymentId %>/set-lead-status" method="POST"
                                 class="finance-action-form flex items-center gap-2">
                                 <div class="relative">
                                   <select name="lead_status" class="status-select min-w-[120px]">
@@ -912,7 +913,7 @@
                                   Simpan
                                 </button>
                               </form>
-                              <form data-action="reject" action="/finance/payment-verification/<%= payment.id %>/reject"
+                              <form data-action="reject" action="/finance/payment-verification/<%= paymentId %>/reject"
                                 method="POST" class="finance-action-form">
                                 <button type="submit" class="btn-danger text-sm px-3 py-1.5 w-full"
                                   data-confirm="Tolak pembayaran ini?">

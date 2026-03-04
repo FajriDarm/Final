@@ -318,9 +318,18 @@ const {
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     `);
+    try {
+      await db.query(
+        "ALTER TABLE transactions ADD COLUMN customer_name VARCHAR(100) NULL",
+      );
+    } catch (err) {
+      if (!(err && err.code === "ER_DUP_FIELDNAME")) {
+        throw err;
+      }
+    }
 
     await ensureEventActivePeriodColumns();
-    await syncEventStatusesByActivePeriod();
+    await syncEventStatusesByActivePeriod({ force: true });
   } catch (e) {
     console.error(
       "Failed creating lead_statuses table at startup:",
@@ -335,7 +344,7 @@ const {
 
 setInterval(async () => {
   try {
-    await syncEventStatusesByActivePeriod();
+    await syncEventStatusesByActivePeriod({ force: true });
   } catch (e) {
     console.error("Failed syncing event status by active period:", e.message || e);
   }

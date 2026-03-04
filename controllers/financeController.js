@@ -4,30 +4,33 @@ const whatsappService = require("../services/whatsappService");
 // Render Finance Dashboard
 exports.getFinanceDashboard = async (req, res) => {
   try {
-    // Total pembayaran masuk (paid)
-    const [[{ totalPaid }]] = await db.query(
-      `SELECT SUM(total_amount) AS totalPaid FROM transactions WHERE payment_status = 'paid'`,
-    );
-    // Total pembayaran pending
-    const [[{ totalPending }]] = await db.query(
-      `SELECT SUM(total_amount) AS totalPending FROM transactions WHERE payment_status = 'pending'`,
-    );
-    // Jumlah transaksi paid
-    const [[{ countPaid }]] = await db.query(
-      `SELECT COUNT(*) AS countPaid FROM transactions WHERE payment_status = 'paid'`,
-    );
-    // Jumlah transaksi pending
-    const [[{ countPending }]] = await db.query(
-      `SELECT COUNT(*) AS countPending FROM transactions WHERE payment_status = 'pending'`,
-    );
-    // 10 pembayaran terakhir
-    const [recentPayments] = await db.query(`
+    const [
+      [[{ totalPaid }]],
+      [[{ totalPending }]],
+      [[{ countPaid }]],
+      [[{ countPending }]],
+      [recentPayments],
+    ] = await Promise.all([
+      db.query(
+        `SELECT SUM(total_amount) AS totalPaid FROM transactions WHERE payment_status = 'paid'`,
+      ),
+      db.query(
+        `SELECT SUM(total_amount) AS totalPending FROM transactions WHERE payment_status = 'pending'`,
+      ),
+      db.query(
+        `SELECT COUNT(*) AS countPaid FROM transactions WHERE payment_status = 'paid'`,
+      ),
+      db.query(
+        `SELECT COUNT(*) AS countPending FROM transactions WHERE payment_status = 'pending'`,
+      ),
+      db.query(`
       SELECT t.id, COALESCE(t.customer_name, c.name) AS customer_name, t.total_amount, t.payment_status, t.payment_method, t.created_at
       FROM transactions t
       LEFT JOIN customers c ON t.customer_id = c.id
       ORDER BY t.created_at DESC
       LIMIT 10
-    `);
+    `),
+    ]);
     res.render("finance/dashboard_finance", {
       stats: {
         totalPaid: totalPaid || 0,
@@ -513,19 +516,23 @@ exports.getWithdrawalManagementPage = async (req, res) => {
   try {
     const user = req.user || { name: "Finance Officer" };
 
-    // Fetch simple finance stats derived from payouts (consistent with withdrawal management)
-    const [[{ totalPaid }]] = await db.query(
-      `SELECT COALESCE(SUM(total_amount), 0) AS totalPaid FROM payouts WHERE status = 'paid'`,
-    );
-    const [[{ totalPending }]] = await db.query(
-      `SELECT COALESCE(SUM(total_amount), 0) AS totalPending FROM payouts WHERE status IN ('pending','approved')`,
-    );
-    const [[{ countPaid }]] = await db.query(
-      `SELECT COUNT(*) AS countPaid FROM payouts WHERE status = 'paid'`,
-    );
-    const [[{ countPending }]] = await db.query(
-      `SELECT COUNT(*) AS countPending FROM payouts WHERE status IN ('pending','approved')`,
-    );
+    const [
+      [[{ totalPaid }]],
+      [[{ totalPending }]],
+      [[{ countPaid }]],
+      [[{ countPending }]],
+    ] = await Promise.all([
+      db.query(
+        `SELECT COALESCE(SUM(total_amount), 0) AS totalPaid FROM payouts WHERE status = 'paid'`,
+      ),
+      db.query(
+        `SELECT COALESCE(SUM(total_amount), 0) AS totalPending FROM payouts WHERE status IN ('pending','approved')`,
+      ),
+      db.query(`SELECT COUNT(*) AS countPaid FROM payouts WHERE status = 'paid'`),
+      db.query(
+        `SELECT COUNT(*) AS countPending FROM payouts WHERE status IN ('pending','approved')`,
+      ),
+    ]);
 
     const stats = {
       totalPaid: totalPaid || 0,
