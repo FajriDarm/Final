@@ -913,10 +913,11 @@
                     </tr>
                     <% } else { %>
                       <% transactions.forEach(function(trx, index) { %>
-                        <% let statusClass='' ; if (trx.status==='pending' ) { statusClass='status-pending text-white' ;
-                          } else if (trx.status==='completed' ) { statusClass='status-completed text-white' ; } else if
-                          (trx.status==='rejected' ) { statusClass='status-rejected text-white' ; } else if
-                          (trx.status==='processing' ) { statusClass='status-processing text-white' ; } else {
+                        <% const displayStatus = String(trx.lead_status || trx.status || '').toLowerCase();
+                          let statusClass='' ; if (displayStatus==='pending' ) { statusClass='status-pending text-white' ;
+                          } else if (displayStatus==='completed' ) { statusClass='status-completed text-white' ; } else if
+                          (displayStatus==='rejected' ) { statusClass='status-rejected text-white' ; } else if
+                          (displayStatus==='processing' ) { statusClass='status-processing text-white' ; } else {
                           statusClass='bg-gray-500 text-white' ; } let paymentStatusClass='' ; if
                           (trx.payment_status==='pending' ) { paymentStatusClass='payment-pending text-white' ; } else
                           if (trx.payment_status==='paid' ) { paymentStatusClass='payment-paid text-white' ; } else if
@@ -1023,7 +1024,7 @@
                               <span
                                 class="px-3 py-1.5 rounded-lg text-xs font-extrabold <%= statusClass %> flex items-center gap-1 border border-white/30 w-fit">
                                 <i class="fas fa-circle text-[6px] mr-1"></i>
-                                <%= trx.status.toUpperCase() %>
+                                <%= displayStatus ? displayStatus.toUpperCase() : '-' %>
                               </span>
                             </td>
                             <td class="py-4 px-6">

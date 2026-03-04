@@ -24,9 +24,11 @@ exports.getFinanceDashboard = async (req, res) => {
         `SELECT COUNT(*) AS countPending FROM transactions WHERE payment_status = 'pending'`,
       ),
       db.query(`
-      SELECT t.id, COALESCE(t.customer_name, c.name) AS customer_name, t.total_amount, t.payment_status, t.payment_method, t.created_at
+      SELECT t.id, COALESCE(t.customer_name, c.name) AS customer_name, t.total_amount, t.payment_status, t.payment_method, t.created_at,
+             ls.status AS lead_status
       FROM transactions t
       LEFT JOIN customers c ON t.customer_id = c.id
+      LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id
       ORDER BY t.created_at DESC
       LIMIT 10
     `),

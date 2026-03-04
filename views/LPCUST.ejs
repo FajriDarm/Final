@@ -117,8 +117,37 @@
         }
         .activity-docs-carousel::-webkit-scrollbar { height: 6px; }
         .activity-docs-carousel::-webkit-scrollbar-thumb { background: #c9b79f; border-radius: 999px; }
+        @keyframes activityDocGridReveal {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
         @media (max-width: 640px) {
             .activity-docs-carousel .activity-doc-slide-item { flex-basis: 100%; }
+        }
+        @media (max-width: 767px) {
+            #lpActivityDocsList.grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            #lpActivityDocsList.grid > .col-span-2 {
+                grid-column: span 1 / span 1;
+            }
+            #lpActivityDocsList.grid > div {
+                opacity: 0;
+                animation: activityDocGridReveal 0.55s ease-out forwards;
+            }
+            #lpActivityDocsList.grid > div:nth-child(2n) {
+                animation-delay: 0.1s;
+            }
+            #lpActivityDocsList.grid > div:nth-child(4n + 3),
+            #lpActivityDocsList.grid > div:nth-child(4n + 4) {
+                animation-delay: 0.18s;
+            }
         }
         .activity-doc-dot {
             width: 8px; height: 8px; border-radius: 999px;
@@ -1436,7 +1465,7 @@
                     const type = String(d.media_type || "").toLowerCase();
                     const url = esc(d.media_url); const info = esc(d.info_text || "");
                     const orientation = d.layout_orientation === "landscape" ? "landscape" : "portrait";
-                    const aspectClass = isAutoSlide ? "aspect-[3/4]" : (orientation === "landscape" ? "aspect-[4/3]" : "aspect-[3/4]");
+                    const aspectClass = orientation === "landscape" ? "aspect-[4/3]" : "aspect-[3/4]";
                     const itemClass = isAutoSlide ? `activity-doc-slide-item relative group overflow-hidden rounded-lg ${aspectClass}` : `relative group overflow-hidden rounded-lg ${aspectClass} ${orientation === "landscape" ? "col-span-2 sm:col-span-1" : ""}`;
                     if (type === "video") return `<div class="${itemClass} bg-black p-1" data-aos="zoom-in" data-aos-delay="${Math.min(idx * 70, 280)}"><video src="${url}" class="w-full h-full object-cover rounded" controls preload="metadata"></video>${info ? `<div class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[10px] p-2 text-center font-medium">${info}</div>` : ""}</div>`;
                     return `<div class="${itemClass} pointer-events-none" data-aos="zoom-in" data-aos-delay="${Math.min(idx * 70, 280)}"><img src="${url}" alt="Dokumentasi Jamaah ${idx + 1}" class="w-full h-full object-cover">${info ? `<div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] p-2 text-center font-medium">${info}</div>` : ""}</div>`;

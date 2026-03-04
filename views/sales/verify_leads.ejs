@@ -1123,17 +1123,24 @@
                                     <select class="lead-status-select" data-id="<%= trx.id %>"
                                       data-prev="<%= trx.lead_status || '' %>">
                                       <option value="">-- pilih status --</option>
-                                      <option value="LEAD BARU" <%=trx.lead_status==='LEAD BARU' ? 'selected' : '' %>
-                                        >LEAD BARU</option>
-                                      <option value="SEDANG DI PROSPEK" <%=trx.lead_status==='SEDANG DI PROSPEK'
-                                        ? 'selected' : '' %>>SEDANG DI PROSPEK</option>
-                                      <option value="HOT" <%=trx.lead_status==='HOT' ? 'selected' : '' %>>HOT</option>
-                                      <% if (trx.lead_status !== 'LEAD BARU') { %>
-                                        <option value="DP" <%=trx.lead_status==='DP' ? 'selected' : '' %>>DP</option>
-                                        <option value="LUNAS" <%=trx.lead_status==='LUNAS' ? 'selected' : '' %>>LUNAS
-                                        </option>
+                                      <% if (trx.lead_status === 'LUNAS') { %>
                                         <option value="SEDANG BERANGKAT" <%=trx.lead_status==='SEDANG BERANGKAT'
                                           ? 'selected' : '' %>>SEDANG BERANGKAT</option>
+                                      <% } else { %>
+                                        <option value="LEAD BARU" <%=trx.lead_status==='LEAD BARU' ? 'selected' : ''
+                                          %>>LEAD BARU</option>
+                                        <option value="SEDANG DI PROSPEK" <%=trx.lead_status==='SEDANG DI PROSPEK'
+                                          ? 'selected' : '' %>>SEDANG DI PROSPEK</option>
+                                        <option value="HOT" <%=trx.lead_status==='HOT' ? 'selected' : '' %>>HOT
+                                        </option>
+                                        <% if (trx.lead_status !== 'LEAD BARU') { %>
+                                          <option value="DP" <%=trx.lead_status==='DP' ? 'selected' : '' %>>DP
+                                          </option>
+                                          <option value="LUNAS" <%=trx.lead_status==='LUNAS' ? 'selected' : '' %>
+                                            >LUNAS</option>
+                                          <option value="SEDANG BERANGKAT" <%=trx.lead_status==='SEDANG BERANGKAT'
+                                            ? 'selected' : '' %>>SEDANG BERANGKAT</option>
+                                        <% } %>
                                       <% } %>
                                     </select>
                                     <% } %>
@@ -1286,8 +1293,6 @@
                                   <option value="LEAD BARU">LEAD BARU</option>
                                   <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
                                   <option value="HOT">HOT</option>
-                                  <option value="DP">DP</option>
-                                  <option value="LUNAS">LUNAS</option>
                                   <option value="SEDANG BERANGKAT">SEDANG BERANGKAT</option>
                                 </select>
                                 <button class="history-restore-btn btn-primary text-sm w-full">
@@ -1509,6 +1514,17 @@
               return;
             }
 
+            // LUNAS from Finance can only move to SEDANG BERANGKAT
+            if (currentDbStatus === 'LUNAS' && val !== 'SEDANG BERANGKAT') {
+              await showModal({
+                type: 'warning',
+                title: 'Tidak Diizinkan',
+                message: 'Status LUNAS hanya dapat diubah menjadi SEDANG BERANGKAT.'
+              });
+              sel.value = sel.dataset.prev || 'LUNAS';
+              return;
+            }
+
             // Prevent downgrading to an earlier/lower stage
             if (curLevel > targetLevel) {
               await showModal({
@@ -1682,8 +1698,6 @@
                                 <option value="LEAD BARU">LEAD BARU</option>
                                 <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
                                 <option value="HOT">HOT</option>
-                                <option value="DP">DP</option>
-                                <option value="LUNAS">LUNAS</option>
                                 <option value="SEDANG BERANGKAT" selected>SEDANG BERANGKAT</option>
                               </select>
                               <button class="history-restore-btn btn-primary text-sm w-full"><i class="fas fa-undo-alt mr-1"></i> Restore</button>
@@ -1819,8 +1833,6 @@
                                 <option value="LEAD BARU">LEAD BARU</option>
                                 <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
                                 <option value="HOT">HOT</option>
-                                <option value="DP">DP</option>
-                                <option value="LUNAS">LUNAS</option>
                                 <option value="SEDANG BERANGKAT">SEDANG BERANGKAT</option>
                               </select>
                               <button class="history-restore-btn btn-primary text-sm w-full"><i class="fas fa-undo-alt mr-1"></i> Restore</button>
@@ -1978,13 +1990,17 @@
                           <td class="p-3">
                             <select class="lead-status-select" data-id="${id}" data-prev="${newStatus}">
                               <option value="">-- pilih status --</option>
-                              <option value="LEAD BARU" ${newStatus === 'LEAD BARU' ? 'selected' : ''}>LEAD BARU</option>
-                              <option value="SEDANG DI PROSPEK" ${newStatus === 'SEDANG DI PROSPEK' ? 'selected' : ''}>SEDANG DI PROSPEK</option>
-                              <option value="HOT" ${newStatus === 'HOT' ? 'selected' : ''}>HOT</option>
-                              ${newStatus === 'LEAD BARU' ? '' : `
-                                <option value="DP" ${newStatus === 'DP' ? 'selected' : ''}>DP</option>
-                                <option value="LUNAS" ${newStatus === 'LUNAS' ? 'selected' : ''}>LUNAS</option>
+                              ${newStatus === 'LUNAS' ? `
                                 <option value="SEDANG BERANGKAT" ${newStatus === 'SEDANG BERANGKAT' ? 'selected' : ''}>SEDANG BERANGKAT</option>
+                              ` : `
+                                <option value="LEAD BARU" ${newStatus === 'LEAD BARU' ? 'selected' : ''}>LEAD BARU</option>
+                                <option value="SEDANG DI PROSPEK" ${newStatus === 'SEDANG DI PROSPEK' ? 'selected' : ''}>SEDANG DI PROSPEK</option>
+                                <option value="HOT" ${newStatus === 'HOT' ? 'selected' : ''}>HOT</option>
+                                ${newStatus === 'LEAD BARU' ? '' : `
+                                  <option value="DP" ${newStatus === 'DP' ? 'selected' : ''}>DP</option>
+                                  <option value="LUNAS" ${newStatus === 'LUNAS' ? 'selected' : ''}>LUNAS</option>
+                                  <option value="SEDANG BERANGKAT" ${newStatus === 'SEDANG BERANGKAT' ? 'selected' : ''}>SEDANG BERANGKAT</option>
+                                `}
                               `}
                             </select>
                             <div class="text-xs text-gray-500 mt-1">Status DB: ${newStatus}</div>
@@ -2397,8 +2413,6 @@
                           <option value="LEAD BARU">LEAD BARU</option>
                           <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
                           <option value="HOT">HOT</option>
-                          <option value="DP">DP</option>
-                          <option value="LUNAS">LUNAS</option>
                           <option value="SEDANG BERANGKAT">SEDANG BERANGKAT</option>
                         </select>
                         <button class="history-restore-btn btn-primary text-sm w-full"><i class="fas fa-undo-alt mr-1"></i> Restore</button>
@@ -2471,8 +2485,6 @@
                             <option value="LEAD BARU">LEAD BARU</option>
                             <option value="SEDANG DI PROSPEK">SEDANG DI PROSPEK</option>
                             <option value="HOT">HOT</option>
-                            <option value="DP">DP</option>
-                            <option value="LUNAS">LUNAS</option>
                             <option value="SEDANG BERANGKAT">SEDANG BERANGKAT</option>
                           </select>
                           <button class="history-restore-btn btn-primary text-sm w-full"><i class="fas fa-undo-alt mr-1"></i> Restore</button>

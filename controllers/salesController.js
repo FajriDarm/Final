@@ -23,10 +23,12 @@ exports.getSalesDashboard = async (req, res) => {
         `SELECT SUM(total_amount) AS totalRevenue FROM transactions WHERE status = 'completed'`,
       ),
       db.query(`
-      SELECT t.id, COALESCE(t.customer_name, c.name) AS customer_name, u.name AS affiliate_name, t.total_amount, t.status
+      SELECT t.id, COALESCE(t.customer_name, c.name) AS customer_name, u.name AS affiliate_name, t.total_amount, t.status,
+             ls.status AS lead_status
       FROM transactions t
       LEFT JOIN customers c ON t.customer_id = c.id
       LEFT JOIN users u ON t.affiliate_id = u.id
+      LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id
       ORDER BY t.created_at DESC
       LIMIT 10
     `),

@@ -872,12 +872,13 @@
                     </tr>
                     <% } else { %>
                       <% recentTransactions.forEach(function(t, index) { %>
-                        <% let statusClass='' ; let statusGradient='' ; if (t.status==='pending' ) {
+                        <% const displayStatus = String(t.lead_status || t.status || '').toLowerCase();
+                          let statusClass='' ; let statusGradient='' ; if (displayStatus==='pending' ) {
                           statusClass='status-pending text-white' ; statusGradient='status-pending' ; } else if
-                          (t.status==='completed' ) { statusClass='status-completed text-white' ;
-                          statusGradient='status-completed' ; } else if (t.status==='rejected' ) {
+                          (displayStatus==='completed' ) { statusClass='status-completed text-white' ;
+                          statusGradient='status-completed' ; } else if (displayStatus==='rejected' ) {
                           statusClass='status-rejected text-white' ; statusGradient='status-rejected' ; } else if
-                          (t.status==='processing' ) { statusClass='status-processing text-white' ;
+                          (displayStatus==='processing' ) { statusClass='status-processing text-white' ;
                           statusGradient='status-processing' ; } else { statusClass='bg-gray-500 text-white' ;
                           statusGradient='bg-gray-500' ; } const amount=parseInt(t.total_amount || 0); const
                           isHighValue=amount> 1000000;
@@ -935,7 +936,7 @@
                               <span
                                 class="px-3 py-1.5 rounded-lg text-xs font-extrabold <%= statusClass %> flex items-center gap-1 border border-white/30 w-fit">
                                 <i class="fas fa-circle text-[6px] mr-1"></i>
-                                <%= t.status.toUpperCase() %>
+                                <%= displayStatus ? displayStatus.toUpperCase() : '-' %>
                               </span>
                             </td>
                           </tr>

@@ -164,6 +164,52 @@ exports.postUpdateLeadStatus = async (req, res) => {
   if (!id || !lead_status)
     return res.status(400).json({ success: false, message: "Missing params" });
   try {
+    const normalizedTargetStatus = String(lead_status || "").trim().toUpperCase();
+    const allowedTargetStatuses = [
+      "LEAD BARU",
+      "SEDANG DI PROSPEK",
+      "HOT",
+      "DP",
+      "LUNAS",
+      "SEDANG BERANGKAT",
+      "REJECTED",
+    ];
+    if (!allowedTargetStatuses.includes(normalizedTargetStatus)) {
+      return res.status(400).json({ success: false, message: "Invalid lead status" });
+    }
+
+    const [currentRows] = await db.query(
+      `SELECT COALESCE(ls.status, 'LEAD BARU') AS current_status
+       FROM transactions t
+       LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id
+       WHERE t.id = ?
+       LIMIT 1`,
+      [id],
+    );
+    if (!currentRows || !currentRows[0]) {
+      return res.status(404).json({ success: false, message: "Transaction not found" });
+    }
+    const currentStatus = String(currentRows[0].current_status || "LEAD BARU").toUpperCase();
+
+    // Rule 1: status "LEAD BARU" can only progress up to HOT
+    if (
+      currentStatus === "LEAD BARU" &&
+      ["DP", "LUNAS", "SEDANG BERANGKAT"].includes(normalizedTargetStatus)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Lead baru hanya boleh diubah sampai status HOT",
+      });
+    }
+
+    // Rule 2: once Finance sets status to LUNAS, Sales can only move it to SEDANG BERANGKAT
+    if (currentStatus === "LUNAS" && normalizedTargetStatus !== "SEDANG BERANGKAT") {
+      return res.status(400).json({
+        success: false,
+        message: "Status LUNAS hanya dapat diubah menjadi SEDANG BERANGKAT oleh Sales",
+      });
+    }
+
     // diagnostic array for any payouts created during this update
     let createdPayouts = [];
 
@@ -175,7 +221,7 @@ exports.postUpdateLeadStatus = async (req, res) => {
     await db.query(
       `INSERT INTO lead_statuses (transaction_id, status, updated_at) VALUES (?, ?, NOW())
        ON DUPLICATE KEY UPDATE status = VALUES(status), updated_at = NOW()`,
-      [id, lead_status],
+      [id, normalizedTargetStatus],
     );
 
     // Log sales lead verification activity
@@ -189,8 +235,8 @@ exports.postUpdateLeadStatus = async (req, res) => {
           "LEAD_STATUS_UPDATE_SALES",
           "transaction",
           id,
-          lead_status,
-          `Sales updated lead status to ${lead_status} for transaction #${id}`,
+          normalizedTargetStatus,
+          `Sales updated lead status to ${normalizedTargetStatus} for transaction #${id}`,
         ],
       );
       res.locals.auditLogged = true;
@@ -199,7 +245,7 @@ exports.postUpdateLeadStatus = async (req, res) => {
     }
 
     // If lead moved to SEDANG BERANGKAT, attempt to award commission for stage 3
-    if ((lead_status || "").toString().toUpperCase() === "SEDANG BERANGKAT") {
+    if (normalizedTargetStatus === "SEDANG BERANGKAT") {
       // Ensure transaction is marked as paid so finance dashboard counts it
       try {
         await db.query(
@@ -256,7 +302,7 @@ exports.postUpdateLeadStatus = async (req, res) => {
     // create payouts and mark them 'paid', update commissions to 'paid', and
     // set transaction.payment_status = 'paid' so finance dashboard reflects incoming payments.
     // Auto-create & mark payouts only when the feature-flag is enabled. Otherwise leave commissions `ready_for_withdraw` so Finance processes payouts manually.
-    if (autoPayoutEnabled && (lead_status || "").toString().toUpperCase() === "SEDANG BERANGKAT") {
+    if (autoPayoutEnabled && normalizedTargetStatus === "SEDANG BERANGKAT") {
       try {
         const conn = await db.getConnection();
         try {
@@ -341,7 +387,7 @@ exports.postUpdateLeadStatus = async (req, res) => {
       } catch (e) {
         console.error("Auto payout flow error", e);
       }
-    } else if ((lead_status || "").toString().toUpperCase() === "SEDANG BERANGKAT") {
+    } else if (normalizedTargetStatus === "SEDANG BERANGKAT") {
       // Feature-flag disabled: do not auto-create payouts. commissions remain `ready_for_withdraw` and Finance will process payouts manually.
       console.debug('AUTO_PAYOUT_ON_STAGE3 is disabled — skipping auto payout for transaction', id);
     }
@@ -402,7 +448,7 @@ exports.postUpdateLeadStatus = async (req, res) => {
 
       return res.json({
         success: true,
-        status: updated ? updated.status : lead_status,
+        status: updated ? updated.status : normalizedTargetStatus,
         updated_at: updated ? updated.updated_at : null,
         payment_status: payment_status,
         created_payouts: createdPayouts,

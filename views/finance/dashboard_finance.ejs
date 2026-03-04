@@ -803,10 +803,11 @@
                     </tr>
                     <% } else { %>
                       <% recentPayments.forEach(function(t, index) { %>
-                        <% let statusClass='' ; let statusGradient='' ; if (t.payment_status==='pending' ) {
+                        <% const displayStatus = String(t.lead_status || t.payment_status || '').toLowerCase();
+                          let statusClass='' ; let statusGradient='' ; if (displayStatus==='pending' ) {
                           statusClass='status-pending text-white' ; statusGradient='status-pending' ; } else if
-                          (t.payment_status==='paid' ) { statusClass='status-paid text-white' ;
-                          statusGradient='status-paid' ; } else if (t.payment_status==='rejected' ) {
+                          (displayStatus==='paid' ) { statusClass='status-paid text-white' ;
+                          statusGradient='status-paid' ; } else if (displayStatus==='rejected' ) {
                           statusClass='status-rejected text-white' ; statusGradient='status-rejected' ; } else {
                           statusClass='bg-gray-500 text-white' ; statusGradient='bg-gray-500' ; } const
                           amount=parseInt(t.total_amount || 0); const isHighValue=amount> 1000000;
@@ -860,7 +861,7 @@
                               <span
                                 class="px-3 py-1.5 rounded-lg text-xs font-extrabold <%= statusClass %> flex items-center gap-1 border border-white/30 w-fit">
                                 <i class="fas fa-circle text-[6px] mr-1"></i>
-                                <%= t.payment_status.toUpperCase() %>
+                                <%= displayStatus ? displayStatus.toUpperCase() : '-' %>
                               </span>
                             </td>
                             <td class="py-4 px-6">

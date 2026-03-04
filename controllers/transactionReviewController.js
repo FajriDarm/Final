@@ -6,10 +6,12 @@ exports.getTransactionReview = async (req, res) => {
     // Ambil semua transaksi beserta customer & affiliate
     const [transactions] = await db.query(`
             SELECT t.id, t.total_amount, t.status, t.payment_method, t.payment_status, t.created_at,
+              ls.status AS lead_status,
               COALESCE(t.customer_name, c.name) AS customer_name, u.name AS affiliate_name
       FROM transactions t
       LEFT JOIN customers c ON t.customer_id = c.id
       LEFT JOIN users u ON t.affiliate_id = u.id
+      LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id
       ORDER BY t.created_at DESC
     `);
     res.render("sales/transaction_review", {

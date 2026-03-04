@@ -543,6 +543,84 @@
     .action-cell {
       min-width: 280px;
     }
+
+    /* Modal Confirmation */
+    .finance-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 20, 30, 0.42);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 1rem;
+    }
+
+    .finance-modal-overlay.show {
+      display: flex;
+    }
+
+    .finance-modal-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 1rem;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.28);
+      overflow: hidden;
+      animation: modalPopIn 0.2s ease-out;
+    }
+
+    @keyframes modalPopIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .finance-modal-head {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1rem 0.75rem;
+      border-bottom: 1px solid rgba(16, 185, 129, 0.16);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0.02));
+    }
+
+    .finance-modal-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      background: linear-gradient(165deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+      box-shadow: 0 8px 18px rgba(245, 158, 11, 0.35);
+      flex-shrink: 0;
+    }
+
+    .finance-modal-body {
+      padding: 0.9rem 1rem 1rem;
+      color: #334155;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    .finance-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      padding: 0 1rem 1rem;
+    }
   </style>
 </head>
 
@@ -953,7 +1031,62 @@
         </div>
       </main>
 
+      <div id="financeConfirmModal" class="finance-modal-overlay" role="dialog" aria-modal="true"
+        aria-labelledby="financeConfirmTitle">
+        <div class="finance-modal-card">
+          <div class="finance-modal-head">
+            <span class="finance-modal-icon"><i class="fas fa-circle-question text-sm"></i></span>
+            <h3 id="financeConfirmTitle" class="text-base font-extrabold text-emerald-900">Konfirmasi Perubahan</h3>
+          </div>
+          <div id="financeConfirmMessage" class="finance-modal-body">Lanjutkan aksi ini?</div>
+          <div class="finance-modal-actions">
+            <button id="financeConfirmCancel" type="button" class="btn-secondary text-sm px-3 py-1.5">Batal</button>
+            <button id="financeConfirmOk" type="button" class="btn-success text-sm px-3 py-1.5">Ya, Simpan</button>
+          </div>
+        </div>
+      </div>
+
       <script>
+        function showFinanceConfirm(message, options = {}) {
+          return new Promise((resolve) => {
+            const overlay = document.getElementById('financeConfirmModal');
+            const titleEl = document.getElementById('financeConfirmTitle');
+            const messageEl = document.getElementById('financeConfirmMessage');
+            const cancelBtn = document.getElementById('financeConfirmCancel');
+            const okBtn = document.getElementById('financeConfirmOk');
+
+            if (!overlay || !titleEl || !messageEl || !cancelBtn || !okBtn) {
+              resolve(window.confirm(message || 'Lanjutkan aksi ini?'));
+              return;
+            }
+
+            titleEl.textContent = options.title || 'Konfirmasi Perubahan';
+            messageEl.textContent = message || 'Lanjutkan aksi ini?';
+            okBtn.textContent = options.confirmText || 'Ya, Simpan';
+            cancelBtn.textContent = options.cancelText || 'Batal';
+
+            const close = (result) => {
+              overlay.classList.remove('show');
+              cancelBtn.removeEventListener('click', onCancel);
+              okBtn.removeEventListener('click', onOk);
+              overlay.removeEventListener('click', onOverlay);
+              document.removeEventListener('keydown', onEsc);
+              resolve(result);
+            };
+
+            const onCancel = () => close(false);
+            const onOk = () => close(true);
+            const onOverlay = (evt) => { if (evt.target === overlay) close(false); };
+            const onEsc = (evt) => { if (evt.key === 'Escape') close(false); };
+
+            cancelBtn.addEventListener('click', onCancel);
+            okBtn.addEventListener('click', onOk);
+            overlay.addEventListener('click', onOverlay);
+            document.addEventListener('keydown', onEsc);
+            overlay.classList.add('show');
+          });
+        }
+
         // Apply animation delay values from data-delay attributes
         document.querySelectorAll('[data-delay]').forEach(function (el) {
           try {
@@ -963,13 +1096,33 @@
         });
 
         // Intercept finance forms and submit via fetch
-        document.addEventListener('submit', function (e) {
+        document.addEventListener('submit', async function (e) {
           const form = e.target;
           if (!form.classList.contains('finance-action-form')) return;
           e.preventDefault();
 
+          const actionType = form.getAttribute('data-action') || '';
+          const selectedStatus = String(form.querySelector('select[name="lead_status"]')?.value || '').toUpperCase();
           const confirmMsg = form.querySelector('[data-confirm]')?.getAttribute('data-confirm');
-          if (confirmMsg && !confirm(confirmMsg)) return;
+
+          if (actionType === 'set-lead-status' && (selectedStatus === 'DP' || selectedStatus === 'LUNAS')) {
+            const specificMsg = selectedStatus === 'LUNAS'
+              ? 'Anda akan mengubah lead menjadi LUNAS.\nPastikan pembayaran sudah lunas sebelum melanjutkan.'
+              : 'Anda akan mengubah lead menjadi DP.\nPastikan nominal DP sudah terverifikasi.';
+            const confirmed = await showFinanceConfirm(specificMsg, {
+              title: 'Konfirmasi Status Lead',
+              confirmText: 'Ya, Lanjutkan',
+              cancelText: 'Batal',
+            });
+            if (!confirmed) return;
+          } else if (confirmMsg) {
+            const confirmed = await showFinanceConfirm(confirmMsg, {
+              title: 'Konfirmasi Aksi',
+              confirmText: 'Ya',
+              cancelText: 'Batal',
+            });
+            if (!confirmed) return;
+          }
 
           const action = form.getAttribute('action');
           const method = (form.getAttribute('method') || 'POST').toUpperCase();

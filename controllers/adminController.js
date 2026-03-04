@@ -304,10 +304,12 @@ const getDashboardStats = async (req, res) => {
       ),
       db.query(
         `SELECT t.id, t.total_amount, t.status, t.payment_status, t.created_at,
+                ls.status AS lead_status,
                 COALESCE(c.name, 'Unknown') as customer_name, u.name as affiliate_name
          FROM transactions t
          LEFT JOIN customers c ON t.customer_id = c.id
          LEFT JOIN users u ON t.affiliate_id = u.id
+         LEFT JOIN lead_statuses ls ON ls.transaction_id = t.id
          ORDER BY t.created_at DESC
          LIMIT 10`,
       ),
