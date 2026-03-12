@@ -463,7 +463,7 @@
       background: rgba(255, 255, 255, 0.8);
     }
 
-    /* Button Styles - Diperbesar */
+    /* Button Styles */
     .btn-primary {
       background: linear-gradient(165deg, #059669 0%, #10b981 50%, #34d399 100%);
       color: white;
@@ -641,7 +641,7 @@
       }
     }
 
-    /* Info Card Styles - Diperbesar */
+    /* Info Card Styles */
     .info-card-commission {
       background: rgba(16, 185, 129, 0.05);
       border: 1px solid rgba(16, 185, 129, 0.2);
@@ -957,7 +957,7 @@
       <!-- Main Content -->
       <main class="ml-64 pt-16 min-h-screen relative z-10">
         <div class="p-6">
-          <!-- Premium Page Header - Sesuai dengan dashboard -->
+          <!-- Premium Page Header - Diperbesar ukuran fontnya -->
           <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
             <div class="mb-4 lg:mb-0">
               <div class="flex items-center gap-4">
@@ -987,7 +987,7 @@
               </div>
             </div>
 
-            <!-- Premium Date & Live Status -->
+            <!-- Premium Date & Live Status - Diperbesar ukuran fontnya -->
             <div class="flex items-center gap-3">
               <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
                 <div class="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center shadow-lg">
@@ -1020,7 +1020,7 @@
             </div>
           </div>
 
-          <!-- Premium Stats Cards - Ultra Modern -->
+          <!-- Premium Stats Cards - Diperbesar ukuran fontnya -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-7 animate-scale-in">
             <!-- Pending Card -->
             <div
@@ -1045,15 +1045,13 @@
                     </div>
 
                     <div class="flex items-baseline gap-1">
-                      <p class="text-3xl font-black text-gray-900 summary-value break-all" id="pendingAmount">Rp 0,00
-                      </p>
-                      <span class="text-sm font-bold text-emerald-600">IDR</span>
+                      <p class="text-3xl font-black text-gray-900 summary-value break-all" id="pendingAmount">Rp 0</p>
                     </div>
 
                     <div class="flex items-center gap-2 mt-2">
-                      <span class="text-xs font-medium text-gray-500" id="pendingCount">0 transaksi</span>
+                      <span class="text-sm font-medium text-gray-500" id="pendingCount">0 transaksi</span>
                       <span
-                        class="px-2 py-0.5 rounded-lg text-xs font-extrabold gradient-warning text-white flex items-center gap-1 border border-white/30">
+                        class="px-2 py-0.5 rounded-lg text-sm font-extrabold gradient-warning text-white flex items-center gap-1 border border-white/30">
                         <i class="fas fa-clock"></i>
                         Belum verified
                       </span>
@@ -1092,14 +1090,17 @@
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-3xl font-black text-gray-900 summary-value break-all" id="totalCommissionDisplay">
-                        Rp 0,00</p>
-                      <span class="text-sm font-bold text-emerald-600">IDR</span>
+                        Rp 0</p>
                     </div>
 
-                    <p class="text-xs text-gray-500 mt-2 flex items-center gap-1">
-                      <i class="fas fa-info-circle text-emerald-400"></i>
-                      Total semua status (pending + ready + paid)
-                    </p>
+                    <div class="flex items-center gap-2 mt-2">
+                      <span
+                        class="px-2 py-0.5 rounded-lg text-sm font-extrabold text-white flex items-center gap-1 border border-white/30"
+                        style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); box-shadow: 0 8px 20px -6px rgba(124, 58, 237, 0.35);">
+                        <i class="fas fa-info-circle"></i>
+                        Total semua status
+                      </span>
+                    </div>
                   </div>
 
                   <div
@@ -1133,15 +1134,13 @@
                     </div>
 
                     <div class="flex items-baseline gap-1">
-                      <p class="text-3xl font-black text-emerald-700 summary-value break-all" id="readyAmount">Rp 0,00
-                      </p>
-                      <span class="text-sm font-bold text-emerald-600">IDR</span>
+                      <p class="text-3xl font-black text-emerald-700 summary-value break-all" id="readyAmount">Rp 0</p>
                     </div>
 
                     <div class="flex items-center gap-2 mt-2">
-                      <span class="text-xs font-medium text-gray-500" id="readyCount">0 transaksi</span>
+                      <span class="text-sm font-medium text-gray-500" id="readyCount">0 transaksi</span>
                       <span
-                        class="px-2 py-0.5 rounded-lg text-xs font-extrabold gradient-success text-white flex items-center gap-1 border border-white/30">
+                        class="px-2 py-0.5 rounded-lg text-sm font-extrabold gradient-success text-white flex items-center gap-1 border border-white/30">
                         <i class="fas fa-check-circle"></i>
                         Verified ✓
                       </span>
@@ -1184,14 +1183,13 @@
                     </div>
 
                     <div class="flex items-baseline gap-1">
-                      <p class="text-3xl font-black text-blue-700 summary-value break-all" id="paidAmount">Rp 0,00</p>
-                      <span class="text-sm font-bold text-emerald-600">IDR</span>
+                      <p class="text-3xl font-black text-blue-700 summary-value break-all" id="paidAmount">Rp 0</p>
                     </div>
 
                     <div class="flex items-center gap-2 mt-2">
-                      <span class="text-xs font-medium text-gray-500" id="paidCount">0 transaksi</span>
+                      <span class="text-sm font-medium text-gray-500" id="paidCount">0 transaksi</span>
                       <span
-                        class="px-2 py-0.5 rounded-lg text-xs font-extrabold gradient-info text-white flex items-center gap-1 border border-white/30">
+                        class="px-2 py-0.5 rounded-lg text-sm font-extrabold gradient-info text-white flex items-center gap-1 border border-white/30">
                         <i class="fas fa-check-double"></i>
                         Sudah ditransfer
                       </span>
@@ -1214,16 +1212,16 @@
               <div class="flex items-center gap-3">
                 <div
                   class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
-                  <i class="fas fa-coins text-white"></i>
+                  <i class="fas fa-coins text-white text-base"></i>
                 </div>
                 <div>
                   <h2 class="text-lg font-extrabold text-white">Kelola Komisi</h2>
-                  <p class="text-emerald-100 text-xs font-medium mt-0.5">Review dan tarik komisi yang sudah tersedia
+                  <p class="text-emerald-100 text-sm font-medium mt-0.5">Review dan tarik komisi yang sudah tersedia
                   </p>
                 </div>
               </div>
               <span
-                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-xs font-extrabold border border-white/30">
+                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-sm font-extrabold border border-white/30">
                 <i class="fas fa-bolt mr-1"></i>
                 Live
               </span>
@@ -1256,7 +1254,7 @@
                     <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <i class="fas fa-info-circle text-blue-600 text-sm"></i>
                     </div>
-                    <div class="text-xs text-blue-800">
+                    <div class="text-sm text-blue-800">
                       <span class="font-extrabold">Catatan:</span> Hanya menampilkan komisi yang sudah diverifikasi
                       Stage 3 dan siap diambil.
                       Lihat <a href="/affiliate/dashboard" class="font-extrabold underline text-blue-700">Dashboard
@@ -1265,9 +1263,9 @@
                   </div>
 
                   <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-sm font-extrabold text-gray-900">Komisi Siap Ditarik</h3>
+                    <h3 class="text-base font-extrabold text-gray-900">Komisi Siap Ditarik</h3>
                     <div
-                      class="text-xs font-medium text-emerald-700 bg-white/60 px-3 py-1.5 rounded-lg border border-white/60">
+                      class="text-sm font-medium text-emerald-700 bg-white/60 px-3 py-1.5 rounded-lg border border-white/60">
                       Total: <span class="font-extrabold text-emerald-700" id="readyTotal">0</span> transaksi
                     </div>
                   </div>
@@ -1296,9 +1294,9 @@
               <div id="tab-history" class="tab-content hidden">
                 <div class="space-y-4">
                   <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-sm font-extrabold text-gray-900">Riwayat Penarikan</h3>
+                    <h3 class="text-base font-extrabold text-gray-900">Riwayat Penarikan</h3>
                     <div
-                      class="text-xs font-medium text-emerald-700 bg-white/60 px-3 py-1.5 rounded-lg border border-white/60">
+                      class="text-sm font-medium text-emerald-700 bg-white/60 px-3 py-1.5 rounded-lg border border-white/60">
                       Total: <span class="font-extrabold text-emerald-700" id="historyTotal">0</span> permintaan
                     </div>
                   </div>
@@ -1329,12 +1327,11 @@
               <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                 <div class="flex items-center gap-2">
                   <span
-                    class="text-xs font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                    class="text-sm font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
                     Total komisi tersedia: <span class="font-extrabold" id="totalReady">0</span> transaksi
                   </span>
                 </div>
-                <span
-                  class="text-xs font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
+                <span class="text-sm font-medium text-gray-500 bg-white/60 px-3 py-2 rounded-lg border border-white/60">
                   <i class="fas fa-clock mr-1"></i>
                   Terakhir diperbarui: Sekarang
                 </span>
@@ -1352,7 +1349,7 @@
             <div class="flex items-center gap-3">
               <div
                 class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
-                <i class="fas fa-money-bill-wave text-white text-sm"></i>
+                <i class="fas fa-money-bill-wave text-white text-base"></i>
               </div>
               <div>
                 <h3 class="text-lg font-extrabold text-white">
@@ -1369,7 +1366,7 @@
           </div>
 
           <div class="modal-body space-y-4">
-            <!-- Info Box - Diperbesar -->
+            <!-- Info Box -->
             <div class="info-card-commission">
               <div class="info-row">
                 <div class="info-icon">
@@ -1384,32 +1381,33 @@
 
             <!-- Selection Mode -->
             <div class="space-y-2">
-              <label class="block text-sm font-extrabold text-emerald-800 mb-2">Pilih Komisi</label>
+              <label class="block text-base font-extrabold text-emerald-800 mb-2">Pilih Komisi</label>
               <div class="space-y-2">
                 <label
                   class="flex items-center gap-3 p-3 glass-futuristic rounded-xl border border-white/50 cursor-pointer hover:bg-white/40 transition">
                   <input type="radio" name="selectionMode" value="all" checked onchange="updateSelectionMode()"
                     class="w-4 h-4 accent-emerald-600">
-                  <span class="text-sm font-medium text-gray-700">Tarik Semua (<span id="allCount">0</span>
+                  <span class="text-base font-medium text-gray-700">Tarik Semua (<span id="allCount">0</span>
                     komisi)</span>
                 </label>
                 <label
                   class="flex items-center gap-3 p-3 glass-futuristic rounded-xl border border-white/50 cursor-pointer hover:bg-white/40 transition">
                   <input type="radio" name="selectionMode" value="select" onchange="updateSelectionMode()"
                     class="w-4 h-4 accent-emerald-600">
-                  <span class="text-sm font-medium text-gray-700">Pilih Komisi Tertentu</span>
+                  <span class="text-base font-medium text-gray-700">Pilih Komisi Tertentu</span>
                 </label>
               </div>
             </div>
 
             <!-- Selected Commissions -->
             <div id="selectCommissionsContainer" class="hidden space-y-2">
-              <label class="block text-sm font-extrabold text-emerald-800 mb-2">Pilih Komisi yang Ingin Ditarik</label>
+              <label class="block text-base font-extrabold text-emerald-800 mb-2">Pilih Komisi yang Ingin
+                Ditarik</label>
               <div id="selectCheckboxes"
                 class="space-y-2 max-h-40 overflow-y-auto modern-scrollbar glass-futuristic rounded-xl p-3 border border-white/50">
                 <div class="text-center py-4 text-gray-500">
                   <i class="fas fa-spinner fa-spin mb-2 text-emerald-600"></i>
-                  <p class="text-sm">Memuat komisi...</p>
+                  <p class="text-base">Memuat komisi...</p>
                 </div>
               </div>
             </div>
@@ -1417,12 +1415,12 @@
 
           <div class="modal-footer">
             <button onclick="closeWithdrawalModal()"
-              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-sm font-extrabold flex items-center justify-center gap-1 border border-white/60">
+              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-base font-extrabold flex items-center justify-center gap-2 border border-white/60">
               <i class="fas fa-times"></i>
               Batal
             </button>
             <button onclick="submitWithdrawal()"
-              class="flex-1 gradient-primary text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-sm font-extrabold shadow-lg flex items-center justify-center gap-1">
+              class="flex-1 gradient-primary text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-base font-extrabold shadow-lg flex items-center justify-center gap-2">
               <i class="fas fa-check-circle"></i>
               Ajukan
             </button>
@@ -1437,7 +1435,7 @@
             <div class="flex items-center gap-3">
               <div
                 class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
-                <i class="fas fa-info-circle text-white text-sm"></i>
+                <i class="fas fa-info-circle text-white text-base"></i>
               </div>
               <div>
                 <h3 id="detailModalTitle" class="text-lg font-extrabold text-white">Detail Penarikan</h3>
@@ -1452,12 +1450,12 @@
           <div id="withdrawalDetailContent" class="modal-body modern-scrollbar">
             <div class="text-center py-8 text-gray-500">
               <i class="fas fa-spinner fa-spin text-2xl mb-4 text-emerald-600"></i>
-              <p class="text-sm">Memuat detail...</p>
+              <p class="text-base">Memuat detail...</p>
             </div>
           </div>
           <div class="modal-footer">
             <button onclick="closeWithdrawalDetailModal()"
-              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-sm font-extrabold flex items-center justify-center gap-1 border border-white/60">
+              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-base font-extrabold flex items-center justify-center gap-2 border border-white/60">
               <i class="fas fa-times"></i>
               Tutup
             </button>
@@ -1472,7 +1470,7 @@
             <div class="flex items-center gap-3">
               <div
                 class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
-                <i class="fas fa-file-image text-white text-sm"></i>
+                <i class="fas fa-file-image text-white text-base"></i>
               </div>
               <div>
                 <h3 class="text-lg font-extrabold text-white">Bukti Transfer</h3>
@@ -1486,11 +1484,11 @@
           </div>
           <div id="proof-content" class="modal-body text-center py-8">
             <i class="fas fa-spinner fa-spin text-2xl mb-4 text-emerald-600"></i>
-            <p class="text-sm text-gray-500">Memuat bukti...</p>
+            <p class="text-base text-gray-500">Memuat bukti...</p>
           </div>
           <div class="modal-footer">
             <button onclick="closeProofModal()"
-              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-sm font-extrabold flex items-center justify-center gap-1 border border-white/60">
+              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-base font-extrabold flex items-center justify-center gap-2 border border-white/60">
               <i class="fas fa-times"></i>
               Tutup
             </button>
@@ -1664,7 +1662,7 @@
               const summary = data.data;
 
               // Update UI
-              document.getElementById('pendingAmount').textContent = 'Rp ' + Number(summary.pending.total || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+              document.getElementById('pendingAmount').textContent = 'Rp ' + Number(summary.pending.total || 0).toLocaleString('id-ID', { maximumFractionDigits: 0 });
               document.getElementById('pendingCount').textContent = (summary.pending.count || 0) + ' transaksi';
 
               // Prefer "ready-by-lead" totals (lead_status = 'SEDANG BERANGKAT') for the UI "Siap Ditarik" display.
@@ -1673,30 +1671,30 @@
                 const leadData = await respLead.json();
                 if (leadData && leadData.success && leadData.data) {
                   const readyTotalVal = Number(leadData.data.total || 0);
-                  document.getElementById('readyAmount').textContent = 'Rp ' + readyTotalVal.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                  document.getElementById('readyAmount').textContent = 'Rp ' + readyTotalVal.toLocaleString('id-ID', { maximumFractionDigits: 0 });
                   document.getElementById('readyCount').textContent = (leadData.data.count || 0) + ' transaksi';
-                  document.getElementById('modalReadyAmount').textContent = 'Rp ' + readyTotalVal.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                  document.getElementById('modalReadyAmount').textContent = 'Rp ' + readyTotalVal.toLocaleString('id-ID', { maximumFractionDigits: 0 });
                   document.getElementById('allCount').textContent = leadData.data.count || 0;
                   document.getElementById('totalReady').textContent = leadData.data.count || 0;
                 } else {
                   // fallback to original summary.ready
                   const fallbackVal = Number(summary.ready.total || 0);
-                  document.getElementById('readyAmount').textContent = 'Rp ' + fallbackVal.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                  document.getElementById('readyAmount').textContent = 'Rp ' + fallbackVal.toLocaleString('id-ID', { maximumFractionDigits: 0 });
                   document.getElementById('readyCount').textContent = (summary.ready.count || 0) + ' transaksi';
-                  document.getElementById('modalReadyAmount').textContent = 'Rp ' + fallbackVal.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                  document.getElementById('modalReadyAmount').textContent = 'Rp ' + fallbackVal.toLocaleString('id-ID', { maximumFractionDigits: 0 });
                   document.getElementById('allCount').textContent = summary.ready.count || 0;
                   document.getElementById('totalReady').textContent = summary.ready.count || 0;
                 }
               } catch (e) {
                 console.debug('ready-by-lead fetch failed, fallback to summary.ready', e);
-                document.getElementById('readyAmount').textContent = 'Rp ' + Number(summary.ready.total || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.getElementById('readyAmount').textContent = 'Rp ' + Number(summary.ready.total || 0).toLocaleString('id-ID', { maximumFractionDigits: 0 });
                 document.getElementById('readyCount').textContent = (summary.ready.count || 0) + ' transaksi';
-                document.getElementById('modalReadyAmount').textContent = 'Rp ' + Number(summary.ready.total || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.getElementById('modalReadyAmount').textContent = 'Rp ' + Number(summary.ready.total || 0).toLocaleString('id-ID', { maximumFractionDigits: 0 });
                 document.getElementById('allCount').textContent = summary.ready.count || 0;
                 document.getElementById('totalReady').textContent = summary.ready.count || 0;
               }
 
-              document.getElementById('paidAmount').textContent = 'Rp ' + Number(summary.paid.total || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+              document.getElementById('paidAmount').textContent = 'Rp ' + Number(summary.paid.total || 0).toLocaleString('id-ID', { maximumFractionDigits: 0 });
               document.getElementById('paidCount').textContent = (summary.paid.count || 0) + ' transaksi';
 
               // Also fetch overall totalCommission (same source as Dashboard Affiliate)
@@ -1706,7 +1704,7 @@
                 if (st && st.success && st.data && typeof st.data.totalCommission !== 'undefined') {
                   const commissionValue = parseFloat(st.data.totalCommission) || 0;
                   const el = document.getElementById('totalCommissionDisplay');
-                  if (el) el.textContent = 'Rp ' + commissionValue.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                  if (el) el.textContent = 'Rp ' + commissionValue.toLocaleString('id-ID', { maximumFractionDigits: 0 });
                   // Responsive: add .break-all to summary values for large numbers
                   document.querySelectorAll('.summary-value').forEach(el => el.classList.add('break-all'));
                 }
@@ -1747,7 +1745,7 @@
                         </div>
                       </div>
                       <h3 class="text-lg font-extrabold text-gray-900 mb-2">Tidak ada komisi yang siap ditarik</h3>
-                      <p class="text-sm text-emerald-700 font-medium">Semua komisi sudah diproses atau belum tersedia</p>
+                      <p class="text-base text-emerald-700 font-medium">Semua komisi sudah diproses atau belum tersedia</p>
                     </div>
                   </div>
                 `;
@@ -1762,14 +1760,14 @@
                       <div class="flex-1">
                         <div class="flex items-center gap-3 mb-3">
                           <div class="w-10 h-10 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl flex items-center justify-center border border-white/60">
-                            <i class="fas fa-calendar-check text-emerald-600"></i>
+                            <i class="fas fa-calendar-check text-emerald-600 text-base"></i>
                           </div>
                           <div>
                             <div class="font-extrabold text-base text-gray-900">${comm.event_title || 'Event'}</div>
-                            <div class="text-xs font-medium text-emerald-700">Transaksi #${comm.transaction_id}</div>
+                            <div class="text-sm font-medium text-emerald-700">Transaksi #${comm.transaction_id}</div>
                           </div>
                         </div>
-                        <div class="flex items-center gap-4 flex-wrap text-sm text-gray-600">
+                        <div class="flex items-center gap-4 flex-wrap text-base text-gray-600">
                           <span class="flex items-center gap-1">
                             <i class="fas fa-coins text-emerald-400"></i>
                             Rp ${Number(comm.amount || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -1781,7 +1779,7 @@
                         </div>
                       </div>
                       <div class="md:text-right">
-                        <span class="inline-block px-3 py-1.5 rounded-lg text-xs font-extrabold status-ready text-white border border-white/30">
+                        <span class="inline-block px-3 py-1.5 rounded-lg text-sm font-extrabold status-ready text-white border border-white/30">
                           <i class="fas fa-check-circle mr-1"></i>
                           Siap Ditarik
                         </span>
@@ -1811,7 +1809,7 @@
                     </div>
                   </div>
                   <h3 class="text-lg font-extrabold text-gray-900 mb-2">Gagal memuat komisi</h3>
-                  <p class="text-sm text-emerald-700 font-medium">${error.message}</p>
+                  <p class="text-base text-emerald-700 font-medium">${error.message}</p>
                 </div>
               </div>
             `;
@@ -1827,7 +1825,7 @@
             html += `
               <label class="flex items-center gap-3 p-3 glass-futuristic rounded-xl border border-white/50 cursor-pointer hover:bg-white/40 transition">
                 <input type="checkbox" value="${comm.id}" onchange="updateSelectedCommissions()" class="commission-checkbox w-4 h-4 accent-emerald-600">
-                <span class="text-sm text-gray-700">
+                <span class="text-base text-gray-700">
                   <span class="font-extrabold">${comm.event_title || 'Event'}</span>
                   <span class="text-emerald-700 font-extrabold"> - Rp ${Number(comm.amount || 0).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </span>
@@ -1868,7 +1866,7 @@
                         </div>
                       </div>
                       <h3 class="text-lg font-extrabold text-gray-900 mb-2">Belum ada riwayat penarikan</h3>
-                      <p class="text-sm text-emerald-700 font-medium">Mulai ajukan penarikan komisi Anda</p>
+                      <p class="text-base text-emerald-700 font-medium">Mulai ajukan penarikan komisi Anda</p>
                     </div>
                   </div>
                 `;
@@ -1905,14 +1903,14 @@
                       <div class="flex-1">
                         <div class="flex items-center gap-3 mb-3">
                           <div class="w-10 h-10 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl flex items-center justify-center border border-white/60">
-                            <i class="fas fa-file-invoice-dollar text-emerald-600"></i>
+                            <i class="fas fa-file-invoice-dollar text-emerald-600 text-base"></i>
                           </div>
                           <div>
                             <div class="font-extrabold text-lg text-emerald-700">Rp ${(withdraw.total_amount || 0).toLocaleString('id-ID')}</div>
-                            <div class="text-xs font-medium text-emerald-700">ID: #${withdraw.id} • ${new Date(withdraw.created_at).toLocaleDateString('id-ID')}</div>
+                            <div class="text-sm font-medium text-emerald-700">ID: #${withdraw.id} • ${new Date(withdraw.created_at).toLocaleDateString('id-ID')}</div>
                           </div>
                         </div>
-                        <div class="flex items-center gap-4 flex-wrap text-sm text-gray-600">
+                        <div class="flex items-center gap-4 flex-wrap text-base text-gray-600">
                           <span class="flex items-center gap-1">
                             <i class="fas fa-coins text-emerald-400"></i>
                             ${withdraw.commission_count} komisi
@@ -1926,17 +1924,17 @@
                         </div>
                       </div>
                       <div class="md:text-right flex flex-col items-end gap-2">
-                        <span class="inline-block px-3 py-1.5 rounded-lg text-xs font-extrabold ${statusClass} text-white border border-white/30">
+                        <span class="inline-block px-3 py-1.5 rounded-lg text-sm font-extrabold ${statusClass} text-white border border-white/30">
                           <i class="fas ${statusIcon} mr-1"></i>
                           ${statusLabel}
                         </span>
                         <div class="flex gap-2">
-                          <button onclick="event.stopPropagation(); viewWithdrawalDetail(${withdraw.id})" class="btn-secondary text-xs px-3 py-1.5">
+                          <button onclick="event.stopPropagation(); viewWithdrawalDetail(${withdraw.id})" class="btn-secondary text-sm px-3 py-1.5">
                             <i class="fas fa-eye mr-1"></i>
                             Detail
                           </button>
                           ${hasProof ? `
-                            <button onclick="event.stopPropagation(); viewProof(${withdraw.id})" class="btn-info text-xs px-3 py-1.5">
+                            <button onclick="event.stopPropagation(); viewProof(${withdraw.id})" class="btn-info text-sm px-3 py-1.5">
                               <i class="fas fa-file-image mr-1"></i>
                               Bukti
                             </button>
@@ -1965,7 +1963,7 @@
                     </div>
                   </div>
                   <h3 class="text-lg font-extrabold text-gray-900 mb-2">Gagal memuat riwayat</h3>
-                  <p class="text-sm text-emerald-700 font-medium">${error.message}</p>
+                  <p class="text-base text-emerald-700 font-medium">${error.message}</p>
                 </div>
               </div>
             `;
@@ -2026,7 +2024,7 @@
                 </div>
                 <div class="flex-1">
                   <p class="font-extrabold text-gray-900 text-base">Komisi Baru!</p>
-                  <p class="text-sm text-gray-600 mt-1">${msg}</p>
+                  <p class="text-base text-gray-600 mt-1">${msg}</p>
                 </div>
                 <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
                   <i class="fas fa-times text-sm"></i>
@@ -2049,7 +2047,7 @@
                 </div>
                 <div class="flex-1">
                   <p class="font-extrabold text-gray-900 text-base">Update Status</p>
-                  <p class="text-sm text-gray-600 mt-1">${msg}</p>
+                  <p class="text-base text-gray-600 mt-1">${msg}</p>
                 </div>
                 <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
                   <i class="fas fa-times text-sm"></i>
@@ -2130,11 +2128,11 @@
                   <div class="space-y-4">
                     <div class="glass-futuristic rounded-xl p-6 text-center border border-red-200/50">
                       <i class="fas fa-file-pdf text-red-600 text-4xl mb-3"></i>
-                      <p class="text-sm font-extrabold text-gray-900">File PDF</p>
+                      <p class="text-base font-extrabold text-gray-900">File PDF</p>
                     </div>
                     <div class="glass-futuristic rounded-xl p-4 border border-blue-200/50">
-                      <p class="text-xs text-blue-800 mb-3"><span class="font-extrabold">Nama File:</span> ${proofFile.split('/').pop()}</p>
-                      <a href="${proofFile}" target="_blank" class="w-full btn-info text-sm py-3 flex items-center justify-center gap-1">
+                      <p class="text-sm text-blue-800 mb-3"><span class="font-extrabold">Nama File:</span> ${proofFile.split('/').pop()}</p>
+                      <a href="${proofFile}" target="_blank" class="w-full btn-info text-base py-3 flex items-center justify-center gap-2">
                         <i class="fas fa-external-link-alt"></i>
                         Buka File PDF
                       </a>
@@ -2146,7 +2144,7 @@
                   <div class="space-y-4">
                     <img src="${proofFile}" alt="Bukti Transfer" class="w-full rounded-xl border border-white/50 shadow-lg">
                     <div class="glass-futuristic rounded-xl p-4 border border-blue-200/50">
-                      <p class="text-xs text-blue-800">
+                      <p class="text-sm text-blue-800">
                         <span class="font-extrabold">Format:</span> Gambar<br>
                         <span class="font-extrabold">File:</span> ${proofFile.split('/').pop()}
                       </p>
@@ -2289,12 +2287,12 @@
               const commissionRows = commissions.length > 0 ? commissions.map(comm => `
                 <div class="flex justify-between items-center py-2 border-t border-white/30">
                   <div class="flex-1">
-                    <div class="font-extrabold text-sm text-gray-900">${comm.event_title || 'Event'}</div>
-                    <div class="text-xs font-medium text-gray-500">${new Date(comm.created_at).toLocaleDateString('id-ID')}</div>
+                    <div class="font-extrabold text-base text-gray-900">${comm.event_title || 'Event'}</div>
+                    <div class="text-sm font-medium text-gray-500">${new Date(comm.created_at).toLocaleDateString('id-ID')}</div>
                   </div>
-                  <div class="font-extrabold text-sm text-emerald-700">Rp ${parseFloat(comm.amount || 0).toLocaleString('id-ID')}</div>
+                  <div class="font-extrabold text-base text-emerald-700">Rp ${parseFloat(comm.amount || 0).toLocaleString('id-ID')}</div>
                 </div>
-              `).join('') : '<p class="text-gray-500 text-sm text-center py-4">Tidak ada data komisi</p>';
+              `).join('') : '<p class="text-gray-500 text-base text-center py-4">Tidak ada data komisi</p>';
 
               let proofHtml = '';
               if (payout.proof_file) {
@@ -2303,8 +2301,8 @@
                   proofHtml = `
                     <div class="glass-futuristic rounded-xl p-4 text-center border border-red-200/50">
                       <i class="fas fa-file-pdf text-red-600 text-3xl mb-3"></i>
-                      <p class="text-sm font-extrabold text-gray-900 mb-2">File PDF</p>
-                      <a href="${pf}" target="_blank" class="w-full btn-info text-sm py-2 flex items-center justify-center gap-1">
+                      <p class="text-base font-extrabold text-gray-900 mb-2">File PDF</p>
+                      <a href="${pf}" target="_blank" class="w-full btn-info text-base py-2 flex items-center justify-center gap-2">
                         <i class="fas fa-external-link-alt"></i>
                         Buka File PDF
                       </a>
@@ -2314,7 +2312,7 @@
                   proofHtml = `
                     <div class="text-center">
                       <img src="${pf}" alt="Bukti Transfer" class="w-full rounded-xl border border-white/50 mb-3">
-                      <button onclick="event.stopPropagation(); viewProof(${payout.id})" class="w-full btn-info text-sm py-2 flex items-center justify-center gap-1">
+                      <button onclick="event.stopPropagation(); viewProof(${payout.id})" class="w-full btn-info text-base py-2 flex items-center justify-center gap-2">
                         <i class="fas fa-search"></i>
                         Lihat Bukti (Besar)
                       </button>
@@ -2322,26 +2320,26 @@
                   `;
                 }
               } else {
-                proofHtml = '<p class="text-sm text-gray-500 text-center">Tidak ada bukti transfer</p>';
+                proofHtml = '<p class="text-base text-gray-500 text-center">Tidak ada bukti transfer</p>';
               }
 
               const financeNoteHtml = payout.finance_note ? `
                 <div class="glass-futuristic rounded-xl p-4 border border-amber-200/50 bg-amber-50/30">
-                  <h4 class="text-sm font-extrabold text-amber-800 mb-2 flex items-center gap-1.5">
+                  <h4 class="text-base font-extrabold text-amber-800 mb-2 flex items-center gap-1.5">
                     <i class="fas fa-sticky-note text-amber-600"></i>
                     Catatan Finance
                   </h4>
-                  <p class="text-sm text-amber-800">${payout.finance_note}</p>
+                  <p class="text-base text-amber-800">${payout.finance_note}</p>
                 </div>
               ` : '';
 
               const adminNoteHtml = payout.admin_note ? `
                 <div class="glass-futuristic rounded-xl p-4 border border-green-200/50 bg-green-50/30">
-                  <h4 class="text-sm font-extrabold text-green-800 mb-2 flex items-center gap-1.5">
+                  <h4 class="text-base font-extrabold text-green-800 mb-2 flex items-center gap-1.5">
                     <i class="fas fa-check-circle text-green-600"></i>
                     Catatan Admin Approval
                   </h4>
-                  <p class="text-sm text-green-800">${payout.admin_note}</p>
+                  <p class="text-base text-green-800">${payout.admin_note}</p>
                 </div>
               ` : '';
 
@@ -2349,40 +2347,40 @@
                 <div class="space-y-4">
                   <!-- Affiliate Info -->
                   <div class="glass-futuristic rounded-xl p-4 border border-white/50">
-                    <h4 class="text-sm font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
+                    <h4 class="text-base font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
                       <i class="fas fa-user-tie text-emerald-600"></i>
                       Informasi Affiliate
                     </h4>
-                    <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div class="grid grid-cols-2 gap-3 text-base">
                       <div>
-                        <p class="text-xs font-bold text-emerald-700">Nama</p>
-                        <p class="font-extrabold text-base text-gray-900">${payout.affiliate_name}</p>
+                        <p class="text-sm font-bold text-emerald-700">Nama</p>
+                        <p class="font-extrabold text-lg text-gray-900">${payout.affiliate_name}</p>
                       </div>
                       <div>
-                        <p class="text-xs font-bold text-emerald-700">Email</p>
-                        <p class="font-extrabold text-base text-gray-900">${payout.affiliate_email}</p>
+                        <p class="text-sm font-bold text-emerald-700">Email</p>
+                        <p class="font-extrabold text-lg text-gray-900">${payout.affiliate_email}</p>
                       </div>
                     </div>
                   </div>
 
                   <!-- Bank Info -->
                   <div class="glass-futuristic rounded-xl p-4 border border-white/50">
-                    <h4 class="text-sm font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
+                    <h4 class="text-base font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
                       <i class="fas fa-university text-emerald-600"></i>
                       Informasi Bank
                     </h4>
-                    <div class="space-y-2 text-sm">
+                    <div class="space-y-2 text-base">
                       <div class="flex items-center justify-between">
-                        <p class="text-xs font-bold text-emerald-700">Nama Bank</p>
-                        <p class="font-extrabold text-base text-gray-900">${payout.bank_name || '-'}</p>
+                        <p class="text-sm font-bold text-emerald-700">Nama Bank</p>
+                        <p class="font-extrabold text-lg text-gray-900">${payout.bank_name || '-'}</p>
                       </div>
                       <div class="flex items-center justify-between">
-                        <p class="text-xs font-bold text-emerald-700">Nomor Rekening</p>
-                        <p class="font-extrabold text-base text-gray-900">${payout.bank_account_number || '-'}</p>
+                        <p class="text-sm font-bold text-emerald-700">Nomor Rekening</p>
+                        <p class="font-extrabold text-lg text-gray-900">${payout.bank_account_number || '-'}</p>
                       </div>
                       <div class="flex items-center justify-between">
-                        <p class="text-xs font-bold text-emerald-700">Atas Nama</p>
-                        <p class="font-extrabold text-base text-gray-900">${payout.bank_account_name || '-'}</p>
+                        <p class="text-sm font-bold text-emerald-700">Atas Nama</p>
+                        <p class="font-extrabold text-lg text-gray-900">${payout.bank_account_name || '-'}</p>
                       </div>
                     </div>
                   </div>
@@ -2392,7 +2390,7 @@
 
                   <!-- Commissions -->
                   <div class="glass-futuristic rounded-xl p-4 border border-white/50">
-                    <h4 class="text-sm font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
+                    <h4 class="text-base font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
                       <i class="fas fa-coins text-emerald-600"></i>
                       Komisi yang Ditarik
                     </h4>
@@ -2403,7 +2401,7 @@
 
                   <!-- Proof -->
                   <div class="glass-futuristic rounded-xl p-4 border border-white/50">
-                    <h4 class="text-sm font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
+                    <h4 class="text-base font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
                       <i class="fas fa-file-image text-emerald-600"></i>
                       Bukti Transfer
                     </h4>
@@ -2412,23 +2410,23 @@
 
                   <!-- Status Info -->
                   <div class="glass-futuristic rounded-xl p-4 border border-blue-200/50 bg-blue-50/30">
-                    <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div class="grid grid-cols-2 gap-3 text-base">
                       <div>
-                        <p class="text-xs font-bold text-emerald-700">Status</p>
+                        <p class="text-sm font-bold text-emerald-700">Status</p>
                         <p class="font-extrabold text-gray-900 capitalize">${payout.status}</p>
                       </div>
                       <div>
-                        <p class="text-xs font-bold text-emerald-700">Total</p>
+                        <p class="text-sm font-bold text-emerald-700">Total</p>
                         <p class="font-extrabold text-lg text-emerald-700">Rp ${parseFloat(payout.total_amount || 0).toLocaleString('id-ID')}</p>
                       </div>
                       <div>
-                        <p class="text-xs font-bold text-emerald-700">Dibuat</p>
-                        <p class="font-extrabold text-sm text-gray-900">${new Date(payout.created_at).toLocaleString('id-ID')}</p>
+                        <p class="text-sm font-bold text-emerald-700">Dibuat</p>
+                        <p class="font-extrabold text-base text-gray-900">${new Date(payout.created_at).toLocaleString('id-ID')}</p>
                       </div>
                       ${payout.paid_at ? `
                         <div>
-                          <p class="text-xs font-bold text-emerald-700">Dibayar</p>
-                          <p class="font-extrabold text-sm text-gray-900">${new Date(payout.paid_at).toLocaleString('id-ID')}</p>
+                          <p class="text-sm font-bold text-emerald-700">Dibayar</p>
+                          <p class="font-extrabold text-base text-gray-900">${new Date(payout.paid_at).toLocaleString('id-ID')}</p>
                         </div>
                       ` : ''}
                     </div>

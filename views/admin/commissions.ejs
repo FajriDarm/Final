@@ -596,7 +596,7 @@
             <!-- Main Content -->
             <main class="ml-64 pt-16 min-h-screen relative z-10">
                 <div class="p-6">
-                    <!-- Premium Page Header - Sesuai dengan dashboard -->
+                    <!-- Premium Page Header - Diperbesar ukuran fontnya -->
                     <div
                         class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
                         <div class="mb-4 lg:mb-0">
@@ -618,17 +618,17 @@
                                             Manajemen Komisi
                                         </h1>
                                         <span
-                                            class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                                            class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-sm font-bold tracking-wider shadow-lg">
                                             SUPER ADMIN
                                         </span>
                                     </div>
-                                    <p class="text-sm text-emerald-700 font-medium">Kelola aturan dan tarif komisi
+                                    <p class="text-base text-emerald-700 font-medium">Kelola aturan dan tarif komisi
                                         afiliasi</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Premium Date & Live Status -->
+                        <!-- Premium Date & Live Status - Diperbesar ukuran fontnya -->
                         <div class="flex items-center gap-3">
                             <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
                                 <div
@@ -636,9 +636,9 @@
                                     <i class="fas fa-calendar-alt text-white text-sm"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal
+                                    <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Tanggal
                                     </p>
-                                    <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                                    <p class="text-sm font-bold text-gray-800 whitespace-nowrap">
                                         <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' ,
                                             year: 'numeric' }) %>
                                     </p>
@@ -654,21 +654,21 @@
                                         class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status
+                                    <p class="text-xs text-white/90 font-bold uppercase tracking-wider">Live Status
                                     </p>
-                                    <p class="text-xs font-bold text-white">Updates Real-time</p>
+                                    <p class="text-sm font-bold text-white">Updates Real-time</p>
                                 </div>
                             </div>
 
                             <button onclick="openAddModal()"
                                 class="gradient-primary rounded-xl px-4 py-2.5 flex items-center gap-2 shadow-xl hover:scale-105 transition-transform duration-300 border border-white/30">
                                 <i class="fas fa-plus text-white text-sm"></i>
-                                <span class="text-xs font-bold text-white">Tambah Aturan</span>
+                                <span class="text-sm font-bold text-white">Tambah Aturan</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Premium Stats Cards - Ultra Modern -->
+                    <!-- Premium Stats Cards - Diperbesar ukuran fontnya -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-7 animate-scale-in">
                         <!-- Total Aturan -->
                         <div
@@ -690,22 +690,15 @@
                                                 <span
                                                     class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                                             </span>
-                                            <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">
+                                            <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">
                                                 Total Aturan</p>
                                         </div>
 
                                         <div class="flex items-baseline gap-1">
                                             <p class="text-4xl font-black text-gray-900" id="totalRules">-</p>
-                                            <span class="text-xs font-bold text-emerald-600">rules</span>
+                                            <span class="text-sm font-bold text-emerald-600">rules</span>
                                         </div>
 
-                                        <div class="flex items-center gap-1.5 mt-2">
-                                            <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                                                <i class="fas fa-arrow-up text-[8px] text-green-600"></i>
-                                                <span class="text-[8px] font-extrabold text-green-700">+12.5%</span>
-                                            </div>
-                                            <span class="text-[7px] text-gray-500">vs bulan lalu</span>
-                                        </div>
                                     </div>
 
                                     <div
@@ -737,21 +730,15 @@
                                                 <span
                                                     class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                                             </span>
-                                            <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">
+                                            <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">
                                                 Aturan Aktif</p>
                                         </div>
 
                                         <div class="flex items-baseline gap-1">
                                             <p class="text-4xl font-black text-gray-900" id="activeRules">-</p>
-                                            <span class="text-xs font-bold text-emerald-600">active</span>
+                                            <span class="text-sm font-bold text-emerald-600">active</span>
                                         </div>
 
-                                        <div class="flex items-center gap-1.5 mt-2">
-                                            <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                                                <i class="fas fa-bolt text-[8px] text-green-600"></i>
-                                                <span class="text-[8px] font-extrabold text-green-700">Berjalan</span>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <div
@@ -783,21 +770,13 @@
                                                 <span
                                                     class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
                                             </span>
-                                            <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">
+                                            <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">
                                                 Tipe Persentase</p>
                                         </div>
 
                                         <div class="flex items-baseline gap-1">
                                             <p class="text-4xl font-black text-gray-900" id="percentageRules">-</p>
-                                            <span class="text-xs font-bold text-emerald-600">rules</span>
-                                        </div>
-
-                                        <div class="flex items-center gap-1.5 mt-2">
-                                            <div class="px-2 py-1 bg-purple-100 rounded-lg flex items-center gap-1">
-                                                <i class="fas fa-percentage text-[8px] text-purple-600"></i>
-                                                <span
-                                                    class="text-[8px] font-extrabold text-purple-700">Persentase</span>
-                                            </div>
+                                            <span class="text-sm font-bold text-emerald-600">rules</span>
                                         </div>
                                     </div>
 
@@ -830,22 +809,15 @@
                                                 <span
                                                     class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                                             </span>
-                                            <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">
+                                            <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">
                                                 Tipe Flat</p>
                                         </div>
 
                                         <div class="flex items-baseline gap-1">
                                             <p class="text-4xl font-black text-gray-900" id="flatRules">-</p>
-                                            <span class="text-xs font-bold text-emerald-600">rules</span>
+                                            <span class="text-sm font-bold text-emerald-600">rules</span>
                                         </div>
 
-                                        <div class="flex items-center gap-1.5 mt-2">
-                                            <div class="px-2 py-1 bg-blue-100 rounded-lg flex items-center gap-1">
-                                                <i class="fas fa-coins text-[8px] text-blue-600"></i>
-                                                <span class="text-[8px] font-extrabold text-blue-700">Jumlah
-                                                    Tetap</span>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <div
@@ -864,14 +836,14 @@
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 gradient-active rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-check-circle text-white"></i>
+                                    <i class="fas fa-check-circle text-white text-base"></i>
                                 </div>
                                 <div class="flex-1">
                                     <p class="font-extrabold text-gray-900 text-sm" id="successMessage"></p>
                                 </div>
                                 <button onclick="document.getElementById('alertSuccess').classList.add('hidden')"
                                     class="text-gray-400 hover:text-gray-600">
-                                    <i class="fas fa-times"></i>
+                                    <i class="fas fa-times text-sm"></i>
                                 </button>
                             </div>
                         </div>
@@ -882,31 +854,31 @@
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 bg-gradient-to-r from-red-600 to-rose-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-exclamation-triangle text-white"></i>
+                                    <i class="fas fa-exclamation-triangle text-white text-base"></i>
                                 </div>
                                 <div class="flex-1">
                                     <p class="font-extrabold text-gray-900 text-sm" id="errorMessage"></p>
                                 </div>
                                 <button onclick="document.getElementById('alertError').classList.add('hidden')"
                                     class="text-gray-400 hover:text-gray-600">
-                                    <i class="fas fa-times"></i>
+                                    <i class="fas fa-times text-sm"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Premium Table -->
+                    <!-- Premium Table - Diperbesar ukuran fontnya -->
                     <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden mb-7">
                         <div
                             class="gradient-primary px-5 py-4 flex items-center justify-between border-b border-white/30">
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
-                                    <i class="fas fa-percentage text-white"></i>
+                                    <i class="fas fa-percentage text-white text-base"></i>
                                 </div>
                                 <div>
-                                    <h2 class="text-base font-extrabold text-white">Aturan Komisi</h2>
-                                    <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Kelola semua konfigurasi
+                                    <h2 class="text-lg font-extrabold text-white">Aturan Komisi</h2>
+                                    <p class="text-emerald-100 text-sm font-medium mt-0.5">Kelola semua konfigurasi
                                         komisi</p>
                                 </div>
                             </div>
@@ -917,25 +889,25 @@
                                     <thead class="table-header">
                                         <tr>
                                             <th
-                                                class="py-4 px-5 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                                                class="py-4 px-5 text-left text-sm font-extrabold text-emerald-900 uppercase tracking-wider">
                                                 ID</th>
                                             <th
-                                                class="py-4 px-5 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                                                class="py-4 px-5 text-left text-sm font-extrabold text-emerald-900 uppercase tracking-wider">
                                                 Event</th>
                                             <th
-                                                class="py-4 px-5 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                                                class="py-4 px-5 text-left text-sm font-extrabold text-emerald-900 uppercase tracking-wider">
                                                 Tipe</th>
                                             <th
-                                                class="py-4 px-5 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                                                class="py-4 px-5 text-left text-sm font-extrabold text-emerald-900 uppercase tracking-wider">
                                                 Nilai</th>
                                             <th
-                                                class="py-4 px-5 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                                                class="py-4 px-5 text-left text-sm font-extrabold text-emerald-900 uppercase tracking-wider">
                                                 Status</th>
                                             <th
-                                                class="py-4 px-5 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                                                class="py-4 px-5 text-left text-sm font-extrabold text-emerald-900 uppercase tracking-wider">
                                                 Dibuat Oleh</th>
                                             <th
-                                                class="py-4 px-5 text-left text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider">
+                                                class="py-4 px-5 text-left text-sm font-extrabold text-emerald-900 uppercase tracking-wider">
                                                 Aksi</th>
                                         </tr>
                                     </thead>
@@ -954,9 +926,9 @@
                                                                 class="w-2 h-2 bg-green-500 rounded-full pulse-premium"></span>
                                                         </div>
                                                     </div>
-                                                    <p class="text-base font-extrabold text-gray-900 mb-1">Memuat aturan
+                                                    <p class="text-lg font-extrabold text-gray-900 mb-1">Memuat aturan
                                                         komisi...</p>
-                                                    <p class="text-xs text-emerald-700 font-medium">Mohon tunggu
+                                                    <p class="text-sm text-emerald-700 font-medium">Mohon tunggu
                                                         sebentar</p>
                                                 </div>
                                             </td>
@@ -967,7 +939,7 @@
                         </div>
                     </div>
 
-                    <!-- Premium Info Box -->
+                    <!-- Premium Info Box - Diperbesar ukuran fontnya -->
                     <div class="glass-futuristic rounded-2xl p-5 border border-white/50 relative overflow-hidden group">
                         <div
                             class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-200/20 to-indigo-300/20 rounded-full blur-3xl -mr-20 -mt-20">
@@ -982,25 +954,25 @@
                                 <i class="fas fa-info-circle text-emerald-600 text-lg"></i>
                             </div>
                             <div>
-                                <h3 class="text-sm font-extrabold text-gray-900 mb-2">Panduan Komisi</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                                <h3 class="text-base font-extrabold text-gray-900 mb-2">Panduan Komisi</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                                     <div class="flex items-start gap-1.5">
-                                        <i class="fas fa-globe text-emerald-500 mt-0.5"></i>
+                                        <i class="fas fa-globe text-emerald-500 mt-0.5 text-xs"></i>
                                         <span class="text-gray-700"><span class="font-extrabold">Komisi Global:</span>
                                             Berlaku untuk semua event</span>
                                     </div>
                                     <div class="flex items-start gap-1.5">
-                                        <i class="fas fa-calendar-alt text-emerald-500 mt-0.5"></i>
+                                        <i class="fas fa-calendar-alt text-emerald-500 mt-0.5 text-xs"></i>
                                         <span class="text-gray-700"><span class="font-extrabold">Spesifik Event:</span>
                                             Hanya untuk event tertentu</span>
                                     </div>
                                     <div class="flex items-start gap-1.5">
-                                        <i class="fas fa-sitemap text-emerald-500 mt-0.5"></i>
+                                        <i class="fas fa-sitemap text-emerald-500 mt-0.5 text-xs"></i>
                                         <span class="text-gray-700"><span class="font-extrabold">Stage Minimum:</span>
                                             Stage 3 (SEDANG BERANGKAT)</span>
                                     </div>
                                     <div class="flex items-start gap-1.5">
-                                        <i class="fas fa-exclamation-triangle text-emerald-500 mt-0.5"></i>
+                                        <i class="fas fa-exclamation-triangle text-emerald-500 mt-0.5 text-xs"></i>
                                         <span class="text-gray-700"><span class="font-extrabold">Prioritas:</span>
                                             Aturan spesifik event mengesampingkan global</span>
                                     </div>
@@ -1012,24 +984,24 @@
                 </div>
             </main>
 
-            <!-- Premium Modal Tambah/Edit - Ultra Modern -->
+            <!-- Premium Modal Tambah/Edit - Diperbesar ukuran fontnya -->
             <div id="commissionModal" class="modal-overlay">
                 <div class="modal-content">
                     <div class="p-5">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-2">
                                 <div class="w-10 h-10 gradient-primary rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-percentage text-white"></i>
+                                    <i class="fas fa-percentage text-white text-base"></i>
                                 </div>
                                 <div>
-                                    <h2 class="text-base font-extrabold text-gray-900" id="modalTitle">Tambah Aturan
+                                    <h2 class="text-lg font-extrabold text-gray-900" id="modalTitle">Tambah Aturan
                                         Komisi</h2>
-                                    <p class="text-[10px] text-gray-500">Konfigurasi pengaturan komisi</p>
+                                    <p class="text-sm text-gray-500">Konfigurasi pengaturan komisi</p>
                                 </div>
                             </div>
                             <button onclick="closeModal()"
                                 class="w-8 h-8 bg-white/60 hover:bg-white/80 rounded-full flex items-center justify-center transition-all duration-300 border border-white/60">
-                                <i class="fas fa-times text-gray-600 text-xs"></i>
+                                <i class="fas fa-times text-gray-600 text-sm"></i>
                             </button>
                         </div>
 
@@ -1037,16 +1009,16 @@
                             <div class="space-y-4">
                                 <div>
                                     <label for="eventSelect"
-                                        class="block text-[10px] font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
-                                        <i class="fas fa-calendar-alt text-emerald-600 text-[8px]"></i>
+                                        class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
+                                        <i class="fas fa-calendar-alt text-emerald-600 text-xs"></i>
                                         Pilihan Event
-                                        <span class="text-gray-500 text-[8px]">(Kosongkan untuk Global)</span>
+                                        <span class="text-gray-500 text-xs">(Kosongkan untuk Global)</span>
                                     </label>
                                     <div class="relative">
                                         <i
-                                            class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                                            class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-sm"></i>
                                         <select id="eventSelect" name="event_id"
-                                            class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium appearance-none">
+                                            class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium appearance-none">
                                             <option value="">🌍 Komisi Global (Semua Event)</option>
                                         </select>
                                     </div>
@@ -1054,16 +1026,16 @@
 
                                 <div>
                                     <label for="commissionType"
-                                        class="block text-[10px] font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
-                                        <i class="fas fa-tag text-emerald-600 text-[8px]"></i>
+                                        class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
+                                        <i class="fas fa-tag text-emerald-600 text-xs"></i>
                                         Tipe Komisi *
                                     </label>
                                     <div class="relative">
                                         <i
-                                            class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                                            class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-sm"></i>
                                         <select id="commissionType" name="commission_type" required
                                             onchange="handleCommissionTypeChange()"
-                                            class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium appearance-none">
+                                            class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium appearance-none">
                                             <option value="">Pilih Tipe</option>
                                             <option value="flat">Flat (IDR) - Jumlah tetap</option>
                                             <option value="percentage">Persentase (%) - Dari jumlah transaksi</option>
@@ -1073,33 +1045,33 @@
 
                                 <div>
                                     <label for="commissionValue"
-                                        class="block text-[10px] font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
-                                        <i class="fas fa-dollar-sign text-emerald-600 text-[8px]"></i>
+                                        class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
+                                        <i class="fas fa-dollar-sign text-emerald-600 text-xs"></i>
                                         <span id="valueLabel">Nilai Komisi</span> *
                                     </label>
                                     <div class="relative">
                                         <span id="currencyPrefix"
-                                            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-600 text-[9px] font-extrabold hidden">Rp</span>
+                                            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-600 text-sm font-extrabold hidden">Rp</span>
                                         <input type="text" id="commissionValue" name="commission_value"
                                             placeholder="Masukkan nilai" required
                                             oninput="handleCommissionValueInput(event)"
-                                            class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium">
+                                            class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium">
                                     </div>
-                                    <p id="valueHelp" class="text-[8px] text-gray-500 mt-1">Masukkan nilai numerik</p>
+                                    <p id="valueHelp" class="text-xs text-gray-500 mt-1">Masukkan nilai numerik</p>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <div>
                                         <label for="isActive"
-                                            class="block text-[10px] font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
-                                            <i class="fas fa-toggle-on text-emerald-600 text-[8px]"></i>
+                                            class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
+                                            <i class="fas fa-toggle-on text-emerald-600 text-xs"></i>
                                             Status
                                         </label>
                                         <div class="relative">
                                             <i
-                                                class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-xs"></i>
+                                                class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 pointer-events-none text-sm"></i>
                                             <select id="isActive" name="is_active"
-                                                class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium appearance-none">
+                                                class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium appearance-none">
                                                 <option value="1">Aktif</option>
                                                 <option value="0">Tidak Aktif</option>
                                             </select>
@@ -1108,7 +1080,7 @@
                                 </div>
 
                                 <div
-                                    class="text-[9px] text-gray-600 bg-blue-50/80 backdrop-blur p-3 rounded-xl border border-blue-200/50">
+                                    class="text-sm text-gray-600 bg-blue-50/80 backdrop-blur p-3 rounded-xl border border-blue-200/50">
                                     <i class="fas fa-info-circle text-blue-600 mr-1"></i>
                                     Stage minimum otomatis: <span class="font-extrabold text-blue-700">Stage 3 (SEDANG
                                         BERANGKAT)</span>
@@ -1117,11 +1089,11 @@
 
                             <div class="flex gap-3 mt-5 pt-4 border-t border-white/30">
                                 <button type="submit"
-                                    class="flex-1 gradient-primary text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-xs font-extrabold shadow-lg flex items-center justify-center gap-1">
+                                    class="flex-1 gradient-primary text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-sm font-extrabold shadow-lg flex items-center justify-center gap-2">
                                     <i class="fas fa-save"></i> Simpan
                                 </button>
                                 <button type="button" onclick="closeModal()"
-                                    class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-xs font-extrabold flex items-center justify-center gap-1 border border-white/60">
+                                    class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-sm font-extrabold flex items-center justify-center gap-2 border border-white/60">
                                     <i class="fas fa-times"></i> Batal
                                 </button>
                             </div>
@@ -1130,30 +1102,30 @@
                 </div>
             </div>
 
-            <!-- Premium Modal Konfirmasi Hapus -->
+            <!-- Premium Modal Konfirmasi Hapus - Diperbesar ukuran fontnya -->
             <div id="deleteConfirmModal">
                 <div
                     class="bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl p-6 flex flex-col items-center text-center max-w-md w-full border border-white/50">
                     <div class="mb-3">
                         <span class="notification-icon error">
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <i class="fas fa-exclamation-triangle text-2xl"></i>
                         </span>
                     </div>
                     <h2 class="text-xl font-extrabold text-gray-900 mb-2">Konfirmasi Hapus</h2>
-                    <p class="text-sm text-gray-600 mb-4" id="deleteConfirmMessage">Apakah Anda yakin ingin menghapus
+                    <p class="text-base text-gray-600 mb-4" id="deleteConfirmMessage">Apakah Anda yakin ingin menghapus
                         aturan komisi ini?</p>
-                    <p class="text-[9px] text-gray-400 mb-5">Aksi ini tidak dapat dibatalkan.</p>
+                    <p class="text-xs text-gray-400 mb-5">Aksi ini tidak dapat dibatalkan.</p>
                     <div class="flex gap-3 w-full">
                         <button id="deleteModalYes" type="button"
-                            class="flex-1 bg-gradient-to-r from-red-600 to-rose-600 text-white py-3 px-4 rounded-xl text-xs font-extrabold hover:opacity-90 transition-all duration-200 shadow-lg">Ya,
+                            class="flex-1 bg-gradient-to-r from-red-600 to-rose-600 text-white py-3 px-4 rounded-xl text-sm font-extrabold hover:opacity-90 transition-all duration-200 shadow-lg">Ya,
                             Hapus</button>
                         <button id="deleteModalNo" type="button"
-                            class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 px-4 rounded-xl text-xs font-extrabold transition-all duration-200 border border-white/60">Batal</button>
+                            class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 px-4 rounded-xl text-sm font-extrabold transition-all duration-200 border border-white/60">Batal</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Premium Modal Sukses Tambah/Edit -->
+            <!-- Premium Modal Sukses Tambah/Edit - Diperbesar ukuran fontnya -->
             <div id="successAddEditModal" class="modal-success">
                 <div class="modal-box">
                     <span class="success-checkmark-bg">
@@ -1165,13 +1137,14 @@
                         </svg>
                     </span>
                     <h2 class="text-xl font-extrabold text-gray-900 mb-2">Sukses</h2>
-                    <p class="text-sm text-gray-600 mb-4" id="successAddEditMsg">Aturan komisi berhasil ditambahkan</p>
+                    <p class="text-base text-gray-600 mb-4" id="successAddEditMsg">Aturan komisi berhasil ditambahkan
+                    </p>
                     <button id="closeAddEditModalBtn" type="button"
-                        class="w-full gradient-primary text-white py-3 px-5 rounded-xl text-sm font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg">Tutup</button>
+                        class="w-full gradient-primary text-white py-3 px-5 rounded-xl text-base font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg">Tutup</button>
                 </div>
             </div>
 
-            <!-- Premium Modal Sukses Hapus -->
+            <!-- Premium Modal Sukses Hapus - Diperbesar ukuran fontnya -->
             <div id="successDeleteModal" style="display:none;" class="modal-success">
                 <div class="modal-box">
                     <span class="success-checkmark-bg">
@@ -1183,9 +1156,9 @@
                         </svg>
                     </span>
                     <h2 class="text-xl font-extrabold text-gray-900 mb-2">Sukses</h2>
-                    <p class="text-sm text-gray-600 mb-4" id="successDeleteMsg">Aturan komisi berhasil dihapus</p>
+                    <p class="text-base text-gray-600 mb-4" id="successDeleteMsg">Aturan komisi berhasil dihapus</p>
                     <button id="closeDeleteSuccessModalBtn" type="button"
-                        class="w-full gradient-primary text-white py-3 px-5 rounded-xl text-sm font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg">Tutup</button>
+                        class="w-full gradient-primary text-white py-3 px-5 rounded-xl text-base font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg">Tutup</button>
                 </div>
             </div>
 
@@ -1417,7 +1390,7 @@
                                     </div>
                                 </div>
                                 <h3 class="text-lg font-extrabold text-gray-900 mb-2">Belum ada aturan</h3>
-                                <p class="text-sm text-emerald-700 font-medium">Aturan komisi akan muncul di sini</p>
+                                <p class="text-base text-emerald-700 font-medium">Aturan komisi akan muncul di sini</p>
                             </div>
                         </td>
                     </tr>
@@ -1444,52 +1417,52 @@
                         onclick="viewCommission(${commission.id})"
                         style="animation: fadeIn 0.3s ease-out ${index * 0.05}s both">
                         <td class="py-4 px-5">
-                            <span class="font-extrabold text-xs text-gray-900 bg-white/60 px-2.5 py-1 rounded-lg border border-white/60">#${commission.id}</span>
+                            <span class="font-extrabold text-sm text-gray-900 bg-white/60 px-2.5 py-1 rounded-lg border border-white/60">#${commission.id}</span>
                         </td>
                         <td class="py-4 px-5">
                             ${isGlobal ?
                                 `<div class="flex items-center gap-2">
                                 <div class="w-8 h-8 gradient-global rounded-lg flex items-center justify-center border border-white/30">
-                                    <i class="fas fa-globe text-white text-xs"></i>
+                                    <i class="fas fa-globe text-white text-sm"></i>
                                 </div>
                                 <div>
-                                    <div class="font-extrabold text-xs text-gray-900">Komisi Global</div>
-                                    <div class="text-[8px] text-emerald-700 font-medium">Semua Event</div>
+                                    <div class="font-extrabold text-sm text-gray-900">Komisi Global</div>
+                                    <div class="text-xs text-emerald-700 font-medium">Semua Event</div>
                                 </div>
                             </div>` :
                                 `<div class="flex items-center gap-2">
                                 <div class="w-8 h-8 gradient-event rounded-lg flex items-center justify-center border border-white/30">
-                                    <i class="fas fa-calendar-alt text-white text-xs"></i>
+                                    <i class="fas fa-calendar-alt text-white text-sm"></i>
                                 </div>
                                 <div>
-                                    <div class="font-extrabold text-xs text-gray-900 line-clamp-1">${commission.event_title || 'Tidak Diketahui'}</div>
-                                    <div class="text-[8px] text-emerald-700 font-medium">Spesifik event</div>
+                                    <div class="font-extrabold text-sm text-gray-900 line-clamp-1">${commission.event_title || 'Tidak Diketahui'}</div>
+                                    <div class="text-xs text-emerald-700 font-medium">Spesifik event</div>
                                 </div>
                             </div>`}
                         </td>
                         <td class="py-4 px-5">
-                            <span class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold ${typeClass} flex items-center gap-1 border border-white/30 w-fit">
-                                <i class="fas ${commission.commission_type === 'flat' ? 'fa-coins' : 'fa-percentage'} text-[7px]"></i>
+                            <span class="px-3 py-1.5 rounded-lg text-xs font-extrabold ${typeClass} flex items-center gap-1 border border-white/30 w-fit">
+                                <i class="fas ${commission.commission_type === 'flat' ? 'fa-coins' : 'fa-percentage'} text-xs"></i>
                                 ${commission.commission_type === 'flat' ? 'FLAT' : 'PERSENTASE'}
                             </span>
                         </td>
                         <td class="py-4 px-5">
-                            <div class="font-extrabold text-sm ${commission.commission_type === 'flat' ? 'text-blue-700' : 'text-purple-700'}">
+                            <div class="font-extrabold text-base ${commission.commission_type === 'flat' ? 'text-blue-700' : 'text-purple-700'}">
                                 ${valueDisplay}
                             </div>
                         </td>
                         <td class="py-4 px-5">
-                            <span class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold ${statusClass} flex items-center gap-1 border border-white/30 w-fit">
-                                <i class="fas fa-circle text-[5px] mr-1"></i>
+                            <span class="px-3 py-1.5 rounded-lg text-xs font-extrabold ${statusClass} flex items-center gap-1 border border-white/30 w-fit">
+                                <i class="fas fa-circle text-xs mr-1"></i>
                                 ${commission.is_active ? 'AKTIF' : 'TIDAK AKTIF'}
                             </span>
                         </td>
                         <td class="py-4 px-5">
                             <div class="flex items-center gap-2">
                                 <div class="w-7 h-7 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
-                                    <i class="fas fa-user text-emerald-600 text-xs"></i>
+                                    <i class="fas fa-user text-emerald-600 text-sm"></i>
                                 </div>
-                                <span class="text-xs font-extrabold text-gray-900">${commission.created_by_name || 'System'}</span>
+                                <span class="text-sm font-extrabold text-gray-900">${commission.created_by_name || 'System'}</span>
                             </div>
                         </td>
                         <td class="py-4 px-5">
@@ -1497,12 +1470,12 @@
                                 <button onclick="editCommission(${commission.id})" 
                                     class="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:opacity-90 transition-all duration-300 flex items-center justify-center shadow-md border border-white/30"
                                     title="Edit">
-                                    <i class="fas fa-edit text-xs"></i>
+                                    <i class="fas fa-edit text-sm"></i>
                                 </button>
                                 <button onclick="showDeleteModal(${commission.id})" 
                                     class="w-8 h-8 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg hover:opacity-90 transition-all duration-300 flex items-center justify-center shadow-md border border-white/30"
                                     title="Hapus">
-                                    <i class="fas fa-trash text-xs"></i>
+                                    <i class="fas fa-trash text-sm"></i>
                                 </button>
                             </div>
                         </td>

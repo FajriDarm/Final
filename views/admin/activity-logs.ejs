@@ -506,7 +506,7 @@
 
       <main class="ml-64 pt-16 min-h-screen relative z-10 pb-8">
         <div class="p-6">
-          <!-- Premium Page Header - Sesuai dengan dashboard -->
+          <!-- Premium Page Header - Diperbesar ukuran fontnya -->
           <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
             <div class="mb-4 lg:mb-0">
               <div class="flex items-center gap-4">
@@ -527,24 +527,24 @@
                       Log Aktivitas
                     </h1>
                     <span
-                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-sm font-bold tracking-wider shadow-lg">
                       SUPER ADMIN
                     </span>
                   </div>
-                  <p class="text-sm text-emerald-700 font-medium">Riwayat aktivitas sistem Affillink</p>
+                  <p class="text-base text-emerald-700 font-medium">Riwayat aktivitas sistem Affillink</p>
                 </div>
               </div>
             </div>
 
-            <!-- Premium Date & Live Status -->
+            <!-- Premium Date & Live Status - Diperbesar ukuran fontnya -->
             <div class="flex items-center gap-3">
               <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
                 <div class="w-8 h-8 gradient-secondary rounded-lg flex items-center justify-center shadow-lg">
                   <i class="fas fa-calendar-alt text-white text-sm"></i>
                 </div>
                 <div>
-                  <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
-                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                  <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                  <p class="text-sm font-bold text-gray-800 whitespace-nowrap">
                     <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                   </p>
                 </div>
@@ -557,14 +557,14 @@
                   <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
                 </div>
                 <div>
-                  <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
-                  <p class="text-xs font-bold text-white">Updates Real-time</p>
+                  <p class="text-xs text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                  <p class="text-sm font-bold text-white">Updates Real-time</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Premium Filters and Controls - Ultra Modern -->
+          <!-- Premium Filters and Controls - Diperbesar ukuran fontnya -->
           <div class="glass-futuristic rounded-2xl p-5 border border-white/50 mb-7 relative overflow-hidden group">
             <div
               class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-200/20 to-green-300/20 rounded-full blur-3xl -mr-20 -mt-20">
@@ -579,27 +579,27 @@
                 <div>
                   <div class="flex flex-wrap gap-2">
                     <button onclick="filterByType('all')" id="filterAll"
-                      class="type-badge active px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center gap-2 border border-white/30 shadow-lg">
+                      class="type-badge active px-4 py-2.5 rounded-xl text-sm font-extrabold flex items-center gap-2 border border-white/30 shadow-lg">
                       <i class="fas fa-layer-group"></i>
                       <span>Semua Aktivitas</span>
                     </button>
                     <button onclick="filterByType('user')" id="filterUser"
-                      class="type-badge px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center gap-2 border border-white/30">
+                      class="type-badge px-4 py-2.5 rounded-xl text-sm font-extrabold flex items-center gap-2 border border-white/30">
                       <i class="fas fa-user text-blue-600"></i>
                       <span>Aksi Pengguna</span>
                     </button>
                     <button onclick="filterByType('system')" id="filterSystem"
-                      class="type-badge px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center gap-2 border border-white/30">
+                      class="type-badge px-4 py-2.5 rounded-xl text-sm font-extrabold flex items-center gap-2 border border-white/30">
                       <i class="fas fa-server text-purple-600"></i>
                       <span>Event Sistem</span>
                     </button>
                     <button onclick="filterByType('affiliate')" id="filterAffiliate"
-                      class="type-badge px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center gap-2 border border-white/30">
+                      class="type-badge px-4 py-2.5 rounded-xl text-sm font-extrabold flex items-center gap-2 border border-white/30">
                       <i class="fas fa-user-tie text-emerald-600"></i>
                       <span>Afiliasi</span>
                     </button>
                     <button onclick="filterByType('event')" id="filterEvent"
-                      class="type-badge px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center gap-2 border border-white/30">
+                      class="type-badge px-4 py-2.5 rounded-xl text-sm font-extrabold flex items-center gap-2 border border-white/30">
                       <i class="fas fa-calendar-alt text-amber-600"></i>
                       <span>Event</span>
                     </button>
@@ -614,7 +614,7 @@
                       class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400 text-sm"></i>
                     <input type="text" id="searchInput"
                       placeholder="Cari aktivitas berdasarkan deskripsi atau pengguna..."
-                      class="w-full pl-10 pr-4 py-2.5 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 placeholder-gray-400 text-xs font-medium" />
+                      class="w-full pl-10 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 placeholder-gray-400 text-sm font-medium" />
                   </div>
 
                   <!-- Role Filter -->
@@ -622,7 +622,7 @@
                     <i
                       class="fas fa-user-tag absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400 text-sm"></i>
                     <select id="roleFilter"
-                      class="pl-10 pr-8 py-2.5 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium w-full sm:w-auto min-w-[160px]">
+                      class="pl-10 pr-8 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium w-full sm:w-auto min-w-[160px]">
                       <option value="all">Semua Role</option>
                       <option value="sales">Sales</option>
                       <option value="finance">Finance</option>
@@ -636,18 +636,18 @@
                     <i
                       class="fas fa-calendar-alt absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400 text-sm"></i>
                     <input type="date" id="dateFrom"
-                      class="pl-10 pr-4 py-2.5 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium w-full sm:w-auto min-w-[160px]" />
+                      class="pl-10 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium w-full sm:w-auto min-w-[160px]" />
                   </div>
                   <div class="relative">
                     <i
                       class="fas fa-calendar-check absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400 text-sm"></i>
                     <input type="date" id="dateTo"
-                      class="pl-10 pr-4 py-2.5 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium w-full sm:w-auto min-w-[160px]" />
+                      class="pl-10 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium w-full sm:w-auto min-w-[160px]" />
                   </div>
 
                   <!-- Clear Button Premium -->
                   <button onclick="clearFilters()"
-                    class="px-4 py-2.5 bg-white/60 backdrop-blur border border-white/50 text-emerald-700 hover:bg-white/80 rounded-xl transition-all duration-300 flex items-center gap-2 text-xs font-bold group h-[42px]">
+                    class="px-4 py-3 bg-white/60 backdrop-blur border border-white/50 text-emerald-700 hover:bg-white/80 rounded-xl transition-all duration-300 flex items-center gap-2 text-sm font-bold group">
                     <i class="fas fa-redo group-hover:rotate-180 transition-transform duration-500"></i>
                     <span>Hapus Filter</span>
                   </button>
@@ -656,22 +656,22 @@
             </div>
           </div>
 
-          <!-- Premium Activity Timeline -->
+          <!-- Premium Activity Timeline - Diperbesar ukuran fontnya -->
           <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
             <!-- Timeline Header -->
             <div class="gradient-primary px-5 py-4 flex items-center justify-between border-b border-white/30">
               <div class="flex items-center gap-3">
                 <div
                   class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
-                  <i class="fas fa-stream text-white"></i>
+                  <i class="fas fa-stream text-white text-base"></i>
                 </div>
                 <div>
-                  <h2 class="text-base font-extrabold text-white">Timeline Aktivitas</h2>
-                  <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Riwayat aktivitas real-time</p>
+                  <h2 class="text-lg font-extrabold text-white">Timeline Aktivitas</h2>
+                  <p class="text-emerald-100 text-sm font-medium mt-0.5">Riwayat aktivitas real-time</p>
                 </div>
               </div>
               <span
-                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-xs font-extrabold border border-white/30">
                 <i class="fas fa-bolt mr-1"></i>
                 Live
               </span>
@@ -693,8 +693,8 @@
                           <span class="w-2 h-2 bg-green-500 rounded-full pulse-premium"></span>
                         </div>
                       </div>
-                      <p class="text-base font-extrabold text-gray-900 mb-1">Memuat aktivitas...</p>
-                      <p class="text-xs text-emerald-700 font-medium">Mohon tunggu sebentar</p>
+                      <p class="text-lg font-extrabold text-gray-900 mb-1">Memuat aktivitas...</p>
+                      <p class="text-sm text-emerald-700 font-medium">Mohon tunggu sebentar</p>
                     </div>
                   </div>
                 </div>
@@ -706,13 +706,13 @@
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div class="flex items-center gap-2">
                   <span
-                    class="text-[10px] font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60"
+                    class="text-sm font-medium text-emerald-700 bg-white/60 px-3 py-2 rounded-lg border border-white/60"
                     id="currentInfo">
                     Tidak ada aktivitas ditemukan
                   </span>
                 </div>
                 <button onclick="loadMore()" id="loadMoreBtn"
-                  class="px-4 py-2 gradient-primary text-white rounded-xl hover:opacity-90 transition-all duration-300 text-xs font-extrabold shadow-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                  class="px-4 py-2 gradient-primary text-white rounded-xl hover:opacity-90 transition-all duration-300 text-sm font-extrabold shadow-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                   <i class="fas fa-arrow-down"></i>
                   Muat Lainnya
                 </button>
@@ -723,7 +723,7 @@
         </div>
       </main>
 
-      <!-- Premium Activity Detail Modal - Ultra Modern -->
+      <!-- Premium Activity Detail Modal - Diperbesar ukuran fontnya -->
       <div id="detailModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
         <div
           class="bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-white/50">
@@ -732,11 +732,11 @@
             <div class="flex items-center gap-3">
               <div
                 class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
-                <i class="fas fa-info-circle text-white text-sm"></i>
+                <i class="fas fa-info-circle text-white text-base"></i>
               </div>
               <div>
-                <h3 class="text-base font-extrabold text-white">Detail Aktivitas</h3>
-                <p class="text-emerald-100 text-xs mt-0.5">Informasi lengkap aktivitas</p>
+                <h3 class="text-lg font-extrabold text-white">Detail Aktivitas</h3>
+                <p class="text-emerald-100 text-sm mt-0.5">Informasi lengkap aktivitas</p>
               </div>
             </div>
             <button onclick="closeDetailModal()"
@@ -755,7 +755,7 @@
           <!-- Modal Footer -->
           <div class="border-t border-white/30 px-5 py-3 bg-white/40 backdrop-blur flex gap-3">
             <button onclick="closeDetailModal()"
-              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-xs font-extrabold flex items-center justify-center gap-1 border border-white/60">
+              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-sm font-extrabold flex items-center justify-center gap-2 border border-white/60">
               <i class="fas fa-times"></i>
               Tutup
             </button>
@@ -886,8 +886,8 @@
                     </div>
                   </div>
                   <h3 class="text-lg font-extrabold text-gray-900 mb-2">Tidak Ada Aktivitas</h3>
-                  <p class="text-sm text-emerald-700 font-medium max-w-md">Tidak ada aktivitas yang sesuai dengan filter Anda.</p>
-                  <button onclick="clearFilters()" class="mt-5 px-5 py-2.5 gradient-primary text-white rounded-xl hover:opacity-90 transition-all duration-300 text-sm font-extrabold shadow-lg flex items-center gap-2">
+                  <p class="text-base text-emerald-700 font-medium max-w-md">Tidak ada aktivitas yang sesuai dengan filter Anda.</p>
+                  <button onclick="clearFilters()" class="mt-5 px-5 py-3 gradient-primary text-white rounded-xl hover:opacity-90 transition-all duration-300 text-sm font-extrabold shadow-lg flex items-center gap-2">
                     <i class="fas fa-redo text-xs"></i>
                     Hapus Filter
                   </button>
@@ -941,38 +941,38 @@
                   <!-- Card header -->
                   <div class="px-4 py-3 border-b border-white/30 bg-white/20 backdrop-blur flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                      <span class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold ${config.gradient} text-white flex items-center gap-1 border border-white/30">
-                        <i class="fas ${config.icon} text-[7px]"></i>
+                      <span class="px-3 py-1.5 rounded-lg text-xs font-extrabold ${config.gradient} text-white flex items-center gap-1 border border-white/30">
+                        <i class="fas ${config.icon} text-xs"></i>
                         ${config.label}
                       </span>
-                      <span class="text-[9px] font-medium text-emerald-700 bg-white/60 px-2 py-1 rounded-lg border border-white/60">${timeAgo}</span>
+                      <span class="text-sm font-medium text-emerald-700 bg-white/60 px-2 py-1 rounded-lg border border-white/60">${timeAgo}</span>
                     </div>
                     <button onclick="viewActivityDetail(${activity.id})" 
                       class="w-7 h-7 bg-white/60 hover:bg-white/80 rounded-lg flex items-center justify-center transition-all duration-300 border border-white/30"
                       title="Lihat detail">
-                      <i class="fas fa-ellipsis-h text-emerald-700 text-xs"></i>
+                      <i class="fas fa-ellipsis-h text-emerald-700 text-sm"></i>
                     </button>
                   </div>
 
                   <!-- Card body -->
                   <div class="p-4 bg-white/30 backdrop-blur">
-                    <p class="text-sm font-extrabold text-gray-900 mb-3 line-clamp-2">${activity.description}</p>
+                    <p class="text-base font-extrabold text-gray-900 mb-3 line-clamp-2">${activity.description}</p>
                     
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
                       <div class="flex flex-wrap items-center gap-3">
                         <span class="text-emerald-700 font-bold flex items-center gap-1">
                           <i class="fas fa-user ${activity.user_name ? 'text-emerald-600' : 'text-gray-400'}"></i>
                           ${activity.user_name || activity.approver_name || 'Sistem'}
                         </span>
                         ${activity.user_role ? `
-                          <span class="text-[9px] font-extrabold text-white bg-gradient-to-r from-slate-600 to-slate-800 px-2 py-1 rounded-lg border border-white/30 uppercase">${activity.user_role}</span>
+                          <span class="text-xs font-extrabold text-white bg-gradient-to-r from-slate-600 to-slate-800 px-2 py-1 rounded-lg border border-white/30 uppercase">${activity.user_role}</span>
                         ` : ''}
                         <span class="text-emerald-700 font-bold flex items-center gap-1">
                           <i class="fas fa-clock text-emerald-400"></i>
                           ${time}
                         </span>
                       </div>
-                      <span class="text-[9px] font-medium text-gray-500 bg-white/60 px-2.5 py-1.5 rounded-lg border border-white/60">${fullDate}</span>
+                      <span class="text-xs font-medium text-gray-500 bg-white/60 px-2.5 py-1.5 rounded-lg border border-white/60">${fullDate}</span>
                     </div>
                   </div>
                 </div>
@@ -1050,64 +1050,64 @@
                   </div>
                   <div>
                     <h4 class="font-extrabold text-lg text-white">${config.label}</h4>
-                    <p class="text-white/80 text-xs mt-0.5">ID Aktivitas: #${activity.id}</p>
-                    <p class="text-white/70 text-[10px] mt-1">${formattedDate}</p>
+                    <p class="text-white/80 text-sm mt-0.5">ID Aktivitas: #${activity.id}</p>
+                    <p class="text-white/70 text-xs mt-1">${formattedDate}</p>
                   </div>
                 </div>
 
                 <!-- Activity Details -->
                 <div class="space-y-3 bg-white/60 backdrop-blur rounded-xl p-4 border border-white/60">
                   <div>
-                    <label class="block text-[10px] font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
+                    <label class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
                       <i class="fas fa-align-left text-emerald-600"></i>
                       Deskripsi
                     </label>
                     <div class="bg-white/60 backdrop-blur p-3 rounded-lg border border-white/60">
-                      <p class="text-xs text-gray-900">${activity.description}</p>
+                      <p class="text-sm text-gray-900">${activity.description}</p>
                     </div>
                   </div>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
-                      <label class="block text-[10px] font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
+                      <label class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
                         <i class="fas fa-user text-emerald-600"></i>
                         Pengguna
                       </label>
                       <div class="bg-white/60 backdrop-blur p-2.5 rounded-lg border border-white/60">
-                        <p class="text-xs font-extrabold text-gray-900">${activity.user_name || activity.approver_name || 'Sistem'}</p>
+                        <p class="text-sm font-extrabold text-gray-900">${activity.user_name || activity.approver_name || 'Sistem'}</p>
                       </div>
                     </div>
 
                     <div>
-                      <label class="block text-[10px] font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
+                      <label class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
                         <i class="fas fa-cog text-emerald-600"></i>
                         Tipe Aksi
                       </label>
                       <div class="bg-white/60 backdrop-blur p-2.5 rounded-lg border border-white/60">
-                        <span class="px-3 py-1.5 rounded-lg text-[8px] font-extrabold ${config.gradient} text-white border border-white/30 inline-block">
+                        <span class="px-3 py-1.5 rounded-lg text-xs font-extrabold ${config.gradient} text-white border border-white/30 inline-block">
                           ${config.label}
                         </span>
                       </div>
                     </div>
 
                     <div>
-                      <label class="block text-[10px] font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
+                      <label class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
                         <i class="fas fa-user-tag text-emerald-600"></i>
                         Role
                       </label>
                       <div class="bg-white/60 backdrop-blur p-2.5 rounded-lg border border-white/60">
-                        <p class="text-xs font-extrabold text-gray-900">${activity.user_role || '-'}</p>
+                        <p class="text-sm font-extrabold text-gray-900">${activity.user_role || '-'}</p>
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <label class="block text-[10px] font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
+                    <label class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center gap-1">
                       <i class="fas fa-database text-emerald-600"></i>
                       Data Tambahan
                     </label>
                     <div class="bg-white/60 backdrop-blur p-3 rounded-lg border border-white/60">
-                      <pre class="text-[9px] text-gray-700 whitespace-pre-wrap max-h-40 overflow-y-auto modern-scrollbar">${JSON.stringify(activity, null, 2)}</pre>
+                      <pre class="text-xs text-gray-700 whitespace-pre-wrap max-h-40 overflow-y-auto modern-scrollbar">${JSON.stringify(activity, null, 2)}</pre>
                     </div>
                   </div>
                 </div>
@@ -1195,7 +1195,7 @@
                 </div>
                 <div class="flex-1">
                   <p class="font-extrabold text-gray-900 text-sm">Sukses!</p>
-                  <p class="text-xs text-gray-600 mt-1">${message}</p>
+                  <p class="text-sm text-gray-600 mt-1">${message}</p>
                 </div>
                 <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
                   <i class="fas fa-times text-xs"></i>
@@ -1221,7 +1221,7 @@
                 </div>
                 <div class="flex-1">
                   <p class="font-extrabold text-gray-900 text-sm">Error!</p>
-                  <p class="text-xs text-gray-600 mt-1">${message}</p>
+                  <p class="text-sm text-gray-600 mt-1">${message}</p>
                 </div>
                 <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
                   <i class="fas fa-times text-xs"></i>

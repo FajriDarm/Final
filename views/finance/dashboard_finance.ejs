@@ -572,16 +572,8 @@
                       <p class="text-3xl font-black text-gray-900" id="totalPaid">
                         Rp <%= parseInt(stats.totalPaid || 0).toLocaleString('id-ID') %>
                       </p>
-                      <span class="text-sm font-bold text-emerald-600">IDR</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-arrow-up text-xs text-green-600"></i>
-                        <span class="text-xs font-extrabold text-green-700">+15%</span>
-                      </div>
-                      <span class="text-xs text-gray-500">dari bulan lalu</span>
-                    </div>
                   </div>
 
                   <div
@@ -620,24 +612,9 @@
                       <p class="text-3xl font-black text-gray-900" id="totalPending">
                         Rp <%= parseInt(stats.totalPending || 0).toLocaleString('id-ID') %>
                       </p>
-                      <span class="text-sm font-bold text-emerald-600">IDR</span>
                     </div>
 
-                    <div id="pendingPaymentsBadge" class="flex items-center gap-1.5 mt-2">
-                      <% if (stats.countPending> 0) { %>
-                        <span class="px-2 py-1 bg-amber-100 rounded-lg flex items-center gap-1">
-                          <i class="fas fa-exclamation-circle text-xs text-amber-600"></i>
-                          <span class="text-xs font-extrabold text-amber-700">
-                            <%= stats.countPending %> menunggu
-                          </span>
-                        </span>
-                        <% } else { %>
-                          <span class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                            <i class="fas fa-check-circle text-xs text-green-600"></i>
-                            <span class="text-xs font-extrabold text-green-700">Semua selesai</span>
-                          </span>
-                          <% } %>
-                    </div>
+                    <div id="pendingPaymentsBadge" class="flex items-center gap-1.5 mt-2"></div>
                   </div>
 
                   <div
@@ -678,13 +655,6 @@
                       <span class="text-sm font-bold text-emerald-600">transaksi</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-blue-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-chart-line text-xs text-blue-600"></i>
-                        <span class="text-xs font-extrabold text-blue-700">+8%</span>
-                      </div>
-                      <span class="text-xs text-gray-500">dari kemarin</span>
-                    </div>
                   </div>
 
                   <div
@@ -725,12 +695,7 @@
                       <span class="text-sm font-bold text-emerald-600">transaksi</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-purple-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-hourglass-half text-xs text-purple-600"></i>
-                        <span class="text-xs font-extrabold text-purple-700">Pending</span>
-                      </div>
-                    </div>
+                    <div class="mt-2" id="pendingStatusBadge"></div>
                   </div>
 
                   <div
@@ -944,23 +909,13 @@
               animateValue('countPaid', 0, data.stats.countPaid, 1000);
               animateValue('countPending', 0, data.stats.countPending, 1000);
 
-              // Update pending payments badge
+              // Clear pending payments badge (badge dihapus)
               const pendingBadge = document.getElementById('pendingPaymentsBadge');
-              if (data.stats.countPending > 0) {
-                pendingBadge.innerHTML = `
-                  <span class="px-2 py-1 bg-amber-100 rounded-lg flex items-center gap-1">
-                    <i class="fas fa-exclamation-circle text-xs text-amber-600"></i>
-                    <span class="text-xs font-extrabold text-amber-700">${data.stats.countPending} menunggu</span>
-                  </span>
-                `;
-              } else {
-                pendingBadge.innerHTML = `
-                  <span class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                    <i class="fas fa-check-circle text-xs text-green-600"></i>
-                    <span class="text-xs font-extrabold text-green-700">Semua selesai</span>
-                  </span>
-                `;
-              }
+              pendingBadge.innerHTML = '';
+
+              // Clear pending status badge on card
+              const pendingStatusBadge = document.getElementById('pendingStatusBadge');
+              if (pendingStatusBadge) pendingStatusBadge.innerHTML = '';
             }
           } catch (error) {
             console.error('Error loading dashboard stats:', error);

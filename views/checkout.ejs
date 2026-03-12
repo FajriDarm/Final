@@ -433,7 +433,7 @@
           <img src="/images/logoAffilllink2.png" alt="Affillink" class="h-10 w-auto object-contain" />
         </a>
         <div class="flex items-center gap-2">
-          <span class="text-xs font-medium text-emerald-700 bg-white/60 px-3 py-1.5 rounded-lg border border-white/60">
+          <span class="text-sm font-medium text-emerald-700 bg-white/60 px-3 py-1.5 rounded-lg border border-white/60">
             <i class="fas fa-shield-alt mr-1"></i>
             Secure Checkout
           </span>
@@ -444,7 +444,7 @@
 
   <main class="relative z-10 py-8 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
     <div class="animate-slide-in">
-      <!-- Premium Page Header -->
+      <!-- Premium Page Header - Diperbesar ukuran fontnya -->
       <div class="flex items-center gap-4 mb-8">
         <div class="relative">
           <div class="w-16 h-16 gradient-primary rounded-xl flex items-center justify-center shadow-2xl float-slow">
@@ -460,20 +460,20 @@
             class="text-3xl font-extrabold bg-gradient-to-r from-emerald-900 via-green-800 to-emerald-900 bg-clip-text text-transparent">
             Checkout
           </h1>
-          <p class="text-sm text-emerald-700 font-medium">Lengkapi data untuk melanjutkan</p>
+          <p class="text-base text-emerald-700 font-medium">Lengkapi data untuk melanjutkan</p>
         </div>
       </div>
 
       <% if (!event) { %>
-        <!-- Event Not Found Premium -->
+        <!-- Event Not Found Premium - Diperbesar ukuran fontnya -->
         <div class="glass-futuristic rounded-2xl p-8 text-center border border-amber-200/50 bg-amber-50/30 fade-in">
           <div class="flex flex-col items-center">
             <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mb-4">
               <i class="fas fa-exclamation-triangle text-amber-600 text-2xl"></i>
             </div>
             <h3 class="text-lg font-extrabold text-amber-800 mb-2">Event tidak ditemukan</h3>
-            <p class="text-sm text-amber-700 mb-6">Silakan kembali ke halaman utama dan pilih event lagi.</p>
-            <a href="/" class="btn-primary px-6 py-3 inline-flex items-center gap-2">
+            <p class="text-base text-amber-700 mb-6">Silakan kembali ke halaman utama dan pilih event lagi.</p>
+            <a href="/" class="btn-primary px-6 py-3 inline-flex items-center gap-2 text-base font-extrabold">
               <i class="fas fa-arrow-left"></i>
               Kembali ke Landing Page
             </a>
@@ -481,20 +481,20 @@
         </div>
         <% } else { %>
 
-          <!-- Checkout Card Premium -->
+          <!-- Checkout Card Premium - Diperbesar ukuran fontnya -->
           <div class="glass-futuristic rounded-2xl overflow-hidden border border-white/50 hover-lift">
             <!-- Card Header -->
             <div class="gradient-primary px-5 py-4 border-b border-white/30">
               <div class="flex items-center gap-3">
                 <div
                   class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
-                  <i class="fas fa-ticket-alt text-white"></i>
+                  <i class="fas fa-ticket-alt text-white text-base"></i>
                 </div>
                 <div>
-                  <h2 class="text-base font-extrabold text-white">
+                  <h2 class="text-lg font-extrabold text-white">
                     <%= event.name %>
                   </h2>
-                  <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Detail event dan pembayaran</p>
+                  <p class="text-emerald-100 text-sm font-medium mt-0.5">Detail event dan pembayaran</p>
                 </div>
               </div>
             </div>
@@ -508,94 +508,91 @@
 
                 <!-- Nama -->
                 <div>
-                  <label class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
-                    <i class="fas fa-user text-emerald-600 text-xs mr-1"></i>
+                  <label class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                    <i class="fas fa-user text-emerald-600 text-base mr-1"></i>
                     Nama Lengkap
                     <span class="text-red-500 ml-1">*</span>
                   </label>
                   <div class="input-container relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <i class="fas fa-user text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                      <i class="fas fa-user text-emerald-400 input-icon transition-all duration-200 text-base"></i>
                     </div>
                     <input type="text" name="customer_name" required
-                      class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                      class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-base font-medium"
                       placeholder="Masukkan nama lengkap" />
                   </div>
                 </div>
 
-
                 <!-- No HP -->
                 <div>
-                  <label class="block text-[9px] font-extrabold text-emerald-800 mb-1.5 flex items-center">
-                    <i class="fas fa-phone text-emerald-600 text-xs mr-1"></i>
+                  <label class="block text-sm font-extrabold text-emerald-800 mb-1.5 flex items-center">
+                    <i class="fas fa-phone text-emerald-600 text-base mr-1"></i>
                     Nomor HP
                     <span class="text-red-500 ml-1">*</span>
                   </label>
                   <div class="input-container relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <i class="fas fa-phone text-emerald-400 input-icon transition-all duration-200 text-xs"></i>
+                      <i class="fas fa-phone text-emerald-400 input-icon transition-all duration-200 text-base"></i>
                     </div>
                     <input type="tel" name="customer_phone" required
-                      class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium"
+                      class="block w-full pl-9 pr-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-base font-medium"
                       placeholder="08123456789" inputmode="numeric" pattern="[0-9]*" id="customer_phone" />
-                    <p id="phoneWarning" class="text-[8px] text-red-500 mt-1 hidden">Nomor HP hanya boleh angka.</p>
+                    <p id="phoneWarning" class="text-sm text-red-500 mt-1 hidden">Nomor HP hanya boleh angka.</p>
                   </div>
                 </div>
-
 
                 <!-- Buttons -->
                 <div class="flex justify-end gap-3 pt-4">
                   <a href="/"
-                    class="px-5 py-3 bg-white/60 hover:bg-white/80 text-gray-700 rounded-xl transition-all duration-300 text-xs font-extrabold flex items-center gap-1 border border-white/60">
+                    class="px-5 py-3 bg-white/60 hover:bg-white/80 text-gray-700 rounded-xl transition-all duration-300 text-base font-extrabold flex items-center gap-2 border border-white/60">
                     <i class="fas fa-times"></i>
                     Batal
                   </a>
                   <button id="checkoutSubmitBtn" type="submit"
-                    class="px-5 py-3 gradient-primary text-white rounded-xl hover:opacity-90 transition-all duration-300 text-xs font-extrabold flex items-center gap-1 shadow-lg">
+                    class="px-5 py-3 gradient-primary text-white rounded-xl hover:opacity-90 transition-all duration-300 text-base font-extrabold flex items-center gap-2 shadow-lg">
                     <i class="fas fa-paper-plane"></i>
                     Kirim
                   </button>
                 </div>
               </form>
-                <!-- ...existing code... -->
             </div>
           </div>
 
-          <!-- Info Card Premium -->
+          <!-- Info Card Premium - Diperbesar ukuran fontnya -->
           <div class="glass-futuristic rounded-2xl p-5 mt-6 border border-blue-200/50 bg-blue-50/30 hover-lift">
             <div class="flex items-start gap-4">
               <div class="flex-shrink-0">
                 <div
                   class="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center border border-white/60">
-                  <i class="fas fa-info-circle text-blue-600 text-lg"></i>
+                  <i class="fas fa-info-circle text-blue-600 text-xl"></i>
                 </div>
               </div>
               <div class="flex-1">
-                <h3 class="text-xs font-extrabold text-blue-900 mb-3">Informasi Penting</h3>
+                <h3 class="text-base font-extrabold text-blue-900 mb-3">Informasi Penting</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                     <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
-                      <i class="fas fa-check text-green-600 text-[8px]"></i>
+                      <i class="fas fa-check text-green-600 text-xs"></i>
                     </div>
-                    <span class="text-[9px] text-blue-800">Data Anda tersimpan setelah dikirim</span>
+                    <span class="text-sm text-blue-800">Data Anda tersimpan setelah dikirim</span>
                   </div>
                   <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                     <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
-                      <i class="fas fa-check text-green-600 text-[8px]"></i>
+                      <i class="fas fa-check text-green-600 text-xs"></i>
                     </div>
-                    <span class="text-[9px] text-blue-800">Anda akan langsung diarahkan ke WhatsApp</span>
+                    <span class="text-sm text-blue-800">Anda akan langsung diarahkan ke WhatsApp</span>
                   </div>
                   <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                     <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
-                      <i class="fas fa-check text-green-600 text-[8px]"></i>
+                      <i class="fas fa-check text-green-600 text-xs"></i>
                     </div>
-                    <span class="text-[9px] text-blue-800">Nomor WhatsApp mengikuti pengaturan event</span>
+                    <span class="text-sm text-blue-800">Nomor WhatsApp mengikuti pengaturan event</span>
                   </div>
                   <div class="flex items-start gap-2 bg-white/30 backdrop-blur p-2 rounded-lg">
                     <div class="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center flex-shrink-0">
-                      <i class="fas fa-check text-green-600 text-[8px]"></i>
+                      <i class="fas fa-check text-green-600 text-xs"></i>
                     </div>
-                    <span class="text-[9px] text-blue-800">Jika gagal, silakan ulangi pengiriman</span>
+                    <span class="text-sm text-blue-800">Jika gagal, silakan ulangi pengiriman</span>
                   </div>
                 </div>
               </div>
@@ -606,7 +603,7 @@
     </div>
   </main>
 
-  <!-- Confirmation Modal Premium -->
+  <!-- Confirmation Modal Premium - Diperbesar ukuran fontnya -->
   <div id="confirmationModal" class="hidden fixed inset-0 modal-overlay flex items-center justify-center z-50 p-4">
     <div class="modal-content max-w-md w-full p-6 fade-in">
       <div class="flex flex-col items-center text-center">
@@ -615,31 +612,31 @@
           <i class="fas fa-question-circle text-white text-3xl"></i>
         </div>
         <h3 class="text-xl font-extrabold text-gray-900 mb-2">Konfirmasi Pesanan</h3>
-        <p class="text-sm text-gray-600 mb-6">Apakah Anda yakin dengan data yang telah diisi?</p>
+        <p class="text-base text-gray-600 mb-6">Apakah Anda yakin dengan data yang telah diisi?</p>
 
         <!-- Order Summary -->
         <div class="w-full glass-futuristic rounded-xl p-4 mb-6 border border-white/50 text-left">
           <div class="space-y-2">
-            <div class="flex justify-between items-center text-xs">
-              <span class="text-[9px] font-bold text-emerald-700">Nama</span>
-              <span class="font-extrabold text-gray-900" id="confirmName">-</span>
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-bold text-emerald-700">Nama</span>
+              <span class="font-extrabold text-gray-900 text-base" id="confirmName">-</span>
             </div>
-            <div class="flex justify-between items-center text-xs">
-              <span class="text-[9px] font-bold text-emerald-700">No HP</span>
-              <span class="font-extrabold text-gray-900" id="confirmPhone">-</span>
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-bold text-emerald-700">No HP</span>
+              <span class="font-extrabold text-gray-900 text-base" id="confirmPhone">-</span>
             </div>
           </div>
         </div>
 
         <div class="flex gap-3 w-full">
           <button id="cancelConfirmBtn"
-            class="flex-1 px-4 py-3 bg-white/60 hover:bg-white/80 text-gray-700 rounded-xl transition-all duration-300 text-xs font-extrabold border border-white/60">
-            <i class="fas fa-times mr-1"></i>
+            class="flex-1 px-4 py-3 bg-white/60 hover:bg-white/80 text-gray-700 rounded-xl transition-all duration-300 text-base font-extrabold border border-white/60">
+            <i class="fas fa-times mr-2"></i>
             Batal
           </button>
           <button id="proceedConfirmBtn"
-            class="flex-1 px-4 py-3 gradient-primary text-white rounded-xl hover:opacity-90 transition-all duration-300 text-xs font-extrabold shadow-lg">
-            <i class="fas fa-check mr-1"></i>
+            class="flex-1 px-4 py-3 gradient-primary text-white rounded-xl hover:opacity-90 transition-all duration-300 text-base font-extrabold shadow-lg">
+            <i class="fas fa-check mr-2"></i>
             Ya, Kirim
           </button>
         </div>
@@ -649,12 +646,12 @@
 
   <script>
     // Only allow numbers in phone input, show warning, disable submit
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       var phoneInput = document.getElementById('customer_phone');
       var phoneWarning = document.getElementById('phoneWarning');
       var submitBtn = document.getElementById('checkoutSubmitBtn');
       if (phoneInput) {
-        phoneInput.addEventListener('input', function(e) {
+        phoneInput.addEventListener('input', function (e) {
           var oldValue = this.value;
           var newValue = oldValue.replace(/[^0-9]/g, '');
           if (oldValue !== newValue) {
@@ -672,10 +669,10 @@
       }
     });
     // Only allow numbers in phone input
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       var phoneInput = document.getElementById('customer_phone');
       if (phoneInput) {
-        phoneInput.addEventListener('input', function(e) {
+        phoneInput.addEventListener('input', function (e) {
           this.value = this.value.replace(/[^0-9]/g, '');
         });
       }

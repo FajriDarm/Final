@@ -181,7 +181,11 @@
 
 <script>
   (function () {
-    const currentPath = window.location.pathname.replace(/\/$/, "");
+    const rawPath = window.location.pathname.replace(/\/$/, "");
+    const currentPath =
+      rawPath === "/admin" || rawPath === ""
+        ? "/admin/dashboard"
+        : rawPath;
 
     document.querySelectorAll(".nav-item").forEach((item) => {
       item.classList.remove("active");

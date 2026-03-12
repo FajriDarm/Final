@@ -453,7 +453,7 @@
       <!-- Konten Utama -->
       <main class="ml-64 pt-16 min-h-screen relative z-10">
         <div class="p-6">
-          <!-- Premium Page Header - Sesuai dengan dashboard -->
+          <!-- Premium Page Header - Diperbesar ukuran fontnya -->
           <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
             <div class="mb-4 lg:mb-0">
               <div class="flex items-center gap-4">
@@ -474,25 +474,25 @@
                       Persetujuan Penarikan
                     </h1>
                     <span
-                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-xs font-bold tracking-wider shadow-lg">
+                      class="px-3 py-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-lg text-white text-sm font-bold tracking-wider shadow-lg">
                       SUPER ADMIN
                     </span>
                   </div>
-                  <p class="text-sm text-emerald-700 font-medium">Tinjau dan setujui/tolak permintaan penarikan dari
+                  <p class="text-base text-emerald-700 font-medium">Tinjau dan setujui/tolak permintaan penarikan dari
                     Finance</p>
                 </div>
               </div>
             </div>
 
-            <!-- Premium Date & Live Status -->
+            <!-- Premium Date & Live Status - Diperbesar ukuran fontnya -->
             <div class="flex items-center gap-3">
               <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
                 <div class="w-8 h-8 gradient-secondary rounded-lg flex items-center justify-center shadow-lg">
                   <i class="fas fa-calendar-alt text-white text-sm"></i>
                 </div>
                 <div>
-                  <p class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
-                  <p class="text-xs font-bold text-gray-800 whitespace-nowrap">
+                  <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
+                  <p class="text-sm font-bold text-gray-800 whitespace-nowrap">
                     <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                   </p>
                 </div>
@@ -505,14 +505,14 @@
                   <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
                 </div>
                 <div>
-                  <p class="text-[10px] text-white/90 font-bold uppercase tracking-wider">Live Status</p>
-                  <p class="text-xs font-bold text-white">Updates Real-time</p>
+                  <p class="text-xs text-white/90 font-bold uppercase tracking-wider">Live Status</p>
+                  <p class="text-sm font-bold text-white">Updates Real-time</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Premium Stats Cards - Ultra Modern -->
+          <!-- Premium Stats Cards - Diperbesar ukuran fontnya -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-7 animate-scale-in">
             <!-- Penarikan Tertunda -->
             <div
@@ -533,21 +533,15 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Menunggu Persetujuan
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Menunggu Persetujuan
                       </p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-4xl font-black text-gray-900" id="pending-count">0</p>
-                      <span class="text-xs font-bold text-emerald-600">requests</span>
+                      <span class="text-sm font-bold text-emerald-600">requests</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-amber-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-clock text-[8px] text-amber-600"></i>
-                        <span class="text-[8px] font-extrabold text-amber-700">Perlu diproses</span>
-                      </div>
-                    </div>
                   </div>
 
                   <div
@@ -578,20 +572,14 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Sudah Disetujui</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Sudah Disetujui</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-4xl font-black text-gray-900" id="approved-count">0</p>
-                      <span class="text-xs font-bold text-emerald-600">approved</span>
+                      <span class="text-sm font-bold text-emerald-600">approved</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-check-circle text-[8px] text-green-600"></i>
-                        <span class="text-[8px] font-extrabold text-green-700">Telah diproses</span>
-                      </div>
-                    </div>
                   </div>
 
                   <div
@@ -622,20 +610,14 @@
                           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                       </span>
-                      <p class="text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Ditolak</p>
+                      <p class="text-emerald-700 text-xs font-bold uppercase tracking-wider">Ditolak</p>
                     </div>
 
                     <div class="flex items-baseline gap-1">
                       <p class="text-4xl font-black text-gray-900" id="rejected-count">0</p>
-                      <span class="text-xs font-bold text-emerald-600">rejected</span>
+                      <span class="text-sm font-bold text-emerald-600">rejected</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-red-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-times-circle text-[8px] text-red-600"></i>
-                        <span class="text-[8px] font-extrabold text-red-700">Tidak disetujui</span>
-                      </div>
-                    </div>
                   </div>
 
                   <div
@@ -648,7 +630,7 @@
             </div>
           </div>
 
-          <!-- Premium Tabs -->
+          <!-- Premium Tabs - Diperbesar ukuran fontnya -->
           <div class="glass-futuristic rounded-2xl p-1 border border-white/50 mb-7 relative overflow-hidden group">
             <div
               class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-200/20 to-green-300/20 rounded-full blur-3xl -mr-20 -mt-20">
@@ -660,46 +642,46 @@
             <div class="relative z-10">
               <div class="flex gap-2">
                 <button onclick="switchTab('pending')" id="tab-pending"
-                  class="tab-btn tab-active flex-1 px-6 py-3.5 rounded-xl text-sm font-extrabold flex items-center justify-center gap-2 transition-all duration-300">
+                  class="tab-btn tab-active flex-1 px-6 py-4 rounded-xl text-base font-extrabold flex items-center justify-center gap-2 transition-all duration-300">
                   <i class="fas fa-hourglass-half"></i>
                   <span>Menunggu</span>
                   <span id="pending-count-badge"
-                    class="px-2.5 py-1 bg-white/30 text-white rounded-lg text-[9px] font-extrabold">0</span>
+                    class="px-2.5 py-1 bg-white/30 text-white rounded-lg text-xs font-extrabold">0</span>
                 </button>
                 <button onclick="switchTab('approved')" id="tab-approved"
-                  class="tab-btn tab-inactive flex-1 px-6 py-3.5 rounded-xl text-sm font-extrabold flex items-center justify-center gap-2 transition-all duration-300">
+                  class="tab-btn tab-inactive flex-1 px-6 py-4 rounded-xl text-base font-extrabold flex items-center justify-center gap-2 transition-all duration-300">
                   <i class="fas fa-check-circle"></i>
                   <span>Disetujui</span>
                   <span id="approved-count-badge"
-                    class="px-2.5 py-1 bg-white/30 text-white rounded-lg text-[9px] font-extrabold">0</span>
+                    class="px-2.5 py-1 bg-white/30 text-white rounded-lg text-xs font-extrabold">0</span>
                 </button>
                 <button onclick="switchTab('rejected')" id="tab-rejected"
-                  class="tab-btn tab-inactive flex-1 px-6 py-3.5 rounded-xl text-sm font-extrabold flex items-center justify-center gap-2 transition-all duration-300">
+                  class="tab-btn tab-inactive flex-1 px-6 py-4 rounded-xl text-base font-extrabold flex items-center justify-center gap-2 transition-all duration-300">
                   <i class="fas fa-times-circle"></i>
                   <span>Ditolak</span>
                   <span id="rejected-count-badge"
-                    class="px-2.5 py-1 bg-white/30 text-white rounded-lg text-[9px] font-extrabold">0</span>
+                    class="px-2.5 py-1 bg-white/30 text-white rounded-lg text-xs font-extrabold">0</span>
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Tab Tertunda -->
+          <!-- Tab Tertunda - Diperbesar ukuran fontnya -->
           <div id="pending-tab" class="tab-content fade-in">
             <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
               <div class="gradient-pending px-5 py-4 flex items-center justify-between border-b border-white/30">
                 <div class="flex items-center gap-3">
                   <div
                     class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
-                    <i class="fas fa-hourglass-half text-white"></i>
+                    <i class="fas fa-hourglass-half text-white text-base"></i>
                   </div>
                   <div>
-                    <h2 class="text-base font-extrabold text-white">Permintaan Penarikan Tertunda</h2>
-                    <p class="text-yellow-100 text-[10px] font-medium mt-0.5">Perlu segera diproses</p>
+                    <h2 class="text-lg font-extrabold text-white">Permintaan Penarikan Tertunda</h2>
+                    <p class="text-yellow-100 text-sm font-medium mt-0.5">Perlu segera diproses</p>
                   </div>
                 </div>
                 <span
-                  class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                  class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-xs font-extrabold border border-white/30">
                   <i class="fas fa-clock mr-1"></i>
                   Real-time
                 </span>
@@ -718,8 +700,8 @@
                           <span class="w-2 h-2 bg-amber-500 rounded-full pulse-premium"></span>
                         </div>
                       </div>
-                      <p class="text-base font-extrabold text-gray-900 mb-1">Memuat data...</p>
-                      <p class="text-xs text-emerald-700 font-medium">Mohon tunggu sebentar</p>
+                      <p class="text-lg font-extrabold text-gray-900 mb-1">Memuat data...</p>
+                      <p class="text-sm text-emerald-700 font-medium">Mohon tunggu sebentar</p>
                     </div>
                   </div>
                 </div>
@@ -727,22 +709,22 @@
             </div>
           </div>
 
-          <!-- Tab Disetujui -->
+          <!-- Tab Disetujui - Diperbesar ukuran fontnya -->
           <div id="approved-tab" class="tab-content hidden">
             <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
               <div class="gradient-approved px-5 py-4 flex items-center justify-between border-b border-white/30">
                 <div class="flex items-center gap-3">
                   <div
                     class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
-                    <i class="fas fa-check-circle text-white"></i>
+                    <i class="fas fa-check-circle text-white text-base"></i>
                   </div>
                   <div>
-                    <h2 class="text-base font-extrabold text-white">Penarikan yang Disetujui</h2>
-                    <p class="text-emerald-100 text-[10px] font-medium mt-0.5">Telah disetujui dan diproses</p>
+                    <h2 class="text-lg font-extrabold text-white">Penarikan yang Disetujui</h2>
+                    <p class="text-emerald-100 text-sm font-medium mt-0.5">Telah disetujui dan diproses</p>
                   </div>
                 </div>
                 <span
-                  class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                  class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-xs font-extrabold border border-white/30">
                   <i class="fas fa-check-circle mr-1"></i>
                   Approved
                 </span>
@@ -761,8 +743,8 @@
                           <span class="w-2 h-2 bg-emerald-500 rounded-full pulse-premium"></span>
                         </div>
                       </div>
-                      <p class="text-base font-extrabold text-gray-900 mb-1">Memuat data...</p>
-                      <p class="text-xs text-emerald-700 font-medium">Mohon tunggu sebentar</p>
+                      <p class="text-lg font-extrabold text-gray-900 mb-1">Memuat data...</p>
+                      <p class="text-sm text-emerald-700 font-medium">Mohon tunggu sebentar</p>
                     </div>
                   </div>
                 </div>
@@ -770,22 +752,22 @@
             </div>
           </div>
 
-          <!-- Tab Ditolak -->
+          <!-- Tab Ditolak - Diperbesar ukuran fontnya -->
           <div id="rejected-tab" class="tab-content hidden">
             <div class="glass-futuristic rounded-2xl border border-white/50 overflow-hidden">
               <div class="gradient-rejected px-5 py-4 flex items-center justify-between border-b border-white/30">
                 <div class="flex items-center gap-3">
                   <div
                     class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
-                    <i class="fas fa-times-circle text-white"></i>
+                    <i class="fas fa-times-circle text-white text-base"></i>
                   </div>
                   <div>
-                    <h2 class="text-base font-extrabold text-white">Penarikan yang Ditolak</h2>
-                    <p class="text-rose-100 text-[10px] font-medium mt-0.5">Tidak disetujui oleh admin</p>
+                    <h2 class="text-lg font-extrabold text-white">Penarikan yang Ditolak</h2>
+                    <p class="text-rose-100 text-sm font-medium mt-0.5">Tidak disetujui oleh admin</p>
                   </div>
                 </div>
                 <span
-                  class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-[9px] font-extrabold border border-white/30">
+                  class="px-3 py-1.5 bg-white/20 backdrop-blur rounded-lg text-white text-xs font-extrabold border border-white/30">
                   <i class="fas fa-times-circle mr-1"></i>
                   Rejected
                 </span>
@@ -804,8 +786,8 @@
                           <span class="w-2 h-2 bg-red-500 rounded-full pulse-premium"></span>
                         </div>
                       </div>
-                      <p class="text-base font-extrabold text-gray-900 mb-1">Memuat data...</p>
-                      <p class="text-xs text-emerald-700 font-medium">Mohon tunggu sebentar</p>
+                      <p class="text-lg font-extrabold text-gray-900 mb-1">Memuat data...</p>
+                      <p class="text-sm text-emerald-700 font-medium">Mohon tunggu sebentar</p>
                     </div>
                   </div>
                 </div>
@@ -816,7 +798,7 @@
         </div>
       </main>
 
-      <!-- Modal Detail Premium - Ultra Modern -->
+      <!-- Modal Detail Premium - Diperbesar ukuran fontnya -->
       <div id="detail-modal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4">
         <div
           class="bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl max-w-4xl w-full max-h-[85vh] overflow-hidden flex flex-col border border-white/50">
@@ -824,11 +806,11 @@
             <div class="flex items-center gap-3">
               <div
                 class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur border border-white/30">
-                <i class="fas fa-file-invoice-dollar text-white text-sm"></i>
+                <i class="fas fa-file-invoice-dollar text-white text-base"></i>
               </div>
               <div>
-                <h3 class="text-base font-extrabold text-white" id="detail-title">Detail Penarikan</h3>
-                <p class="text-emerald-100 text-xs mt-0.5">ID Penarikan: #<span id="detail-id">-</span></p>
+                <h3 class="text-lg font-extrabold text-white" id="detail-title">Detail Penarikan</h3>
+                <p class="text-emerald-100 text-sm mt-0.5">ID Penarikan: #<span id="detail-id">-</span></p>
               </div>
             </div>
             <button onclick="closeDetailModal()"
@@ -842,7 +824,7 @@
         </div>
       </div>
 
-      <!-- Modal Setujui Premium -->
+      <!-- Modal Setujui Premium - Diperbesar ukuran fontnya -->
       <div id="approve-modal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4">
         <div class="bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl max-w-lg w-full border border-white/50">
           <div class="gradient-approved px-5 py-4 rounded-t-2xl">
@@ -852,8 +834,8 @@
                 <i class="fas fa-check-circle text-white text-xl"></i>
               </div>
               <div>
-                <h3 class="text-base font-extrabold text-white">Setujui Penarikan</h3>
-                <p class="text-emerald-100 text-[10px] mt-0.5">Konfirmasi persetujuan penarikan ini</p>
+                <h3 class="text-lg font-extrabold text-white">Setujui Penarikan</h3>
+                <p class="text-emerald-100 text-sm mt-0.5">Konfirmasi persetujuan penarikan ini</p>
               </div>
             </div>
           </div>
@@ -861,39 +843,39 @@
             <div id="approve-info" class="mb-5 glass-futuristic rounded-xl p-4 border border-white/50">
               <div class="flex items-center gap-3 mb-3">
                 <div class="w-10 h-10 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
-                  <i class="fas fa-user text-emerald-600"></i>
+                  <i class="fas fa-user text-emerald-600 text-base"></i>
                 </div>
                 <div>
-                  <p class="text-[9px] font-bold text-emerald-700 uppercase tracking-wider">Affiliate:</p>
-                  <p class="text-sm font-extrabold text-gray-900" id="approve-affiliate">-</p>
+                  <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Affiliate:</p>
+                  <p class="text-base font-extrabold text-gray-900" id="approve-affiliate">-</p>
                 </div>
               </div>
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
-                  <i class="fas fa-money-bill-wave text-emerald-600"></i>
+                  <i class="fas fa-money-bill-wave text-emerald-600 text-base"></i>
                 </div>
                 <div>
-                  <p class="text-[9px] font-bold text-emerald-700 uppercase tracking-wider">Jumlah:</p>
-                  <p class="text-xl font-extrabold text-emerald-700" id="approve-amount">Rp 0</p>
+                  <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Jumlah:</p>
+                  <p class="text-2xl font-extrabold text-emerald-700" id="approve-amount">Rp 0</p>
                 </div>
               </div>
             </div>
             <div class="mb-5">
-              <label class="block text-xs font-extrabold text-emerald-800 mb-2">Catatan (opsional)</label>
+              <label class="block text-sm font-extrabold text-emerald-800 mb-2">Catatan (opsional)</label>
               <textarea id="approve-note"
-                class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-xs font-medium resize-none"
+                class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent text-gray-900 text-sm font-medium resize-none"
                 rows="3" placeholder="Tambahkan catatan persetujuan..."></textarea>
-              <p class="text-[9px] text-gray-500 mt-2">Catatan akan dikirim ke affiliate sebagai notifikasi</p>
+              <p class="text-xs text-gray-500 mt-2">Catatan akan dikirim ke affiliate sebagai notifikasi</p>
             </div>
           </div>
           <div class="bg-white/40 backdrop-blur border-t border-white/30 px-5 py-4 rounded-b-2xl flex gap-3">
             <button onclick="closeApproveModal()"
-              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-xs font-extrabold flex items-center justify-center gap-1 border border-white/60">
+              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-sm font-extrabold flex items-center justify-center gap-2 border border-white/60">
               <i class="fas fa-times"></i>
               Batal
             </button>
             <button onclick="submitApproval()"
-              class="flex-1 gradient-approved text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-xs font-extrabold shadow-lg flex items-center justify-center gap-1">
+              class="flex-1 gradient-approved text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-sm font-extrabold shadow-lg flex items-center justify-center gap-2">
               <i class="fas fa-check"></i>
               Setujui
             </button>
@@ -901,7 +883,7 @@
         </div>
       </div>
 
-      <!-- Modal Tolak Premium -->
+      <!-- Modal Tolak Premium - Diperbesar ukuran fontnya -->
       <div id="reject-modal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4">
         <div class="bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl max-w-lg w-full border border-white/50">
           <div class="bg-gradient-to-r from-red-600 to-rose-600 px-5 py-4 rounded-t-2xl">
@@ -911,8 +893,8 @@
                 <i class="fas fa-times-circle text-white text-xl"></i>
               </div>
               <div>
-                <h3 class="text-base font-extrabold text-white">Tolak Penarikan</h3>
-                <p class="text-rose-100 text-[10px] mt-0.5">Konfirmasi penolakan penarikan ini</p>
+                <h3 class="text-lg font-extrabold text-white">Tolak Penarikan</h3>
+                <p class="text-rose-100 text-sm mt-0.5">Konfirmasi penolakan penarikan ini</p>
               </div>
             </div>
           </div>
@@ -920,39 +902,39 @@
             <div id="reject-info" class="mb-5 glass-futuristic rounded-xl p-4 border border-white/50">
               <div class="flex items-center gap-3 mb-3">
                 <div class="w-10 h-10 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
-                  <i class="fas fa-user text-red-600"></i>
+                  <i class="fas fa-user text-red-600 text-base"></i>
                 </div>
                 <div>
-                  <p class="text-[9px] font-bold text-emerald-700 uppercase tracking-wider">Affiliate:</p>
-                  <p class="text-sm font-extrabold text-gray-900" id="reject-affiliate">-</p>
+                  <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Affiliate:</p>
+                  <p class="text-base font-extrabold text-gray-900" id="reject-affiliate">-</p>
                 </div>
               </div>
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
-                  <i class="fas fa-money-bill-wave text-red-600"></i>
+                  <i class="fas fa-money-bill-wave text-red-600 text-base"></i>
                 </div>
                 <div>
-                  <p class="text-[9px] font-bold text-emerald-700 uppercase tracking-wider">Jumlah:</p>
-                  <p class="text-xl font-extrabold text-red-700" id="reject-amount">Rp 0</p>
+                  <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Jumlah:</p>
+                  <p class="text-2xl font-extrabold text-red-700" id="reject-amount">Rp 0</p>
                 </div>
               </div>
             </div>
             <div class="mb-5">
-              <label class="block text-xs font-extrabold text-emerald-800 mb-2">Alasan Penolakan *</label>
+              <label class="block text-sm font-extrabold text-emerald-800 mb-2">Alasan Penolakan *</label>
               <textarea id="reject-reason"
-                class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-transparent text-gray-900 text-xs font-medium resize-none"
+                class="w-full px-4 py-3 bg-white/60 backdrop-blur border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-transparent text-gray-900 text-sm font-medium resize-none"
                 rows="4" placeholder="Jelaskan mengapa penarikan ini ditolak..." required></textarea>
-              <p class="text-[9px] text-gray-500 mt-2">Alasan akan dikirim ke affiliate sebagai notifikasi</p>
+              <p class="text-xs text-gray-500 mt-2">Alasan akan dikirim ke affiliate sebagai notifikasi</p>
             </div>
           </div>
           <div class="bg-white/40 backdrop-blur border-t border-white/30 px-5 py-4 rounded-b-2xl flex gap-3">
             <button onclick="closeRejectModal()"
-              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-xs font-extrabold flex items-center justify-center gap-1 border border-white/60">
+              class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 rounded-lg transition-all duration-300 text-sm font-extrabold flex items-center justify-center gap-2 border border-white/60">
               <i class="fas fa-times"></i>
               Batal
             </button>
             <button onclick="submitReject()"
-              class="flex-1 bg-gradient-to-r from-red-600 to-rose-600 text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-xs font-extrabold shadow-lg flex items-center justify-center gap-1">
+              class="flex-1 bg-gradient-to-r from-red-600 to-rose-600 text-white py-3 rounded-lg hover:opacity-90 transition-all duration-300 text-sm font-extrabold shadow-lg flex items-center justify-center gap-2">
               <i class="fas fa-ban"></i>
               Tolak
             </button>
@@ -1009,7 +991,7 @@
                 </div>
                 <div class="flex-1">
                   <p class="font-extrabold text-gray-900 text-sm">Sukses!</p>
-                  <p class="text-xs text-gray-600 mt-1">${message}</p>
+                  <p class="text-sm text-gray-600 mt-1">${message}</p>
                 </div>
                 <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
                   <i class="fas fa-times text-xs"></i>
@@ -1035,7 +1017,7 @@
                 </div>
                 <div class="flex-1">
                   <p class="font-extrabold text-gray-900 text-sm">Error!</p>
-                  <p class="text-xs text-gray-600 mt-1">${message}</p>
+                  <p class="text-sm text-gray-600 mt-1">${message}</p>
                 </div>
                 <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
                   <i class="fas fa-times text-xs"></i>
@@ -1089,7 +1071,7 @@
                       </div>
                     </div>
                     <h3 class="text-lg font-extrabold text-gray-900 mb-2">Tidak ada data</h3>
-                    <p class="text-sm text-emerald-700 font-medium">Tidak ada penarikan dengan status ini</p>
+                    <p class="text-base text-emerald-700 font-medium">Tidak ada penarikan dengan status ini</p>
                   </div>
                 </div>
               `;
@@ -1110,13 +1092,13 @@
                       <div class="flex-1 min-w-0">
                         <div class="flex flex-wrap items-center gap-2 mb-1">
                           <h4 class="font-extrabold text-gray-900 text-base truncate">${payout.affiliate_name}</h4>
-                          <span class="px-3 py-1.5 rounded-lg text-[9px] font-extrabold ${getStatusBadge(payout.status)} border border-white/30 flex items-center gap-1">
+                          <span class="px-3 py-1.5 rounded-lg text-xs font-extrabold ${getStatusBadge(payout.status)} border border-white/30 flex items-center gap-1">
                             <i class="fas fa-circle text-[6px] mr-1"></i>
                             ${getStatusLabel(payout.status)}
                           </span>
                         </div>
-                        <p class="text-xs text-gray-600 mb-2 font-medium">ID: #${payout.id} • ${payout.commission_count} komisi</p>
-                        <p class="text-[10px] text-gray-500 flex items-center gap-2">
+                        <p class="text-sm text-gray-600 mb-2 font-medium">ID: #${payout.id} • ${payout.commission_count} komisi</p>
+                        <p class="text-xs text-gray-500 flex items-center gap-2">
                           <i class="fas fa-calendar-alt"></i>
                           Diajukan: ${new Date(payout.created_at).toLocaleDateString("id-ID", {
                   day: 'numeric',
@@ -1127,7 +1109,7 @@
                 })}
                         </p>
                         ${payout.finance_note ? `
-                          <p class="text-[9px] mt-2 text-blue-700 bg-blue-50/80 backdrop-blur px-3 py-2 rounded-lg border border-blue-200/50">
+                          <p class="text-xs mt-2 text-blue-700 bg-blue-50/80 backdrop-blur px-3 py-2 rounded-lg border border-blue-200/50">
                             <i class="fas fa-sticky-note mr-1"></i>
                             Catatan Finance: ${payout.finance_note.length > 120 ? payout.finance_note.substring(0, 120) + '...' : payout.finance_note}
                             ${payout.submitted_by_name ? `<span class="text-gray-500 block mt-1">— oleh ${payout.submitted_by_name}</span>` : (payout.submitted_by ? `<span class="text-gray-500 block mt-1">— oleh ID: ${payout.submitted_by}</span>` : '')}
@@ -1136,17 +1118,17 @@
                       </div>
                     </div>
                     <div class="text-right lg:ml-4 flex flex-col items-end">
-                      <p class="font-extrabold text-xl text-gray-900 mb-2">Rp ${parseFloat(payout.total_amount).toLocaleString("id-ID")}</p>
+                      <p class="font-extrabold text-2xl text-gray-900 mb-2">Rp ${parseFloat(payout.total_amount).toLocaleString("id-ID")}</p>
                       ${status === "pending" ? `
                         <div class="flex gap-2">
-                          <button class="px-4 py-2 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg hover:opacity-90 transition-all duration-300 text-[10px] font-extrabold shadow-lg flex items-center gap-1 border border-white/30"
+                          <button class="px-4 py-2 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg hover:opacity-90 transition-all duration-300 text-sm font-extrabold shadow-lg flex items-center gap-2 border border-white/30"
                                   onclick="event.stopPropagation(); openRejectModal(${payout.id}, '${payout.affiliate_name}', '${payout.total_amount}')">
-                            <i class="fas fa-times text-[8px]"></i>
+                            <i class="fas fa-times text-xs"></i>
                             Tolak
                           </button>
-                          <button class="px-4 py-2 gradient-approved text-white rounded-lg hover:opacity-90 transition-all duration-300 text-[10px] font-extrabold shadow-lg flex items-center gap-1 border border-white/30"
+                          <button class="px-4 py-2 gradient-approved text-white rounded-lg hover:opacity-90 transition-all duration-300 text-sm font-extrabold shadow-lg flex items-center gap-2 border border-white/30"
                                   onclick="event.stopPropagation(); openApproveModal(${payout.id}, '${payout.affiliate_name}', '${payout.total_amount}')">
-                            <i class="fas fa-check text-[8px]"></i>
+                            <i class="fas fa-check text-xs"></i>
                             Setujui
                           </button>
                         </div>
@@ -1164,7 +1146,7 @@
         }
 
         // ============================================================
-        // FUNGSI DETAIL
+        // FUNGSI DETAIL - Diperbesar ukuran fontnya dalam template HTML
         // ============================================================
 
         async function viewDetail(payoutId) {
@@ -1190,27 +1172,27 @@
               if (pf.toLowerCase().endsWith('.pdf')) {
                 proofHtml = `
                   <div class="glass-futuristic rounded-xl p-4 border border-white/50 md:col-span-2">
-                    <h4 class="text-xs font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
+                    <h4 class="text-sm font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
                       <i class="fas fa-file-pdf text-red-600"></i>
                       Bukti Pembayaran
                     </h4>
                     <div class="bg-red-50/80 backdrop-blur border border-red-200/50 rounded-xl p-4 text-center">
                       <i class="fas fa-file-pdf text-red-600 text-3xl mb-2"></i>
-                      <p class="text-xs font-extrabold text-gray-900 mb-2">File PDF</p>
-                      <a href="${pf}" target="_blank" class="w-full px-4 py-2 gradient-info text-white rounded-lg text-[10px] font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg inline-block">Buka File PDF</a>
+                      <p class="text-sm font-extrabold text-gray-900 mb-2">File PDF</p>
+                      <a href="${pf}" target="_blank" class="w-full px-4 py-2 gradient-info text-white rounded-lg text-sm font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg inline-block">Buka File PDF</a>
                     </div>
                   </div>
                 `;
               } else {
                 proofHtml = `
                   <div class="glass-futuristic rounded-xl p-4 border border-white/50 md:col-span-2">
-                    <h4 class="text-xs font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
+                    <h4 class="text-sm font-extrabold text-emerald-800 mb-3 flex items-center gap-1.5">
                       <i class="fas fa-image text-emerald-600"></i>
                       Bukti Pembayaran
                     </h4>
                     <div class="text-center">
                       <img src="${pf}" alt="Bukti Transfer" class="w-full rounded-xl border border-white/50 mb-2">
-                      <a href="${pf}" target="_blank" class="w-full px-4 py-2 gradient-info text-white rounded-lg text-[10px] font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg inline-block">Lihat Bukti (Buka di tab baru)</a>
+                      <a href="${pf}" target="_blank" class="w-full px-4 py-2 gradient-info text-white rounded-lg text-sm font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg inline-block">Lihat Bukti (Buka di tab baru)</a>
                     </div>
                   </div>
                 `;
@@ -1223,11 +1205,11 @@
                 <div class="glass-futuristic rounded-xl p-4 border ${getStatusBorder(payout.status)}">
                   <div class="flex items-center justify-between">
                     <div>
-                      <p class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Status Penarikan</p>
-                      <p class="text-sm font-extrabold text-gray-900">${getStatusLabel(payout.status)}</p>
+                      <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Status Penarikan</p>
+                      <p class="text-base font-extrabold text-gray-900">${getStatusLabel(payout.status)}</p>
                     </div>
-                    <span class="px-4 py-2 rounded-lg text-[10px] font-extrabold ${getStatusFullBadge(payout.status)} border border-white/30 flex items-center gap-1">
-                      <i class="fas ${getStatusIcon(payout.status)} text-[8px]"></i>
+                    <span class="px-4 py-2 rounded-lg text-sm font-extrabold ${getStatusFullBadge(payout.status)} border border-white/30 flex items-center gap-1">
+                      <i class="fas ${getStatusIcon(payout.status)} text-xs"></i>
                       ${getStatusLabel(payout.status)}
                     </span>
                   </div>
@@ -1238,11 +1220,11 @@
                   <div class="glass-futuristic rounded-xl p-4 border border-white/50">
                     <div class="flex items-center gap-2 mb-3">
                       <div class="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center">
-                        <i class="fas fa-user-tie text-white text-xs"></i>
+                        <i class="fas fa-user-tie text-white text-sm"></i>
                       </div>
-                      <h4 class="text-xs font-extrabold text-gray-900">Informasi Affiliate</h4>
+                      <h4 class="text-sm font-extrabold text-gray-900">Informasi Affiliate</h4>
                     </div>
-                    <div class="space-y-2 text-[10px]">
+                    <div class="space-y-2 text-sm">
                       <div>
                         <p class="font-bold text-emerald-700">Nama Affiliate</p>
                         <p class="font-extrabold text-gray-900">${payout.affiliate_name}</p>
@@ -1269,17 +1251,17 @@
                   <div class="glass-futuristic rounded-xl p-4 border border-white/50">
                     <div class="flex items-center gap-2 mb-3">
                       <div class="w-8 h-8 gradient-secondary rounded-lg flex items-center justify-center">
-                        <i class="fas fa-money-bill-wave text-white text-xs"></i>
+                        <i class="fas fa-money-bill-wave text-white text-sm"></i>
                       </div>
-                      <h4 class="text-xs font-extrabold text-gray-900">Detail Penarikan</h4>
+                      <h4 class="text-sm font-extrabold text-gray-900">Detail Penarikan</h4>
                     </div>
                     <div class="space-y-2">
                       <div>
-                        <p class="text-[10px] font-bold text-emerald-700">Total Jumlah</p>
-                        <p class="font-extrabold text-xl text-emerald-700">Rp ${parseFloat(payout.total_amount).toLocaleString("id-ID")}</p>
+                        <p class="text-sm font-bold text-emerald-700">Total Jumlah</p>
+                        <p class="font-extrabold text-2xl text-emerald-700">Rp ${parseFloat(payout.total_amount).toLocaleString("id-ID")}</p>
                       </div>
                       <div>
-                        <p class="text-[10px] font-bold text-emerald-700">Jumlah Komisi</p>
+                        <p class="text-sm font-bold text-emerald-700">Jumlah Komisi</p>
                         <p class="font-extrabold text-base text-gray-900">${payout.commission_count} komisi</p>
                       </div>
                     </div>
@@ -1289,22 +1271,22 @@
                   <div class="glass-futuristic rounded-xl p-4 border border-white/50 md:col-span-2">
                     <div class="flex items-center gap-2 mb-3">
                       <div class="w-8 h-8 gradient-info rounded-lg flex items-center justify-center">
-                        <i class="fas fa-university text-white text-xs"></i>
+                        <i class="fas fa-university text-white text-sm"></i>
                       </div>
-                      <h4 class="text-xs font-extrabold text-gray-900">Informasi Bank</h4>
+                      <h4 class="text-sm font-extrabold text-gray-900">Informasi Bank</h4>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                       <div>
-                        <p class="text-[9px] font-bold text-emerald-700">Nama Bank</p>
-                        <p class="font-extrabold text-gray-900 text-sm">${payout.bank_name || "-"}</p>
+                        <p class="text-xs font-bold text-emerald-700">Nama Bank</p>
+                        <p class="font-extrabold text-gray-900 text-base">${payout.bank_name || "-"}</p>
                       </div>
                       <div>
-                        <p class="text-[9px] font-bold text-emerald-700">Nomor Rekening</p>
-                        <p class="font-extrabold text-gray-900 text-sm">${payout.bank_account_number || "-"}</p>
+                        <p class="text-xs font-bold text-emerald-700">Nomor Rekening</p>
+                        <p class="font-extrabold text-gray-900 text-base">${payout.bank_account_number || "-"}</p>
                       </div>
                       <div>
-                        <p class="text-[9px] font-bold text-emerald-700">Atas Nama</p>
-                        <p class="font-extrabold text-gray-900 text-sm">${payout.bank_account_name || "-"}</p>
+                        <p class="text-xs font-bold text-emerald-700">Atas Nama</p>
+                        <p class="font-extrabold text-gray-900 text-base">${payout.bank_account_name || "-"}</p>
                       </div>
                     </div>
                   </div>
@@ -1314,13 +1296,13 @@
                     <div class="glass-futuristic rounded-xl p-4 border border-blue-200/50 md:col-span-2">
                       <div class="flex items-center gap-2 mb-2">
                         <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                          <i class="fas fa-sticky-note text-blue-600 text-xs"></i>
+                          <i class="fas fa-sticky-note text-blue-600 text-sm"></i>
                         </div>
-                        <h4 class="text-xs font-extrabold text-gray-900">Catatan Finance</h4>
+                        <h4 class="text-sm font-extrabold text-gray-900">Catatan Finance</h4>
                       </div>
                       <div class="bg-blue-50/80 backdrop-blur rounded-lg p-3 border border-blue-200/50">
-                        <p class="text-xs text-blue-800">${payout.finance_note}</p>
-                        ${payout.submitted_by_name ? `<p class="text-[9px] text-gray-600 mt-2">Dikirim oleh: ${payout.submitted_by_name} • ${payout.submitted_at ? new Date(payout.submitted_at).toLocaleString('id-ID') : ''}</p>` : (payout.submitted_by ? `<p class="text-[9px] text-gray-600 mt-2">Dikirim oleh ID: ${payout.submitted_by} • ${payout.submitted_at ? new Date(payout.submitted_at).toLocaleString('id-ID') : ''}</p>` : '')}
+                        <p class="text-sm text-blue-800">${payout.finance_note}</p>
+                        ${payout.submitted_by_name ? `<p class="text-xs text-gray-600 mt-2">Dikirim oleh: ${payout.submitted_by_name} • ${payout.submitted_at ? new Date(payout.submitted_at).toLocaleString('id-ID') : ''}</p>` : (payout.submitted_by ? `<p class="text-xs text-gray-600 mt-2">Dikirim oleh ID: ${payout.submitted_by} • ${payout.submitted_at ? new Date(payout.submitted_at).toLocaleString('id-ID') : ''}</p>` : '')}
                       </div>
                     </div>
                   ` : ''}
@@ -1333,11 +1315,11 @@
                     <div class="flex items-center justify-between mb-3">
                       <div class="flex items-center gap-2">
                         <div class="w-8 h-8 gradient-accent rounded-lg flex items-center justify-center">
-                          <i class="fas fa-percentage text-white text-xs"></i>
+                          <i class="fas fa-percentage text-white text-sm"></i>
                         </div>
-                        <h4 class="text-xs font-extrabold text-gray-900">Komisi yang Ditarik</h4>
+                        <h4 class="text-sm font-extrabold text-gray-900">Komisi yang Ditarik</h4>
                       </div>
-                      <span class="px-3 py-1.5 bg-white/60 backdrop-blur rounded-lg text-[9px] font-extrabold text-emerald-700 border border-white/60">
+                      <span class="px-3 py-1.5 bg-white/60 backdrop-blur rounded-lg text-xs font-extrabold text-emerald-700 border border-white/60">
                         ${payout.commissions.length} item
                       </span>
                     </div>
@@ -1348,16 +1330,16 @@
                           <div class="flex items-center justify-between py-2.5 ${idx > 0 ? "border-t border-white/30" : ""}">
                             <div class="flex items-center gap-2">
                               <div class="w-7 h-7 bg-white/60 rounded-lg flex items-center justify-center border border-white/60">
-                                <i class="fas fa-receipt text-emerald-600 text-[10px]"></i>
+                                <i class="fas fa-receipt text-emerald-600 text-sm"></i>
                               </div>
                               <div>
-                                <p class="font-extrabold text-gray-900 text-xs">${comm.description}</p>
-                                <p class="text-[8px] font-medium text-gray-500">${new Date(comm.created_at).toLocaleDateString("id-ID")}</p>
+                                <p class="font-extrabold text-gray-900 text-sm">${comm.description}</p>
+                                <p class="text-xs font-medium text-gray-500">${new Date(comm.created_at).toLocaleDateString("id-ID")}</p>
                               </div>
                             </div>
                             <div class="text-right">
-                              <p class="font-extrabold text-gray-900 text-xs">Rp ${parseFloat(comm.amount).toLocaleString("id-ID")}</p>
-                              <p class="text-[8px] font-medium text-gray-500">Komisi</p>
+                              <p class="font-extrabold text-gray-900 text-sm">Rp ${parseFloat(comm.amount).toLocaleString("id-ID")}</p>
+                              <p class="text-xs font-medium text-gray-500">Komisi</p>
                             </div>
                           </div>
                         `,

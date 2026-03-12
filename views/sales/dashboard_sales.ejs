@@ -653,13 +653,6 @@
                       <span class="text-sm font-bold text-emerald-600">transactions</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-arrow-up text-xs text-green-600"></i>
-                        <span class="text-xs font-extrabold text-green-700">+12.5%</span>
-                      </div>
-                      <span class="text-xs text-gray-500">vs bulan lalu</span>
-                    </div>
                   </div>
 
                   <div
@@ -700,19 +693,6 @@
                       <span class="text-sm font-bold text-emerald-600">completed</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-check-circle text-xs text-green-600"></i>
-                        <span class="text-xs font-extrabold text-green-700">
-                          <% if (stats.totalTransactions> 0) { %>
-                            <%= Math.round((stats.completedTransactions / stats.totalTransactions) * 100) %>%
-                              <% } else { %>
-                                0%
-                                <% } %>
-                        </span>
-                      </div>
-                      <span class="text-xs text-gray-500">success rate</span>
-                    </div>
                   </div>
 
                   <div
@@ -794,12 +774,6 @@
                       <span class="text-sm font-bold text-emerald-600">events</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-blue-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-play-circle text-xs text-blue-600"></i>
-                        <span class="text-xs font-extrabold text-blue-700">Running</span>
-                      </div>
-                    </div>
                   </div>
 
                   <div

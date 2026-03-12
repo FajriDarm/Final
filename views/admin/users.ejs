@@ -766,13 +766,6 @@
                       <span class="text-sm font-bold text-emerald-600">users</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-arrow-up text-xs text-green-600"></i>
-                        <span class="text-xs font-extrabold text-green-700">+12.5%</span>
-                      </div>
-                      <span class="text-xs text-gray-500">vs bulan lalu</span>
-                    </div>
                   </div>
 
                   <div
@@ -811,12 +804,6 @@
                       <span class="text-sm font-bold text-emerald-600">active</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-green-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-check-circle text-xs text-green-600"></i>
-                        <span class="text-xs font-extrabold text-green-700">85% aktif</span>
-                      </div>
-                    </div>
                   </div>
 
                   <div
@@ -855,12 +842,6 @@
                       <span class="text-sm font-bold text-emerald-600">affiliates</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-orange-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-trophy text-xs text-orange-600"></i>
-                        <span class="text-xs font-extrabold text-orange-700" id="activeAffiliates">- aktif</span>
-                      </div>
-                    </div>
                   </div>
 
                   <div
@@ -899,12 +880,6 @@
                       <span class="text-sm font-bold text-emerald-600">pending</span>
                     </div>
 
-                    <div class="flex items-center gap-1.5 mt-2">
-                      <div class="px-2 py-1 bg-amber-100 rounded-lg flex items-center gap-1">
-                        <i class="fas fa-clock text-xs text-amber-600"></i>
-                        <span class="text-xs font-extrabold text-amber-700">Butuh persetujuan</span>
-                      </div>
-                    </div>
                   </div>
 
                   <div
@@ -1582,11 +1557,9 @@
           const active = users.filter(u => u.status === 'active').length;
           const affiliates = users.filter(u => u.affiliate_status === 'approved').length;
           const pending = users.filter(u => u.affiliate_status === 'pending').length;
-          const activeAffiliates = users.filter(u => u.affiliate_status === 'approved' && u.status === 'active').length;
           document.getElementById('totalUsers').textContent = total;
           document.getElementById('activeUsers').textContent = active;
           document.getElementById('affiliateUsers').textContent = affiliates;
-          document.getElementById('activeAffiliates').textContent = activeAffiliates;
           document.getElementById('pendingCount').textContent = pending;
         }
 
