@@ -3,11 +3,17 @@
     background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
     border-right: 1px solid #e2e8f0;
   }
+
   .nav-item {
     position: relative;
     transition: all 0.3s ease;
     border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
   }
+
   .nav-item::before {
     content: "";
     position: absolute;
@@ -20,19 +26,24 @@
     transition: transform 0.3s ease;
     border-radius: 0 4px 4px 0;
   }
+
   .nav-item:hover::before {
     transform: scaleY(1);
   }
+
   .nav-item:hover {
     background-color: #f0fdf4;
     transform: translateX(4px);
   }
+
   .nav-item.active {
     background: linear-gradient(90deg, #f0fdf4 0%, #dcfce7 100%);
   }
+
   .nav-item.active::before {
     transform: scaleY(1);
   }
+
   .nav-icon {
     width: 36px;
     height: 36px;
@@ -45,28 +56,34 @@
     font-size: 16px;
     transition: all 0.3s ease;
   }
+
   .nav-item:hover .nav-icon {
     background: linear-gradient(135deg, #10b981, #059669);
     color: white;
     transform: scale(1.05);
   }
+
   .nav-item.active .nav-icon {
     background: linear-gradient(135deg, #10b981, #059669);
     color: white;
   }
+
   .nav-text {
     color: #334155;
     font-weight: 500;
     font-size: 14px;
     letter-spacing: 0.01em;
   }
+
   .nav-item:hover .nav-text {
     color: #065f46;
   }
+
   .nav-item.active .nav-text {
     color: #065f46;
     font-weight: 600;
   }
+
   .divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
@@ -74,17 +91,10 @@
   }
 </style>
 
-<aside
-  class="sidebar fixed left-0 top-16 z-40 w-64"
-  style="height: calc(100vh - 4rem); overflow: auto"
->
+<aside class="sidebar fixed left-0 top-16 z-40 w-64" style="height: calc(100vh - 4rem); overflow: auto">
   <nav class="flex-1 p-6 overflow-y-auto">
     <div class="space-y-1">
-      <a
-        href="/admin/dashboard"
-        class="nav-item flex items-center gap-3 p-3"
-        data-page="dashboard"
-      >
+      <a href="/admin/dashboard" class="nav-item flex items-center gap-3 p-3" data-page="dashboard">
         <div class="nav-icon">
           <i class="fas fa-tachometer-alt"></i>
         </div>
@@ -93,77 +103,50 @@
 
       <div class="divider"></div>
 
-      <a
-        href="/admin/users"
-        class="nav-item flex items-center gap-3 p-3"
-        data-page="users"
-      >
+      <a href="/admin/users" class="nav-item flex items-center gap-3 p-3" data-page="users">
         <div class="nav-icon">
           <i class="fas fa-users"></i>
         </div>
         <span class="nav-text">Users</span>
       </a>
 
-      <a
-        href="/admin/events"
-        class="nav-item flex items-center gap-3 p-3"
-        data-page="events"
-      >
+      <a href="/admin/events" class="nav-item flex items-center gap-3 p-3" data-page="events">
         <div class="nav-icon">
           <i class="fas fa-calendar-alt"></i>
         </div>
         <span class="nav-text">Events</span>
       </a>
 
-      <a
-        href="/admin/affiliates"
-        class="nav-item flex items-center gap-3 p-3"
-        data-page="affiliates"
-      >
+      <a href="/admin/affiliates" class="nav-item flex items-center gap-3 p-3" data-page="affiliates">
         <div class="nav-icon">
           <i class="fas fa-user-tie"></i>
         </div>
         <span class="nav-text">Affiliates</span>
       </a>
 
-      <a
-        href="/admin/monitoring_affiliate"
-        class="nav-item flex items-center gap-3 p-3"
-        data-page="monitoring_affiliate"
-      >
+      <a href="/admin/monitoring_affiliate" class="nav-item flex items-center gap-3 p-3"
+        data-page="monitoring_affiliate">
         <div class="nav-icon">
           <i class="fas fa-chart-bar"></i>
         </div>
         <span class="nav-text">Monitoring Affiliate</span>
       </a>
 
-      <a
-        href="/admin/withdrawals"
-        class="nav-item flex items-center gap-3 p-3"
-        data-page="withdrawals"
-      >
+      <a href="/admin/withdrawals" class="nav-item flex items-center gap-3 p-3" data-page="withdrawals">
         <div class="nav-icon">
           <i class="fas fa-check-circle"></i>
         </div>
         <span class="nav-text">Withdrawal Approvals</span>
       </a>
 
-      <a
-        href="/admin/commissions"
-        class="nav-item flex items-center gap-3 p-3"
-        data-page="commissions"
-      >
+      <a href="/admin/commissions" class="nav-item flex items-center gap-3 p-3" data-page="commissions">
         <div class="nav-icon">
           <i class="fas fa-percentage"></i>
         </div>
         <span class="nav-text">Commission</span>
       </a>
 
-      <a
-        href="/admin/activity-logs"
-        class="nav-item flex items-center gap-3 p-3"
-        data-page="activity-logs"
-      >
+      <a href="/admin/activity-logs" class="nav-item flex items-center gap-3 p-3" data-page="activity-logs">
         <div class="nav-icon">
           <i class="fas fa-history"></i>
         </div>
@@ -172,48 +155,79 @@
     </div>
   </nav>
 
-  <div class="p-5 border-t border-gray-200">
-    <div class="text-center">
-      <div class="text-xs text-gray-400">Superadmin System v1.0</div>
-    </div>
+  <div class="p-5 border-t border-gray-200 mt-auto">
+    <div class="text-center text-xs text-gray-400">Superadmin System v1.0</div>
   </div>
 </aside>
 
 <script>
   (function () {
-    const rawPath = window.location.pathname.replace(/\/$/, "");
-    const currentPath =
-      rawPath === "/admin" || rawPath === ""
-        ? "/admin/dashboard"
-        : rawPath;
+    // Get current path without trailing slash
+    const currentPath = window.location.pathname.replace(/\/$/, "");
 
-    document.querySelectorAll(".nav-item").forEach((item) => {
-      item.classList.remove("active");
-      const href = item.getAttribute("href");
-      const normalizedHref = href ? href.replace(/\/$/, "") : "";
+    // Handle root admin path
+    const normalizedPath = currentPath === "/admin" || currentPath === ""
+      ? "/admin/dashboard"
+      : currentPath;
 
-      if (normalizedHref && currentPath === normalizedHref) {
-        item.classList.add("active");
-      }
-      if (normalizedHref && currentPath.startsWith(normalizedHref + "/")) {
-        item.classList.add("active");
+    // Set active class based on current path
+    document.querySelectorAll('.nav-item').forEach((item) => {
+      // Remove any pre-existing active class
+      item.classList.remove('active');
+
+      const href = item.getAttribute('href');
+      if (href) {
+        const normalizedHref = href.replace(/\/$/, "");
+
+        // Exact match
+        if (normalizedPath === normalizedHref) {
+          item.classList.add('active');
+        }
+        // Nested route match (e.g., /admin/users/123 matches /admin/users)
+        else if (normalizedPath.startsWith(normalizedHref + '/')) {
+          item.classList.add('active');
+        }
       }
     });
 
-    document.querySelectorAll(".nav-item").forEach((item) => {
-      item.addEventListener("click", function () {
-        document
-          .querySelectorAll(".nav-item")
-          .forEach((i) => i.classList.remove("active"));
-        this.classList.add("active");
-        sessionStorage.setItem("activeNav", this.getAttribute("href"));
+    // Add click handlers for navigation
+    document.querySelectorAll('.nav-item').forEach((item) => {
+      item.addEventListener('click', function () {
+        // Remove active class from all items
+        document.querySelectorAll('.nav-item').forEach((i) => i.classList.remove('active'));
+
+        // Add active class to clicked item
+        this.classList.add('active');
+
+        // Save to sessionStorage for persistence across page loads
+        sessionStorage.setItem('activeNav', this.getAttribute('href'));
       });
     });
 
-    const savedNav = sessionStorage.getItem("activeNav");
+    // Restore active state from sessionStorage
+    const savedNav = sessionStorage.getItem('activeNav');
     if (savedNav) {
       const savedItem = document.querySelector(`.nav-item[href="${savedNav}"]`);
-      if (savedItem) savedItem.classList.add("active");
+      if (savedItem) {
+        savedItem.classList.add('active');
+      }
     }
+
+    // Optional: Handle browser back/forward navigation
+    window.addEventListener('popstate', function () {
+      const newPath = window.location.pathname.replace(/\/$/, "");
+      const normalizedNewPath = newPath === "/admin" || newPath === "" ? "/admin/dashboard" : newPath;
+
+      document.querySelectorAll('.nav-item').forEach((item) => {
+        item.classList.remove('active');
+        const href = item.getAttribute('href');
+        if (href) {
+          const normalizedHref = href.replace(/\/$/, "");
+          if (normalizedNewPath === normalizedHref || normalizedNewPath.startsWith(normalizedHref + '/')) {
+            item.classList.add('active');
+          }
+        }
+      });
+    });
   })();
 </script>
