@@ -2,6 +2,7 @@
   .sidebar {
     background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
     border-right: 1px solid #e2e8f0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   .nav-item {
     position: relative;
@@ -75,12 +76,30 @@
     background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
     margin: 12px 0;
   }
+
+  @media (max-width: 767px) {
+    .sidebar {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+  }
 </style>
 
 <aside
-  class="sidebar fixed left-0 top-16 z-40 w-64"
+  data-sidebar
+  class="sidebar fixed left-0 top-16 z-40 w-64 transform -translate-x-full md:translate-x-0 transition-transform duration-300 bg-white"
   style="height: calc(100vh - 4rem); overflow: auto"
 >
+  <div class="flex items-center justify-between px-4 py-3 border-b md:hidden">
+    <div class="text-sm font-semibold text-gray-700">Menu</div>
+    <button
+      type="button"
+      data-sidebar-close
+      class="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+      aria-label="Tutup menu"
+    >
+      <i class="fas fa-times text-lg"></i>
+    </button>
+  </div>
   <nav class="flex-1 p-6 overflow-y-auto">
     <div class="space-y-1">
       <!-- User Info (kept as requested) -->
@@ -127,38 +146,39 @@
     <div class="text-center text-xs text-gray-400">Affiliate Panel v1.0</div>
   </div>
 
-  <script>
-    (function () {
-      const currentPath = window.location.pathname.replace(/\/$/, "");
-
-      document.querySelectorAll('.nav-item').forEach((item) => {
-        // Remove any pre-existing active class
-        item.classList.remove('active');
-
-        const href = item.getAttribute('href');
-        if (href && href.replace(/\/$/, '') === currentPath) {
-          item.classList.add('active');
-        }
-        // Also support nested routes
-        if (currentPath === href || currentPath.startsWith(href + '/')) {
-          item.classList.add('active');
-        }
-      });
-
-      document.querySelectorAll('.nav-item').forEach((item) => {
-        item.addEventListener('click', function () {
-          document.querySelectorAll('.nav-item').forEach((i) => i.classList.remove('active'));
-          this.classList.add('active');
-          sessionStorage.setItem('activeNav', this.getAttribute('href'));
-        });
-      });
-
-      // restore from session
-      const savedNav = sessionStorage.getItem('activeNav');
-      if (savedNav) {
-        const savedItem = document.querySelector(`.nav-item[href="${savedNav}"]`);
-        if (savedItem) savedItem.classList.add('active');
-      }
-    })();
-  </script>
 </aside>
+<div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-30 z-30 hidden md:hidden"></div>
+<script>
+  (function () {
+    const currentPath = window.location.pathname.replace(/\/$/, "");
+
+    document.querySelectorAll('.nav-item').forEach((item) => {
+      // Remove any pre-existing active class
+      item.classList.remove('active');
+
+      const href = item.getAttribute('href');
+      if (href && href.replace(/\/$/, '') === currentPath) {
+        item.classList.add('active');
+      }
+      // Also support nested routes
+      if (currentPath === href || currentPath.startsWith(href + '/')) {
+        item.classList.add('active');
+      }
+    });
+
+    document.querySelectorAll('.nav-item').forEach((item) => {
+      item.addEventListener('click', function () {
+        document.querySelectorAll('.nav-item').forEach((i) => i.classList.remove('active'));
+        this.classList.add('active');
+        sessionStorage.setItem('activeNav', this.getAttribute('href'));
+      });
+    });
+
+    // restore from session
+    const savedNav = sessionStorage.getItem('activeNav');
+    if (savedNav) {
+      const savedItem = document.querySelector(`.nav-item[href="${savedNav}"]`);
+      if (savedItem) savedItem.classList.add('active');
+    }
+  })();
+</script>

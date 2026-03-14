@@ -1,30 +1,39 @@
 <nav
-  class="fixed top-0 left-0 w-full z-50 bg-white shadow-md h-16 px-6 flex items-center justify-between"
+  class="fixed top-0 left-0 w-full z-50 bg-white shadow-md h-16 px-4 sm:px-6 flex items-center justify-between"
 >
   <div class="flex items-center gap-3">
+    <button
+      type="button"
+      id="sidebarToggle"
+      aria-label="Buka menu"
+      class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full text-gray-600 hover:text-green-700 hover:bg-green-50 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+    >
+      <i class="fas fa-bars text-lg"></i>
+    </button>
+
     <img
       src="/images/logoAffilllink3.png"
       alt="Logo Affillink"
-      class="w-14 h-14 object-contain"
+      class="w-12 h-12 sm:w-14 sm:h-14 object-contain"
     />
-    <span class="text-green-700 text-2xl font-bold tracking-wide"
-      >Affillink</span
-    >
+    <span class="text-green-700 text-xl sm:text-2xl font-bold tracking-wide">Affillink</span>
   </div>
-  <div class="relative flex items-center gap-3">
-    <div class="flex flex-col items-end mr-2">
-      <div class="text-gray-600 text-sm">
+
+  <div class="relative flex items-center gap-2 sm:gap-3">
+    <div class="hidden sm:flex flex-col items-end mr-1 sm:mr-2">
+      <div class="text-gray-600 text-xs sm:text-sm leading-tight">
         Halo,
         <span class="font-semibold">
           <%= typeof name !=='undefined' ? name : 'User' %>
         </span>
       </div>
-      <div class="text-gray-400 text-xs">Semangat ya kerjanya. :)</div>
+      <div class="text-gray-400 text-[10px] sm:text-xs">Semangat ya kerjanya. :)</div>
     </div>
     <button
       id="profileMenuBtn"
       class="relative bg-gradient-to-br from-green-500 to-emerald-600 rounded-full p-1 flex items-center justify-center focus:outline-none hover:shadow-lg transition-all duration-300 group"
       style="width: 40px; height: 40px"
+      aria-label="Buka menu profil"
     >
       <!-- Avatar dengan efek gradient dan animasi -->
       <div class="relative w-full h-full rounded-full overflow-hidden">
@@ -176,6 +185,67 @@
       });
     });
   }
+
+  // Sidebar toggle (mobile)
+  const getSidebarRefs = () => ({
+    sidebar: document.querySelector('[data-sidebar]'),
+    overlay: document.getElementById('sidebarOverlay'),
+    closeButtons: document.querySelectorAll('[data-sidebar-close]'),
+    toggleBtn: document.getElementById('sidebarToggle'),
+  });
+
+  const closeSidebar = () => {
+    const { sidebar, overlay } = getSidebarRefs();
+    if (!sidebar) return;
+    sidebar.classList.add('-translate-x-full');
+    sidebar.classList.remove('translate-x-0');
+    if (overlay) {
+      overlay.classList.add('hidden');
+      overlay.classList.remove('block');
+    }
+    document.body.classList.remove('overflow-hidden');
+  };
+
+  const openSidebar = () => {
+    const { sidebar, overlay } = getSidebarRefs();
+    if (!sidebar) return;
+    sidebar.classList.remove('-translate-x-full');
+    sidebar.classList.add('translate-x-0');
+    if (overlay) {
+      overlay.classList.remove('hidden');
+      overlay.classList.add('block');
+    }
+    document.body.classList.add('overflow-hidden');
+  };
+
+  const bindSidebarControls = () => {
+    const { toggleBtn, overlay, closeButtons } = getSidebarRefs();
+    toggleBtn?.addEventListener('click', () => {
+      const { sidebar } = getSidebarRefs();
+      if (!sidebar) return;
+      const isHidden = sidebar.classList.contains('-translate-x-full');
+      isHidden ? openSidebar() : closeSidebar();
+    });
+
+    overlay?.addEventListener('click', closeSidebar);
+    closeButtons.forEach((btn) => btn.addEventListener('click', closeSidebar));
+  };
+
+  bindSidebarControls();
+
+  window.addEventListener('resize', () => {
+    const { sidebar, overlay } = getSidebarRefs();
+    if (window.innerWidth >= 768) {
+      sidebar?.classList.remove('-translate-x-full');
+      sidebar?.classList.add('translate-x-0');
+      overlay?.classList.add('hidden');
+      overlay?.classList.remove('block');
+      document.body.classList.remove('overflow-hidden');
+    } else {
+      sidebar?.classList.add('-translate-x-full');
+      sidebar?.classList.remove('translate-x-0');
+    }
+  });
 
   // Animasi untuk dropdown
   const style = document.createElement("style");

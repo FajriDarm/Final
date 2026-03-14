@@ -568,7 +568,7 @@
   <%- include('../navbar/navbar.ejs', { name: 'Admin' }) %>
     <%- include('../sidebar/admin.ejs') %>
 
-      <main class="ml-64 pt-16 min-h-screen relative z-10 pb-8">
+      <main class="md:ml-64 ml-0 pt-16 min-h-screen relative z-10 pb-8">
         <div class="p-6">
           <!-- Premium Page Header - Sesuai dengan dashboard -->
           <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 animate-slide-in">
@@ -1669,7 +1669,7 @@
                   <label class="cursor-pointer">
                     <input type="radio" name="status" value="draft" class="peer sr-only">
                     <div
-                      class="p-2.5 border-2 border-white/50 rounded-lg hover:border-amber-400 peer-checked:border-amber-500 peer-checked:bg-amber-50/50 transition-all duration-300 text-center bg-white/40 backdrop-blur">
+                      class="p-2.5 rounded-lg text-center bg-white/70 backdrop-blur border-2 border-white/60 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-400 peer-checked:border-amber-500 peer-checked:bg-amber-50/80 peer-checked:shadow-lg peer-checked:shadow-amber-200/60">
                       <div class="w-6 h-6 bg-amber-100 rounded-lg flex items-center justify-center mx-auto mb-1">
                         <i class="fas fa-file-alt text-amber-600 text-xs"></i>
                       </div>
@@ -1679,7 +1679,7 @@
                   <label class="cursor-pointer">
                     <input type="radio" name="status" value="active" class="peer sr-only" checked>
                     <div
-                      class="p-2.5 border-2 border-white/50 rounded-lg hover:border-emerald-400 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/50 transition-all duration-300 text-center bg-white/40 backdrop-blur">
+                      class="p-2.5 rounded-lg text-center bg-white/70 backdrop-blur border-2 border-white/60 transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-400 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/80 peer-checked:shadow-lg peer-checked:shadow-emerald-200/60">
                       <div class="w-6 h-6 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-1">
                         <i class="fas fa-check-circle text-emerald-600 text-xs"></i>
                       </div>
@@ -1689,7 +1689,7 @@
                   <label class="cursor-pointer">
                     <input type="radio" name="status" value="inactive" class="peer sr-only">
                     <div
-                      class="p-2.5 border-2 border-white/50 rounded-lg hover:border-red-400 peer-checked:border-red-500 peer-checked:bg-red-50/50 transition-all duration-300 text-center bg-white/40 backdrop-blur">
+                      class="p-2.5 rounded-lg text-center bg-white/70 backdrop-blur border-2 border-white/60 transition-all duration-200 hover:-translate-y-0.5 hover:border-red-400 peer-checked:border-red-500 peer-checked:bg-red-50/80 peer-checked:shadow-lg peer-checked:shadow-red-200/60">
                       <div class="w-6 h-6 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-1">
                         <i class="fas fa-times-circle text-red-600 text-xs"></i>
                       </div>
