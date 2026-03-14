@@ -1182,6 +1182,13 @@
                     return value.toString().replace(/\D/g, '') || '0';
                 }
 
+                function stripTrailingZeros(value) {
+                    if (value === null || value === undefined) return '';
+                    const num = Number(value);
+                    if (!isNaN(num)) return num.toString();
+                    return value.toString().replace(/(\.00|,00)$/, '');
+                }
+
                 function handleCommissionTypeChange() {
                     const type = document.getElementById('commissionType').value;
                     const valueInput = document.getElementById('commissionValue');
@@ -1510,13 +1517,8 @@
                     document.getElementById('eventSelect').value = commission.event_id || '';
                     document.getElementById('commissionType').value = commission.commission_type;
 
-                    if (commission.commission_type === 'flat') {
-                        let val = commission.commission_value;
-                        if (typeof val === 'number') val = val.toString();
-                        document.getElementById('commissionValue').value = val;
-                    } else {
-                        document.getElementById('commissionValue').value = commission.commission_value;
-                    }
+                    const cleanedValue = stripTrailingZeros(commission.commission_value);
+                    document.getElementById('commissionValue').value = cleanedValue;
 
                     document.getElementById('commissionType').dispatchEvent(new Event('change'));
 
