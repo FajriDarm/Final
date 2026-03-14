@@ -494,8 +494,8 @@
             }
         }
 
-        /* Delete Confirm Modal */
-        #deleteConfirmModal {
+        /* Modal Notifikasi (mengikuti style events) */
+        .modal-notification {
             display: none;
             position: fixed;
             inset: 0;
@@ -506,7 +506,7 @@
             backdrop-filter: blur(8px);
         }
 
-        #deleteConfirmModal .bg-white {
+        .modal-notification .modal-box {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(20px);
             border-radius: 2rem;
@@ -519,19 +519,37 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .notification-icon.error {
+        .modal-notification .notification-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             width: 80px;
             height: 80px;
-            background: linear-gradient(165deg, #ef4444, #dc2626);
             border-radius: 50%;
-            box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4);
             margin-bottom: 1.5rem;
         }
 
-        .notification-icon.error i {
+        .modal-notification .notification-icon.error {
+            background: linear-gradient(165deg, #ef4444, #dc2626);
+            box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4);
+        }
+
+        .modal-notification .notification-icon.success {
+            background: linear-gradient(165deg, #10b981, #059669);
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+        }
+
+        .modal-notification .notification-icon.warning {
+            background: linear-gradient(165deg, #f59e0b, #d97706);
+            box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.4);
+        }
+
+        .modal-notification .notification-icon.info {
+            background: linear-gradient(165deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+        }
+
+        .modal-notification .notification-icon i {
             font-size: 2rem;
             color: white;
         }
@@ -1102,25 +1120,22 @@
                 </div>
             </div>
 
-            <!-- Premium Modal Konfirmasi Hapus - Diperbesar ukuran fontnya -->
-            <div id="deleteConfirmModal">
-                <div
-                    class="bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl p-6 flex flex-col items-center text-center max-w-md w-full border border-white/50">
-                    <div class="mb-3">
-                        <span class="notification-icon error">
-                            <i class="fas fa-exclamation-triangle text-2xl"></i>
-                        </span>
-                    </div>
+            <!-- Modal Konfirmasi Hapus (style disamakan dengan events) -->
+            <div id="deleteConfirmModal" style="display:none;" class="modal-notification">
+                <div class="modal-box">
+                    <span class="notification-icon error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </span>
                     <h2 class="text-xl font-extrabold text-gray-900 mb-2">Konfirmasi Hapus</h2>
-                    <p class="text-base text-gray-600 mb-4" id="deleteConfirmMessage">Apakah Anda yakin ingin menghapus
-                        aturan komisi ini?</p>
-                    <p class="text-xs text-gray-400 mb-5">Aksi ini tidak dapat dibatalkan.</p>
-                    <div class="flex gap-3 w-full">
-                        <button id="deleteModalYes" type="button"
-                            class="flex-1 bg-gradient-to-r from-red-600 to-rose-600 text-white py-3 px-4 rounded-xl text-sm font-extrabold hover:opacity-90 transition-all duration-200 shadow-lg">Ya,
-                            Hapus</button>
+                    <p class="text-gray-600 mb-3 text-sm font-medium" id="deleteConfirmMessage">Apakah Anda yakin ingin
+                        menghapus aturan komisi ini?</p>
+                    <p class="text-xs font-medium text-gray-400 mb-4">Aksi ini tidak dapat dibatalkan.</p>
+                    <div class="flex gap-3">
                         <button id="deleteModalNo" type="button"
-                            class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 px-4 rounded-xl text-sm font-extrabold transition-all duration-200 border border-white/60">Batal</button>
+                            class="flex-1 bg-white/60 hover:bg-white/80 text-gray-700 py-3 px-4 rounded-xl text-sm font-extrabold transition-all duration-300 border border-white/60">Batal</button>
+                        <button id="deleteModalYes" type="button"
+                            class="flex-1 bg-gradient-to-r from-red-600 to-rose-600 text-white py-3 px-4 rounded-xl text-sm font-extrabold hover:opacity-90 transition-all duration-300 shadow-lg">Ya,
+                            Hapus</button>
                     </div>
                 </div>
             </div>
@@ -1743,6 +1758,17 @@
                     document.getElementById('commissionModal').addEventListener('click', (e) => {
                         if (e.target.id === 'commissionModal') closeModal();
                     });
+
+                    const deleteModal = document.getElementById('deleteConfirmModal');
+                    if (deleteModal) {
+                        deleteModal.addEventListener('click', function (e) {
+                            if (e.target === deleteModal) {
+                                closeDeleteModal();
+                                currentItemToDelete = null;
+                                deleteCallback = null;
+                            }
+                        });
+                    }
 
                     document.addEventListener('keydown', function (e) {
                         if (e.key === 'Escape') {
