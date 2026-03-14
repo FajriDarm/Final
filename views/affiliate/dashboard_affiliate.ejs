@@ -928,21 +928,21 @@
               </div>
             </div>
 
-            <!-- Premium Date & Live Status - Diperbesar ukuran fontnya -->
-            <div class="flex items-center gap-3">
-              <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3">
+            <!-- Premium Date & Live Status - responsive -->
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
+              <div class="neomorph rounded-xl px-4 py-2.5 flex items-center gap-3 w-full sm:w-auto">
                 <div class="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center shadow-lg">
                   <i class="fas fa-calendar-alt text-white text-sm"></i>
                 </div>
                 <div>
                   <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Tanggal</p>
-                  <p class="text-sm font-bold text-emerald-700 whitespace-nowrap">
+                  <p class="text-sm font-bold text-emerald-700 sm:whitespace-nowrap">
                     <%= new Date().toLocaleDateString('id-ID', { day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                   </p>
                 </div>
               </div>
 
-              <div class="gradient-primary rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-xl relative shimmer">
+              <div class="gradient-primary rounded-xl px-4 py-2.5 flex items-center justify-between sm:justify-start gap-3 shadow-xl relative shimmer w-full sm:w-auto">
                 <div class="relative">
                   <i class="fas fa-bell text-white text-sm"></i>
                   <span class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></span>
