@@ -337,8 +337,7 @@
     }
 
     .modal-overlay {
-      backdrop-filter: blur(8px);
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.35);
     }
 
     /* Radio Button Style */
@@ -1160,7 +1159,7 @@
       <!-- Create/Edit Modal Premium -->
       <div id="eventModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
         <div
-          class="bg-white/90 backdrop-blur-2xl rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-white/50">
+          class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-gray-200">
           <!-- Modal Header -->
           <div class="gradient-secondary px-5 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -1665,35 +1664,35 @@
                   </div>
                   <h5 class="text-sm font-extrabold text-gray-900">Status</h5>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <label class="cursor-pointer">
                     <input type="radio" name="status" value="draft" class="peer sr-only">
                     <div
-                      class="p-2.5 rounded-lg text-center bg-white/70 backdrop-blur border-2 border-white/60 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-400 peer-checked:border-amber-500 peer-checked:bg-amber-50/80 peer-checked:shadow-lg peer-checked:shadow-amber-200/60">
-                      <div class="w-6 h-6 bg-amber-100 rounded-lg flex items-center justify-center mx-auto mb-1">
-                        <i class="fas fa-file-alt text-amber-600 text-xs"></i>
+                      class="p-3 rounded-xl text-center bg-white border border-gray-200 transition-all duration-150 hover:-translate-y-0.5 hover:border-amber-400 peer-checked:border-amber-500 peer-checked:bg-amber-50 peer-checked:shadow-md">
+                      <div class="w-7 h-7 bg-amber-100 rounded-lg flex items-center justify-center mx-auto mb-1.5">
+                        <i class="fas fa-file-alt text-amber-600 text-sm"></i>
                       </div>
-                      <p class="font-extrabold text-gray-900 text-xs">Draft</p>
+                      <p class="font-extrabold text-gray-900 text-sm">Draft</p>
                     </div>
                   </label>
                   <label class="cursor-pointer">
                     <input type="radio" name="status" value="active" class="peer sr-only" checked>
                     <div
-                      class="p-2.5 rounded-lg text-center bg-white/70 backdrop-blur border-2 border-white/60 transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-400 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/80 peer-checked:shadow-lg peer-checked:shadow-emerald-200/60">
-                      <div class="w-6 h-6 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-1">
-                        <i class="fas fa-check-circle text-emerald-600 text-xs"></i>
+                      class="p-3 rounded-xl text-center bg-white border border-gray-200 transition-all duration-150 hover:-translate-y-0.5 hover:border-emerald-400 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:shadow-md">
+                      <div class="w-7 h-7 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-1.5">
+                        <i class="fas fa-check-circle text-emerald-600 text-sm"></i>
                       </div>
-                      <p class="font-extrabold text-gray-900 text-xs">Aktif</p>
+                      <p class="font-extrabold text-gray-900 text-sm">Aktif</p>
                     </div>
                   </label>
                   <label class="cursor-pointer">
                     <input type="radio" name="status" value="inactive" class="peer sr-only">
                     <div
-                      class="p-2.5 rounded-lg text-center bg-white/70 backdrop-blur border-2 border-white/60 transition-all duration-200 hover:-translate-y-0.5 hover:border-red-400 peer-checked:border-red-500 peer-checked:bg-red-50/80 peer-checked:shadow-lg peer-checked:shadow-red-200/60">
-                      <div class="w-6 h-6 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-1">
-                        <i class="fas fa-times-circle text-red-600 text-xs"></i>
+                      class="p-3 rounded-xl text-center bg-white border border-gray-200 transition-all duration-150 hover:-translate-y-0.5 hover:border-red-400 peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:shadow-md">
+                      <div class="w-7 h-7 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-1.5">
+                        <i class="fas fa-times-circle text-red-600 text-sm"></i>
                       </div>
-                      <p class="font-extrabold text-gray-900 text-xs">Tidak Aktif</p>
+                      <p class="font-extrabold text-gray-900 text-sm">Tidak Aktif</p>
                     </div>
                   </label>
                 </div>
