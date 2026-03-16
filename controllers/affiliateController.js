@@ -843,11 +843,23 @@ const commissionEventsStream = (req, res) => {
   // initial comment ping
   res.write(": connected\n\n");
 
+  // Keep the connection alive on environments with aggressive proxy timeouts
+  // by sending a lightweight heartbeat every 15 seconds.
+  const keepAlive = setInterval(() => {
+    try {
+      res.write("event: keepalive\n");
+      res.write("data: {}\n\n");
+    } catch (err) {
+      // Ignore write errors; connection cleanup happens in the close handler below
+    }
+  }, 15000);
+
   const leadEvents = require("../services/leadEvents");
   leadEvents.addClient(res);
 
   req.on("close", () => {
     leadEvents.removeClient(res);
+    clearInterval(keepAlive);
   });
 };
 

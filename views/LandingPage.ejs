@@ -7,7 +7,7 @@
   <title>Affillink - Platform Affiliate Marketing Modern Indonesia</title>
 
   <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/app.css">
 
   <!-- AOS CSS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -577,6 +577,7 @@
       display: flex;
       gap: 1rem;
       justify-content: center;
+      flex-wrap: wrap;
     }
 
     .countdown-item {
@@ -603,6 +604,12 @@
       color: #4b5563;
       text-transform: uppercase;
       letter-spacing: 1px;
+    }
+
+    @media (max-width: 640px) {
+      .countdown-item {
+        flex: 1 1 90px;
+      }
     }
 
     /* Running Text with Green */
@@ -978,8 +985,8 @@
   <!-- Modern Top Bar with Green -->
   <div class="bg-[#064e3b] text-white text-sm py-2 relative z-50">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center">
-        <div class="flex items-center gap-6">
+      <div class="flex flex-col sm:flex-row sm:justify-between items-center gap-3 sm:gap-0">
+        <div class="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
           <a href="tel:+6281234567890" class="hover:text-[#fbbf24] transition flex items-center gap-2 group">
             <i class="fas fa-phone-alt text-[#10b981] text-xs group-hover:animate-bounce"></i>
             <span class="group-hover:translate-x-1 transition-transform">+62 812-3456-7890</span>
@@ -994,7 +1001,7 @@
             <span class="group-hover:translate-x-1 transition-transform">Jakarta, Indonesia</span>
           </a>
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3 sm:gap-4 flex-wrap justify-center sm:justify-end w-full sm:w-auto">
           <span class="hidden md:inline text-[#a7f3d0]">Follow kami:</span>
           <div class="flex gap-2">
             <a href="#"
@@ -1189,7 +1196,7 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <!-- Left Content -->
-        <div data-aos="fade-right" data-aos-duration="1000">
+        <div data-aos="fade-right" data-aos-duration="1000" class="text-center lg:text-left">
           <div
             class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-lg text-sm font-semibold mb-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
             <span class="w-2 h-2 bg-[#059669] rounded-full animate-pulse"></span>
@@ -1197,17 +1204,17 @@
             <span class="px-2 py-0.5 bg-[#059669] text-white text-xs rounded-full animate-pulse-slow">LIVE</span>
           </div>
 
-          <h1 class="section-title-modern text-5xl lg:text-6xl text-shadow">
+          <h1 class="section-title-modern text-4xl sm:text-5xl lg:text-6xl text-shadow">
             Dapatkan Penghasilan <br><span>Jutaan Rupiah</span> <br>Setiap Bulan
           </h1>
 
-          <p class="text-[#4b5563] text-lg mb-8 max-w-lg leading-relaxed">
+          <p class="text-[#4b5563] text-base sm:text-lg mb-8 max-w-xl leading-relaxed mx-auto lg:mx-0">
             Bergabung dengan platform affiliate marketing modern. Promosikan produk berkualitas, dapatkan komisi hingga
             <span class="font-bold text-[#059669] bg-[#ecfdf5] px-2 py-1 rounded-lg border border-[#059669]">50%</span>
             setiap penjualan. Tanpa modal, tanpa stok barang.
           </p>
 
-          <div class="flex flex-wrap gap-4 mb-8">
+          <div class="flex flex-wrap gap-4 mb-8 justify-center lg:justify-start">
             <a href="/register" class="btn-modern text-base px-8 py-4 group relative overflow-hidden shimmer">
               <span class="relative z-10">Mulai Sekarang Gratis</span>
               <i
@@ -1224,7 +1231,7 @@
           </div>
 
           <!-- Trust Badges -->
-          <div class="flex items-center gap-6">
+          <div class="flex items-center gap-6 flex-wrap justify-center lg:justify-start">
             <div class="flex -space-x-3">
               <img src="https://randomuser.me/api/portraits/women/44.jpg"
                 class="w-10 h-10 rounded-full border-2 border-white hover:scale-110 hover:z-10 transition-all duration-300"
@@ -1318,7 +1325,7 @@
   <!-- Stats Section Modern with Green -->
   <section class="py-12 relative z-20 -mt-16">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
           data-aos-duration="800">
           <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">500+</div>
@@ -1379,7 +1386,7 @@
         <p class="section-subtitle">Mulai menghasilkan uang hanya dalam 4 langkah sederhana</p>
       </div>
 
-      <div class="grid md:grid-cols-4 gap-6 relative">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 relative">
         <!-- Connecting Line (centered, thicker, behind steps) -->
         <div
           class="hidden md:block absolute inset-x-10 top-1/2 transform -translate-y-1/2 h-1 bg-gradient-to-r from-[#059669] to-[#10b981]">
@@ -1599,7 +1606,7 @@
         <p class="section-subtitle">Kisah sukses para affiliate yang telah merasakan manfaatnya</p>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <!-- Testimonial 1 -->
         <div class="testimonial-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
           data-aos-duration="800">
@@ -1683,7 +1690,7 @@
     <div class="absolute inset-0 grid-pattern opacity-5"></div>
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <p class="text-center text-sm font-medium text-[#6b7280] mb-8">Telah dipercaya oleh ribuan brand ternama</p>
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 items-center">
         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"
           class="partner-logo w-24 mx-auto hover:scale-110 transition-all duration-300">
         <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google"
