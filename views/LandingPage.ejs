@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Affillink - Platform Affiliate Marketing Modern Indonesia</title>
+  <title>Affillink Umroh - Platform Affiliate Umroh Pertama di Indonesia</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -30,53 +30,55 @@
       scroll-padding-top: 100px;
     }
 
-    /* Modern Green Color Palette */
+    /* Yellow & Brown Color Palette */
     :root {
-      --primary: #064e3b;
-      --secondary: #065f46;
-      --accent: #059669;
-      --accent-light: #10b981;
-      --accent-dark: #047857;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --dark: #064e3b;
-      --light: #ecfdf5;
+      --primary-yellow: #FBBF24;
+      --secondary-yellow: #F59E0B;
+      --dark-yellow: #D97706;
+      --light-yellow: #FEF3C7;
+      --primary-brown: #8B5A2B;
+      --secondary-brown: #A67B5B;
+      --dark-brown: #5D3A1A;
+      --light-brown: #F4E6D7;
+      --accent: #FBBF24;
+      --dark: #8B5A2B;
+      --light: #FEF3C7;
     }
 
-    /* Modern Gradient Backgrounds with Green */
+    /* Modern Gradient Backgrounds with Yellow & Brown */
     .gradient-modern {
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      background: linear-gradient(135deg, #FBBF24 0%, #8B5A2B 100%);
     }
 
-    .gradient-green {
-      background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+    .gradient-yellow-brown {
+      background: linear-gradient(135deg, #FBBF24 0%, #8B5A2B 50%, #A67B5B 100%);
     }
 
-    .gradient-dark-green {
-      background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+    .gradient-dark {
+      background: linear-gradient(135deg, #D97706 0%, #5D3A1A 100%);
     }
 
-    .gradient-light-green {
-      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    .gradient-light {
+      background: linear-gradient(135deg, #FEF3C7 0%, #F4E6D7 100%);
     }
 
     .gradient-card {
-      background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+      background: linear-gradient(135deg, #ffffff 0%, #FEF3C7 100%);
     }
 
-    /* Glassmorphism with Green Tint */
+    /* Glassmorphism with Yellow-Brown Tint */
     .glass-effect {
-      background: rgba(5, 150, 105, 0.1);
+      background: rgba(251, 191, 36, 0.1);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(5, 150, 105, 0.1);
+      border: 1px solid rgba(139, 90, 43, 0.2);
     }
 
     .glass-card {
       background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(5, 150, 105, 0.2);
+      border: 1px solid rgba(139, 90, 43, 0.2);
     }
 
     /* Modern Header */
@@ -84,12 +86,12 @@
       background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(5, 150, 105, 0.1);
+      border-bottom: 1px solid rgba(139, 90, 43, 0.2);
     }
 
-    /* Hero Section with Green */
+    /* Hero Section with Yellow & Brown */
     .hero-modern {
-      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      background: linear-gradient(135deg, #FEF3C7 0%, #F4E6D7 100%);
       position: relative;
       overflow: hidden;
     }
@@ -98,7 +100,7 @@
       position: absolute;
       width: 600px;
       height: 600px;
-      background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(139, 90, 43, 0.1) 100%);
       border-radius: 50%;
       top: -200px;
       right: -200px;
@@ -109,7 +111,7 @@
       position: absolute;
       width: 400px;
       height: 400px;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+      background: linear-gradient(135deg, rgba(139, 90, 43, 0.1) 0%, rgba(251, 191, 36, 0.1) 100%);
       border-radius: 50%;
       bottom: -100px;
       left: -100px;
@@ -132,39 +134,39 @@
       }
     }
 
-    /* Modern Cards with Green Accent */
+    /* Modern Cards with Yellow & Brown Accent */
     .card-modern {
       background: white;
       border-radius: 24px;
-      box-shadow: 0 20px 40px -15px rgba(5, 150, 105, 0.1);
+      box-shadow: 0 20px 40px -15px rgba(139, 90, 43, 0.1);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 1px solid rgba(5, 150, 105, 0.1);
+      border: 1px solid rgba(139, 90, 43, 0.1);
       overflow: hidden;
     }
 
     .card-modern:hover {
       transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 30px 60px -15px rgba(5, 150, 105, 0.3);
+      box-shadow: 0 30px 60px -15px rgba(251, 191, 36, 0.2);
     }
 
     .card-gradient {
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      background: linear-gradient(135deg, #FBBF24 0%, #8B5A2B 100%);
       color: white;
     }
 
-    /* Product Card with Green */
+    /* Product Card with Yellow & Brown */
     .product-card-modern {
       background: white;
       border-radius: 20px;
       overflow: hidden;
       transition: all 0.3s ease;
-      border: 1px solid rgba(5, 150, 105, 0.1);
-      box-shadow: 0 10px 30px -15px rgba(5, 150, 105, 0.1);
+      border: 1px solid rgba(139, 90, 43, 0.1);
+      box-shadow: 0 10px 30px -15px rgba(251, 191, 36, 0.1);
     }
 
     .product-card-modern:hover {
       transform: translateY(-10px);
-      box-shadow: 0 30px 40px -20px rgba(5, 150, 105, 0.4);
+      box-shadow: 0 30px 40px -20px rgba(139, 90, 43, 0.3);
     }
 
     .product-image {
@@ -190,7 +192,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(to top, rgba(5, 150, 105, 0.5), transparent);
+      background: linear-gradient(to top, rgba(139, 90, 43, 0.3), transparent);
       opacity: 0;
       transition: opacity 0.3s ease;
     }
@@ -199,38 +201,43 @@
       opacity: 1;
     }
 
-    /* Modern Badge with Green */
+    /* Modern Badge with Yellow & Brown */
     .badge-modern {
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      background: linear-gradient(135deg, #FBBF24 0%, #8B5A2B 100%);
       color: white;
       padding: 0.25rem 0.75rem;
       border-radius: 100px;
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.5px;
-      box-shadow: 0 4px 10px -5px rgba(5, 150, 105, 0.5);
+      box-shadow: 0 4px 10px -5px rgba(139, 90, 43, 0.5);
     }
 
-    .badge-warning {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    .badge-brown {
+      background: linear-gradient(135deg, #8B5A2B 0%, #A67B5B 100%);
       color: white;
-      /* match modern badge sizing and shape but keep warning color */
       padding: 0.25rem 0.75rem;
       border-radius: 100px;
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.5px;
-      box-shadow: 0 4px 10px -5px rgba(245, 158, 11, 0.45);
+      box-shadow: 0 4px 10px -5px rgba(139, 90, 43, 0.45);
     }
 
-    .badge-success {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    .badge-yellow {
+      background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
       color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 10px -5px rgba(251, 191, 36, 0.45);
     }
 
-    /* Modern Button with Green */
+    /* Modern Button with Yellow & Brown */
     .btn-modern {
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      background: linear-gradient(135deg, #FBBF24 0%, #8B5A2B 100%);
       color: white;
       padding: 0.75rem 1.5rem;
       border-radius: 100px;
@@ -240,20 +247,20 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      box-shadow: 0 10px 20px -10px rgba(5, 150, 105, 0.5);
+      box-shadow: 0 10px 20px -10px rgba(139, 90, 43, 0.5);
       border: none;
       cursor: pointer;
     }
 
     .btn-modern:hover {
       transform: translateY(-2px);
-      box-shadow: 0 20px 30px -10px rgba(5, 150, 105, 0.6);
+      box-shadow: 0 20px 30px -10px rgba(251, 191, 36, 0.5);
     }
 
     .btn-outline-modern {
       background: transparent;
-      color: #059669;
-      border: 2px solid #059669;
+      color: #FBBF24;
+      border: 2px solid #8B5A2B;
       padding: 0.75rem 1.5rem;
       border-radius: 100px;
       font-weight: 600;
@@ -261,37 +268,37 @@
     }
 
     .btn-outline-modern:hover {
-      background: #059669;
+      background: linear-gradient(135deg, #FBBF24 0%, #8B5A2B 100%);
       color: white;
       transform: translateY(-2px);
     }
 
-    /* Modern Stats with Green */
+    /* Modern Stats with Yellow & Brown */
     .stat-modern {
       background: white;
       border-radius: 20px;
       padding: 1.5rem;
       text-align: center;
-      box-shadow: 0 10px 30px -15px rgba(5, 150, 105, 0.1);
-      border: 1px solid rgba(5, 150, 105, 0.1);
+      box-shadow: 0 10px 30px -15px rgba(139, 90, 43, 0.1);
+      border: 1px solid rgba(139, 90, 43, 0.1);
       transition: all 0.3s ease;
     }
 
     .stat-modern:hover {
       transform: translateY(-5px);
-      box-shadow: 0 20px 40px -15px rgba(5, 150, 105, 0.3);
+      box-shadow: 0 20px 40px -15px rgba(251, 191, 36, 0.2);
     }
 
     .stat-number-modern {
       font-size: 2.5rem;
       font-weight: 800;
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      background: linear-gradient(135deg, #FBBF24 0%, #8B5A2B 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       line-height: 1;
     }
 
-    /* Section Title with Green */
+    /* Section Title with Yellow & Brown */
     .section-title-modern {
       font-size: 2.5rem;
       font-weight: 800;
@@ -300,7 +307,7 @@
     }
 
     .section-title-modern span {
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      background: linear-gradient(135deg, #FBBF24 0%, #8B5A2B 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: inline-block;
@@ -335,7 +342,7 @@
       animation-delay: 1s;
     }
 
-    /* Modern Input with Green Focus */
+    /* Modern Input with Yellow-Brown Focus */
     .input-modern {
       background: white;
       border: 2px solid #e5e7eb;
@@ -348,42 +355,38 @@
 
     .input-modern:focus {
       outline: none;
-      border-color: #059669;
-      box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+      border-color: #8B5A2B;
+      box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1);
     }
 
-    /* Testimonial Card with Green Border */
+    /* Testimonial Card with Yellow-Brown Border */
     .testimonial-modern {
       background: white;
       border-radius: 20px;
       padding: 1.5rem;
-      box-shadow: 0 10px 30px -15px rgba(5, 150, 105, 0.1);
-      border: 1px solid rgba(5, 150, 105, 0.1);
+      box-shadow: 0 10px 30px -15px rgba(139, 90, 43, 0.1);
+      border: 1px solid rgba(139, 90, 43, 0.1);
       transition: all 0.3s ease;
-      border-left: 4px solid #059669;
+      border-left: 4px solid #8B5A2B;
     }
 
     .testimonial-modern:hover {
       transform: translateY(-5px);
-      box-shadow: 0 20px 40px -15px rgba(5, 150, 105, 0.2);
+      box-shadow: 0 20px 40px -15px rgba(251, 191, 36, 0.2);
     }
 
-    .testimonial-name .last-name {
-      /* allow the last name color to be easily changed */
-      color: var(--accent, #10b981);
-    }
     .testimonial-badge {
-      background: linear-gradient(135deg, #059669, #10b981);
+      background: linear-gradient(135deg, #FBBF24, #8B5A2B);
       color: #ffffff;
       display: inline-flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* Modern Footer with Dark Green */
+    /* Modern Footer with Dark Yellow & Brown */
     .footer-modern {
-      background: #064e3b;
-      color: #a7f3d0;
+      background: linear-gradient(135deg, #D97706 0%, #5D3A1A 100%);
+      color: #FEF3C7;
       position: relative;
       overflow: hidden;
     }
@@ -404,7 +407,7 @@
       height: 50px;
     }
 
-    /* Progress Bar with Green */
+    /* Progress Bar with Yellow & Brown */
     .progress-bar {
       width: 100%;
       height: 8px;
@@ -415,12 +418,12 @@
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #059669, #10b981);
+      background: linear-gradient(90deg, #FBBF24, #8B5A2B);
       border-radius: 100px;
       transition: width 1s ease;
     }
 
-    /* Tooltip with Green */
+    /* Tooltip with Yellow-Brown */
     .tooltip-modern {
       position: relative;
     }
@@ -431,7 +434,7 @@
       bottom: 100%;
       left: 50%;
       transform: translateX(-50%);
-      background: #064e3b;
+      background: linear-gradient(135deg, #FBBF24, #8B5A2B);
       color: white;
       padding: 0.5rem 1rem;
       border-radius: 100px;
@@ -441,9 +444,9 @@
       margin-bottom: 0.5rem;
     }
 
-    /* Loading Skeleton */
+    /* Loading Skeleton with Yellow-Brown */
     .skeleton {
-      background: linear-gradient(90deg, #f0fdf4 25%, #d1fae5 50%, #f0fdf4 75%);
+      background: linear-gradient(90deg, #FEF3C7 25%, #F4E6D7 50%, #FEF3C7 75%);
       background-size: 200% 100%;
       animation: loading 1.5s infinite;
     }
@@ -458,93 +461,44 @@
       }
     }
 
-    /* Modern Scrollbar with Green */
+    /* Modern Scrollbar with Yellow & Brown */
     ::-webkit-scrollbar {
       width: 10px;
     }
 
     ::-webkit-scrollbar-track {
-      background: #f0fdf4;
+      background: #FEF3C7;
     }
 
     ::-webkit-scrollbar-thumb {
-      background: linear-gradient(135deg, #059669, #10b981);
+      background: linear-gradient(135deg, #FBBF24, #8B5A2B);
       border-radius: 10px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(135deg, #047857, #059669);
+      background: linear-gradient(135deg, #F59E0B, #5D3A1A);
     }
 
-    /* Floating Action Button with Green */
-    .fab-modern {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, #059669, #10b981);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 24px;
-      box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.4);
-      transition: all 0.3s ease;
-      z-index: 50;
-      cursor: pointer;
-      /* removed stroke/border to avoid white outline */
-    }
-
-    .fab-modern:hover {
-      transform: scale(1.1) rotate(10deg);
-      box-shadow: 0 20px 35px -5px rgba(5, 150, 105, 0.6);
-    }
-
-    .fab-modern:after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: inherit;
-      z-index: -1;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-
-      100% {
-        transform: scale(1.5);
-        opacity: 0;
-      }
-    }
-
-    /* Back to Top with Green */
+    /* Back to Top Button */
     .back-to-top {
       position: fixed;
-      bottom: 90px;
-      right: 24px;
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(135deg, #059669, #10b981);
+      bottom: 28px;
+      right: 28px;
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #FBBF24, #8B5A2B);
       color: white;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.3s ease;
-      /* removed stroke/border to avoid white outline */
+      transition: all 0.25s ease;
       opacity: 0;
       visibility: hidden;
       z-index: 49;
-      box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.4);
+      box-shadow: 0 14px 28px -8px rgba(139, 90, 43, 0.55);
+      border: none;
     }
 
     .back-to-top.visible {
@@ -553,11 +507,11 @@
     }
 
     .back-to-top:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px -5px rgba(5, 150, 105, 0.6);
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 18px 34px -10px rgba(251, 191, 36, 0.5);
     }
 
-    /* Timeline with Green */
+    /* Timeline with Yellow & Brown */
     .timeline-modern {
       position: relative;
     }
@@ -569,10 +523,10 @@
       transform: translateX(-50%);
       width: 2px;
       height: 100%;
-      background: linear-gradient(180deg, #059669, #10b981);
+      background: linear-gradient(180deg, #FBBF24, #8B5A2B);
     }
 
-    /* Countdown Timer with Green */
+    /* Countdown Timer with Yellow & Brown */
     .countdown-modern {
       display: flex;
       gap: 1rem;
@@ -585,14 +539,14 @@
       padding: 1rem;
       min-width: 80px;
       text-align: center;
-      box-shadow: 0 10px 20px -10px rgba(5, 150, 105, 0.1);
-      border: 1px solid rgba(5, 150, 105, 0.1);
+      box-shadow: 0 10px 20px -10px rgba(139, 90, 43, 0.1);
+      border: 1px solid rgba(139, 90, 43, 0.1);
     }
 
     .countdown-number {
       font-size: 2rem;
       font-weight: 800;
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      background: linear-gradient(135deg, #FBBF24 0%, #8B5A2B 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       line-height: 1;
@@ -605,9 +559,9 @@
       letter-spacing: 1px;
     }
 
-    /* Running Text with Green */
+    /* Running Text Modern with Yellow & Brown */
     .running-text-modern {
-      background: linear-gradient(90deg, #064e3b, #059669);
+      background: linear-gradient(90deg, #D97706, #8B5A2B);
       color: white;
       padding: 0.75rem 0;
       overflow: hidden;
@@ -622,7 +576,7 @@
 
     .running-text-content i {
       margin: 0 1rem;
-      color: #fbbf24;
+      color: #FEF3C7;
     }
 
     @keyframes scroll {
@@ -635,9 +589,9 @@
       }
     }
 
-    /* Newsletter Section with Green */
+    /* Newsletter Section with Yellow & Brown */
     .newsletter-modern {
-      background: linear-gradient(135deg, #064e3b, #059669);
+      background: linear-gradient(135deg, #D97706, #8B5A2B);
       border-radius: 30px;
       padding: 3rem;
       position: relative;
@@ -651,7 +605,7 @@
       right: -50%;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 50%);
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.2) 0%, transparent 50%);
       animation: rotate 20s linear infinite;
     }
 
@@ -665,7 +619,7 @@
       }
     }
 
-    /* Partner Logo with Green Hover */
+    /* Partner Logo with Yellow-Brown Hover */
     .partner-logo {
       filter: grayscale(100%);
       opacity: 0.5;
@@ -694,48 +648,60 @@
       transform: scale(1.05);
     }
 
-    /* Gradient Text with Green */
+    /* Gradient Text with Yellow & Brown */
     .gradient-text {
-      background: linear-gradient(135deg, #059669, #10b981);
+      background: linear-gradient(135deg, #FBBF24, #8B5A2B);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    /* Border Gradient with Green */
+    /* Border Gradient with Yellow & Brown */
     .border-gradient {
       border: double 2px transparent;
-      background-image: linear-gradient(white, white), linear-gradient(135deg, #059669, #10b981);
+      background-image: linear-gradient(white, white), linear-gradient(135deg, #FBBF24, #8B5A2B);
       background-origin: border-box;
       background-clip: padding-box, border-box;
     }
 
-    /* Card with Green Pattern */
+    /* Card with Pattern */
     .pattern-dots {
-      background-image: radial-gradient(#059669 1px, transparent 1px);
+      background-image: radial-gradient(#8B5A2B 1px, transparent 1px);
       background-size: 20px 20px;
       opacity: 0.1;
     }
 
-    /* Green Background Variations */
-    .bg-green-gradient {
-      background: linear-gradient(135deg, #064e3b, #059669);
+    /* Background Variations */
+    .bg-yellow-brown-gradient {
+      background: linear-gradient(135deg, #D97706, #8B5A2B);
     }
 
-    .text-green-primary {
-      color: #059669;
+    .text-yellow-primary {
+      color: #FBBF24;
     }
 
-    .border-green-primary {
-      border-color: #059669;
+    .text-brown-primary {
+      color: #8B5A2B;
     }
 
-    .hover\:text-green-primary:hover {
-      color: #059669;
+    .border-brown-primary {
+      border-color: #8B5A2B;
     }
 
-    .hover\:bg-green-primary:hover {
-      background-color: #059669;
+    .border-yellow-primary {
+      border-color: #FBBF24;
+    }
+
+    .hover\:text-brown-primary:hover {
+      color: #8B5A2B;
+    }
+
+    .hover\:text-yellow-primary:hover {
+      color: #FBBF24;
+    }
+
+    .hover\:bg-yellow-brown:hover {
+      background: linear-gradient(135deg, #FBBF24, #8B5A2B);
     }
 
     /* Logo Styles */
@@ -759,13 +725,13 @@
       position: relative;
       border: double 1px transparent;
       border-radius: 20px;
-      background-image: linear-gradient(white, white), linear-gradient(135deg, #059669, #10b981);
+      background-image: linear-gradient(white, white), linear-gradient(135deg, #FBBF24, #8B5A2B);
       background-origin: border-box;
       background-clip: padding-box, border-box;
     }
 
     .hover-glow:hover {
-      box-shadow: 0 0 20px rgba(5, 150, 105, 0.3);
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
     }
 
     .text-shadow {
@@ -794,8 +760,8 @@
 
     .grid-pattern {
       background-image:
-        linear-gradient(rgba(5, 150, 105, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(5, 150, 105, 0.1) 1px, transparent 1px);
+        linear-gradient(rgba(139, 90, 43, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(251, 191, 36, 0.1) 1px, transparent 1px);
       background-size: 50px 50px;
     }
 
@@ -803,7 +769,7 @@
       position: absolute;
       width: 300px;
       height: 300px;
-      background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(139, 90, 43, 0.1) 100%);
       border-radius: 50%;
       filter: blur(50px);
       z-index: 0;
@@ -859,7 +825,7 @@
       display: block;
       width: 20px;
       height: 20px;
-      background: rgba(5, 150, 105, 0.05);
+      background: rgba(251, 191, 36, 0.05);
       border-radius: 50%;
       animation: move 25s linear infinite;
     }
@@ -901,7 +867,7 @@
 
     /* Gradient Animation */
     .gradient-animate {
-      background: linear-gradient(-45deg, #059669, #10b981, #34d399, #059669);
+      background: linear-gradient(-45deg, #FBBF24, #F59E0B, #8B5A2B, #FBBF24);
       background-size: 400% 400%;
       animation: gradient 10s ease infinite;
     }
@@ -933,7 +899,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(5, 150, 105, 0.2), transparent);
+      background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.2), transparent);
       transform: translateX(-100%);
       animation: reveal 2s infinite;
     }
@@ -955,13 +921,30 @@
     .particle {
       position: absolute;
       border-radius: 50%;
-      background: rgba(5, 150, 105, 0.1);
+      background: rgba(251, 191, 36, 0.1);
       pointer-events: none;
+    }
+
+    /* Umroh Theme Elements with Yellow & Brown */
+    .kaaba-icon {
+      color: #FBBF24;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .islamic-pattern {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path d="M50 10 L60 40 L90 40 L65 60 L75 90 L50 70 L25 90 L35 60 L10 40 L40 40 Z" fill="%23FBBF24"/></svg>');
+      background-repeat: repeat;
+      background-size: 50px 50px;
+    }
+
+    /* Warm & Earthy Theme */
+    .warm-texture {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.03) 0%, rgba(139, 90, 43, 0.03) 100%);
     }
   </style>
 </head>
 
-<body class="bg-[#f0fdf4] antialiased overflow-x-hidden">
+<body class="bg-gradient-to-br from-[#FEF3C7] to-[#F4E6D7] antialiased overflow-x-hidden">
 
   <!-- Animated Background -->
   <div class="animated-bg">
@@ -975,143 +958,77 @@
     <span style="top: 50%; left: 50%; animation-delay: 14s;"></span>
   </div>
 
-  <!-- Modern Top Bar with Green -->
-  <div class="bg-[#064e3b] text-white text-sm py-2 relative z-50">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center">
-        <div class="flex items-center gap-6">
-          <a href="tel:+6281234567890" class="hover:text-[#fbbf24] transition flex items-center gap-2 group">
-            <i class="fas fa-phone-alt text-[#10b981] text-xs group-hover:animate-bounce"></i>
-            <span class="group-hover:translate-x-1 transition-transform">+62 812-3456-7890</span>
-          </a>
-          <a href="mailto:support@affillink.id"
-            class="hover:text-[#fbbf24] transition hidden sm:flex items-center gap-2 group">
-            <i class="fas fa-envelope text-[#10b981] text-xs group-hover:animate-bounce"></i>
-            <span class="group-hover:translate-x-1 transition-transform">support@affillink.id</span>
-          </a>
-          <a href="#" class="hover:text-[#fbbf24] transition hidden md:flex items-center gap-2 group">
-            <i class="fas fa-map-marker-alt text-[#10b981] text-xs group-hover:animate-bounce"></i>
-            <span class="group-hover:translate-x-1 transition-transform">Jakarta, Indonesia</span>
-          </a>
-        </div>
-        <div class="flex items-center gap-4">
-          <span class="hidden md:inline text-[#a7f3d0]">Follow kami:</span>
-          <div class="flex gap-2">
-            <a href="#"
-              class="w-8 h-8 bg-[#065f46] rounded-full flex items-center justify-center text-[#a7f3d0] hover:bg-[#059669] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
-                class="fab fa-facebook-f text-sm"></i></a>
-            <a href="#"
-              class="w-8 h-8 bg-[#065f46] rounded-full flex items-center justify-center text-[#a7f3d0] hover:bg-[#059669] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
-                class="fab fa-instagram text-sm"></i></a>
-            <a href="#"
-              class="w-8 h-8 bg-[#065f46] rounded-full flex items-center justify-center text-[#a7f3d0] hover:bg-[#059669] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
-                class="fab fa-twitter text-sm"></i></a>
-            <a href="#"
-              class="w-8 h-8 bg-[#065f46] rounded-full flex items-center justify-center text-[#a7f3d0] hover:bg-[#059669] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
-                class="fab fa-linkedin-in text-sm"></i></a>
-            <a href="#"
-              class="w-8 h-8 bg-[#065f46] rounded-full flex items-center justify-center text-[#a7f3d0] hover:bg-[#059669] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
-                class="fab fa-youtube text-sm"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Islamic Pattern Overlay -->
+  <div class="islamic-pattern fixed inset-0 pointer-events-none"></div>
 
   <!-- Modern Header with Logo -->
   <header class="header-modern sticky top-0 z-50">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-20">
-        <!-- Logo Affillink -->
-        <a href="/" class="logo-container flex items-center group relative">
+        <!-- Logo Affillink Umroh -->
+        <a href="/" class="logo-container flex items-center gap-3 group relative">
           <div
-            class="absolute -inset-2 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md">
+            class="absolute -inset-2 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md">
           </div>
-          <img src="/images/logoAffilllink2.png" alt="Affillink Logo"
+          <img src="/images/logoAffilllink2.png" alt="Affillink Umroh Logo"
             class="h-10 w-auto transition-all duration-300 group-hover:scale-105 relative z-10" style="max-width: 180px"
-            onerror="this.onerror=null; this.src='https://via.placeholder.com/180x40/059669/ffffff?text=Affillink';" />
+            onerror="this.onerror=null; this.src='https://via.placeholder.com/180x40/FBBF24/000000?text=Affillink+Umroh';" />
+          <span class="mx-2 text-[#8B5A2B] font-semibold text-xl select-none">|</span>
+          <img src="https://i.ibb.co.com/KpV7Sq8M/Salinan-dari-Desain-Tanpa-Judul.png" alt="Affillink Umroh Mark"
+            class="h-16 w-auto object-contain transition-all duration-300 group-hover:scale-110 relative z-10"
+            style="max-height: 64px" onerror="this.style.display='none';" />
         </a>
 
         <!-- Desktop Navigation -->
         <nav class="hidden lg:flex items-center gap-1">
           <a href="#beranda"
-            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
+            class="px-4 py-2 text-[#8B5A2B] hover:text-[#FBBF24] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
             <span class="relative z-10">Beranda</span>
             <span
-              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
-            <span
-              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
-          </a>
-          <a href="#produk"
-            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
-            <span class="relative z-10">Produk</span>
-            <span
-              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
-            <span
-              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
-          </a>
-          <a href="#komisi"
-            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
-            <span class="relative z-10">Komisi</span>
-            <span
-              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
-            <span
-              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] transition-all duration-300 group-hover:w-full"></span>
           </a>
           <a href="#cara-kerja"
-            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
+            class="px-4 py-2 text-[#8B5A2B] hover:text-[#FBBF24] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
             <span class="relative z-10">Cara Kerja</span>
             <span
-              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] transition-all duration-300 group-hover:w-full"></span>
+          </a>
+          <a href="#kenapa-memilih"
+            class="px-4 py-2 text-[#8B5A2B] hover:text-[#FBBF24] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
+            <span class="relative z-10">Keunggulan Kami</span>
             <span
-              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] transition-all duration-300 group-hover:w-full"></span>
           </a>
           <a href="#testimoni"
-            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
+            class="px-4 py-2 text-[#8B5A2B] hover:text-[#FBBF24] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
             <span class="relative z-10">Testimoni</span>
             <span
-              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
-            <span
-              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
-          </a>
-          <a href="#blog"
-            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
-            <span class="relative z-10">Blog</span>
-            <span
-              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
-            <span
-              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] transition-all duration-300 group-hover:w-full"></span>
           </a>
           <a href="#faq"
-            class="px-4 py-2 text-[#065f46] hover:text-[#059669] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
+            class="px-4 py-2 text-[#8B5A2B] hover:text-[#FBBF24] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
             <span class="relative z-10">FAQ</span>
             <span
-              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
-            <span
-              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] transition-all duration-300 group-hover:w-full"></span>
           </a>
         </nav>
 
         <!-- CTA Buttons -->
         <div class="flex items-center gap-3">
           <a href="/login"
-            class="hidden md:block px-5 py-2 text-[#065f46] font-bold hover:text-[#059669] transition-all duration-300 relative group overflow-hidden">
+            class="hidden md:block px-5 py-2 text-[#8B5A2B] font-bold hover:text-[#FBBF24] transition-all duration-300 relative group overflow-hidden">
             <span class="relative z-10">Login</span>
             <span
-              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#059669] to-[#10b981] transition-all duration-300 group-hover:w-full"></span>
-            <span
-              class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-full"></span>
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] transition-all duration-300 group-hover:w-full"></span>
           </a>
           <a href="/register" class="btn-modern group relative overflow-hidden shimmer">
             <span class="relative z-10">Daftar Gratis</span>
             <i class="fas fa-arrow-right text-sm relative z-10 group-hover:translate-x-1 transition-transform"></i>
-            <span
-              class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
           </a>
 
           <!-- Mobile Menu Button -->
           <button onclick="toggleMobileMenu()"
-            class="lg:hidden w-10 h-10 bg-gradient-to-r from-[#059669] to-[#10b981] text-white rounded-xl flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-lg">
+            class="lg:hidden w-10 h-10 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] text-white rounded-xl flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-lg">
             <i class="fas fa-bars"></i>
           </button>
         </div>
@@ -1120,67 +1037,61 @@
 
     <!-- Mobile Menu -->
     <div id="mobileMenu"
-      class="hidden lg:hidden absolute top-full left-0 w-full bg-white border-t border-[#d1fae5] shadow-xl transform transition-all duration-300">
+      class="hidden lg:hidden absolute top-full left-0 w-full bg-white border-t border-[#F4E6D7] shadow-xl transform transition-all duration-300">
       <div class="container mx-auto px-4 py-4">
         <div class="space-y-2">
           <a href="#beranda"
-            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
-              class="fas fa-home w-6 text-[#059669]"></i> Beranda</a>
-          <a href="#produk"
-            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
-              class="fas fa-box w-6 text-[#059669]"></i> Produk</a>
-          <a href="#komisi"
-            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
-              class="fas fa-percentage w-6 text-[#059669]"></i> Komisi</a>
+            class="block px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
+              class="fas fa-home w-6 text-[#FBBF24]"></i> Beranda</a>
+          <a href="#kenapa-memilih"
+            class="block px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
+              class="fas fa-badge-dollar w-6 text-[#FBBF24]"></i> Keunggulan Kami</a>
           <a href="#cara-kerja"
-            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
-              class="fas fa-cogs w-6 text-[#059669]"></i> Cara Kerja</a>
+            class="block px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
+              class="fas fa-cogs w-6 text-[#FBBF24]"></i> Cara Kerja</a>
           <a href="#testimoni"
-            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
-              class="fas fa-star w-6 text-[#059669]"></i> Testimoni</a>
-          <a href="#blog"
-            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
-              class="fas fa-blog w-6 text-[#059669]"></i> Blog</a>
+            class="block px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
+              class="fas fa-star w-6 text-[#FBBF24]"></i> Testimoni</a>
           <a href="#faq"
-            class="block px-4 py-3 text-[#065f46] hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
-              class="fas fa-question-circle w-6 text-[#059669]"></i> FAQ</a>
-          <div class="pt-4 mt-4 border-t border-[#d1fae5]">
+            class="block px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
+              class="fas fa-question-circle w-6 text-[#FBBF24]"></i> FAQ</a>
+          <div class="pt-4 mt-4 border-t border-[#F4E6D7]">
             <a href="/register" class="btn-modern w-full justify-center group">
               Daftar Sekarang
               <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
             </a>
-              <a href="/login"
-                class="mt-2 block w-full px-4 py-3 text-center text-[#065f46] hover:text-[#059669] transition-colors duration-300 font-bold">
-                Login
-              </a>
+            <a href="/login"
+              class="mt-2 block w-full px-4 py-3 text-center text-[#8B5A2B] hover:text-[#FBBF24] transition-colors duration-300 font-bold">
+              Login
+            </a>
           </div>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Running Text Modern with Green -->
+  <!-- Running Text Modern with Yellow & Brown -->
   <div class="running-text-modern relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-r from-[#064e3b] to-[#059669] opacity-90"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#D97706] to-[#8B5A2B] opacity-90"></div>
     <div class="container mx-auto px-4 relative">
       <div class="running-text-content">
-        <i class="fas fa-bolt text-yellow-300"></i> PROMO SPESIAL: Bonus Rp 500.000 untuk Affiliate Baru!
-        <i class="fas fa-star text-yellow-300"></i> Komisi Tertinggi hingga 50%
-        <i class="fas fa-rocket text-yellow-300"></i> Produk Digital & Fisik Tersedia
-        <i class="fas fa-clock text-yellow-300"></i> Payout Harian via Bank & E-Wallet
-        <i class="fas fa-gift text-yellow-300"></i> Gratis Pendaftaran Selamanya!
-        <i class="fas fa-trophy text-yellow-300"></i> 50,000+ Affiliate Sukses
-        <i class="fas fa-bolt text-yellow-300"></i> PROMO SPESIAL: Bonus Rp 500.000 untuk Affiliate Baru!
-        <i class="fas fa-star text-yellow-300"></i> Komisi Tertinggi hingga 50%
-        <i class="fas fa-rocket text-yellow-300"></i> Produk Digital & Fisik Tersedia
-        <i class="fas fa-clock text-yellow-300"></i> Payout Harian via Bank & E-Wallet
-        <i class="fas fa-gift text-yellow-300"></i> Gratis Pendaftaran Selamanya!
-        <i class="fas fa-trophy text-yellow-300"></i> 50,000+ Affiliate Sukses
+        <i class="fas fa-mosque text-[#FEF3C7]"></i> 🕋 PROMO UMROH: Bonus Rp 1.000.000 untuk Affiliate Baru!
+        <i class="fas fa-star text-[#FEF3C7]"></i> Komisi Tertinggi hingga 50%
+        <i class="fas fa-kaaba text-[#FEF3C7]"></i> Paket Umroh Terpercaya
+        <i class="fas fa-clock text-[#FEF3C7]"></i> Payout Harian via Bank & E-Wallet
+        <i class="fas fa-gift text-[#FEF3C7]"></i> Gratis Pendaftaran Selamanya!
+        <i class="fas fa-trophy text-[#FEF3C7]"></i> 10,000+ Affiliate Umroh Sukses
+        <i class="fas fa-mosque text-[#FEF3C7]"></i> 🕋 PROMO UMROH: Bonus Rp 1.000.000 untuk Affiliate Baru!
+        <i class="fas fa-star text-[#FEF3C7]"></i> Komisi Tertinggi hingga 50%
+        <i class="fas fa-kaaba text-[#FEF3C7]"></i> Paket Umroh Terpercaya
+        <i class="fas fa-clock text-[#FEF3C7]"></i> Payout Harian via Bank & E-Wallet
+        <i class="fas fa-gift text-[#FEF3C7]"></i> Gratis Pendaftaran Selamanya!
+        <i class="fas fa-trophy text-[#FEF3C7]"></i> 10,000+ Affiliate Umroh Sukses
       </div>
     </div>
   </div>
 
-  <!-- Hero Section Modern with Green -->
+  <!-- Hero Section Modern with Yellow & Brown -->
   <section id="beranda" class="hero-modern pt-20 pb-32 relative overflow-hidden">
     <div class="hero-circle"></div>
     <div class="hero-circle-2"></div>
@@ -1192,34 +1103,33 @@
         <div data-aos="fade-right" data-aos-duration="1000">
           <div
             class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-lg text-sm font-semibold mb-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
-            <span class="w-2 h-2 bg-[#059669] rounded-full animate-pulse"></span>
-            <span class="text-[#065f46]">🔥 50,000+ Affiliate Aktif di Seluruh Indonesia</span>
-            <span class="px-2 py-0.5 bg-[#059669] text-white text-xs rounded-full animate-pulse-slow">LIVE</span>
+            <span class="w-2 h-2 bg-[#FBBF24] rounded-full animate-pulse"></span>
+            <span class="text-[#8B5A2B]">🕋 <span class="font-bold">AFFILIATE UMROH PERTAMA</span> di Seluruh
+              Indonesia</span>
+            <span
+              class="px-2 py-0.5 bg-[#FBBF24] text-[#8B5A2B] text-xs rounded-full animate-pulse-slow font-bold">LIVE</span>
           </div>
 
           <h1 class="section-title-modern text-5xl lg:text-6xl text-shadow">
-            Dapatkan Penghasilan <br><span>Jutaan Rupiah</span> <br>Setiap Bulan
+            Dapatkan Komisi <br><span>Jutaan Rupiah</span> <br>dari Promosi Paket Umroh
           </h1>
 
           <p class="text-[#4b5563] text-lg mb-8 max-w-lg leading-relaxed">
-            Bergabung dengan platform affiliate marketing modern. Promosikan produk berkualitas, dapatkan komisi hingga
-            <span class="font-bold text-[#059669] bg-[#ecfdf5] px-2 py-1 rounded-lg border border-[#059669]">50%</span>
-            setiap penjualan. Tanpa modal, tanpa stok barang.
+            Platform affiliate umroh <span class="font-bold text-[#FBBF24]">PERTAMA</span> di Indonesia. Promosikan
+            paket umroh berkualitas, dapatkan komisi hingga
+            <span class="font-bold text-[#8B5A2B] bg-[#FEF3C7] px-2 py-1 rounded-lg border border-[#FBBF24]">50%</span>
+            setiap pemberangkatan jamaah. Mulai perjalanan bisnis umroh Anda sekarang.
           </p>
 
           <div class="flex flex-wrap gap-4 mb-8">
             <a href="/register" class="btn-modern text-base px-8 py-4 group relative overflow-hidden shimmer">
-              <span class="relative z-10">Mulai Sekarang Gratis</span>
+              <span class="relative z-10">Mulai Jadi Affiliate Umroh</span>
               <i
-                class="fas fa-rocket ml-2 relative z-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-              <span
-                class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+                class="fas fa-mosque ml-2 relative z-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
             </a>
             <a href="#cara-kerja" class="btn-outline-modern text-base px-8 py-4 group relative overflow-hidden">
               <span class="relative z-10"><i class="far fa-play-circle mr-2 group-hover:animate-pulse"></i>Lihat Cara
                 Kerja</span>
-              <span
-                class="absolute inset-0 bg-[#059669] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
             </a>
           </div>
 
@@ -1244,14 +1154,14 @@
             </div>
             <div>
               <div class="flex items-center gap-1">
-                <i class="fas fa-star text-yellow-400 text-sm"></i>
-                <i class="fas fa-star text-yellow-400 text-sm"></i>
-                <i class="fas fa-star text-yellow-400 text-sm"></i>
-                <i class="fas fa-star text-yellow-400 text-sm"></i>
-                <i class="fas fa-star text-yellow-400 text-sm"></i>
-                <span class="text-sm font-semibold text-[#065f46] ml-1">4.9</span>
+                <i class="fas fa-star text-[#FBBF24] text-sm"></i>
+                <i class="fas fa-star text-[#FBBF24] text-sm"></i>
+                <i class="fas fa-star text-[#FBBF24] text-sm"></i>
+                <i class="fas fa-star text-[#FBBF24] text-sm"></i>
+                <i class="fas fa-star text-[#FBBF24] text-sm"></i>
+                <span class="text-sm font-semibold text-[#8B5A2B] ml-1">4.9</span>
               </div>
-              <p class="text-xs text-[#6b7280]">1.500+ review positif dari affiliate</p>
+              <p class="text-xs text-[#6b7280]">500+ review positif dari affiliate umroh</p>
             </div>
           </div>
         </div>
@@ -1261,28 +1171,28 @@
           <!-- Main Image -->
           <div class="relative group card-3d">
             <div
-              class="absolute -inset-4 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-3xl opacity-20 blur-3xl group-hover:opacity-30 transition-all duration-500 animate-pulse">
+              class="absolute -inset-4 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-3xl opacity-20 blur-3xl group-hover:opacity-30 transition-all duration-500 animate-pulse">
             </div>
             <img
-              src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-              alt="Affiliate Marketing"
+              src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Umroh Affiliate Marketing"
               class="relative rounded-3xl shadow-2xl w-full transform group-hover:scale-[1.02] transition-all duration-700">
 
-            <!-- Floating Cards with Green -->
+            <!-- Floating Cards with Yellow & Brown -->
             <div
               class="absolute -bottom-8 -left-8 glass-card p-4 rounded-2xl shadow-xl floating cursor-pointer hover:bg-white hover:scale-105 transition-all duration-300"
               data-aos="zoom-in" data-aos-delay="200">
               <div class="flex items-center gap-3">
                 <div
-                  class="w-12 h-12 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-xl flex items-center justify-center text-white group/icon">
+                  class="w-12 h-12 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-xl flex items-center justify-center text-white group/icon">
                   <i class="fas fa-chart-line text-xl group-hover/icon:scale-110 transition-transform duration-300"></i>
                 </div>
                 <div>
                   <p class="text-xs text-[#6b7280]">Komisi Bulanan</p>
-                  <p class="text-xl font-bold text-[#064e3b]">Rp 50Jt+</p>
-                  <div class="flex items-center gap-1 text-xs text-[#059669]">
+                  <p class="text-xl font-bold text-[#8B5A2B]">Rp 100Jt+</p>
+                  <div class="flex items-center gap-1 text-xs text-[#FBBF24]">
                     <i class="fas fa-arrow-up"></i>
-                    <span>+27% dari bulan lalu</span>
+                    <span>+35% dari bulan lalu</span>
                   </div>
                 </div>
               </div>
@@ -1293,21 +1203,21 @@
               data-aos="zoom-in" data-aos-delay="400">
               <div class="flex items-center gap-3">
                 <div
-                  class="w-12 h-12 bg-gradient-to-r from-[#f59e0b] to-[#d97706] rounded-xl flex items-center justify-center text-white group/icon">
+                  class="w-12 h-12 bg-gradient-to-r from-[#8B5A2B] to-[#A67B5B] rounded-xl flex items-center justify-center text-white group/icon">
                   <i class="fas fa-users text-xl group-hover/icon:scale-110 transition-transform duration-300"></i>
                 </div>
                 <div>
-                  <p class="text-xs text-[#6b7280]">Total Affiliate</p>
-                  <p class="text-xl font-bold text-[#064e3b]">50K+</p>
-                  <p class="text-xs text-[#059669]">Aktif</p>
+                  <p class="text-xs text-[#6b7280]">Total Affiliate Umroh</p>
+                  <p class="text-xl font-bold text-[#8B5A2B]">10K+</p>
+                  <p class="text-xs text-[#FBBF24]">Aktif</p>
                 </div>
               </div>
             </div>
 
             <div
-              class="absolute bottom-8 right-8 bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-[#059669] transition-all duration-300 cursor-pointer">
-              <i class="fas fa-play-circle text-[#10b981] group-hover:animate-pulse"></i>
-              <span>Watch Video</span>
+              class="absolute bottom-8 right-8 bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] transition-all duration-300 cursor-pointer">
+              <i class="fas fa-play-circle text-[#FBBF24] group-hover:animate-pulse"></i>
+              <span>Tonton Video</span>
             </div>
           </div>
         </div>
@@ -1315,25 +1225,25 @@
     </div>
   </section>
 
-  <!-- Stats Section Modern with Green -->
+  <!-- Stats Section Modern with Yellow & Brown -->
   <section class="py-12 relative z-20 -mt-16">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
           data-aos-duration="800">
-          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">500+</div>
+          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">20+</div>
           <div
-            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#059669] transition-colors duration-300">
-            Produk Tersedia</div>
+            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#FBBF24] transition-colors duration-300">
+            Travel Partner</div>
           <div class="progress-bar mt-3">
             <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 85%"></div>
           </div>
         </div>
         <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
           data-aos-duration="800" data-aos-delay="100">
-          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">50K+</div>
+          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">10K+</div>
           <div
-            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#059669] transition-colors duration-300">
+            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#FBBF24] transition-colors duration-300">
             Affiliate Aktif</div>
           <div class="progress-bar mt-3">
             <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 92%"></div>
@@ -1341,9 +1251,9 @@
         </div>
         <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
           data-aos-duration="800" data-aos-delay="200">
-          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">Rp 5M+</div>
+          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">Rp 10M+</div>
           <div
-            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#059669] transition-colors duration-300">
+            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#FBBF24] transition-colors duration-300">
             Komisi Dibayar</div>
           <div class="progress-bar mt-3">
             <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 78%"></div>
@@ -1351,55 +1261,55 @@
         </div>
         <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
           data-aos-duration="800" data-aos-delay="300">
-          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">98%</div>
+          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">99%</div>
           <div
-            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#059669] transition-colors duration-300">
-            Affiliate Puas</div>
+            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#FBBF24] transition-colors duration-300">
+            Jamaah Puas</div>
           <div class="progress-bar mt-3">
-            <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 98%"></div>
+            <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 99%"></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- How It Works Modern with Green -->
-  <section id="cara-kerja" class="py-20 bg-[#ecfdf5] relative overflow-hidden">
+  <!-- How It Works Modern with Yellow & Brown -->
+  <section id="cara-kerja" class="py-20 bg-[#F4E6D7] relative overflow-hidden">
     <div class="absolute inset-0 pattern-dots"></div>
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="text-center mb-12">
         <div
           class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full mb-4 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
-          <span class="w-2 h-2 bg-[#059669] rounded-full animate-pulse"></span>
-          <span class="text-sm font-medium text-[#065f46]">4 Langkah Mudah</span>
+          <span class="w-2 h-2 bg-[#FBBF24] rounded-full animate-pulse"></span>
+          <span class="text-sm font-medium text-[#8B5A2B]">4 Langkah Mudah</span>
         </div>
         <h2 class="section-title-modern">
-          Cara Kerja <span>Affiliate</span>
+          Cara Kerja <span>Affiliate Umroh</span>
         </h2>
-        <p class="section-subtitle">Mulai menghasilkan uang hanya dalam 4 langkah sederhana</p>
+        <p class="section-subtitle">Mulai menghasilkan dari promosi paket umroh dalam 4 langkah sederhana</p>
       </div>
 
       <div class="grid md:grid-cols-4 gap-6 relative">
-        <!-- Connecting Line (centered, thicker, behind steps) -->
+        <!-- Connecting Line -->
         <div
-          class="hidden md:block absolute inset-x-10 top-1/2 transform -translate-y-1/2 h-1 bg-gradient-to-r from-[#059669] to-[#10b981]">
+          class="hidden md:block absolute inset-x-10 top-1/2 transform -translate-y-1/2 h-1 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B]">
         </div>
 
         <!-- Step 1 -->
         <div class="text-center relative group z-10" data-aos="fade-up" data-aos-duration="800">
           <div class="relative inline-block">
             <div
-              class="w-24 h-24 mx-auto bg-gradient-to-r from-[#059669] to-[#10b981] rounded-2xl flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-xl shadow-[#059669]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
+              class="w-24 h-24 mx-auto bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-2xl flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-xl shadow-[#8B5A2B]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
               <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500">1</span>
             </div>
             <div
-              class="absolute -top-2 -right-2 w-8 h-8 bg-[#10b981] rounded-full flex items-center justify-center text-white text-sm border-4 border-white animate-bounce">
+              class="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] rounded-full flex items-center justify-center text-[#8B5A2B] text-sm border-4 border-white animate-bounce">
               <i class="fas fa-user-plus"></i>
             </div>
           </div>
-          <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+          <h3 class="font-bold text-lg text-[#8B5A2B] mb-2 group-hover:text-[#FBBF24] transition-colors duration-300">
             Daftar Gratis</h3>
-          <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Buat akun dalam 2
+          <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Buat akun dalam 2
             menit. Tanpa biaya pendaftaran.</p>
         </div>
 
@@ -1407,132 +1317,132 @@
         <div class="text-center relative group z-10" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
           <div class="relative inline-block">
             <div
-              class="w-24 h-24 mx-auto bg-gradient-to-r from-[#059669] to-[#10b981] rounded-2xl flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-xl shadow-[#059669]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
+              class="w-24 h-24 mx-auto bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-2xl flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-xl shadow-[#8B5A2B]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
               <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500">2</span>
             </div>
             <div
-              class="absolute -top-2 -right-2 w-8 h-8 bg-[#10b981] rounded-full flex items-center justify-center text-white text-sm border-4 border-white animate-bounce"
+              class="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] rounded-full flex items-center justify-center text-[#8B5A2B] text-sm border-4 border-white animate-bounce"
               style="animation-delay: 0.2s">
-              <i class="fas fa-hand-pointer"></i>
+              <i class="fas fa-mosque"></i>
             </div>
           </div>
-          <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
-            Pilih Produk</h3>
-          <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Pilih dari 500+
-            produk dengan komisi tinggi.</p>
+          <h3 class="font-bold text-lg text-[#8B5A2B] mb-2 group-hover:text-[#FBBF24] transition-colors duration-300">
+            Pilih Paket Umroh</h3>
+          <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Pilih dari 20+
+            paket umroh dengan komisi tinggi.</p>
         </div>
 
         <!-- Step 3 -->
         <div class="text-center relative group z-10" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
           <div class="relative inline-block">
             <div
-              class="w-24 h-24 mx-auto bg-gradient-to-r from-[#059669] to-[#10b981] rounded-2xl flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-xl shadow-[#059669]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
+              class="w-24 h-24 mx-auto bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-2xl flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-xl shadow-[#8B5A2B]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
               <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500">3</span>
             </div>
             <div
-              class="absolute -top-2 -right-2 w-8 h-8 bg-[#10b981] rounded-full flex items-center justify-center text-white text-sm border-4 border-white animate-bounce"
+              class="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] rounded-full flex items-center justify-center text-[#8B5A2B] text-sm border-4 border-white animate-bounce"
               style="animation-delay: 0.4s">
               <i class="fas fa-share-alt"></i>
             </div>
           </div>
-          <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+          <h3 class="font-bold text-lg text-[#8B5A2B] mb-2 group-hover:text-[#FBBF24] transition-colors duration-300">
             Promosikan</h3>
-          <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Bagikan link ke
-            sosial media, blog, atau WA.</p>
+          <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Bagikan link ke
+            grup pengajian, majelis taklim, atau WA.</p>
         </div>
 
         <!-- Step 4 -->
         <div class="text-center relative group z-10" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
           <div class="relative inline-block">
             <div
-              class="w-24 h-24 mx-auto bg-gradient-to-r from-[#059669] to-[#10b981] rounded-2xl flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-xl shadow-[#059669]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
+              class="w-24 h-24 mx-auto bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-2xl flex items-center justify-center text-white text-3xl font-bold mb-6 shadow-xl shadow-[#8B5A2B]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
               <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500">4</span>
             </div>
             <div
-              class="absolute -top-2 -right-2 w-8 h-8 bg-[#10b981] rounded-full flex items-center justify-center text-white text-sm border-4 border-white animate-bounce"
+              class="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] rounded-full flex items-center justify-center text-[#8B5A2B] text-sm border-4 border-white animate-bounce"
               style="animation-delay: 0.6s">
               <i class="fas fa-money-bill-wave"></i>
             </div>
           </div>
-          <h3 class="font-bold text-lg text-[#064e3b] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+          <h3 class="font-bold text-lg text-[#8B5A2B] mb-2 group-hover:text-[#FBBF24] transition-colors duration-300">
             Dapatkan Komisi</h3>
-          <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Terima komisi
-            setiap ada penjualan. Payout harian!</p>
+          <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Terima komisi
+            setiap ada jamaah berangkat. Payout harian!</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Features Modern with Green -->
-  <section class="py-20 bg-white relative overflow-hidden">
+  <!-- Features Modern with Yellow & Brown -->
+  <section id="kenapa-memilih" class="py-20 bg-white relative overflow-hidden">
     <div class="absolute inset-0 grid-pattern opacity-5"></div>
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <div data-aos="fade-right" data-aos-duration="1000">
           <div
-            class="inline-flex items-center gap-2 px-4 py-2 bg-[#ecfdf5] rounded-full mb-4 hover:shadow-md hover:scale-105 transition-all duration-300">
-            <span class="w-2 h-2 bg-[#059669] rounded-full animate-pulse"></span>
-            <span class="text-sm font-medium text-[#065f46]">Kenapa Memilih Kami</span>
+            class="inline-flex items-center gap-2 px-4 py-2 bg-[#FEF3C7] rounded-full mb-4 hover:shadow-md hover:scale-105 transition-all duration-300">
+            <span class="w-2 h-2 bg-[#FBBF24] rounded-full animate-pulse"></span>
+            <span class="text-sm font-medium text-[#8B5A2B]">Kenapa Memilih Kami</span>
           </div>
           <h2 class="section-title-modern mb-6">
-            Platform Affiliate <span>Terpercaya</span> No.1 di Indonesia
+            Platform Affiliate <span>Umroh Pertama</span> di Indonesia
           </h2>
-          <p class="text-[#6b7280] text-lg mb-8 leading-relaxed">Kami memberikan solusi lengkap untuk affiliate
-            marketing dengan teknologi terkini dan support terbaik.</p>
+          <p class="text-[#6b7280] text-lg mb-8 leading-relaxed">Kami menghadirkan solusi affiliate marketing khusus
+            industri umroh dengan teknologi terkini dan kemitraan dengan travel umroh terpercaya.</p>
 
           <div class="space-y-4">
             <div
-              class="flex items-start gap-4 p-4 bg-[#ecfdf5] rounded-2xl hover:shadow-lg transition-all duration-300 group hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-white hover:scale-[1.02]">
+              class="flex items-start gap-4 p-4 bg-[#FEF3C7] rounded-2xl hover:shadow-lg transition-all duration-300 group hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-white hover:scale-[1.02]">
               <div
-                class="w-12 h-12 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                class="w-12 h-12 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <i class="fas fa-percentage text-xl"></i>
               </div>
               <div>
-                <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300">Komisi
+                <h4 class="font-bold text-[#8B5A2B] group-hover:text-[#FBBF24] transition-colors duration-300">Komisi
                   Tertinggi</h4>
-                <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Hingga 50%
-                  per penjualan, tertinggi di Indonesia.</p>
+                <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Hingga 50%
+                  per jamaah, tertinggi di industri umroh.</p>
               </div>
             </div>
 
             <div
-              class="flex items-start gap-4 p-4 bg-[#ecfdf5] rounded-2xl hover:shadow-lg transition-all duration-300 group hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-white hover:scale-[1.02]">
+              class="flex items-start gap-4 p-4 bg-[#FEF3C7] rounded-2xl hover:shadow-lg transition-all duration-300 group hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-white hover:scale-[1.02]">
               <div
-                class="w-12 h-12 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                class="w-12 h-12 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <i class="fas fa-clock text-xl"></i>
               </div>
               <div>
-                <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300">Payout
+                <h4 class="font-bold text-[#8B5A2B] group-hover:text-[#FBBF24] transition-colors duration-300">Payout
                   Harian</h4>
-                <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Penarikan
-                  setiap hari, minimal Rp 50.000.</p>
+                <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Penarikan
+                  setiap hari, minimal Rp 100.000.</p>
               </div>
             </div>
 
             <div
-              class="flex items-start gap-4 p-4 bg-[#ecfdf5] rounded-2xl hover:shadow-lg transition-all duration-300 group hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-white hover:scale-[1.02]">
+              class="flex items-start gap-4 p-4 bg-[#FEF3C7] rounded-2xl hover:shadow-lg transition-all duration-300 group hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-white hover:scale-[1.02]">
               <div
-                class="w-12 h-12 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                class="w-12 h-12 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <i class="fas fa-chart-line text-xl"></i>
               </div>
               <div>
-                <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300">Tracking
+                <h4 class="font-bold text-[#8B5A2B] group-hover:text-[#FBBF24] transition-colors duration-300">Tracking
                   Real-Time</h4>
-                <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Pantau
-                  performa link secara live dengan dashboard interaktif.</p>
+                <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Pantau
+                  jumlah pendaftar jamaah secara live.</p>
               </div>
             </div>
 
             <div
-              class="flex items-start gap-4 p-4 bg-[#ecfdf5] rounded-2xl hover:shadow-lg transition-all duration-300 group hover:bg-gradient-to-r hover:from-[#ecfdf5] hover:to-white hover:scale-[1.02]">
+              class="flex items-start gap-4 p-4 bg-[#FEF3C7] rounded-2xl hover:shadow-lg transition-all duration-300 group hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-white hover:scale-[1.02]">
               <div
-                class="w-12 h-12 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                class="w-12 h-12 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <i class="fas fa-headset text-xl"></i>
               </div>
               <div>
-                <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300">Support
+                <h4 class="font-bold text-[#8B5A2B] group-hover:text-[#FBBF24] transition-colors duration-300">Support
                   24/7</h4>
-                <p class="text-[#6b7280] text-sm group-hover:text-[#065f46] transition-colors duration-300">Tim support
+                <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Tim support
                   siap membantu kapan saja via live chat.</p>
               </div>
             </div>
@@ -1541,62 +1451,63 @@
 
         <div class="relative" data-aos="fade-left" data-aos-duration="1000">
           <div
-            class="absolute -inset-4 bg-gradient-to-r from-[#059669] to-[#10b981] rounded-3xl opacity-20 blur-3xl animate-pulse">
+            class="absolute -inset-4 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-3xl opacity-20 blur-3xl animate-pulse">
           </div>
           <img
-            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-            alt="Dashboard"
+            src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            alt="Umroh Dashboard"
             class="relative rounded-3xl shadow-2xl w-full transform hover:scale-[1.02] transition-all duration-700">
 
-          <!-- Stats Card with Green -->
+          <!-- Stats Card with Yellow & Brown -->
           <div
             class="absolute -bottom-6 -left-6 glass-card p-4 rounded-2xl shadow-xl floating cursor-pointer hover:bg-white hover:scale-105 transition-all duration-300"
             data-aos="zoom-in" data-aos-delay="200">
             <div class="flex items-center gap-3">
-              <div class="w-12 h-12 bg-[#059669] rounded-xl flex items-center justify-center text-white group/icon">
+              <div
+                class="w-12 h-12 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-xl flex items-center justify-center text-white group/icon">
                 <i class="fas fa-arrow-up text-xl group-hover/icon:scale-110 transition-transform duration-300"></i>
               </div>
               <div>
                 <p class="text-xs text-[#6b7280]">Konversi Bulan Ini</p>
-                <p class="text-xl font-bold text-[#064e3b]">+127%</p>
-                <div class="flex items-center gap-1 text-xs text-[#059669]">
+                <p class="text-xl font-bold text-[#8B5A2B]">+147%</p>
+                <div class="flex items-center gap-1 text-xs text-[#FBBF24]">
                   <i class="fas fa-chart-line"></i>
-                  <span>Meningkat 27%</span>
+                  <span>Meningkat 37%</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Feature Badge with Green -->
+          <!-- Feature Badge with Yellow & Brown -->
           <div
-            class="absolute top-6 right-6 bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-[#059669] transition-all duration-300 cursor-pointer">
-            <i class="fas fa-shield-alt text-[#10b981]"></i>
-            <span>100% Secure</span>
+            class="absolute top-6 right-6 bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] transition-all duration-300 cursor-pointer">
+            <i class="fas fa-shield-alt text-[#FBBF24]"></i>
+            <span>100% Terpercaya</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials Modern with Green -->
-  <section id="testimoni" class="py-20 bg-[#ecfdf5] relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-64 h-64 bg-[#059669] opacity-5 rounded-full -mr-32 -mt-32 animate-pulse-slow">
+  <!-- Testimonials Modern with Yellow & Brown -->
+  <section id="testimoni" class="py-20 bg-[#FEF3C7] relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-[#FBBF24] opacity-5 rounded-full -mr-32 -mt-32 animate-pulse-slow">
     </div>
     <div
-      class="absolute bottom-0 left-0 w-64 h-64 bg-[#10b981] opacity-5 rounded-full -ml-32 -mb-32 animate-pulse-slow">
+      class="absolute bottom-0 left-0 w-64 h-64 bg-[#8B5A2B] opacity-5 rounded-full -ml-32 -mb-32 animate-pulse-slow">
     </div>
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="text-center mb-12">
         <div
           class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full mb-4 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
-          <span class="w-2 h-2 bg-[#059669] rounded-full animate-pulse"></span>
-          <span class="text-sm font-medium text-[#065f46]">Testimoni</span>
+          <span class="w-2 h-2 bg-[#FBBF24] rounded-full animate-pulse"></span>
+          <span class="text-sm font-medium text-[#8B5A2B]">Testimoni</span>
         </div>
         <h2 class="section-title-modern">
-          Apa Kata <span>Mereka</span>
+          Kisah Sukses <span>Affiliate Umroh</span>
         </h2>
-        <p class="section-subtitle">Kisah sukses para affiliate yang telah merasakan manfaatnya</p>
+        <p class="section-subtitle">Mereka yang telah meraih berkah melalui affiliate umroh</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-6">
@@ -1605,22 +1516,23 @@
           data-aos-duration="800">
           <div class="flex items-center gap-4 mb-4">
             <div class="w-16 h-16 rounded-2xl testimonial-badge font-bold shadow-sm text-2xl uppercase">
-              D
+              A
             </div>
             <div>
-              <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300"><span class="first-name">Dewi</span> <span class="last-name text-[#10b981]">Susanti</span></h4>
-              <p class="text-xs text-[#6b7280]">Ibu Rumah Tangga</p>
-              <div class="flex text-yellow-400 text-xs mt-1">
+              <h4 class="font-bold text-[#8B5A2B] group-hover:text-[#FBBF24] transition-colors duration-300">Ahmad <span
+                  class="text-[#FBBF24]">Fauzi</span></h4>
+              <p class="text-xs text-[#6b7280]">Marbot Masjid</p>
+              <div class="flex text-[#FBBF24] text-xs mt-1">
                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
                   class="fas fa-star"></i><i class="fas fa-star"></i>
               </div>
             </div>
           </div>
-          <p class="text-[#4b5563] text-sm italic mb-4">"Dari yang cuma iseng-iseng share link, sekarang penghasilan
-            saya Rp 8 juta/bulan. Bisa bantu suami bayar sekolah anak."</p>
-          <div class="flex justify-between items-center pt-4 border-t border-[#d1fae5]">
+          <p class="text-[#4b5563] text-sm italic mb-4">"Alhamdulillah, dari iseng share paket umroh di grup pengajian,
+            sekarang bisa dapat komisi 15 juta per bulan. Berkah banget!"</p>
+          <div class="flex justify-between items-center pt-4 border-t border-[#FEF3C7]">
             <span class="text-xs text-[#9ca3af]">Bergabung 2024</span>
-            <span class="badge-success px-3 py-1 text-xs group-hover:scale-105 transition-all duration-300">Top
+            <span class="badge-yellow px-3 py-1 text-xs group-hover:scale-105 transition-all duration-300">Top
               Affiliate</span>
           </div>
         </div>
@@ -1630,22 +1542,23 @@
           data-aos-duration="800" data-aos-delay="100">
           <div class="flex items-center gap-4 mb-4">
             <div class="w-16 h-16 rounded-2xl testimonial-badge font-bold shadow-sm text-2xl uppercase">
-              B
+              S
             </div>
             <div>
-              <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300"><span class="first-name">Budi</span> <span class="last-name text-[#10b981]">Santoso</span></h4>
-              <p class="text-xs text-[#6b7280]">Mahasiswa</p>
-              <div class="flex text-yellow-400 text-xs mt-1">
+              <h4 class="font-bold text-[#8B5A2B] group-hover:text-[#FBBF24] transition-colors duration-300">Siti <span
+                  class="text-[#FBBF24]">Nurhaliza</span></h4>
+              <p class="text-xs text-[#6b7280]">Ibu Rumah Tangga</p>
+              <div class="flex text-[#FBBF24] text-xs mt-1">
                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
                   class="fas fa-star"></i><i class="fas fa-star"></i>
               </div>
             </div>
           </div>
-          <p class="text-[#4b5563] text-sm italic mb-4">"Sebagai mahasiswa, Affillink jadi sampingan terbaik. Dari HP
-            doang bisa dapet uang jajan plus tabungan."</p>
-          <div class="flex justify-between items-center pt-4 border-t border-[#d1fae5]">
+          <p class="text-[#4b5563] text-sm italic mb-4">"Modal HP doang, saya bisa bantu tetangga daftar umroh.
+            Komisinya lumayan buat tambah-tambah biaya haji sendiri."</p>
+          <div class="flex justify-between items-center pt-4 border-t border-[#FEF3C7]">
             <span class="text-xs text-[#9ca3af]">Bergabung 2025</span>
-            <span class="badge-success px-3 py-1 text-xs group-hover:scale-105 transition-all duration-300">Top
+            <span class="badge-yellow px-3 py-1 text-xs group-hover:scale-105 transition-all duration-300">Best
               Performance</span>
           </div>
         </div>
@@ -1655,22 +1568,23 @@
           data-aos-duration="800" data-aos-delay="200">
           <div class="flex items-center gap-4 mb-4">
             <div class="w-16 h-16 rounded-2xl testimonial-badge font-bold shadow-sm text-2xl uppercase">
-              R
+              H
             </div>
             <div>
-              <h4 class="font-bold text-[#064e3b] group-hover:text-[#059669] transition-colors duration-300"><span class="first-name">Rina</span> <span class="last-name text-[#10b981]">Wulandari</span></h4>
-              <p class="text-xs text-[#6b7280]">Content Creator</p>
-              <div class="flex text-yellow-400 text-xs mt-1">
+              <h4 class="font-bold text-[#8B5A2B] group-hover:text-[#FBBF24] transition-colors duration-300">Hasan <span
+                  class="text-[#FBBF24]">Basri</span></h4>
+              <p class="text-xs text-[#6b7280]">Pengusaha Muda</p>
+              <div class="flex text-[#FBBF24] text-xs mt-1">
                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
                   class="fas fa-star"></i><i class="fas fa-star"></i>
               </div>
             </div>
           </div>
-          <p class="text-[#4b5563] text-sm italic mb-4">"Produk digitalnya bagus-bagus, gampang dijual. Komisi 40-50%
-            itu besar banget dibanding platform lain."</p>
-          <div class="flex justify-between items-center pt-4 border-t border-[#d1fae5]">
+          <p class="text-[#4b5563] text-sm italic mb-4">"Komisi 50% per jamaah itu besar! Sekarang fokus full di
+            affiliate umroh, hasilnya jauh lebih besar."</p>
+          <div class="flex justify-between items-center pt-4 border-t border-[#FEF3C7]">
             <span class="text-xs text-[#9ca3af]">Bergabung 2023</span>
-            <span class="badge-success px-3 py-1 text-xs group-hover:scale-105 transition-all duration-300">Top
+            <span class="badge-yellow px-3 py-1 text-xs group-hover:scale-105 transition-all duration-300">Top
               Earner</span>
           </div>
         </div>
@@ -1678,67 +1592,23 @@
     </div>
   </section>
 
-  <!-- Partners Section -->
-  <section class="py-12 bg-white relative overflow-hidden">
-    <div class="absolute inset-0 grid-pattern opacity-5"></div>
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <p class="text-center text-sm font-medium text-[#6b7280] mb-8">Telah dipercaya oleh ribuan brand ternama</p>
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"
-          class="partner-logo w-24 mx-auto hover:scale-110 transition-all duration-300">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google"
-          class="partner-logo w-24 mx-auto hover:scale-110 transition-all duration-300">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopify_logo_2018.svg" alt="Shopify"
-          class="partner-logo w-24 mx-auto hover:scale-110 transition-all duration-300">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" alt="Shopee"
-          class="partner-logo w-24 mx-auto hover:scale-110 transition-all duration-300">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/Tokopedia.svg" alt="Tokopedia"
-          class="partner-logo w-24 mx-auto hover:scale-110 transition-all duration-300">
-      </div>
-    </div>
-  </section>
-
-  <!-- Newsletter Section with Green -->
-  <section class="py-16">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="newsletter-modern relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-animate"></div>
-        <div class="relative z-10 text-center max-w-2xl mx-auto">
-          <h3 class="text-3xl font-bold text-white mb-4">Dapatkan Update Terbaru</h3>
-          <p class="text-[#d1fae5] mb-6">Subscribe newsletter kami untuk mendapatkan info produk terbaru dan tips
-            affiliate marketing</p>
-          <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-            onsubmit="event.preventDefault(); const email=document.getElementById('newsletter-email').value; window.location.href='/register?newsletter=1&email='+encodeURIComponent(email);">
-            <input type="email" id="newsletter-email" placeholder="Masukkan email Anda" class="input-modern flex-1"
-              required>
-            <button type="submit" class="btn-modern whitespace-nowrap transition-all duration-300">
-              <span class="relative z-10">Subscribe</span>
-              <i class="fas fa-paper-plane ml-2 text-white"></i>
-            </button>
-          </form>
-          <p class="text-xs text-[#a7f3d0] mt-4">Kami tidak akan spam email Anda. Promo menarik setiap minggu!</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Modern with Green -->
-  <section class="py-20 relative overflow-hidden bg-gradient-to-r from-[#064e3b] to-[#059669]">
+  <!-- CTA Modern with Yellow & Brown -->
+  <section class="py-20 relative overflow-hidden bg-gradient-to-r from-[#D97706] to-[#8B5A2B]">
     <div class="absolute inset-0 opacity-10">
-      <i class="fas fa-dollar-sign absolute text-9xl -top-10 -left-10 text-white animate-pulse"></i>
-      <i class="fas fa-coins absolute text-9xl bottom-0 right-0 text-white animate-pulse"
+      <i class="fas fa-mosque absolute text-9xl -top-10 -left-10 text-white animate-pulse"></i>
+      <i class="fas fa-kaaba absolute text-9xl bottom-0 right-0 text-white animate-pulse"
         style="animation-delay: 1s"></i>
-      <i class="fas fa-chart-line absolute text-8xl top-1/2 left-1/4 text-white animate-pulse"
+      <i class="fas fa-star-and-crescent absolute text-8xl top-1/2 left-1/4 text-white animate-pulse"
         style="animation-delay: 2s"></i>
     </div>
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-4xl md:text-5xl font-bold text-white mb-4 animate-pulse-slow">Siap Mulai Menghasilkan?</h2>
-        <p class="text-[#d1fae5] text-lg mb-8">Daftar gratis sekarang dan dapatkan bonus Rp 500.000 untuk affiliate
-          baru!</p>
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-4 animate-pulse-slow">Siap Menjadi Affiliate Umroh?</h2>
+        <p class="text-[#FEF3C7] text-lg mb-8">Daftar gratis sekarang dan dapatkan bonus Rp 1.000.000 untuk affiliate
+          umroh baru!</p>
 
-        <!-- Countdown Timer with Green -->
+        <!-- Countdown Timer with Yellow & Brown -->
         <div class="countdown-modern mb-8">
           <div class="countdown-item hover:scale-110 transition-all duration-300">
             <div class="countdown-number">24</div>
@@ -1756,18 +1626,13 @@
 
         <div class="flex flex-wrap gap-4 justify-center">
           <a href="/register"
-            class="bg-white text-[#059669] px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-110 transition-all duration-300 shadow-xl flex items-center gap-2 group">
-            <i class="fas fa-rocket group-hover:animate-bounce"></i>
+            class="bg-white text-[#8B5A2B] px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-110 transition-all duration-300 shadow-xl flex items-center gap-2 group">
+            <i class="fas fa-mosque group-hover:animate-bounce text-[#FBBF24]"></i>
             Daftar Gratis Sekarang
-          </a>
-          <a href="/login"
-            class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-[#059669] hover:scale-110 transition-all duration-300 flex items-center gap-2">
-            <i class="fas fa-phone-alt"></i>
-            Hubungi Kami
           </a>
         </div>
 
-        <div class="flex items-center justify-center gap-6 mt-8 text-[#d1fae5] text-sm">
+        <div class="flex items-center justify-center gap-6 mt-8 text-[#FEF3C7] text-sm">
           <span class="flex items-center gap-1 hover:scale-110 transition-all duration-300"><i
               class="fas fa-check-circle"></i> Tanpa biaya</span>
           <span class="flex items-center gap-1 hover:scale-110 transition-all duration-300"><i
@@ -1781,110 +1646,108 @@
     </div>
   </section>
 
-  <!-- FAQ Modern with Green -->
+  <!-- FAQ Modern with Yellow & Brown -->
   <section id="faq" class="py-20 bg-white relative overflow-hidden">
     <div class="absolute inset-0 grid-pattern opacity-5"></div>
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="text-center mb-12">
         <div
-          class="inline-flex items-center gap-2 px-4 py-2 bg-[#ecfdf5] rounded-full mb-4 hover:shadow-md hover:scale-105 transition-all duration-300">
-          <span class="w-2 h-2 bg-[#059669] rounded-full animate-pulse"></span>
-          <span class="text-sm font-medium text-[#065f46]">FAQ</span>
+          class="inline-flex items-center gap-2 px-4 py-2 bg-[#FEF3C7] rounded-full mb-4 hover:shadow-md hover:scale-105 transition-all duration-300">
+          <span class="w-2 h-2 bg-[#FBBF24] rounded-full animate-pulse"></span>
+          <span class="text-sm font-medium text-[#8B5A2B]">FAQ Umroh</span>
         </div>
         <h2 class="section-title-modern">
-          Pertanyaan <span>Umum</span>
+          Pertanyaan <span>Seputar Umroh</span>
         </h2>
         <p class="section-subtitle">Temukan jawaban untuk pertanyaan yang sering diajukan</p>
       </div>
 
       <div class="max-w-3xl mx-auto space-y-3">
         <div
-          class="bg-[#ecfdf5] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
+          class="bg-[#FEF3C7] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
           <button
-            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#064e3b] hover:bg-[#d1fae5] transition-all duration-300"
+            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#8B5A2B] hover:bg-[#FEF3C7]/80 transition-all duration-300"
             onclick="toggleFaq(this)">
-            <span class="group-hover:text-[#059669] transition-colors duration-300">Apakah pendaftaran di Affillink
+            <span class="group-hover:text-[#FBBF24] transition-colors duration-300">Apakah pendaftaran affiliate umroh
               gratis?</span>
-            <i class="fas fa-chevron-down text-[#059669] transition-all duration-300 group-hover:scale-110"></i>
+            <i class="fas fa-chevron-down text-[#FBBF24] transition-all duration-300 group-hover:scale-110"></i>
           </button>
           <div class="hidden px-6 pb-4 text-[#6b7280] text-sm">
-            Ya, pendaftaran di Affillink 100% gratis. Tidak ada biaya pendaftaran, biaya bulanan, atau biaya tersembunyi
-            lainnya. Anda bisa langsung mulai mempromosikan produk setelah mendaftar.
+            Ya, pendaftaran affiliate umroh di Affillink 100% gratis. Tidak ada biaya pendaftaran, biaya bulanan, atau
+            biaya tersembunyi lainnya. Anda bisa langsung mulai mempromosikan paket umroh setelah mendaftar.
           </div>
         </div>
 
         <div
-          class="bg-[#ecfdf5] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
+          class="bg-[#FEF3C7] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
           <button
-            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#064e3b] hover:bg-[#d1fae5] transition-all duration-300"
+            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#8B5A2B] hover:bg-[#FEF3C7]/80 transition-all duration-300"
             onclick="toggleFaq(this)">
-            <span class="group-hover:text-[#059669] transition-colors duration-300">Berapa komisi yang bisa saya
-              dapatkan?</span>
-            <i class="fas fa-chevron-down text-[#059669] transition-all duration-300 group-hover:scale-110"></i>
+            <span class="group-hover:text-[#FBBF24] transition-colors duration-300">Berapa komisi untuk setiap jamaah
+              umroh?</span>
+            <i class="fas fa-chevron-down text-[#FBBF24] transition-all duration-300 group-hover:scale-110"></i>
           </button>
           <div class="hidden px-6 pb-4 text-[#6b7280] text-sm">
-            Komisi bervariasi per produk, mulai dari 10% hingga 50%. Produk digital biasanya memiliki komisi lebih
-            tinggi (30-50%). Rata-rata affiliate kami mendapatkan Rp 2-5 juta per bulan di bulan pertama.
+            Komisi bervariasi per paket umroh, mulai dari Rp 2.500.000 hingga Rp 7.500.000 per jamaah, atau hingga 50%
+            dari nilai paket. Rata-rata affiliate kami mendapatkan Rp 5-10 juta per bulan di bulan pertama.
           </div>
         </div>
 
         <div
-          class="bg-[#ecfdf5] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
+          class="bg-[#FEF3C7] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
           <button
-            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#064e3b] hover:bg-[#d1fae5] transition-all duration-300"
+            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#8B5A2B] hover:bg-[#FEF3C7]/80 transition-all duration-300"
             onclick="toggleFaq(this)">
-            <span class="group-hover:text-[#059669] transition-colors duration-300">Kapan saya bisa menarik
-              komisi?</span>
-            <i class="fas fa-chevron-down text-[#059669] transition-all duration-300 group-hover:scale-110"></i>
+            <span class="group-hover:text-[#FBBF24] transition-colors duration-300">Kapan komisi umroh bisa
+              dicairkan?</span>
+            <i class="fas fa-chevron-down text-[#FBBF24] transition-all duration-300 group-hover:scale-110"></i>
           </button>
           <div class="hidden px-6 pb-4 text-[#6b7280] text-sm">
-            Anda bisa melakukan payout setiap hari! Minimum payout hanya Rp 50.000. Dana akan masuk ke rekening atau
-            e-wallet Anda dalam 1x24 jam. Tersedia transfer bank (BCA, Mandiri, BRI, BNI) dan e-wallet (OVO, GoPay,
-            Dana).
+            Komisi bisa dicairkan setiap hari setelah jamaah melakukan pendaftaran dan pembayaran DP. Minimum payout Rp
+            100.000. Dana akan masuk ke rekening atau e-wallet Anda dalam 1x24 jam.
           </div>
         </div>
 
         <div
-          class="bg-[#ecfdf5] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
+          class="bg-[#FEF3C7] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
           <button
-            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#064e3b] hover:bg-[#d1fae5] transition-all duration-300"
+            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#8B5A2B] hover:bg-[#FEF3C7]/80 transition-all duration-300"
             onclick="toggleFaq(this)">
-            <span class="group-hover:text-[#059669] transition-colors duration-300">Bagaimana cara mempromosikan
-              produk?</span>
-            <i class="fas fa-chevron-down text-[#059669] transition-all duration-300 group-hover:scale-110"></i>
+            <span class="group-hover:text-[#FBBF24] transition-colors duration-300">Bagaimana cara mempromosikan paket
+              umroh?</span>
+            <i class="fas fa-chevron-down text-[#FBBF24] transition-all duration-300 group-hover:scale-110"></i>
           </button>
           <div class="hidden px-6 pb-4 text-[#6b7280] text-sm">
-            Anda akan mendapatkan link affiliate unik untuk setiap produk. Bagikan link tersebut ke media sosial
-            (Instagram, Facebook, TikTok), blog, YouTube, WhatsApp, atau email. Setiap pembelian via link Anda akan
-            tercatat sebagai komisi.
+            Anda akan mendapatkan link affiliate unik untuk setiap paket umroh. Bagikan link tersebut ke grup pengajian,
+            majelis taklim, media sosial, atau WhatsApp. Setiap pendaftaran via link Anda akan tercatat sebagai komisi.
           </div>
         </div>
 
         <div
-          class="bg-[#ecfdf5] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
+          class="bg-[#FEF3C7] rounded-2xl overflow-hidden group hover:shadow-md hover:scale-[1.02] transition-all duration-300">
           <button
-            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#064e3b] hover:bg-[#d1fae5] transition-all duration-300"
+            class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-[#8B5A2B] hover:bg-[#FEF3C7]/80 transition-all duration-300"
             onclick="toggleFaq(this)">
-            <span class="group-hover:text-[#059669] transition-colors duration-300">Apakah ada pelatihan untuk
-              pemula?</span>
-            <i class="fas fa-chevron-down text-[#059669] transition-all duration-300 group-hover:scale-110"></i>
+            <span class="group-hover:text-[#FBBF24] transition-colors duration-300">Apakah ada pelatihan untuk affiliate
+              umroh pemula?</span>
+            <i class="fas fa-chevron-down text-[#FBBF24] transition-all duration-300 group-hover:scale-110"></i>
           </button>
           <div class="hidden px-6 pb-4 text-[#6b7280] text-sm">
-            Ya! Kami menyediakan video tutorial, ebook panduan, dan grup komunitas khusus untuk member baru. Anda juga
-            bisa mengikuti webinar mingguan gratis tentang tips & trik affiliate marketing.
+            Ya! Kami menyediakan video tutorial, panduan marketing umroh, dan grup komunitas khusus untuk affiliate
+            umroh baru. Anda juga bisa mengikuti webinar mingguan gratis tentang tips promosi paket umroh.
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer Modern with Dark Green and Logo -->
+  <!-- Footer Modern with Dark Yellow & Brown -->
   <footer class="footer-modern pt-20 pb-8">
     <div class="footer-wave">
       <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
         <path
           d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-          fill="#059669" opacity="0.1"></path>
+          fill="#FBBF24" opacity="0.1"></path>
       </svg>
     </div>
 
@@ -1892,119 +1755,125 @@
       <div class="grid md:grid-cols-4 gap-8 mb-12">
         <div>
           <div class="flex items-center gap-3 mb-4 group">
-            <img src="/images/logoAffilllink2.png" alt="Affillink Logo"
+            <img src="/images/logoAffilllink2.png" alt="Affillink Umroh Logo"
               class="h-10 w-auto brightness-0 invert transition-all duration-300 group-hover:scale-110"
               style="max-width: 160px"
-              onerror="this.onerror=null; this.src='https://via.placeholder.com/160x40/ffffff/059669?text=Affillink';" />
+              onerror="this.onerror=null; this.src='https://via.placeholder.com/160x40/ffffff/FBBF24?text=Affillink+Umroh';" />
+            <span class="text-[#FEF3C7] font-semibold text-lg select-none">|</span>
+            <img src="https://i.ibb.co.com/KpV7Sq8M/Salinan-dari-Desain-Tanpa-Judul.png" alt="Affillink Umroh Mark"
+              class="h-16 w-auto object-contain transition-all duration-300 group-hover:scale-110 filter brightness-0 invert"
+              style="max-height: 72px" onerror="this.style.display='none';" />
           </div>
-          <p class="text-[#a7f3d0] text-sm leading-relaxed mb-4">
-            Platform affiliate marketing modern dan terpercaya di Indonesia dengan komisi tertinggi dan payout harian.
+          <p class="text-[#FEF3C7] text-sm leading-relaxed mb-4">
+            Platform affiliate umroh pertama dan terpercaya di Indonesia dengan komisi tertinggi dan payout harian.
+            Berkah untuk semua.
           </p>
           <div class="flex gap-2">
             <a href="#"
-              class="w-10 h-10 bg-[#065f46] rounded-xl flex items-center justify-center text-[#a7f3d0] hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
+              class="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center text-[#FEF3C7] hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
               <i class="fab fa-facebook-f"></i>
             </a>
             <a href="#"
-              class="w-10 h-10 bg-[#065f46] rounded-xl flex items-center justify-center text-[#a7f3d0] hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
+              class="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center text-[#FEF3C7] hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
               <i class="fab fa-instagram"></i>
             </a>
             <a href="#"
-              class="w-10 h-10 bg-[#065f46] rounded-xl flex items-center justify-center text-[#a7f3d0] hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
+              class="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center text-[#FEF3C7] hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
               <i class="fab fa-twitter"></i>
             </a>
             <a href="#"
-              class="w-10 h-10 bg-[#065f46] rounded-xl flex items-center justify-center text-[#a7f3d0] hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
+              class="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center text-[#FEF3C7] hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
               <i class="fab fa-linkedin-in"></i>
             </a>
             <a href="#"
-              class="w-10 h-10 bg-[#065f46] rounded-xl flex items-center justify-center text-[#a7f3d0] hover:bg-gradient-to-r hover:from-[#059669] hover:to-[#10b981] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
+              class="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center text-[#FEF3C7] hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
               <i class="fab fa-youtube"></i>
             </a>
           </div>
         </div>
 
         <div>
-          <h5 class="font-bold text-white mb-4 border-l-4 border-[#10b981] pl-3">PERUSAHAAN</h5>
-          <ul class="space-y-2 text-sm text-[#a7f3d0]">
+          <h5 class="font-bold text-white mb-4 border-l-4 border-[#FBBF24] pl-3">PERUSAHAAN</h5>
+          <ul class="space-y-2 text-sm text-[#FEF3C7]">
             <li><a href="#"
                 class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
-                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Tentang
+                  class="w-1 h-1 bg-[#FBBF24] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Tentang
                 Kami</a></li>
             <li><a href="#"
                 class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
-                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Karir</a>
+                  class="w-1 h-1 bg-[#FBBF24] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Karir</a>
             </li>
             <li><a href="#"
                 class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
-                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Blog</a>
+                  class="w-1 h-1 bg-[#FBBF24] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Blog</a>
             </li>
             <li><a href="#"
                 class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
-                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Press</a>
+                  class="w-1 h-1 bg-[#FBBF24] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Press</a>
             </li>
             <li><a href="#"
                 class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
-                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Mitra</a>
+                  class="w-1 h-1 bg-[#FBBF24] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Mitra
+                Travel</a>
             </li>
           </ul>
         </div>
 
         <div>
-          <h5 class="font-bold text-white mb-4 border-l-4 border-[#10b981] pl-3">BANTUAN</h5>
-          <ul class="space-y-2 text-sm text-[#a7f3d0]">
+          <h5 class="font-bold text-white mb-4 border-l-4 border-[#FBBF24] pl-3">BANTUAN</h5>
+          <ul class="space-y-2 text-sm text-[#FEF3C7]">
             <li><a href="#"
                 class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
-                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Pusat
+                  class="w-1 h-1 bg-[#FBBF24] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Pusat
                 Bantuan</a></li>
             <li><a href="#"
                 class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
-                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Syarat
+                  class="w-1 h-1 bg-[#FBBF24] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Syarat
                 & Ketentuan</a></li>
             <li><a href="#"
                 class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
-                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Kebijakan
+                  class="w-1 h-1 bg-[#FBBF24] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Kebijakan
                 Privasi</a></li>
             <li><a href="#"
                 class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
-                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>FAQ</a>
+                  class="w-1 h-1 bg-[#FBBF24] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>FAQ</a>
             </li>
             <li><a href="#"
                 class="hover:text-white hover:translate-x-2 transition-all duration-300 flex items-center gap-2 group"><span
-                  class="w-1 h-1 bg-[#10b981] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Hubungi
+                  class="w-1 h-1 bg-[#FBBF24] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>Hubungi
                 Kami</a></li>
           </ul>
         </div>
 
         <div>
-          <h5 class="font-bold text-white mb-4 border-l-4 border-[#10b981] pl-3">KONTAK</h5>
-          <ul class="space-y-3 text-sm text-[#a7f3d0]">
+          <h5 class="font-bold text-white mb-4 border-l-4 border-[#FBBF24] pl-3">KONTAK</h5>
+          <ul class="space-y-3 text-sm text-[#FEF3C7]">
             <li class="flex items-start gap-3 group hover:text-white hover:translate-x-2 transition-all duration-300">
               <i
-                class="fas fa-map-marker-alt mt-1 text-[#10b981] group-hover:scale-110 transition-transform duration-300"></i>
+                class="fas fa-map-marker-alt mt-1 text-[#FBBF24] group-hover:scale-110 transition-transform duration-300"></i>
               <span>Jl. Sudirman No. 123, Jakarta Selatan, Indonesia 12930</span>
             </li>
             <li class="flex items-center gap-3 group hover:text-white hover:translate-x-2 transition-all duration-300">
-              <i class="fas fa-phone-alt text-[#10b981] group-hover:scale-110 transition-transform duration-300"></i>
+              <i class="fas fa-phone-alt text-[#FBBF24] group-hover:scale-110 transition-transform duration-300"></i>
               <span>+62 812-3456-7890</span>
             </li>
             <li class="flex items-center gap-3 group hover:text-white hover:translate-x-2 transition-all duration-300">
-              <i class="fas fa-envelope text-[#10b981] group-hover:scale-110 transition-transform duration-300"></i>
-              <span>support@affillink.id</span>
+              <i class="fas fa-envelope text-[#FBBF24] group-hover:scale-110 transition-transform duration-300"></i>
+              <span>umroh@affillink.id</span>
             </li>
             <li class="flex items-center gap-3 group hover:text-white hover:translate-x-2 transition-all duration-300">
-              <i class="fas fa-clock text-[#10b981] group-hover:scale-110 transition-transform duration-300"></i>
+              <i class="fas fa-clock text-[#FBBF24] group-hover:scale-110 transition-transform duration-300"></i>
               <span>Senin - Jumat, 09:00 - 18:00 WIB</span>
             </li>
           </ul>
         </div>
       </div>
 
-      <div class="border-t border-[#065f46] pt-8">
+      <div class="border-t border-[#D97706] pt-8">
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
           <p class="text-[#6b7280] text-sm text-center md:text-left hover:text-white transition-colors duration-300">
-            &copy; 2026 Affillink. All Rights Reserved. Made with <i
-              class="fas fa-heart text-[#10b981] animate-pulse"></i> in Indonesia
+            &copy; 2026 Affillink Umroh. All Rights Reserved. Made with <i
+              class="fas fa-heart text-[#FBBF24] animate-pulse"></i> untuk Umat
           </p>
           <div class="flex gap-4 text-sm text-[#6b7280]">
             <a href="#" class="hover:text-white hover:scale-110 transition-all duration-300">Terms</a>
@@ -2020,14 +1889,7 @@
     </div>
   </footer>
 
-  <!-- Floating WhatsApp Modern with Green -->
-  <a href="https://wa.me/6281234567890"
-    class="fab-modern tooltip-modern hover:scale-110 hover:rotate-12 transition-all duration-300"
-    data-tooltip="Hubungi kami via WhatsApp" target="_blank">
-    <i class="fab fa-whatsapp"></i>
-  </a>
-
-  <!-- Back to Top Modern with Green -->
+  <!-- Back to Top Modern with Yellow & Brown -->
   <button onclick="scrollToTop()" id="backToTop" class="back-to-top tooltip-modern" data-tooltip="Kembali ke atas">
     <i class="fas fa-arrow-up"></i>
   </button>
