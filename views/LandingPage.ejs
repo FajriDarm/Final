@@ -7,7 +7,7 @@
   <title>Affillink Umroh - Platform Affiliate Umroh Pertama di Indonesia</title>
 
   <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/app.css">
 
   <!-- AOS CSS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -531,6 +531,7 @@
       display: flex;
       gap: 1rem;
       justify-content: center;
+      flex-wrap: wrap;
     }
 
     .countdown-item {
@@ -557,6 +558,12 @@
       color: #4b5563;
       text-transform: uppercase;
       letter-spacing: 1px;
+    }
+
+    @media (max-width: 640px) {
+      .countdown-item {
+        flex: 1 1 90px;
+      }
     }
 
     /* Running Text Modern with Yellow & Brown */
@@ -961,6 +968,49 @@
   <!-- Islamic Pattern Overlay -->
   <div class="islamic-pattern fixed inset-0 pointer-events-none"></div>
 
+  <!-- Modern Top Bar with Yellow & Brown -->
+  <div class="bg-gradient-to-r from-[#D97706] to-[#8B5A2B] text-white text-sm py-2 relative z-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:justify-between items-center gap-3 sm:gap-0">
+        <div class="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
+          <a href="tel:+6281234567890" class="hover:text-[#fbbf24] transition flex items-center gap-2 group">
+            <i class="fas fa-phone-alt text-[#FBBF24] text-xs group-hover:animate-bounce"></i>
+            <span class="group-hover:translate-x-1 transition-transform">+62 812-3456-7890</span>
+          </a>
+          <a href="mailto:support@affillink.id"
+            class="hover:text-[#fbbf24] transition hidden sm:flex items-center gap-2 group">
+            <i class="fas fa-envelope text-[#FBBF24] text-xs group-hover:animate-bounce"></i>
+            <span class="group-hover:translate-x-1 transition-transform">support@affillink.id</span>
+          </a>
+          <a href="#" class="hover:text-[#fbbf24] transition hidden md:flex items-center gap-2 group">
+            <i class="fas fa-map-marker-alt text-[#FBBF24] text-xs group-hover:animate-bounce"></i>
+            <span class="group-hover:translate-x-1 transition-transform">Jakarta, Indonesia</span>
+          </a>
+        </div>
+        <div class="flex items-center gap-3 sm:gap-4 flex-wrap justify-center sm:justify-end w-full sm:w-auto">
+          <span class="hidden md:inline text-[#FDE68A]">Follow kami:</span>
+          <div class="flex gap-2">
+            <a href="#"
+              class="w-8 h-8 bg-[#8B5A2B] rounded-full flex items-center justify-center text-[#FDE68A] hover:bg-[#F59E0B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
+                class="fab fa-facebook-f text-sm"></i></a>
+            <a href="#"
+              class="w-8 h-8 bg-[#8B5A2B] rounded-full flex items-center justify-center text-[#FDE68A] hover:bg-[#F59E0B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
+                class="fab fa-instagram text-sm"></i></a>
+            <a href="#"
+              class="w-8 h-8 bg-[#8B5A2B] rounded-full flex items-center justify-center text-[#FDE68A] hover:bg-[#F59E0B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
+                class="fab fa-twitter text-sm"></i></a>
+            <a href="#"
+              class="w-8 h-8 bg-[#8B5A2B] rounded-full flex items-center justify-center text-[#FDE68A] hover:bg-[#F59E0B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
+                class="fab fa-linkedin-in text-sm"></i></a>
+            <a href="#"
+              class="w-8 h-8 bg-[#8B5A2B] rounded-full flex items-center justify-center text-[#FDE68A] hover:bg-[#F59E0B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
+                class="fab fa-youtube text-sm"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Modern Header with Logo -->
   <header class="header-modern sticky top-0 z-50">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -1100,7 +1150,7 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <!-- Left Content -->
-        <div data-aos="fade-right" data-aos-duration="1000">
+        <div data-aos="fade-right" data-aos-duration="1000" class="text-center lg:text-left">
           <div
             class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-lg text-sm font-semibold mb-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
             <span class="w-2 h-2 bg-[#FBBF24] rounded-full animate-pulse"></span>
@@ -1110,18 +1160,18 @@
               class="px-2 py-0.5 bg-[#FBBF24] text-[#8B5A2B] text-xs rounded-full animate-pulse-slow font-bold">LIVE</span>
           </div>
 
-          <h1 class="section-title-modern text-5xl lg:text-6xl text-shadow">
+          <h1 class="section-title-modern text-4xl sm:text-5xl lg:text-6xl text-shadow">
             Dapatkan Komisi <br><span>Jutaan Rupiah</span> <br>dari Promosi Paket Umroh
           </h1>
 
-          <p class="text-[#4b5563] text-lg mb-8 max-w-lg leading-relaxed">
+          <p class="text-[#4b5563] text-base sm:text-lg mb-8 max-w-lg lg:max-w-xl leading-relaxed mx-auto lg:mx-0">
             Platform affiliate umroh <span class="font-bold text-[#FBBF24]">PERTAMA</span> di Indonesia. Promosikan
             paket umroh berkualitas, dapatkan komisi hingga
             <span class="font-bold text-[#8B5A2B] bg-[#FEF3C7] px-2 py-1 rounded-lg border border-[#FBBF24]">50%</span>
             setiap pemberangkatan jamaah. Mulai perjalanan bisnis umroh Anda sekarang.
           </p>
 
-          <div class="flex flex-wrap gap-4 mb-8">
+          <div class="flex flex-wrap gap-4 mb-8 justify-center lg:justify-start">
             <a href="/register" class="btn-modern text-base px-8 py-4 group relative overflow-hidden shimmer">
               <span class="relative z-10">Mulai Jadi Affiliate Umroh</span>
               <i
@@ -1134,7 +1184,7 @@
           </div>
 
           <!-- Trust Badges -->
-          <div class="flex items-center gap-6">
+          <div class="flex items-center gap-6 flex-wrap justify-center lg:justify-start">
             <div class="flex -space-x-3">
               <img src="https://randomuser.me/api/portraits/women/44.jpg"
                 class="w-10 h-10 rounded-full border-2 border-white hover:scale-110 hover:z-10 transition-all duration-300"
@@ -1228,7 +1278,7 @@
   <!-- Stats Section Modern with Yellow & Brown -->
   <section class="py-12 relative z-20 -mt-16">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
           data-aos-duration="800">
           <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">20+</div>
@@ -1289,7 +1339,7 @@
         <p class="section-subtitle">Mulai menghasilkan dari promosi paket umroh dalam 4 langkah sederhana</p>
       </div>
 
-      <div class="grid md:grid-cols-4 gap-6 relative">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 relative">
         <!-- Connecting Line -->
         <div
           class="hidden md:block absolute inset-x-10 top-1/2 transform -translate-y-1/2 h-1 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B]">
@@ -1510,7 +1560,7 @@
         <p class="section-subtitle">Mereka yang telah meraih berkah melalui affiliate umroh</p>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <!-- Testimonial 1 -->
         <div class="testimonial-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
           data-aos-duration="800">
@@ -1587,6 +1637,29 @@
             <span class="badge-yellow px-3 py-1 text-xs group-hover:scale-105 transition-all duration-300">Top
               Earner</span>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section with Yellow & Brown -->
+  <section class="py-16">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="newsletter-modern relative overflow-hidden">
+        <div class="relative z-10 text-center max-w-2xl mx-auto">
+          <h3 class="text-3xl font-bold text-white mb-4">Dapatkan Update Promo Umroh</h3>
+          <p class="text-[#FDE68A] mb-6">Berlangganan untuk menerima info paket umroh terbaru, bonus komisi, dan tips
+            promosi setiap minggu.</p>
+          <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+            onsubmit="event.preventDefault(); const email=document.getElementById('newsletter-email').value; window.location.href='/register?newsletter=1&email='+encodeURIComponent(email);">
+            <input type="email" id="newsletter-email" placeholder="Masukkan email Anda" class="input-modern flex-1"
+              required>
+            <button type="submit" class="btn-modern whitespace-nowrap transition-all duration-300">
+              <span class="relative z-10">Subscribe</span>
+              <i class="fas fa-paper-plane ml-2 text-white"></i>
+            </button>
+          </form>
+          <p class="text-xs text-[#FDE68A] mt-4">Kami tidak akan spam. Maksimal 1 email per minggu.</p>
         </div>
       </div>
     </div>

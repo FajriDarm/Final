@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Checkout - Affillink</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/app.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
@@ -683,6 +683,22 @@
     const eventAdminWhatsapp = "<%= (event && event.admin_whatsapp) ? event.admin_whatsapp : '' %>";
     let formDataCache = {};
 
+    function konektorTrack(eventName, payload) {
+      if (typeof konektor === 'function') {
+        try {
+          if (payload && Object.keys(payload).length > 0) {
+            konektor('track', eventName, payload);
+          } else {
+            konektor('track', eventName);
+          }
+        } catch (_) { }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      konektorTrack('CheckoutView');
+    });
+
     // Helper functions untuk modal
     function showConfirmationModal() {
       confirmationModal.classList.remove('hidden');
@@ -747,6 +763,11 @@
     document.getElementById('proceedConfirmBtn').addEventListener('click', async function () {
       hideConfirmationModal();
 
+      const submitPayload = {};
+      if (formDataCache?.affiliate_ref) submitPayload.affiliate_ref = formDataCache.affiliate_ref;
+      if (formDataCache?.event_id) submitPayload.event_id = formDataCache.event_id;
+      konektorTrack('CheckoutSubmit', submitPayload);
+
       try {
         const response = await fetch('/transactions', {
           method: 'POST',
@@ -768,7 +789,10 @@
         return;
       }
 
-      window.location.href = contactTarget;
+      konektorTrack('RedirectToWhatsApp');
+      setTimeout(() => {
+        window.location.href = contactTarget;
+      }, 350);
     });
   </script>
 </body>

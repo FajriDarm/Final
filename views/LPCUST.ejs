@@ -16,37 +16,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/app.css">
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        earth: {
-                            50: '#FAFAF5',
-                            100: '#F5F5EB',
-                            200: '#E6E6D6',
-                            400: '#A89880',
-                            500: '#8A7560',
-                            600: '#6F5D48',
-                            800: '#5D4E37',
-                            900: '#3E3328',
-                        },
-                        brand: {
-                            brown: '#8B5E3C',
-                            gold: '#C5A059',
-                            light: '#FDFBF7',
-                        }
-                    },
-                    fontFamily: {
-                        serif: ['"Playfair Display"', 'serif'],
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    
 
     <style>
         /* =========================================
@@ -1059,12 +1031,39 @@
                 </div>
 
                 <!-- Special Offer -->
-                <div class="bg-brand-brown text-white p-6 rounded-xl text-center shadow-lg mb-8">
-                    <h3 class="font-serif font-bold text-xl mb-4">Penawaran Syawal</h3>
-                    <div class="bg-white text-earth-900 p-4 rounded-lg shadow-sm border-2 border-brand-gold inline-flex flex-col items-center justify-center w-full max-w-xs mx-auto">
-                        <span class="text-xl font-bold text-brand-brown">🎁 Gratis Zamzam 10 Liter</span>
+                <div class="bg-gradient-to-r from-brand-gold/80 via-brand-brown/80 to-brand-brown text-earth-900 p-6 rounded-2xl shadow-xl mb-8">
+                    <h3 class="font-serif font-bold text-2xl mb-4">Penawaran Special</h3>
+                    <p class="text-sm mb-4 opacity-90 max-w-xl mx-auto">Dapatkan gratis Air Zamzam untuk setiap DP yang dibayar — paket spesial hanya untuk pemesanan terbatas.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-lg mx-auto">
+                        <div class="bg-white rounded-xl p-4 shadow-lg border border-earth-100">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs uppercase font-semibold tracking-wide text-earth-500">DP Minimal</p>
+                                    <p class="text-lg font-bold text-brand-brown">Rp 7,5 Jt</p>
+                                </div>
+                                <div class="flex items-center justify-center w-12 h-12 rounded-full bg-brand-brown/10 text-brand-brown">
+                                    <span class="text-xl">💧</span>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-sm font-semibold text-earth-700">Gratis <span class="text-brand-brown">5 Liter</span> Air Zamzam</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-4 shadow-lg border border-earth-100">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs uppercase font-semibold tracking-wide text-earth-500">DP Minimal</p>
+                                    <p class="text-lg font-bold text-brand-brown">Rp 15 Jt</p>
+                                </div>
+                                <div class="flex items-center justify-center w-12 h-12 rounded-full bg-brand-brown/10 text-brand-brown">
+                                    <span class="text-xl">🪣</span>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-sm font-semibold text-earth-700">Gratis <span class="text-brand-brown">2 Galon</span> Air Zamzam</p>
+                        </div>
                     </div>
-                    <p class="text-xs mt-4 opacity-90">Persediaan terbatas (S&K Berlaku)</p>
+
+                    <p class="text-xs mt-4 opacity-80">Persediaan terbatas — S&K berlaku. Promo hanya untuk pemesanan via WhatsApp.</p>
                 </div>
 
                 <div class="bg-earth-50 p-5 rounded-lg text-center mb-8">
