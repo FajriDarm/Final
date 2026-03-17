@@ -7,7 +7,7 @@
   <title>Affillink Umroh - Platform Affiliate Umroh Pertama di Indonesia</title>
 
   <!-- Tailwind CSS -->
-  <link rel="stylesheet" href="/css/app.css">
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- AOS CSS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -566,6 +566,20 @@
       }
     }
 
+    @media (max-width: 1024px) {
+      .header-modern .logo-main {
+        display: none;
+      }
+
+      .header-modern .logo-mark {
+        max-height: 40px;
+      }
+
+      .header-modern .logo-separator {
+        display: none;
+      }
+    }
+
     /* Running Text Modern with Yellow & Brown */
     .running-text-modern {
       background: linear-gradient(90deg, #D97706, #8B5A2B);
@@ -968,69 +982,26 @@
   <!-- Islamic Pattern Overlay -->
   <div class="islamic-pattern fixed inset-0 pointer-events-none"></div>
 
-  <!-- Modern Top Bar with Yellow & Brown -->
-  <div class="bg-gradient-to-r from-[#D97706] to-[#8B5A2B] text-white text-sm py-2 relative z-50">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col sm:flex-row sm:justify-between items-center gap-3 sm:gap-0">
-        <div class="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
-          <a href="tel:+6281234567890" class="hover:text-[#fbbf24] transition flex items-center gap-2 group">
-            <i class="fas fa-phone-alt text-[#FBBF24] text-xs group-hover:animate-bounce"></i>
-            <span class="group-hover:translate-x-1 transition-transform">+62 812-3456-7890</span>
-          </a>
-          <a href="mailto:support@affillink.id"
-            class="hover:text-[#fbbf24] transition hidden sm:flex items-center gap-2 group">
-            <i class="fas fa-envelope text-[#FBBF24] text-xs group-hover:animate-bounce"></i>
-            <span class="group-hover:translate-x-1 transition-transform">support@affillink.id</span>
-          </a>
-          <a href="#" class="hover:text-[#fbbf24] transition hidden md:flex items-center gap-2 group">
-            <i class="fas fa-map-marker-alt text-[#FBBF24] text-xs group-hover:animate-bounce"></i>
-            <span class="group-hover:translate-x-1 transition-transform">Jakarta, Indonesia</span>
-          </a>
-        </div>
-        <div class="flex items-center gap-3 sm:gap-4 flex-wrap justify-center sm:justify-end w-full sm:w-auto">
-          <span class="hidden md:inline text-[#FDE68A]">Follow kami:</span>
-          <div class="flex gap-2">
-            <a href="#"
-              class="w-8 h-8 bg-[#8B5A2B] rounded-full flex items-center justify-center text-[#FDE68A] hover:bg-[#F59E0B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
-                class="fab fa-facebook-f text-sm"></i></a>
-            <a href="#"
-              class="w-8 h-8 bg-[#8B5A2B] rounded-full flex items-center justify-center text-[#FDE68A] hover:bg-[#F59E0B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
-                class="fab fa-instagram text-sm"></i></a>
-            <a href="#"
-              class="w-8 h-8 bg-[#8B5A2B] rounded-full flex items-center justify-center text-[#FDE68A] hover:bg-[#F59E0B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
-                class="fab fa-twitter text-sm"></i></a>
-            <a href="#"
-              class="w-8 h-8 bg-[#8B5A2B] rounded-full flex items-center justify-center text-[#FDE68A] hover:bg-[#F59E0B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
-                class="fab fa-linkedin-in text-sm"></i></a>
-            <a href="#"
-              class="w-8 h-8 bg-[#8B5A2B] rounded-full flex items-center justify-center text-[#FDE68A] hover:bg-[#F59E0B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300"><i
-                class="fab fa-youtube text-sm"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Modern Header with Logo -->
   <header class="header-modern sticky top-0 z-50">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
+      <div class="flex items-center justify-between gap-4 h-20">
         <!-- Logo Affillink Umroh -->
-        <a href="/" class="logo-container flex items-center gap-3 group relative">
+        <a href="/" class="logo-container flex-shrink-0 flex items-center gap-3 group relative">
           <div
             class="absolute -inset-2 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md">
           </div>
           <img src="/images/logoAffilllink2.png" alt="Affillink Umroh Logo"
-            class="h-10 w-auto transition-all duration-300 group-hover:scale-105 relative z-10" style="max-width: 180px"
+            class="logo-main h-10 w-auto transition-all duration-300 group-hover:scale-105 relative z-10" style="max-width: 180px"
             onerror="this.onerror=null; this.src='https://via.placeholder.com/180x40/FBBF24/000000?text=Affillink+Umroh';" />
-          <span class="mx-2 text-[#8B5A2B] font-semibold text-xl select-none">|</span>
+          <span class="logo-separator mx-2 text-[#8B5A2B] font-semibold text-xl select-none">|</span>
           <img src="https://i.ibb.co.com/KpV7Sq8M/Salinan-dari-Desain-Tanpa-Judul.png" alt="Affillink Umroh Mark"
-            class="h-16 w-auto object-contain transition-all duration-300 group-hover:scale-110 relative z-10"
+            class="logo-mark h-16 w-auto object-contain transition-all duration-300 group-hover:scale-110 relative z-10"
             style="max-height: 64px" onerror="this.style.display='none';" />
         </a>
 
         <!-- Desktop Navigation -->
-        <nav class="hidden lg:flex items-center gap-1">
+        <nav class="hidden lg:flex items-center gap-1 flex-shrink-0">
           <a href="#beranda"
             class="px-4 py-2 text-[#8B5A2B] hover:text-[#FBBF24] rounded-full font-bold transition-all duration-300 relative group overflow-hidden">
             <span class="relative z-10">Beranda</span>
@@ -1058,7 +1029,7 @@
         </nav>
 
         <!-- CTA Buttons -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 flex-shrink-0">
           <a href="/login"
             class="hidden md:block px-5 py-2 text-[#8B5A2B] font-bold hover:text-[#FBBF24] transition-all duration-300 relative group overflow-hidden">
             <span class="relative z-10">Login</span>
@@ -1085,17 +1056,25 @@
       <div class="container mx-auto px-4 py-4">
         <div class="space-y-2">
           <a href="#beranda"
-            class="block px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
-              class="fas fa-home w-6 text-[#FBBF24]"></i> Beranda</a>
+            class="flex items-center gap-3 px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-semibold transition-all duration-300">
+            <i class="fas fa-home w-6 text-[#FBBF24]"></i>
+            <span>Beranda</span>
+          </a>
           <a href="#kenapa-memilih"
-            class="block px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
-              class="fas fa-badge-dollar w-6 text-[#FBBF24]"></i> Keunggulan Kami</a>
+            class="flex items-center gap-3 px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-semibold transition-all duration-300">
+            <i class="fas fa-award w-6 text-[#FBBF24]"></i>
+            <span>Keunggulan Kami</span>
+          </a>
           <a href="#cara-kerja"
-            class="block px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
-              class="fas fa-cogs w-6 text-[#FBBF24]"></i> Cara Kerja</a>
+            class="flex items-center gap-3 px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-semibold transition-all duration-300">
+            <i class="fas fa-cogs w-6 text-[#FBBF24]"></i>
+            <span>Cara Kerja</span>
+          </a>
           <a href="#faq"
-            class="block px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-bold transition-all duration-300 hover:pl-6"><i
-              class="fas fa-question-circle w-6 text-[#FBBF24]"></i> FAQ</a>
+            class="flex items-center gap-3 px-4 py-3 text-[#8B5A2B] hover:bg-gradient-to-r hover:from-[#FEF3C7] hover:to-transparent rounded-xl font-semibold transition-all duration-300">
+            <i class="fas fa-question-circle w-6 text-[#FBBF24]"></i>
+            <span>FAQ</span>
+          </a>
           <div class="pt-4 mt-4 border-t border-[#F4E6D7]">
             <a href="/register" class="btn-modern w-full justify-center group">
               Daftar Sekarang
@@ -1116,10 +1095,10 @@
     <div class="absolute inset-0 bg-gradient-to-r from-[#D97706] to-[#8B5A2B] opacity-90"></div>
     <div class="container mx-auto px-4 relative">
       <div class="running-text-content">
-        <i class="fas fa-kaaba text-[#FEF3C7]"></i> 🕋 Paket Umroh Terpercaya
+        <i class="fas fa-kaaba text-[#FEF3C7]"></i> Paket Umroh Terpercaya
         <i class="fas fa-gift text-[#FEF3C7]"></i> Kesempatan Umroh Gratis untuk Affiliate Terbaik
         <i class="fas fa-gift text-[#FEF3C7]"></i> Gratis Pendaftaran Selamanya!
-        <i class="fas fa-kaaba text-[#FEF3C7]"></i> 🕋 Paket Umroh Terpercaya
+        <i class="fas fa-kaaba text-[#FEF3C7]"></i> Paket Umroh Terpercaya
         <i class="fas fa-gift text-[#FEF3C7]"></i> Kesempatan Umroh Gratis untuk Affiliate Terbaik
         <i class="fas fa-gift text-[#FEF3C7]"></i> Gratis Pendaftaran Selamanya!
       </div>
@@ -1168,37 +1147,6 @@
             </a>
           </div>
 
-          <!-- Trust Badges -->
-          <div class="flex items-center gap-6 flex-wrap justify-center lg:justify-start">
-            <div class="flex -space-x-3">
-              <img src="https://randomuser.me/api/portraits/women/44.jpg"
-                class="w-10 h-10 rounded-full border-2 border-white hover:scale-110 hover:z-10 transition-all duration-300"
-                alt="User">
-              <img src="https://randomuser.me/api/portraits/men/32.jpg"
-                class="w-10 h-10 rounded-full border-2 border-white hover:scale-110 hover:z-10 transition-all duration-300"
-                alt="User">
-              <img src="https://randomuser.me/api/portraits/women/68.jpg"
-                class="w-10 h-10 rounded-full border-2 border-white hover:scale-110 hover:z-10 transition-all duration-300"
-                alt="User">
-              <img src="https://randomuser.me/api/portraits/men/46.jpg"
-                class="w-10 h-10 rounded-full border-2 border-white hover:scale-110 hover:z-10 transition-all duration-300"
-                alt="User">
-              <img src="https://randomuser.me/api/portraits/women/33.jpg"
-                class="w-10 h-10 rounded-full border-2 border-white hover:scale-110 hover:z-10 transition-all duration-300"
-                alt="User">
-            </div>
-            <div>
-              <div class="flex items-center gap-1">
-                <i class="fas fa-star text-[#FBBF24] text-sm"></i>
-                <i class="fas fa-star text-[#FBBF24] text-sm"></i>
-                <i class="fas fa-star text-[#FBBF24] text-sm"></i>
-                <i class="fas fa-star text-[#FBBF24] text-sm"></i>
-                <i class="fas fa-star text-[#FBBF24] text-sm"></i>
-                <span class="text-sm font-semibold text-[#8B5A2B] ml-1">4.9</span>
-              </div>
-              <p class="text-xs text-[#6b7280]">500+ review positif dari affiliate umroh</p>
-            </div>
-          </div>
         </div>
 
         <!-- Right Content -->
@@ -1213,60 +1161,11 @@
               alt="Umroh Affiliate Marketing"
               class="relative rounded-3xl shadow-2xl w-full transform group-hover:scale-[1.02] transition-all duration-700">
 
-
             <div
               class="absolute bottom-8 right-8 bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] transition-all duration-300 cursor-pointer">
-              <i class="fas fa-play-circle text-[#FBBF24] group-hover:animate-pulse"></i>
-              <span>Tonton Video</span>
+              <i class="fas fa-info-circle text-[#FBBF24] group-hover:animate-pulse"></i>
+              <span>Lihat Detail</span>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats Section Modern with Yellow & Brown -->
-  <section class="py-12 relative z-20 -mt-16">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
-          data-aos-duration="800">
-          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">20+</div>
-          <div
-            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#FBBF24] transition-colors duration-300">
-            Travel Partner</div>
-          <div class="progress-bar mt-3">
-            <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 85%"></div>
-          </div>
-        </div>
-        <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
-          data-aos-duration="800" data-aos-delay="100">
-          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">10K+</div>
-          <div
-            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#FBBF24] transition-colors duration-300">
-            Affiliate Aktif</div>
-          <div class="progress-bar mt-3">
-            <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 92%"></div>
-          </div>
-        </div>
-        <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
-          data-aos-duration="800" data-aos-delay="200">
-          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">Rp 10M+</div>
-          <div
-            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#FBBF24] transition-colors duration-300">
-            Komisi Dibayar</div>
-          <div class="progress-bar mt-3">
-            <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 78%"></div>
-          </div>
-        </div>
-        <div class="stat-modern group hover:-translate-y-2 transition-all duration-300" data-aos="fade-up"
-          data-aos-duration="800" data-aos-delay="300">
-          <div class="stat-number-modern group-hover:scale-110 transition-transform duration-300">99%</div>
-          <div
-            class="text-sm font-medium text-[#6b7280] mt-2 group-hover:text-[#FBBF24] transition-colors duration-300">
-            Jamaah Puas</div>
-          <div class="progress-bar mt-3">
-            <div class="progress-fill group-hover:w-full transition-all duration-1000" style="width: 99%"></div>
           </div>
         </div>
       </div>
@@ -1296,17 +1195,15 @@
         </div>
 
         <!-- Step 1 -->
-        <div
-          class="text-center relative group z-10 bg-white rounded-2xl p-6 shadow-xl border border-[#FBBF24]/40"
+        <div class="text-center relative group z-10 bg-white rounded-2xl p-6 shadow-xl border border-[#FBBF24]/40"
           data-aos="fade-up" data-aos-duration="800">
           <div class="relative inline-block">
             <div
               class="w-24 h-24 mx-auto bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-2xl flex items-center justify-center text-3xl font-bold mb-6 shadow-xl shadow-[#8B5A2B]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
-              <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500"
-                style="color:#D97706; text-shadow: 0 1px 3px rgba(255,255,255,0.9), 0 0 8px rgba(0,0,0,0.25);">1</span>
+              <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500 text-white drop-shadow-lg">1</span>
             </div>
             <div
-              class="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] rounded-full flex items-center justify-center text-[#8B5A2B] text-sm border-4 border-white animate-bounce">
+              class="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] rounded-full flex items-center justify-center text-white text-sm border-4 border-white animate-bounce">
               <i class="fas fa-user-plus"></i>
             </div>
           </div>
@@ -1317,17 +1214,15 @@
         </div>
 
         <!-- Step 2 -->
-        <div
-          class="text-center relative group z-10 bg-white rounded-2xl p-6 shadow-xl border border-[#FBBF24]/40"
+        <div class="text-center relative group z-10 bg-white rounded-2xl p-6 shadow-xl border border-[#FBBF24]/40"
           data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
           <div class="relative inline-block">
             <div
               class="w-24 h-24 mx-auto bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-2xl flex items-center justify-center text-3xl font-bold mb-6 shadow-xl shadow-[#8B5A2B]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
-              <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500"
-                style="color:#D97706; text-shadow: 0 1px 3px rgba(255,255,255,0.9), 0 0 8px rgba(0,0,0,0.25);">2</span>
+              <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500 text-white drop-shadow-lg">2</span>
             </div>
             <div
-              class="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] rounded-full flex items-center justify-center text-[#8B5A2B] text-sm border-4 border-white animate-bounce"
+              class="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] rounded-full flex items-center justify-center text-white text-sm border-4 border-white animate-bounce"
               style="animation-delay: 0.2s">
               <i class="fas fa-mosque"></i>
             </div>
@@ -1339,17 +1234,15 @@
         </div>
 
         <!-- Step 3 -->
-        <div
-          class="text-center relative group z-10 bg-white rounded-2xl p-6 shadow-xl border border-[#FBBF24]/40"
+        <div class="text-center relative group z-10 bg-white rounded-2xl p-6 shadow-xl border border-[#FBBF24]/40"
           data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
           <div class="relative inline-block">
             <div
               class="w-24 h-24 mx-auto bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-2xl flex items-center justify-center text-3xl font-bold mb-6 shadow-xl shadow-[#8B5A2B]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
-              <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500"
-                style="color:#D97706; text-shadow: 0 1px 3px rgba(255,255,255,0.9), 0 0 8px rgba(0,0,0,0.25);">3</span>
+              <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500 text-white drop-shadow-lg">3</span>
             </div>
             <div
-              class="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] rounded-full flex items-center justify-center text-[#8B5A2B] text-sm border-4 border-white animate-bounce"
+              class="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] rounded-full flex items-center justify-center text-white text-sm border-4 border-white animate-bounce"
               style="animation-delay: 0.4s">
               <i class="fas fa-share-alt"></i>
             </div>
@@ -1361,24 +1254,23 @@
         </div>
 
         <!-- Step 4 -->
-        <div
-          class="text-center relative group z-10 bg-white rounded-2xl p-6 shadow-xl border border-[#FBBF24]/40"
+        <div class="text-center relative group z-10 bg-white rounded-2xl p-6 shadow-xl border border-[#FBBF24]/40"
           data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
           <div class="relative inline-block">
             <div
               class="w-24 h-24 mx-auto bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-2xl flex items-center justify-center text-3xl font-bold mb-6 shadow-xl shadow-[#8B5A2B]/20 transform rotate-45 group-hover:rotate-90 group-hover:scale-110 transition-all duration-500">
-              <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500"
-                style="color:#D97706; text-shadow: 0 1px 3px rgba(255,255,255,0.9), 0 0 8px rgba(0,0,0,0.25);">4</span>
+              <span class="transform -rotate-45 group-hover:rotate-0 transition-all duration-500 text-white drop-shadow-lg">4</span>
             </div>
             <div
-              class="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] rounded-full flex items-center justify-center text-[#8B5A2B] text-sm border-4 border-white animate-bounce"
+              class="absolute -top-2 -right-2 w-8 h-8 bg-[#FBBF24] rounded-full flex items-center justify-center text-white text-sm border-4 border-white animate-bounce"
               style="animation-delay: 0.6s">
               <i class="fas fa-money-bill-wave"></i>
             </div>
           </div>
           <h3 class="font-bold text-lg text-[#8B5A2B] mb-2 group-hover:text-[#FBBF24] transition-colors duration-300">
             Dapatkan Komisi & Poin</h3>
-          <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Terima komisi setiap
+          <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Terima komisi
+            setiap
             ada jamaah berangkat sekaligus poin menuju hadiah umroh gratis.</p>
         </div>
       </div>
@@ -1412,7 +1304,7 @@
               <div>
                 <h4 class="font-bold text-[#8B5A2B] group-hover:text-[#FBBF24] transition-colors duration-300">Komisi
                   Tertinggi</h4>
-                <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Hingga 150.000 rupiah
+                <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Hingga 50%
                   per jamaah, tertinggi di industri umroh.</p>
               </div>
             </div>
@@ -1424,9 +1316,11 @@
                 <i class="fas fa-gift text-xl"></i>
               </div>
               <div>
-                <h4 class="font-bold text-[#8B5A2B] group-hover:text-[#FBBF24] transition-colors duration-300">Kesempatan
+                <h4 class="font-bold text-[#8B5A2B] group-hover:text-[#FBBF24] transition-colors duration-300">
+                  Kesempatan
                   Umroh Gratis</h4>
-                <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Kumpulkan poin
+                <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Kumpulkan
+                  poin
                   dari setiap jamaah untuk ikut undian hadiah umroh tiap kuartal.</p>
               </div>
             </div>
@@ -1438,8 +1332,9 @@
                 <i class="fas fa-chart-line text-xl"></i>
               </div>
               <div>
-                <h4 class="font-bold text-[#8B5A2B] group-hover:text-[#FBBF24] transition-colors duration-300">Tracking
-                  Real-Time</h4>
+                <h4 class="font-bold text-[#8B5A2B] group-hover:text-[#FBBF24] transition-colors duration-300 flex items-center gap-2">
+                  <i class="fas fa-magnifying-glass text-[#FBBF24]"></i>
+                  Tracking Real-Time</h4>
                 <p class="text-[#6b7280] text-sm group-hover:text-[#8B5A2B] transition-colors duration-300">Pantau
                   jumlah pendaftar jamaah secara live.</p>
               </div>
@@ -1470,55 +1365,12 @@
             alt="Umroh Dashboard"
             class="relative rounded-3xl shadow-2xl w-full transform hover:scale-[1.02] transition-all duration-700">
 
-          <!-- Stats Card with Yellow & Brown -->
-          <div
-            class="absolute -bottom-6 -left-6 glass-card p-4 rounded-2xl shadow-xl floating cursor-pointer hover:bg-white hover:scale-105 transition-all duration-300"
-            data-aos="zoom-in" data-aos-delay="200">
-            <div class="flex items-center gap-3">
-              <div
-                class="w-12 h-12 bg-gradient-to-r from-[#FBBF24] to-[#8B5A2B] rounded-xl flex items-center justify-center text-white group/icon">
-                <i class="fas fa-arrow-up text-xl group-hover/icon:scale-110 transition-transform duration-300"></i>
-              </div>
-              <div>
-                <p class="text-xs text-[#6b7280]">Konversi Bulan Ini</p>
-                <p class="text-xl font-bold text-[#8B5A2B]">+147%</p>
-                <div class="flex items-center gap-1 text-xs text-[#FBBF24]">
-                  <i class="fas fa-chart-line"></i>
-                  <span>Meningkat 37%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- Feature Badge with Yellow & Brown -->
           <div
             class="absolute top-6 right-6 bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] transition-all duration-300 cursor-pointer">
             <i class="fas fa-shield-alt text-[#FBBF24]"></i>
             <span>100% Terpercaya</span>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Newsletter Section with Yellow & Brown -->
-  <section class="py-16">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="newsletter-modern relative overflow-hidden">
-        <div class="relative z-10 text-center max-w-2xl mx-auto">
-          <h3 class="text-3xl font-bold text-white mb-4">Dapatkan Update Promo Umroh</h3>
-          <p class="text-[#FDE68A] mb-6">Berlangganan untuk menerima info paket umroh terbaru, bonus komisi, dan tips
-            promosi setiap minggu.</p>
-          <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-            onsubmit="event.preventDefault(); const email=document.getElementById('newsletter-email').value; window.location.href='/register?newsletter=1&email='+encodeURIComponent(email);">
-            <input type="email" id="newsletter-email" placeholder="Masukkan email Anda" class="input-modern flex-1"
-              required>
-            <button type="submit" class="btn-modern whitespace-nowrap transition-all duration-300">
-              <span class="relative z-10">Subscribe</span>
-              <i class="fas fa-paper-plane ml-2 text-white"></i>
-            </button>
-          </form>
-          <p class="text-xs text-[#FDE68A] mt-4">Kami tidak akan spam. Maksimal 1 email per minggu.</p>
         </div>
       </div>
     </div>
@@ -1620,7 +1472,8 @@
             <i class="fas fa-chevron-down text-[#FBBF24] transition-all duration-300 group-hover:scale-110"></i>
           </button>
           <div class="hidden px-6 pb-4 text-[#6b7280] text-sm">
-           Tentu ada! Kami memberikan kesempatan istimewa bagi para affiliate berprestasi untuk mendapatkan hadiah umroh gratis setiap kuartal.
+            Tentu ada! Kami memberikan kesempatan istimewa bagi para affiliate berprestasi untuk mendapatkan hadiah
+            umroh gratis setiap kuartal.
           </div>
         </div>
 
@@ -1671,7 +1524,7 @@
     </div>
   </section>
 
-  <!-- Footer Modern with Dark Yellow & Brown -->
+  <!-- Footer Modern with Dark Yellow & Brown (from kode bawah) -->
   <footer class="footer-modern pt-20 pb-8">
     <div class="footer-wave">
       <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
@@ -1698,30 +1551,7 @@
             Platform affiliate umroh pertama dan terpercaya di Indonesia dengan komisi tertinggi serta kesempatan
             mendapatkan umroh gratis. Berkah untuk semua.
           </p>
-          <div class="flex gap-2">
-            <a href="#"
-              class="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center text-[#FEF3C7] hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="#"
-              class="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center text-[#FEF3C7] hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#"
-              class="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center text-[#FEF3C7] hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
-              <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#"
-              class="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center text-[#FEF3C7] hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
-              <i class="fab fa-linkedin-in"></i>
-            </a>
-            <a href="#"
-              class="w-10 h-10 bg-[#D97706] rounded-xl flex items-center justify-center text-[#FEF3C7] hover:bg-gradient-to-r hover:from-[#FBBF24] hover:to-[#8B5A2B] hover:text-white hover:scale-110 hover:rotate-12 transition-all duration-300">
-              <i class="fab fa-youtube"></i>
-            </a>
-          </div>
         </div>
-
       </div>
 
       <div class="border-t border-[#D97706] pt-8">
